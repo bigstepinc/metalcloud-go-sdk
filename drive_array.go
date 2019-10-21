@@ -3,15 +3,15 @@ package metalcloud
 import "log"
 
 type DriveArray struct {
-	DriveArrayID int64 `json:"drive_array_id,omitempty"`
+	DriveArrayID int `json:"drive_array_id,omitempty"`
 	DriveArrayLabel  string  `json:"drive_array_label,omitempty"`
-	VolumeTemplateID  int64  `json:"volume_template_id,omitempty"`
+	VolumeTemplateID  int  `json:"volume_template_id,omitempty"`
 	DriveArrayStorageType string  `json:"drive_array_storage_type,omitempty"`
-	DriveSizeMBytesDefault int64  `json:"drive_size_mbytes_default,omitempty"`
-	InstanceArrayID int64  `json:"instance_array_id,omitempty"`	
+	DriveSizeMBytesDefault int  `json:"drive_size_mbytes_default,omitempty"`
+	InstanceArrayID int  `json:"instance_array_id,omitempty"`	
 }
 
-func (c *MetalCloudClient) DriveArrays(infrastructureID int64) (*map[string]DriveArray, error) {
+func (c *MetalCloudClient) DriveArrays(infrastructureID int) (*map[string]DriveArray, error) {
 	res, err := c.rpcClient.Call(
 		"drive_arrays",
 		infrastructureID)
@@ -36,7 +36,7 @@ func (c *MetalCloudClient) DriveArrays(infrastructureID int64) (*map[string]Driv
 	return &created_object, nil
 }
 
-func (c *MetalCloudClient) DriveArrayGet(driveArrayID int64) (*DriveArray, error) {
+func (c *MetalCloudClient) DriveArrayGet(driveArrayID int) (*DriveArray, error) {
 	var created_object DriveArray
 
 	err := c.rpcClient.CallFor(
@@ -52,7 +52,7 @@ func (c *MetalCloudClient) DriveArrayGet(driveArrayID int64) (*DriveArray, error
 	return &created_object, nil
 }
 
-func (c *MetalCloudClient) DriveArrayCreate(infrastructureID int64, driveArray DriveArray) (*DriveArray, error) {
+func (c *MetalCloudClient) DriveArrayCreate(infrastructureID int, driveArray DriveArray) (*DriveArray, error) {
 	var created_object DriveArray
 
 	err := c.rpcClient.CallFor(

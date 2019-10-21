@@ -12,8 +12,8 @@ type InfrastructureOperation struct {
 	InfrastructureID                int `json:"infrastructure_id,omitempty"`
 	UserIDOwner                 	int `json:"user_id_owner,omitempty"`
 	InfrastructureUpdatedTimestamp 	string  `json:"infrastructure_updated_timestamp,omitempty"`
-	InfrastructureChangeID         	int64 `json:"infrastructure_change_id,omitempty"`
-	InfrastructureDeployID         	int64 `json:"infrastructure_deploy_id,omitempty"`
+	InfrastructureChangeID         	int `json:"infrastructure_change_id,omitempty"`
+	InfrastructureDeployID         	int `json:"infrastructure_deploy_id,omitempty"`
 }
 
 type Infrastructure struct {
@@ -37,7 +37,7 @@ type Infrastructure struct {
 type ShutdownOptions struct {
 	Hard_shutdown_after_timeout   bool
 	Attempt_soft_shutdown         bool
-	Soft_shutdown_timeout_seconds int64
+	Soft_shutdown_timeout_seconds int
 }
 
 
@@ -87,7 +87,7 @@ func (c *MetalCloudClient) InfrastructureDelete(infrastructureID int) error {
 }
 
 
-func (c *MetalCloudClient) InfrastructureOperationCancel(infrastructureID int64) error {
+func (c *MetalCloudClient) InfrastructureOperationCancel(infrastructureID int) error {
 	_, err := c.rpcClient.Call(
 		"infrastructure_operation_cancel",
 		infrastructureID)
