@@ -4,40 +4,40 @@ import "log"
 import "fmt"
 
 type InfrastructureOperation struct {
-	InfrastructureDeployStatus  string  `json:"infrastructure_deploy_status, omitempty"`
-	InfrastructureDeployType    string  `json:"infrastructure_deploy_type, omitempty"`
-	InfrastructureLabel          string  `json:"infrastructure_label"`
-	InfrastructureSubdomain      string  `json:"infrastructure_subdomain, omitempty"`
-	DatacenterName               string  `json:"datacenter_name"`
-	InfrastructureID             float64 `json:"infrastructure_id,omitempty"`
-	UserIDOwner                 float64 `json:"user_id_owner,omitempty"`
-	InfrastructureUpdatedTimestamp string  `json:"infrastructure_updated_timestamp,omitempty"`
-	InfrastructureChangeID         float64 `json:"infrastructure_change_id,omitempty"`
-	InfrastructureDeployID         float64 `json:"infrastructure_deploy_id,omitempty"`
+	InfrastructureDeployStatus  	string  `json:"infrastructure_deploy_status, omitempty"`
+	InfrastructureDeployType    	string  `json:"infrastructure_deploy_type, omitempty"`
+	InfrastructureLabel          	string  `json:"infrastructure_label"`
+	InfrastructureSubdomain      	string  `json:"infrastructure_subdomain, omitempty"`
+	DatacenterName                	string  `json:"datacenter_name"`
+	InfrastructureID                int64 `json:"infrastructure_id,omitempty"`
+	UserIDOwner                 	int64 `json:"user_id_owner,omitempty"`
+	InfrastructureUpdatedTimestamp 	string  `json:"infrastructure_updated_timestamp,omitempty"`
+	InfrastructureChangeID         	int64 `json:"infrastructure_change_id,omitempty"`
+	InfrastructureDeployID         	int64 `json:"infrastructure_deploy_id,omitempty"`
 }
 
 type Infrastructure struct {
 	InfrastructureLabel          string  `json:"infrastructure_label"`
 	InfrastructureSubdomain      string  `json:"infrastructure_subdomain, omitempty"`
 	DatacenterName               string  `json:"datacenter_name"`
-	InfrastructureID             float64 `json:"infrastructure_id,omitempty"`
-	UserIDowner                 float64 `json:"user_id_owner,omitempty"`
-	UserEmailOwner              string  `json:"user_email_owner,omitempty"`
-	InfrastructureTouchUnixtime string  `json:"infrastructure_touch_unixtime,omitempty"`
-	InfrastructureServiceStatus string  `json:"infrastructure_touch_unixtime,omitempty"`
+	InfrastructureID             int64 `json:"infrastructure_id,omitempty"`
+	UserIDowner                  int64 `json:"user_id_owner,omitempty"`
+	UserEmailOwner               string  `json:"user_email_owner,omitempty"`
+	InfrastructureTouchUnixtime  string  `json:"infrastructure_touch_unixtime,omitempty"`
+	InfrastructureServiceStatus  string  `json:"infrastructure_touch_unixtime,omitempty"`
 	InfrastructureCreatedTimestamp string  `json:"infrastructure_created_timestamp,omitempty"`
 	InfrastructureUpdatedTimestamp string  `json:"infrastructure_updated_timestamp,omitempty"`
-	InfrastructureChangeID         float64 `json:"infrastructure_change_id,omitempty"`
-	InfrastructureDeployID         float64 `json:"infrastructure_deploy_id,omitempty"`
-	InfrastructureDesignIsLocked  bool    `json:"infrastructure_design_is_locked,omitempty"`
-	InfrastructureOperation InfrastructureOperation `json:"infrastructure_operation,omitempty"`
+	InfrastructureChangeID         int64 `json:"infrastructure_change_id,omitempty"`
+	InfrastructureDeployID         int64 `json:"infrastructure_deploy_id,omitempty"`
+	InfrastructureDesignIsLocked   bool    `json:"infrastructure_design_is_locked,omitempty"`
+	InfrastructureOperation 	   InfrastructureOperation `json:"infrastructure_operation,omitempty"`
 
 }
 
 type ShutdownOptions struct {
 	Hard_shutdown_after_timeout   bool
 	Attempt_soft_shutdown         bool
-	Soft_shutdown_timeout_seconds float64
+	Soft_shutdown_timeout_seconds int64
 }
 
 
@@ -59,7 +59,7 @@ func (c *MetalCloudClient) InfrastructureCreate(infrastructure Infrastructure) (
 	return &created_infrastructure, nil
 }
 
-func (c *MetalCloudClient) InfrastructureEdit(infrastructure_id float64, infrastructure_operation InfrastructureOperation) (*Infrastructure, error) {
+func (c *MetalCloudClient) InfrastructureEdit(infrastructure_id int64, infrastructure_operation InfrastructureOperation) (*Infrastructure, error) {
 	var created_infrastructure Infrastructure
 
 	err := c.rpcClient.CallFor(
@@ -77,7 +77,7 @@ func (c *MetalCloudClient) InfrastructureEdit(infrastructure_id float64, infrast
 }
 
 
-func (c *MetalCloudClient) InfrastructureDelete(infrastructure_id float64) error {
+func (c *MetalCloudClient) InfrastructureDelete(infrastructure_id int64) error {
 	_, err := c.rpcClient.Call("infrastructure_delete", infrastructure_id)
 	if err != nil {
 		return err
@@ -87,7 +87,7 @@ func (c *MetalCloudClient) InfrastructureDelete(infrastructure_id float64) error
 }
 
 
-func (c *MetalCloudClient) InfrastructureOperationCancel(infrastructure_id float64) error {
+func (c *MetalCloudClient) InfrastructureOperationCancel(infrastructure_id int64) error {
 	_, err := c.rpcClient.Call(
 		"infrastructure_operation_cancel",
 		infrastructure_id)
@@ -100,7 +100,7 @@ func (c *MetalCloudClient) InfrastructureOperationCancel(infrastructure_id float
 }
 
 //TODO: add the rest of the options
-func (c *MetalCloudClient) InfrastructureDeploy(infrastructure_id float64, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error {
+func (c *MetalCloudClient) InfrastructureDeploy(infrastructure_id int64, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error {
 	_, err := c.rpcClient.Call(
 		"infrastructure_deploy",
 		infrastructure_id,
@@ -154,7 +154,7 @@ func (c *MetalCloudClient) Infrastructures() (*map[string]Infrastructure, error)
 	return &infrastructures, nil
 }
 
-func (c *MetalCloudClient) InfrastructureGet(infrastructureID float64) (*Infrastructure, error) {
+func (c *MetalCloudClient) InfrastructureGet(infrastructureID int64) (*Infrastructure, error) {
 	var infrastructure Infrastructure
 
 	err := c.rpcClient.CallFor(&infrastructure, "infrastructure_get", infrastructureID)
@@ -168,7 +168,7 @@ func (c *MetalCloudClient) InfrastructureGet(infrastructureID float64) (*Infrast
 }
 
 
-func (c *MetalCloudClient) InfrastructureUserLimits(infrastructureID float64) (*map[string]interface{}, error) {
+func (c *MetalCloudClient) InfrastructureUserLimits(infrastructureID int64) (*map[string]interface{}, error) {
 	var userLimits map[string]interface{}
 
 	err := c.rpcClient.CallFor(&userLimits, "infrastructure_user_limits", infrastructureID)

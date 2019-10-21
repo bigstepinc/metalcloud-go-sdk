@@ -3,36 +3,36 @@ package metalcloud
 import "log"
 
 type InstanceArray struct  {
-	InstanceArrayID 			float64 	`json:"instance_array_id, omitempty"`
+	InstanceArrayID 			int64 	`json:"instance_array_id, omitempty"`
 	InstanceArrayLabel 			string		`json:"instance_array_label, omitempty"`
 	InstanceArraySubdomain 		string 		`json:"instance_array_subdomain, omitempty"`
-	InstanceArrayInstanceCount  float64 	`json:"instance_array_instance_count, omitempty"`
-	InstanceArrayRamGbytes 		float64 	`json:"instance_array_ram_gbytes, omitempty"`
-	InstanceArrayProcessorCount  float64 	`json:"instance_array_processor_count, omitempty"`
-	InstanceArrayProcessorCoreMHZ float64 	`json:"instance_array_processor_core_mhz, omitempty"`
-	InstanceArrayProcessorCoreCount float64 `json:"instance_array_processor_core_count, omitempty"`
-	InstanceArrayDiskCount 		float64 	`json:"instance_array_disk_count, omitempty"`
-	InstanceArrayDiskSizeMBytes float64     `json:"instance_array_disk_size_mbytes, omitempty"`
+	InstanceArrayInstanceCount  int64 	`json:"instance_array_instance_count, omitempty"`
+	InstanceArrayRamGbytes 		int64 	`json:"instance_array_ram_gbytes, omitempty"`
+	InstanceArrayProcessorCount  int64 	`json:"instance_array_processor_count, omitempty"`
+	InstanceArrayProcessorCoreMHZ int64 	`json:"instance_array_processor_core_mhz, omitempty"`
+	InstanceArrayProcessorCoreCount int64 `json:"instance_array_processor_core_count, omitempty"`
+	InstanceArrayDiskCount 		int64 	`json:"instance_array_disk_count, omitempty"`
+	InstanceArrayDiskSizeMBytes int64     `json:"instance_array_disk_size_mbytes, omitempty"`
 	InstanceArrayDiskTypes 		[]string 	`json:"instance_array_disk_types, omitempty"`
-	InfrastructureID			float64 	`json:"infrastructure_id"`
+	InfrastructureID			int64 	`json:"infrastructure_id"`
 	InstanceArrayServiceStatus  string 		`json:"instance_array_service_status, omitempty"`
 
 //	instance_array_operation = None;
 //	instance_array_interfaces = [];
 
-	ClusterID 						float64 	`json:"cluster_id, omitempty"`			
+	ClusterID 						int64 	`json:"cluster_id, omitempty"`			
 	ClusterRoleGroup 				string 		`json:"cluster_role_group, omitempty"`			
-	InstanceArrayChangeId		float64 	`json:"instance_array_change_id, omitempty"`			
-	InstanceArrayFirewallManaged bool 		`json:"instance_array_firewall_managed, omitempty"`
-	InstanceArrayFirewallRules   []FirewallRule `json:"instance_array_firewall_rules, omitempty"`;
-	VolumeTemplateID 				*string 		`json:"volume_template_id, omitempty"`;
+	InstanceArrayChangeId			int64 	`json:"instance_array_change_id, omitempty"`			
+	InstanceArrayFirewallManaged 	bool 		`json:"instance_array_firewall_managed, omitempty"`
+	InstanceArrayFirewallRules   	[]FirewallRule `json:"instance_array_firewall_rules, omitempty"`;
+	VolumeTemplateID 				string 		`json:"volume_template_id, omitempty"`;
 }
 
 
 type FirewallRule struct {
 	FirewallRuleDescription 				string `json:"firewall_rule_description, omitempty "`
-	FirewallRulePortRangeStart  			float64 `json:"firewall_rule_port_range_start, omitempty "`
-	FirewallRulePortRangeEnd  				float64 `json:"firewall_rule_port_range_end, omitempty "`
+	FirewallRulePortRangeStart  			int64 `json:"firewall_rule_port_range_start, omitempty "`
+	FirewallRulePortRangeEnd  				int64 `json:"firewall_rule_port_range_end, omitempty "`
 	FirewallRuleSourceIPAddressRangeStart 	string `json:"firewall_rule_source_ip_address_range_start, omitempty "`
 	FirewallRuleSourceIPAddressRangeEnd   	string `json:"firewall_rule_source_ip_address_range_end, omitempty "`
 	FirewallRuleProtocol 					string `json:"firewall_rule_protocol, omitempty "`
@@ -41,7 +41,7 @@ type FirewallRule struct {
 }
 
 
-func (c *MetalCloudClient) InstanceArrayGet(instanceArrayID float64) (*InstanceArray, error) {
+func (c *MetalCloudClient) InstanceArrayGet(instanceArrayID int64) (*InstanceArray, error) {
 	var created_object InstanceArray
 
 	err := c.rpcClient.CallFor(
@@ -58,7 +58,7 @@ func (c *MetalCloudClient) InstanceArrayGet(instanceArrayID float64) (*InstanceA
 }
 
 
-func (c *MetalCloudClient) InstanceArrays(InfrastructureID float64) (*map[string]InstanceArray, error) {
+func (c *MetalCloudClient) InstanceArrays(InfrastructureID int64) (*map[string]InstanceArray, error) {
 	var created_object map[string]InstanceArray
 
 	err := c.rpcClient.CallFor(
@@ -74,7 +74,7 @@ func (c *MetalCloudClient) InstanceArrays(InfrastructureID float64) (*map[string
 
 
 
-func (c *MetalCloudClient) InstanceArrayCreate(infrastructureID float64, instanceArray InstanceArray) (*InstanceArray, error) {
+func (c *MetalCloudClient) InstanceArrayCreate(infrastructureID int64, instanceArray InstanceArray) (*InstanceArray, error) {
 	var created_object InstanceArray
 
 	err := c.rpcClient.CallFor(

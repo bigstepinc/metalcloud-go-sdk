@@ -8,9 +8,9 @@ type OperatingSystem struct {
 }
 
 type VolumeTemplate struct {
-	VolumeTemplateID  float64  `json:"volume_template_id,omitempty"`
+	VolumeTemplateID  int64  `json:"volume_template_id,omitempty"`
 	VolumeTemplateLabel string `json:"volume_template_label,omitempty"`
-	VolumeTemplateSizeMBytes float64 `json:"volume_template_size_mbytes,omitempty"`
+	VolumeTemplateSizeMBytes int64 `json:"volume_template_size_mbytes,omitempty"`
 	VolumeTemplateDisplayName string `json:"volume_template_display_name,omitempty"`
 	VolumeTemplateDescription string `json:"volume_template_description,omitempty"`
 	VolumeTemplateLocalDiskSupported bool `json:"volume_template_display_name,omitempty"`
@@ -36,7 +36,7 @@ func (c *MetalCloudClient) AvailableVolumeTemplatesGet() (*map[string]VolumeTemp
 	return &created_object, nil
 }
 
-func (c *MetalCloudClient) VolumeTemplateGet(volumeTemplateID float64) (*VolumeTemplate, error) {
+func (c *MetalCloudClient) VolumeTemplateGet(volumeTemplateID int64) (*VolumeTemplate, error) {
 	var created_object VolumeTemplate
 
 	err := c.rpcClient.CallFor(
