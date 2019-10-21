@@ -11,16 +11,26 @@ type DriveArray struct {
 	InstanceArrayID int64  `json:"instance_array_id,omitempty"`	
 }
 
-func (c *MetalCloudClient) DriveArrays(instanceArrayID int64) (*map[string]DriveArray, error) {
-	var created_object map[string]DriveArray
-
-	err := c.rpcClient.CallFor(
-		&created_object,
+func (c *MetalCloudClient) DriveArrays(infrastructureID int64) (*map[string]DriveArray, error) {
+	res, err := c.rpcClient.Call(
 		"drive_arrays",
-		instanceArrayID)
-
+		infrastructureID)
+	
 	if err != nil {
 		return nil, err
+	}
+
+	_, ok := res.Result.([]interface{})
+	if ok {
+		var m = map[string]DriveArray{}
+		return &m, nil
+	}
+
+	var created_object map[string]DriveArray
+	
+	err2 := res.GetObject(&created_object)
+	if err2 != nil {
+			return nil, err2
 	}
 
 	return &created_object, nil

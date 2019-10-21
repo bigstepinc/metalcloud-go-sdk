@@ -20,6 +20,7 @@ type SignatureAdderRoundTripper struct {
 	APIKey string
 	http.RoundTripper
 	LogReply bool
+	DryRun bool
 }
 
 func (c *SignatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
@@ -38,10 +39,14 @@ func (c *SignatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 
 	// Read the content
 	var message []byte
-
 	if req.Body != nil {
 		message, _ = ioutil.ReadAll(req.Body)
 	}
+
+	if c.LogReply {
+		log.Println(string(message))
+	}
+
 	// Restore the io.ReadCloser to its original state
 	req.Body = ioutil.NopCloser(bytes.NewBuffer(message))
 
@@ -67,7 +72,11 @@ func (c *SignatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 
 	req.URL = url
 
-	resp, err := http.DefaultTransport.RoundTrip(req)
+	var resp *http.Response = nil
+
+	if !c.DryRun {
+		resp, err = http.DefaultTransport.RoundTrip(req)
+	}
 
 	if c.LogReply {
 		//log the reply

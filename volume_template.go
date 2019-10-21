@@ -21,16 +21,26 @@ type VolumeTemplate struct {
 }
 
 
-func (c *MetalCloudClient) AvailableVolumeTemplatesGet() (*map[string]VolumeTemplate, error) {
-	var created_object map[string]VolumeTemplate
-
-	err := c.rpcClient.CallFor(
-		&created_object,
+func (c *MetalCloudClient) VolumeTemplates() (*map[string]VolumeTemplate, error) {
+	res, err := c.rpcClient.Call(
 		"volume_templates",
 		c.user)
-
+	
 	if err != nil {
 		return nil, err
+	}
+
+	_, ok := res.Result.([]interface{})
+	if ok {
+		var m = map[string]VolumeTemplate{}
+		return &m, nil
+	}
+
+	var created_object map[string]VolumeTemplate
+	
+	err2 := res.GetObject(&created_object)
+	if err2 != nil {
+			return nil, err2
 	}
 
 	return &created_object, nil

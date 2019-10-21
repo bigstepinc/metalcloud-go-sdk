@@ -14,17 +14,25 @@ func main(){
 
   client, err := metalcloud.GetMetalcloudClient(user, apiKey, endpoint)
   if err != nil {
-    log.Fatal("Error initiating client: %s", err)
+    log.Fatal("Error initiating client: ", err)
   }
 
   infras,err :=client.Infrastructures()
   if err != nil {
-    log.Fatal("Error retrieving a list of infrastructures: %s", err)
+    log.Fatal("Error retrieving a list of infrastructures: ", err)
   }
 
   for _,infra := range *infras{
     log.Printf("%s(%d)",infra.InfrastructureLabel, infra.InfrastructureID)
+    instanceArrays, err := client.InstanceArrays(infra.InfrastructureID)
+    if err != nil {
+      log.Fatal("Error retrieving a list of instance arrays: ", err)
+    }
+    for _,ia := range *instanceArrays{
+      log.Printf("InstanceArray: %s(%d)",ia.InstanceArrayLabel, ia.InstanceArrayID)
+    }
   }
+
 
 
 }
