@@ -4,11 +4,13 @@ import "log"
 import "fmt"
 
 type InfrastructureOperation struct {
-	InfrastructureDeployStatus  	string  `json:"infrastructure_deploy_status, omitempty"`
-	InfrastructureDeployType    	string  `json:"infrastructure_deploy_type, omitempty"`
 	InfrastructureLabel          	string  `json:"infrastructure_label"`
-	InfrastructureSubdomain      	string  `json:"infrastructure_subdomain, omitempty"`
 	DatacenterName                	string  `json:"datacenter_name"`
+	
+	InfrastructureDeployStatus  	string  `json:"infrastructure_deploy_status,omitempty"`
+	InfrastructureDeployType    	string  `json:"infrastructure_deploy_type,omitempty"`
+	InfrastructureSubdomain      	string  `json:"infrastructure_subdomain,omitempty"`
+	
 	InfrastructureID                int `json:"infrastructure_id,omitempty"`
 	UserIDOwner                 	int `json:"user_id_owner,omitempty"`
 	InfrastructureUpdatedTimestamp 	string  `json:"infrastructure_updated_timestamp,omitempty"`
@@ -17,27 +19,29 @@ type InfrastructureOperation struct {
 }
 
 type Infrastructure struct {
-	InfrastructureLabel          string  `json:"infrastructure_label"`
-	InfrastructureSubdomain      string  `json:"infrastructure_subdomain, omitempty"`
-	DatacenterName               string  `json:"datacenter_name"`
-	InfrastructureID             int `json:"infrastructure_id,omitempty"`
-	UserIDowner                  int `json:"user_id_owner,omitempty"`
-	UserEmailOwner               string  `json:"user_email_owner,omitempty"`
-	InfrastructureTouchUnixtime  string  `json:"infrastructure_touch_unixtime,omitempty"`
-	InfrastructureServiceStatus  string  `json:"infrastructure_touch_unixtime,omitempty"`
-	InfrastructureCreatedTimestamp string  `json:"infrastructure_created_timestamp,omitempty"`
-	InfrastructureUpdatedTimestamp string  `json:"infrastructure_updated_timestamp,omitempty"`
-	InfrastructureChangeID         int `json:"infrastructure_change_id,omitempty"`
-	InfrastructureDeployID         int `json:"infrastructure_deploy_id,omitempty"`
-	InfrastructureDesignIsLocked   bool    `json:"infrastructure_design_is_locked,omitempty"`
-	InfrastructureOperation 	   InfrastructureOperation `json:"infrastructure_operation,omitempty"`
+	InfrastructureLabel          	string  `json:"infrastructure_label"`
+	DatacenterName               	string  `json:"datacenter_name"`
+
+	InfrastructureSubdomain      	string  `json:"infrastructure_subdomain,omitempty"`
+	
+	InfrastructureID             	int 	`json:"infrastructure_id,omitempty"`
+	UserIDowner                  	int 	`json:"user_id_owner,omitempty"`
+	UserEmailOwner               	string  `json:"user_email_owner,omitempty"`
+	InfrastructureTouchUnixtime  	string  `json:"infrastructure_touch_unixtime,omitempty"`
+	InfrastructureServiceStatus  	string  `json:"infrastructure_touch_unixtime,omitempty"`
+	InfrastructureCreatedTimestamp 	string  `json:"infrastructure_created_timestamp,omitempty"`
+	InfrastructureUpdatedTimestamp 	string  `json:"infrastructure_updated_timestamp,omitempty"`
+	InfrastructureChangeID         	int 	`json:"infrastructure_change_id,omitempty"`
+	InfrastructureDeployID         	int 	`json:"infrastructure_deploy_id,omitempty"`
+	InfrastructureDesignIsLocked   	bool    `json:"infrastructure_design_is_locked,omitempty"`
+	InfrastructureOperation 	   	InfrastructureOperation `json:"infrastructure_operation,omitempty"`
 
 }
 
 type ShutdownOptions struct {
-	Hard_shutdown_after_timeout   bool
-	Attempt_soft_shutdown         bool
-	Soft_shutdown_timeout_seconds int
+	HardShutdownAfterTimeout   	bool 	`json:"hard_shutdown_after_timeout,omitempty"`
+	AttemptSoftShutdown         bool 	`json:"attempt_soft_shutdown,omitempty"`
+	SoftShutdownTimeoutSeconds 	int 	`json:"soft_shutdown_timeout_seconds,omitempty"`
 }
 
 

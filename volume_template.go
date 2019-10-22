@@ -2,22 +2,22 @@ package metalcloud
 
 
 type OperatingSystem struct {
-	OperatingSystemType string `json:"operating_system_type,omitempty"` 
-	operatingSystemVersion string `json:"operating_system_version,omitempty"` 
-	operatingSystemArchitecture string `json:"operating_system_architecture,omitempty"` 
+	OperatingSystemType 		string 	`json:"operating_system_type,omitempty"` 
+	operatingSystemVersion 		string 	`json:"operating_system_version,omitempty"` 
+	operatingSystemArchitecture string 	`json:"operating_system_architecture,omitempty"` 
 }
 
 type VolumeTemplate struct {
-	VolumeTemplateID  int  `json:"volume_template_id,omitempty"`
-	VolumeTemplateLabel string `json:"volume_template_label,omitempty"`
-	VolumeTemplateSizeMBytes int `json:"volume_template_size_mbytes,omitempty"`
-	VolumeTemplateDisplayName string `json:"volume_template_display_name,omitempty"`
-	VolumeTemplateDescription string `json:"volume_template_description,omitempty"`
-	VolumeTemplateLocalDiskSupported bool `json:"volume_template_display_name,omitempty"`
-	VolumeTemplateBootMethodsSupported string `json:"volume_template_display_name,omitempty"`
-	VolumeTemplateDeprecationStatus string `json:"volume_template_deprecation_status,omitempty"`
-	VolumeTemplateRepoURL string `json:"volume_template_repo_url,omitempty"` 
-	VolumeTemplateOperatingSystem OperatingSystem  `json:"volume_template_operating_system,omitempty"` 
+	VolumeTemplateID  					int  		`json:"volume_template_id,omitempty"`
+	VolumeTemplateLabel 				string 		`json:"volume_template_label,omitempty"`
+	VolumeTemplateSizeMBytes 			int 		`json:"volume_template_size_mbytes,omitempty"`
+	VolumeTemplateDisplayName 			string 		`json:"volume_template_display_name,omitempty"`
+	VolumeTemplateDescription 			string 		`json:"volume_template_description,omitempty"`
+	VolumeTemplateLocalDiskSupported 	bool 		`json:"volume_template_display_name,omitempty"`
+	VolumeTemplateBootMethodsSupported 	string 		`json:"volume_template_display_name,omitempty"`
+	VolumeTemplateDeprecationStatus 	string 		`json:"volume_template_deprecation_status,omitempty"`
+	VolumeTemplateRepoURL 				string 		`json:"volume_template_repo_url,omitempty"` 
+	VolumeTemplateOperatingSystem 		OperatingSystem  `json:"volume_template_operating_system,omitempty"` 
 }
 
 

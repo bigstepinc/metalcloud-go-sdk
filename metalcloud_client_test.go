@@ -9,6 +9,7 @@ import (
 	"os"
 	"testing"
 	"strings"
+	"encoding/json"
 )
 
 
@@ -89,5 +90,46 @@ func TestEmptyListReply(t *testing.T){
 	ret2,err2 := mc.Infrastructures()
 	Expect(err2).To(BeNil())
 	Expect(ret2).NotTo(BeNil())
+
+
+
 }
+
+
+func TestInstanceArrayCreateOmitEmpty(t *testing.T){
+
+	RegisterTestingT(t)
+
+	responseBody = `{"result":{"instance_array_label":"test"},"jsonrpc": "2.0","id": 0}`
+
+	mc, err := GetMetalcloudClient("user","APIKey", httpServer.URL)
+	Expect(err).To(BeNil())
+	Expect(mc).NotTo(BeNil())
+
+	instanceArray := InstanceArray{
+		InstanceArrayLabel: "test",
+	}
+
+	<-requestChan
+
+	ret1,err1 := mc.InstanceArrayCreate(100, instanceArray)
+	Expect(err1).To(BeNil())
+	Expect(ret1).NotTo(BeNil())
+
+	body := (<-requestChan).body
+	
+	//fmt.Printf("body=%s\n", body)
+
+	var m map[string]interface{}
+	err2 := json.Unmarshal([]byte(body), &m)
+	Expect(err2).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	param := m["params"].([]interface{})[1].(map[string]interface{})
+	
+	Expect(param["instance_array_label"]).To(Equal("test"))
+	Expect(param["volume_template_id"]).To(BeNil())
+
+}
+
 
