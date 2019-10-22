@@ -3,11 +3,11 @@ package metalcloud
 import "log"
 import "fmt"
 
-
-type InstanceArray struct  {
+type InstanceArrayBase struct  {
 	InstanceArrayID 			int 	`json:"instance_array_id, omitempty"`
 	InstanceArrayLabel 			string		`json:"instance_array_label, omitempty"`
 	InstanceArraySubdomain 		string 		`json:"instance_array_subdomain, omitempty"`
+	InstanceArrayBootMethod		string 	`json:"instance_array_boot_method, omitempty"`
 	InstanceArrayInstanceCount  int 	`json:"instance_array_instance_count, omitempty"`
 	InstanceArrayRamGbytes 		int 	`json:"instance_array_ram_gbytes, omitempty"`
 	InstanceArrayProcessorCount  int 	`json:"instance_array_processor_count, omitempty"`
@@ -19,7 +19,6 @@ type InstanceArray struct  {
 	InfrastructureID			int 		`json:"infrastructure_id"`
 	InstanceArrayServiceStatus  string 		`json:"instance_array_service_status, omitempty"`
 
-//	instance_array_operation = None;
 //	instance_array_interfaces = [];
 
 	ClusterID 						int 	`json:"cluster_id, omitempty"`			
@@ -30,6 +29,17 @@ type InstanceArray struct  {
 	VolumeTemplateID 				int 		`json:"volume_template_id, omitempty"`;
 }
 
+type InstanceArray struct {
+	InstanceArrayBase
+	InstanceArrayOperation 	InstanceArrayOperation `json:"instance_array_operation, omitempty"`			
+}
+
+
+type InstanceArrayOperation struct  {
+	InstanceArrayBase
+	InstanceArrayDeployType 		string 		`json:"instance_array_deploy_type, omitempty"`;
+	InstanceArrayChangeID 			int 		`json:"instance_array_change_id, omitempty"`;
+}
 
 type FirewallRule struct {
 	FirewallRuleDescription 				string `json:"firewall_rule_description, omitempty "`
@@ -41,7 +51,6 @@ type FirewallRule struct {
 	FirewallRuleIPAddressType 			    string `json:"firewall_rule_ip_address_type, omitempty "`
 	FirewallRuleEnabled 					bool   `json:"firewall_rule_ip_address_type, omitempty "`
 }
-
 
 func (c *MetalCloudClient) InstanceArrayGet(instanceArrayID int) (*InstanceArray, error) {
 	var created_object InstanceArray
@@ -96,6 +105,25 @@ func (c *MetalCloudClient) InstanceArrayCreate(infrastructureID int, instanceArr
 		"instance_array_create",
 		infrastructureID,
 		instanceArray)
+
+	if err != nil {
+		log.Printf("%s", err)
+		return nil, err
+	}
+
+	return &created_object, nil
+}
+
+
+
+func (c *MetalCloudClient) InstanceArrayEdit(instanceArrayID int, instanceArrayOperation InstanceArrayOperation) (*InstanceArray, error) {
+	var created_object InstanceArray
+
+	err := c.rpcClient.CallFor(
+		&created_object,
+		"instance_array_edit",
+		instanceArrayID,
+		instanceArrayOperation)
 
 	if err != nil {
 		log.Printf("%s", err)
