@@ -82,3 +82,21 @@ func (c *MetalCloudClient) DriveArrayCreate(infrastructureID int, driveArray Dri
 
 	return &created_object, nil
 }
+
+
+func (c *MetalCloudClient) DriveArrayEdit(driveArrayID int, driveArrayOperation DriveArrayOperation) (*DriveArray, error) {
+	var created_object DriveArray
+
+	err := c.rpcClient.CallFor(
+		&created_object,
+		"drive_array_edit",
+		driveArrayID,
+		driveArrayOperation)
+
+	if err != nil {
+		log.Printf("%s", err)
+		return nil, err
+	}
+
+	return &created_object, nil
+}
