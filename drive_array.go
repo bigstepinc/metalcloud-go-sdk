@@ -10,6 +10,8 @@ type DriveArray struct {
 	DriveSizeMBytesDefault 	int  		`json:"drive_size_mbytes_default,omitempty"`
 	InstanceArrayID 		int  		`json:"instance_array_id,omitempty"`	
 	InfrastructureID        int 		`json:"infrastructure_id,omitempty"`
+
+	DriveArrayOperation     DriveArrayOperation `json:"drive_array_operation,omitempty"`
 }
 
 
