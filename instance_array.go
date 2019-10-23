@@ -53,11 +53,11 @@ type InstanceArrayOperation struct  {
 	ClusterRoleGroup 				string 		`json:"cluster_role_group,omitempty"`			
 	InstanceArrayChangeId			int 		`json:"instance_array_change_id,omitempty"`			
 	InstanceArrayFirewallManaged 	bool 		`json:"instance_array_firewall_managed,omitempty"`
-	InstanceArrayFirewallRules   []FirewallRule `json:"instance_array_firewall_rules,omitempty"`;
-	VolumeTemplateID 				int 		`json:"volume_template_id,omitempty"`;
+	InstanceArrayFirewallRules   []FirewallRule `json:"instance_array_firewall_rules,omitempty"`
+	VolumeTemplateID 				int 		`json:"volume_template_id,omitempty"`
 
-	InstanceArrayDeployType 		string 		`json:"instance_array_deploy_type,omitempty"`;
-	InstanceArrayChangeID 			int 		`json:"instance_array_change_id,omitempty"`;
+	InstanceArrayDeployType 		string 		`json:"instance_array_deploy_type,omitempty"`
+	InstanceArrayChangeID 			int 		`json:"instance_array_change_id,omitempty"`
 }
 
 type FirewallRule struct {

@@ -11,6 +11,20 @@ type DriveArray struct {
 	InstanceArrayID 		int  		`json:"instance_array_id,omitempty"`	
 }
 
+
+type DriveArrayOperation struct {
+	DriveArrayID 			int 		`json:"drive_array_id,omitempty"`
+	DriveArrayLabel  		string  	`json:"drive_array_label,omitempty"`
+	VolumeTemplateID  		int  		`json:"volume_template_id,omitempty"`
+	DriveArrayStorageType 	string  	`json:"drive_array_storage_type,omitempty"`
+	DriveSizeMBytesDefault 	int  		`json:"drive_size_mbytes_default,omitempty"`
+	InstanceArrayID 		int  		`json:"instance_array_id,omitempty"`	
+
+	DriveArrayDeployType 	string 		`json:"drive_array_deploy_type,omitempty"`
+	DriveArrayChangeID 		int 		`json:"drive_array_change_id,omitempty"`
+}
+
+
 func (c *MetalCloudClient) DriveArrays(infrastructureID int) (*map[string]DriveArray, error) {
 	res, err := c.rpcClient.Call(
 		"drive_arrays",
