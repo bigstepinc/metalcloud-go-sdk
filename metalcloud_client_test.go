@@ -55,7 +55,7 @@ func TestSignature(t *testing.T){
 
 	transport := &SignatureAdderRoundTripper{
 		APIKey:   "asdasdasd",
-		LogReply: false,
+		LoggingEnabled: false,
 		DryRun: false,
 	}
 
@@ -78,7 +78,7 @@ func TestEmptyListReply(t *testing.T){
 	
 	responseBody = `{"result": [],"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user","APIKey", httpServer.URL)
+	mc, err := GetMetalcloudClient("user","APIKey", httpServer.URL, false)
 	Expect(err).To(BeNil())
 
 	ret1,err1 := mc.InstanceArrays(100)
@@ -102,7 +102,7 @@ func TestInstanceArrayCreateOmitEmpty(t *testing.T){
 
 	responseBody = `{"result":{"instance_array_label":"test"},"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user","APIKey", httpServer.URL)
+	mc, err := GetMetalcloudClient("user","APIKey", httpServer.URL, false)
 	Expect(err).To(BeNil())
 	Expect(mc).NotTo(BeNil())
 

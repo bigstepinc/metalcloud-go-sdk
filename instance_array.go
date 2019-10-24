@@ -62,8 +62,8 @@ type InstanceArrayOperation struct  {
 
 type FirewallRule struct {
 	FirewallRuleDescription 				string 	`json:"firewall_rule_description,omitempty "`
-	FirewallRulePortRangeStart  			int 	`json:"firewall_rule_port_range_start,omitempty "`
-	FirewallRulePortRangeEnd  				int 	`json:"firewall_rule_port_range_end,omitempty "`
+	FirewallRulePortRangeStart  			int 	`json:"firewall_rule_port_range_start,omitempty"`
+	FirewallRulePortRangeEnd  				int 	`json:"firewall_rule_port_range_end,omitempty"`
 	FirewallRuleSourceIPAddressRangeStart 	string 	`json:"firewall_rule_source_ip_address_range_start,omitempty "`
 	FirewallRuleSourceIPAddressRangeEnd   	string 	`json:"firewall_rule_source_ip_address_range_end,omitempty "`
 	FirewallRuleProtocol 					string 	`json:"firewall_rule_protocol,omitempty "`

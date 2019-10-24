@@ -19,7 +19,7 @@ func DEFAULT_ENDPOINT() string {
 type SignatureAdderRoundTripper struct {
 	APIKey string
 	http.RoundTripper
-	LogReply bool
+	LoggingEnabled bool
 	DryRun bool
 }
 
@@ -43,7 +43,7 @@ func (c *SignatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 		message, _ = ioutil.ReadAll(req.Body)
 	}
 
-	if c.LogReply {
+	if c.LoggingEnabled {
 		log.Println(string(message))
 	}
 
@@ -78,7 +78,7 @@ func (c *SignatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 		resp, err = http.DefaultTransport.RoundTrip(req)
 	}
 
-	if c.LogReply {
+	if c.LoggingEnabled {
 		//log the reply
 		if resp.Body != nil {
 			message, _ = ioutil.ReadAll(resp.Body)
@@ -100,7 +100,7 @@ type MetalCloudClient struct {
 	endpoint  string
 }
 
-func GetMetalcloudClient(user string, apiKey string, endpoint string) (*MetalCloudClient, error) {
+func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEnabled bool) (*MetalCloudClient, error) {
 
 	if user == "" {
 		return nil, errors.New("user cannot be an empty string! It is typically in the form of user's email address.")
@@ -121,7 +121,7 @@ func GetMetalcloudClient(user string, apiKey string, endpoint string) (*MetalClo
 
 	transport := &SignatureAdderRoundTripper{
 		APIKey:   apiKey,
-		LogReply: false,
+		LoggingEnabled: loggingEnabled,
 	}
 
 	httpClient := &http.Client{
