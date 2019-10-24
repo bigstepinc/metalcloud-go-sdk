@@ -4,8 +4,8 @@ import "log"
 import "fmt"
 
 type InstanceArray struct  {
-	InstanceArrayID 				int 		`json:"instance_array_id, omitempty"`
-	InstanceArrayLabel 				string		`json:"instance_array_label, omitempty"`
+	InstanceArrayID 				int 		`json:"instance_array_id,omitempty"`
+	InstanceArrayLabel 				string		`json:"instance_array_label,omitempty"`
 	InstanceArraySubdomain 			string 		`json:"instance_array_subdomain,omitempty"`
 	InstanceArrayBootMethod			string 		`json:"instance_array_boot_method,omitempty"`
 	InstanceArrayInstanceCount  	int 		`json:"instance_array_instance_count,omitempty"`
@@ -16,7 +16,7 @@ type InstanceArray struct  {
 	InstanceArrayDiskCount 			int 		`json:"instance_array_disk_count,omitempty"`
 	InstanceArrayDiskSizeMBytes 	int     	`json:"instance_array_disk_size_mbytes,omitempty"`
 	InstanceArrayDiskTypes 			[]string 	`json:"instance_array_disk_types,omitempty"`
-	InfrastructureID				int 		`json:"infrastructure_id"`
+	InfrastructureID				int 		`json:"infrastructure_id,omitempty"`
 	InstanceArrayServiceStatus  	string 		`json:"instance_array_service_status,omitempty"`
 
 //	instance_array_interfaces = [];
@@ -24,16 +24,16 @@ type InstanceArray struct  {
 	ClusterID 						int 		`json:"cluster_id,omitempty"`			
 	ClusterRoleGroup 				string 		`json:"cluster_role_group,omitempty"`			
 	InstanceArrayFirewallManaged 	bool 		`json:"instance_array_firewall_managed,omitempty"`
-	InstanceArrayFirewallRules   	[]FirewallRule `json:"instance_array_firewall_rules,omitempty"`;
-	VolumeTemplateID 				int 		`json:"volume_template_id,omitempty"`;
+	InstanceArrayFirewallRules   	[]FirewallRule `json:"instance_array_firewall_rules,omitempty"`
+	VolumeTemplateID 				int 		`json:"volume_template_id,omitempty"`
 
-	InstanceArrayOperation 	InstanceArrayOperation `json:"instance_array_operation, omitempty"`			
+	InstanceArrayOperation 	*InstanceArrayOperation `json:"instance_array_operation,omitempty"`			
 }
 
 type InstanceArrayOperation struct  {
 	
-	InstanceArrayID 				int 		`json:"instance_array_id, omitempty"`
-	InstanceArrayLabel 				string		`json:"instance_array_label, omitempty"`
+	InstanceArrayID 				int 		`json:"instance_array_id,omitempty"`
+	InstanceArrayLabel 				string		`json:"instance_array_label,omitempty"`
 	InstanceArraySubdomain 			string 		`json:"instance_array_subdomain,omitempty"`
 	InstanceArrayBootMethod			string 		`json:"instance_array_boot_method,omitempty"`
 	InstanceArrayInstanceCount  	int 		`json:"instance_array_instance_count,omitempty"`
@@ -60,7 +60,7 @@ type InstanceArrayOperation struct  {
 }
 
 type FirewallRule struct {
-	FirewallRuleDescription 					string 	`json:"firewall_rule_description,omitempty "`
+	FirewallRuleDescription 					string 	`json:"firewall_rule_description,omitempty"`
 	FirewallRulePortRangeStart  				int 	`json:"firewall_rule_port_range_start,omitempty"`
 	FirewallRulePortRangeEnd  					int 	`json:"firewall_rule_port_range_end,omitempty"`
 	FirewallRuleSourceIPAddressRangeStart 		string 	`json:"firewall_rule_source_ip_address_range_start,omitempty"`
@@ -69,7 +69,7 @@ type FirewallRule struct {
 	FirewallRuleDestinationIPAddressRangeEnd   	string 	`json:"firewall_rule_destination_ip_address_range_end,omitempty"`
 	
 	FirewallRuleProtocol 						string 	`json:"firewall_rule_protocol,omitempty"`
-	FirewallRuleIPAddressType 			    	string 	`json:"firewall_rule_ip_address_type,omitempty `
+	FirewallRuleIPAddressType 			    	string 	`json:"firewall_rule_ip_address_type,omitempty"`
 	FirewallRuleEnabled 						bool   	`json:"firewall_rule_enabled,omitempty"`
 }
 

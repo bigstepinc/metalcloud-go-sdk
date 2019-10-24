@@ -11,7 +11,7 @@ type DriveArray struct {
 	InstanceArrayID 		int  		`json:"instance_array_id,omitempty"`	
 	InfrastructureID        int 		`json:"infrastructure_id,omitempty"`
 
-	DriveArrayOperation     DriveArrayOperation `json:"drive_array_operation,omitempty"`
+	DriveArrayOperation     *DriveArrayOperation `json:"drive_array_operation,omitempty"`
 }
 
 

@@ -132,4 +132,30 @@ func TestInstanceArrayCreateOmitEmpty(t *testing.T){
 
 }
 
+func testEmptyObjMarshalingToBeEmpty(obj interface{}){
+	s, err:= json.MarshalIndent(obj, "", "\t")
+	Expect(err).To(BeNil())
+	Expect(string(s)).To(Equal("{}"))
+}
+
+func TestResourcesOmitEmptyMarshaling(t *testing.T){
+	RegisterTestingT(t)
+
+	obj := FirewallRule{}
+	testEmptyObjMarshalingToBeEmpty(obj)
+
+	obj2 := InstanceArray{}
+	testEmptyObjMarshalingToBeEmpty(obj2)
+
+	obj3 := InstanceArrayOperation{}
+	testEmptyObjMarshalingToBeEmpty(obj3)
+
+	obj4 := DriveArray{}
+	testEmptyObjMarshalingToBeEmpty(obj4)
+	
+	obj5 := DriveArrayOperation{}
+	testEmptyObjMarshalingToBeEmpty(obj5)
+		
+}
+
 
