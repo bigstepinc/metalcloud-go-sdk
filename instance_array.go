@@ -63,11 +63,11 @@ type FirewallRule struct {
 	FirewallRuleDescription 				string 	`json:"firewall_rule_description,omitempty "`
 	FirewallRulePortRangeStart  			int 	`json:"firewall_rule_port_range_start,omitempty"`
 	FirewallRulePortRangeEnd  				int 	`json:"firewall_rule_port_range_end,omitempty"`
-	FirewallRuleSourceIPAddressRangeStart 	string 	`json:"firewall_rule_source_ip_address_range_start,omitempty "`
-	FirewallRuleSourceIPAddressRangeEnd   	string 	`json:"firewall_rule_source_ip_address_range_end,omitempty "`
-	FirewallRuleProtocol 					string 	`json:"firewall_rule_protocol,omitempty "`
-	FirewallRuleIPAddressType 			    string 	`json:"firewall_rule_ip_address_type,omitempty "`
-	FirewallRuleEnabled 					bool   	`json:"firewall_rule_enabled,omitempty "`
+	FirewallRuleSourceIPAddressRangeStart 	string 	`json:"firewall_rule_source_ip_address_range_start,omitempty"`
+	FirewallRuleSourceIPAddressRangeEnd   	string 	`json:"firewall_rule_source_ip_address_range_end,omitempty"`
+	FirewallRuleProtocol 					string 	`json:"firewall_rule_protocol,omitempty"`
+	FirewallRuleIPAddressType 			    string 	`json:"firewall_rule_ip_address_type,omitempty `
+	FirewallRuleEnabled 					bool   	`json:"firewall_rule_enabled,omitempty"`
 }
 
 func (c *MetalCloudClient) InstanceArrayGet(instanceArrayID int) (*InstanceArray, error) {
