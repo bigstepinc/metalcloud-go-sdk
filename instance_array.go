@@ -44,7 +44,6 @@ type InstanceArrayOperation struct  {
 	InstanceArrayDiskCount 			int 		`json:"instance_array_disk_count,omitempty"`
 	InstanceArrayDiskSizeMBytes 	int     	`json:"instance_array_disk_size_mbytes,omitempty"`
 	InstanceArrayDiskTypes 			[]string 	`json:"instance_array_disk_types,omitempty"`
-	InfrastructureID				int 		`json:"infrastructure_id"`
 	InstanceArrayServiceStatus  	string 		`json:"instance_array_service_status,omitempty"`
 
 //	instance_array_interfaces = [];
