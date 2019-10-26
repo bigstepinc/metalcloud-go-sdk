@@ -4,7 +4,7 @@ import "log"
 import "fmt"
 
 type InstanceArray struct  {
-	InstanceArrayID 				string 		`json:"instance_array_id,omitempty"`
+	InstanceArrayID 				int 		`json:"instance_array_id,omitempty"`
 	InstanceArrayLabel 				string		`json:"instance_array_label,omitempty"`
 	InstanceArraySubdomain 			string 		`json:"instance_array_subdomain,omitempty"`
 	InstanceArrayBootMethod			string 		`json:"instance_array_boot_method,omitempty"`
@@ -32,7 +32,7 @@ type InstanceArray struct  {
 
 type InstanceArrayOperation struct  {
 	
-	InstanceArrayID 				string 		`json:"instance_array_id,omitempty"`
+	InstanceArrayID 				int 		`json:"instance_array_id,omitempty"`
 	InstanceArrayLabel 				string		`json:"instance_array_label,omitempty"`
 	InstanceArraySubdomain 			string 		`json:"instance_array_subdomain,omitempty"`
 	InstanceArrayBootMethod			string 		`json:"instance_array_boot_method,omitempty"`

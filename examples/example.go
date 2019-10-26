@@ -15,7 +15,7 @@ func main(){
     log.Fatal("METALCLOUD_USER, METALCLOUD_API_KEY, METALCLOUD_ENDPOINT environment variables must be set")
   }
 
-  client, err := metalcloud.GetMetalcloudClient(user, apiKey, endpoint)
+  client, err := metalcloud.GetMetalcloudClient(user, apiKey, endpoint,true)
   if err != nil {
     log.Fatal("Error initiating client: ", err)
   }
