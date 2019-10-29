@@ -104,3 +104,17 @@ func (c *MetalCloudClient) DriveArrayEdit(driveArrayID int, driveArrayOperation 
 
 	return &created_object, nil
 }
+
+func (c *MetalCloudClient) DriveArrayDelete(driveArrayID int) (error) {
+
+	_,err := c.rpcClient.Call(
+		"drive_array_delete",
+		driveArrayID)
+
+	if err != nil {
+		log.Printf("%s", err)
+		return err
+	}
+
+	return nil
+}

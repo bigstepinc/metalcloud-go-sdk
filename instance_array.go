@@ -153,3 +153,17 @@ func (c *MetalCloudClient) InstanceArrayEdit(instanceArrayID int, instanceArrayO
 
 	return &created_object, nil
 }
+
+func (c *MetalCloudClient) InstanceArrayDelete(instanceArrayID int) (error) {
+
+	_,err := c.rpcClient.Call(
+		"instance_array_delete",
+		instanceArrayID)
+
+	if err != nil {
+		log.Printf("%s", err)
+		return err
+	}
+
+	return nil
+}
