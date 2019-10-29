@@ -1,29 +1,83 @@
 package metalcloud
 
-import "github.com/ybbus/jsonrpc"
-import "net/http"
-import "net/url"
-import "crypto/hmac"
-import "crypto/md5"
-import "encoding/hex"
-import "io/ioutil"
-import "bytes"
-import "log"
-import "strings"
-import "errors"
+import (
+	"bytes"
+	"crypto/hmac"
+	"crypto/md5"
+	"encoding/hex"
+	"errors"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"net/url"
+	"strings"
 
-func DEFAULT_ENDPOINT() string {
+	"github.com/ybbus/jsonrpc"
+)
+
+//DefaultEndpoint returns the default Bigstep Metalcloud endpoint
+func DefaultEndpoint() string {
 	return "https://api.bigstep.com/metal-cloud"
 }
 
-type SignatureAdderRoundTripper struct {
+//Client sruct defines a metalcloud client
+type Client struct {
+	rpcClient jsonrpc.RPCClient
+	user      string
+	apiKey    string
+	endpoint  string
+}
+
+//GetMetalcloudClient returns a metal cloud client
+func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEnabled bool) (*Client, error) {
+
+	if user == "" {
+		return nil, errors.New("user cannot be an empty string! It is typically in the form of user's email address")
+	}
+
+	if apiKey == "" {
+		return nil, errors.New("apiKey cannot be empty string")
+	}
+
+	if endpoint == "" {
+		return nil, errors.New("endpoint cannot be an empty string! It is typically in the form of user's email address")
+	}
+
+	_, err := url.ParseRequestURI(endpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	transport := &signatureAdderRoundTripper{
+		APIKey:         apiKey,
+		LoggingEnabled: loggingEnabled,
+	}
+
+	httpClient := &http.Client{
+		Transport: transport,
+	}
+
+	rpcClient := jsonrpc.NewClientWithOpts(endpoint, &jsonrpc.RPCClientOpts{
+		HTTPClient: httpClient,
+	})
+
+	return &Client{
+		rpcClient: rpcClient,
+		user:      user,
+		apiKey:    apiKey,
+		endpoint:  endpoint,
+	}, nil
+
+}
+
+type signatureAdderRoundTripper struct {
 	APIKey string
 	http.RoundTripper
 	LoggingEnabled bool
-	DryRun bool
+	DryRun         bool
 }
 
-func (c *SignatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 
 	components := strings.Split(c.APIKey, ":")
 
@@ -91,52 +145,4 @@ func (c *SignatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 	}
 
 	return resp, err
-}
-
-type MetalCloudClient struct {
-	rpcClient jsonrpc.RPCClient
-	user      string
-	apiKey    string
-	endpoint  string
-}
-
-func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEnabled bool) (*MetalCloudClient, error) {
-
-	if user == "" {
-		return nil, errors.New("user cannot be an empty string! It is typically in the form of user's email address.")
-	}
-
-	if apiKey == "" {
-		return nil, errors.New("apiKey cannot be empty string!")
-	}
-
-	if endpoint == "" {
-		return nil, errors.New("endpoint cannot be an empty string! It is typically in the form of user's email address.")
-	}
-
-	_, err := url.ParseRequestURI(endpoint)
-	if err != nil {
-		return nil, err
-	}
-
-	transport := &SignatureAdderRoundTripper{
-		APIKey:   apiKey,
-		LoggingEnabled: loggingEnabled,
-	}
-
-	httpClient := &http.Client{
-		Transport: transport,
-	}
-
-	rpcClient := jsonrpc.NewClientWithOpts(endpoint, &jsonrpc.RPCClientOpts{
-		HTTPClient: httpClient,
-	})
-
-	return &MetalCloudClient{
-		rpcClient: rpcClient,
-		user:      user,
-		apiKey:    apiKey,
-		endpoint:  endpoint,
-	}, nil
-
 }

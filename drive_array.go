@@ -2,38 +2,39 @@ package metalcloud
 
 import "log"
 
+//DriveArray represents a collection of identical drives
 type DriveArray struct {
-	DriveArrayID 			int 		`json:"drive_array_id,omitempty"`
-	DriveArrayLabel  		string  	`json:"drive_array_label,omitempty"`
-	VolumeTemplateID  		int  		`json:"volume_template_id,omitempty"`
-	DriveArrayStorageType 	string  	`json:"drive_array_storage_type,omitempty"`
-	DriveSizeMBytesDefault 	int  		`json:"drive_size_mbytes_default,omitempty"`
-	InstanceArrayID 		int  		`json:"instance_array_id,omitempty"`	
-	InfrastructureID        int 		`json:"infrastructure_id,omitempty"`
+	DriveArrayID           int    `json:"drive_array_id,omitempty"`
+	DriveArrayLabel        string `json:"drive_array_label,omitempty"`
+	VolumeTemplateID       int    `json:"volume_template_id,omitempty"`
+	DriveArrayStorageType  string `json:"drive_array_storage_type,omitempty"`
+	DriveSizeMBytesDefault int    `json:"drive_size_mbytes_default,omitempty"`
+	InstanceArrayID        int    `json:"instance_array_id,omitempty"`
+	InfrastructureID       int    `json:"infrastructure_id,omitempty"`
 
-	DriveArrayOperation     *DriveArrayOperation `json:"drive_array_operation,omitempty"`
+	DriveArrayOperation *DriveArrayOperation `json:"drive_array_operation,omitempty"`
 }
 
-
+//DriveArrayOperation defines changes to be applied to a DriveArray
 type DriveArrayOperation struct {
-	DriveArrayID 			int 		`json:"drive_array_id,omitempty"`
-	DriveArrayLabel  		string  	`json:"drive_array_label,omitempty"`
-	VolumeTemplateID  		int  		`json:"volume_template_id,omitempty"`
-	DriveArrayStorageType 	string  	`json:"drive_array_storage_type,omitempty"`
-	DriveSizeMBytesDefault 	int  		`json:"drive_size_mbytes_default,omitempty"`
-	InstanceArrayID 		int  		`json:"instance_array_id,omitempty"`	
-	InfrastructureID        int 		`json:"infrastructure_id,omitempty"`
+	DriveArrayID           int    `json:"drive_array_id,omitempty"`
+	DriveArrayLabel        string `json:"drive_array_label,omitempty"`
+	VolumeTemplateID       int    `json:"volume_template_id,omitempty"`
+	DriveArrayStorageType  string `json:"drive_array_storage_type,omitempty"`
+	DriveSizeMBytesDefault int    `json:"drive_size_mbytes_default,omitempty"`
+	InstanceArrayID        int    `json:"instance_array_id,omitempty"`
+	InfrastructureID       int    `json:"infrastructure_id,omitempty"`
 
-	DriveArrayDeployType 	string 		`json:"drive_array_deploy_type,omitempty"`
-	DriveArrayChangeID 		int 		`json:"drive_array_change_id,omitempty"`
+	DriveArrayDeployType string `json:"drive_array_deploy_type,omitempty"`
+	DriveArrayChangeID   int    `json:"drive_array_change_id,omitempty"`
 }
 
-
-func (c *MetalCloudClient) DriveArrays(infrastructureID int) (*map[string]DriveArray, error) {
+//DriveArrays retrieves the list of drives arrays of an infrastructure
+func (c *Client) DriveArrays(infrastructureID int) (*map[string]DriveArray, error) {
 	res, err := c.rpcClient.Call(
 		"drive_arrays",
 		infrastructureID)
-	
+
 	if err != nil {
 		return nil, err
 	}
@@ -44,21 +45,22 @@ func (c *MetalCloudClient) DriveArrays(infrastructureID int) (*map[string]DriveA
 		return &m, nil
 	}
 
-	var created_object map[string]DriveArray
-	
-	err2 := res.GetObject(&created_object)
+	var createdObject map[string]DriveArray
+
+	err2 := res.GetObject(&createdObject)
 	if err2 != nil {
-			return nil, err2
+		return nil, err2
 	}
 
-	return &created_object, nil
+	return &createdObject, nil
 }
 
-func (c *MetalCloudClient) DriveArrayGet(driveArrayID int) (*DriveArray, error) {
-	var created_object DriveArray
+//DriveArrayGet retrieves a DriveArray object with specified ids
+func (c *Client) DriveArrayGet(driveArrayID int) (*DriveArray, error) {
+	var createdObject DriveArray
 
 	err := c.rpcClient.CallFor(
-		&created_object,
+		&createdObject,
 		"drive_array_get",
 		driveArrayID)
 
@@ -67,14 +69,15 @@ func (c *MetalCloudClient) DriveArrayGet(driveArrayID int) (*DriveArray, error) 
 		return nil, err
 	}
 
-	return &created_object, nil
+	return &createdObject, nil
 }
 
-func (c *MetalCloudClient) DriveArrayCreate(infrastructureID int, driveArray DriveArray) (*DriveArray, error) {
-	var created_object DriveArray
+//DriveArrayCreate creates a drive array. Requires deploy.
+func (c *Client) DriveArrayCreate(infrastructureID int, driveArray DriveArray) (*DriveArray, error) {
+	var createdObject DriveArray
 
 	err := c.rpcClient.CallFor(
-		&created_object,
+		&createdObject,
 		"drive_array_create",
 		infrastructureID,
 		driveArray)
@@ -84,15 +87,15 @@ func (c *MetalCloudClient) DriveArrayCreate(infrastructureID int, driveArray Dri
 		return nil, err
 	}
 
-	return &created_object, nil
+	return &createdObject, nil
 }
 
-
-func (c *MetalCloudClient) DriveArrayEdit(driveArrayID int, driveArrayOperation DriveArrayOperation) (*DriveArray, error) {
-	var created_object DriveArray
+//DriveArrayEdit alters a deployed drive array. Requires deploy.
+func (c *Client) DriveArrayEdit(driveArrayID int, driveArrayOperation DriveArrayOperation) (*DriveArray, error) {
+	var createdObject DriveArray
 
 	err := c.rpcClient.CallFor(
-		&created_object,
+		&createdObject,
 		"drive_array_edit",
 		driveArrayID,
 		driveArrayOperation)
@@ -102,12 +105,13 @@ func (c *MetalCloudClient) DriveArrayEdit(driveArrayID int, driveArrayOperation 
 		return nil, err
 	}
 
-	return &created_object, nil
+	return &createdObject, nil
 }
 
-func (c *MetalCloudClient) DriveArrayDelete(driveArrayID int) (error) {
+//DriveArrayDelete deletes a Drive Array with specified id
+func (c *Client) DriveArrayDelete(driveArrayID int) error {
 
-	_,err := c.rpcClient.Call(
+	_, err := c.rpcClient.Call(
 		"drive_array_delete",
 		driveArrayID)
 

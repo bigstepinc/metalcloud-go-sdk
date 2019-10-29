@@ -1,17 +1,17 @@
 package metalcloud
 
 import (
-	. "github.com/onsi/gomega"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"testing"
 	"strings"
-	"encoding/json"
-)
+	"testing"
 
+	. "github.com/onsi/gomega"
+)
 
 // needed to retrieve requests that arrived at httpServer for further investigation
 var requestChan = make(chan *RequestData, 1)
@@ -31,7 +31,7 @@ var httpServer *httptest.Server
 func TestMain(m *testing.M) {
 	httpServer = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		data, _ := ioutil.ReadAll(r.Body)
-		
+
 		defer r.Body.Close()
 		// put request and body to channel for the client to investigate them
 		requestChan <- &RequestData{r, string(data)}
@@ -43,66 +43,60 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-
-func TestSignature(t *testing.T){
+func TestSignature(t *testing.T) {
 	RegisterTestingT(t)
 
 	content := strings.NewReader("asldklk234mlk234asd")
-	
-	request,err := http.NewRequest("GET", httpServer.URL, content)
+
+	request, err := http.NewRequest("GET", httpServer.URL, content)
 	Expect(request).NotTo(BeNil())
 	Expect(err).To(BeNil())
 
-	transport := &SignatureAdderRoundTripper{
-		APIKey:   "asdasdasd",
+	transport := &signatureAdderRoundTripper{
+		APIKey:         "asdasdasd",
 		LoggingEnabled: false,
-		DryRun: false,
+		DryRun:         false,
 	}
 
 	_, err = transport.RoundTrip(request)
 	Expect(err).To(BeNil())
 
 	requestWithSignature := (<-requestChan).request
-	
-	gotSignature	  := (requestWithSignature.URL).Query().Get("verify")
-	expectedSignature := "b8287028c41c7dee8e6f0479ff05dd71"
 
+	gotSignature := (requestWithSignature.URL).Query().Get("verify")
+	expectedSignature := "b8287028c41c7dee8e6f0479ff05dd71"
 
 	Expect(gotSignature).To(Equal(expectedSignature))
 }
 
-
-func TestEmptyListReply(t *testing.T){
+func TestEmptyListReply(t *testing.T) {
 
 	RegisterTestingT(t)
-	
+
 	responseBody = `{"result": [],"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user","APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
 	Expect(err).To(BeNil())
 
-	ret1,err1 := mc.InstanceArrays(100)
+	ret1, err1 := mc.InstanceArrays(100)
 	Expect(err1).To(BeNil())
 	Expect(ret1).NotTo(BeNil())
 
 	<-requestChan
 
-	ret2,err2 := mc.Infrastructures()
+	ret2, err2 := mc.Infrastructures()
 	Expect(err2).To(BeNil())
 	Expect(ret2).NotTo(BeNil())
 
-
-
 }
 
-
-func TestInstanceArrayCreateOmitEmpty(t *testing.T){
+func TestInstanceArrayCreateOmitEmpty(t *testing.T) {
 
 	RegisterTestingT(t)
 
 	responseBody = `{"result":{"instance_array_label":"test"},"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user","APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
 	Expect(err).To(BeNil())
 	Expect(mc).NotTo(BeNil())
 
@@ -112,12 +106,12 @@ func TestInstanceArrayCreateOmitEmpty(t *testing.T){
 
 	<-requestChan
 
-	ret1,err1 := mc.InstanceArrayCreate(100, instanceArray)
+	ret1, err1 := mc.InstanceArrayCreate(100, instanceArray)
 	Expect(err1).To(BeNil())
 	Expect(ret1).NotTo(BeNil())
 
 	body := (<-requestChan).body
-	
+
 	//fmt.Printf("body=%s\n", body)
 
 	var m map[string]interface{}
@@ -126,19 +120,19 @@ func TestInstanceArrayCreateOmitEmpty(t *testing.T){
 	Expect(m).NotTo(BeNil())
 
 	param := m["params"].([]interface{})[1].(map[string]interface{})
-	
+
 	Expect(param["instance_array_label"]).To(Equal("test"))
 	Expect(param["volume_template_id"]).To(BeNil())
 
 }
 
-func testEmptyObjMarshalingToBeEmpty(obj interface{}){
-	s, err:= json.MarshalIndent(obj, "", "\t")
+func testEmptyObjMarshalingToBeEmpty(obj interface{}) {
+	s, err := json.MarshalIndent(obj, "", "\t")
 	Expect(err).To(BeNil())
 	Expect(string(s)).To(Equal("{}"))
 }
 
-func TestResourcesOmitEmptyMarshaling(t *testing.T){
+func TestResourcesOmitEmptyMarshaling(t *testing.T) {
 	RegisterTestingT(t)
 
 	obj := FirewallRule{}
@@ -152,10 +146,8 @@ func TestResourcesOmitEmptyMarshaling(t *testing.T){
 
 	obj4 := DriveArray{}
 	testEmptyObjMarshalingToBeEmpty(obj4)
-	
+
 	obj5 := DriveArrayOperation{}
 	testEmptyObjMarshalingToBeEmpty(obj5)
-		
+
 }
-
-
