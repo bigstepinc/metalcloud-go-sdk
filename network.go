@@ -7,9 +7,9 @@ import (
 
 //Network object describes an high level connection construct
 type Network struct {
+	NetworkID                 int    `json:"network_id,omitempty"`
 	NetworkLabel              string `json:"network_label,omitempty"`
 	NetworkSubdomain          string `json:"network_subdomain,omitempty"`
-	NetworkID                 string `json:"network_id,omitempty"`
 	NetworkType               string `json:"network_type,omitempty"`
 	InfrastructureID          int    `json:"infrastructure_id,omitempty"`
 	NetworkServiceStatus      string `json:"network_service_status,omitempty"`
@@ -23,9 +23,9 @@ type Network struct {
 
 //NetworkOperation object describes the change(s) required to be applied to a Network
 type NetworkOperation struct {
+	NetworkID               int    `json:"network_id,omitempty"`
 	NetworkLabel            string `json:"network_label,omitempty"`
 	NetworkSubdomain        string `json:"network_subdomain,omitempty"`
-	NetworkID               string `json:"network_id,omitempty"`
 	NetworkType             string `json:"network_type,omitempty"`
 	InfrastructureID        int    `json:"infrastructure_id,omitempty"`
 	NetworkServiceStatus    string `json:"network_service_status,omitempty"`
