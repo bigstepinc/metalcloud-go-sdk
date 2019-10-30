@@ -32,7 +32,7 @@ type NetworkOperation struct {
 	NetworkUpdatedTimestamp   string `json:"network_updated_timestamp,omitempty"`
 	NetworkLANAutoAllocateIPs bool   `json:"network_lan_autoallocate_ips,omitempty"`
 	NetworkDeployType         string `json:"network_deploy_type,omitempty"`
-	NetworkChangeID           string `json:"network_change_id,omitempty"`
+	NetworkChangeID           int    `json:"network_change_id,omitempty"`
 }
 
 //NetworkGet retrieves a network object
