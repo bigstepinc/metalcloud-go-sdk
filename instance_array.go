@@ -48,7 +48,7 @@ type InstanceArrayOperation struct {
 	InstanceArrayDiskTypes          []string `json:"instance_array_disk_types,omitempty"`
 	InstanceArrayServiceStatus      string   `json:"instance_array_service_status,omitempty"`
 
-	//	instance_array_interfaces = [];
+	InstanceArrayInterfaces []InstanceArrayInterface `json:"instance_array_interfaces,omitempty"`
 
 	ClusterID        int    `json:"cluster_id,omitempty"`
 	ClusterRoleGroup string `json:"cluster_role_group,omitempty"`
