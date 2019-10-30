@@ -7,6 +7,21 @@ import (
 
 //Network object describes an high level connection construct
 type Network struct {
+	NetworkID                 int               `json:"network_id,omitempty"`
+	NetworkLabel              string            `json:"network_label,omitempty"`
+	NetworkSubdomain          string            `json:"network_subdomain,omitempty"`
+	NetworkType               string            `json:"network_type,omitempty"`
+	InfrastructureID          int               `json:"infrastructure_id,omitempty"`
+	NetworkServiceStatus      string            `json:"network_service_status,omitempty"`
+	NetworkCreatedTimestamp   string            `json:"network_created_timestamp,omitempty"`
+	NetworkUpdatedTimestamp   string            `json:"network_updated_timestamp,omitempty"`
+	NetworkSuspendStatus      string            `json:"network_suspend_status,omitempty"`
+	NetworkLANAutoAllocateIPs bool              `json:"network_lan_autoallocate_ips,omitempty"`
+	NetworkOperation          *NetworkOperation `json:"network_operation,omitempty"`
+}
+
+//NetworkOperation object describes the change(s) required to be applied to a Network
+type NetworkOperation struct {
 	NetworkID                 int    `json:"network_id,omitempty"`
 	NetworkLabel              string `json:"network_label,omitempty"`
 	NetworkSubdomain          string `json:"network_subdomain,omitempty"`
@@ -15,27 +30,9 @@ type Network struct {
 	NetworkServiceStatus      string `json:"network_service_status,omitempty"`
 	NetworkCreatedTimestamp   string `json:"network_created_timestamp,omitempty"`
 	NetworkUpdatedTimestamp   string `json:"network_updated_timestamp,omitempty"`
-	NetworkSuspendStatus      string `json:"network_suspend_status,omitempty"`
 	NetworkLANAutoAllocateIPs bool   `json:"network_lan_autoallocate_ips,omitempty"`
-
-	NetworkOperation *NetworkOperation `json:"network_operation,omitempty"`
-}
-
-//NetworkOperation object describes the change(s) required to be applied to a Network
-type NetworkOperation struct {
-	NetworkID               int    `json:"network_id,omitempty"`
-	NetworkLabel            string `json:"network_label,omitempty"`
-	NetworkSubdomain        string `json:"network_subdomain,omitempty"`
-	NetworkType             string `json:"network_type,omitempty"`
-	InfrastructureID        int    `json:"infrastructure_id,omitempty"`
-	NetworkServiceStatus    string `json:"network_service_status,omitempty"`
-	NetworkCreatedTimestamp string `json:"network_created_timestamp,omitempty"`
-	NetworkUpdatedTimestamp string `json:"network_updated_timestamp,omitempty"`
-
-	NetworkLANAutoAllocateIPs bool `json:"network_lan_autoallocate_ips,omitempty"`
-
-	NetworkDeployType string `json:"network_deploy_type,omitempty"`
-	NetworkChangeID   string `json:"network_change_id,omitempty"`
+	NetworkDeployType         string `json:"network_deploy_type,omitempty"`
+	NetworkChangeID           string `json:"network_change_id,omitempty"`
 }
 
 //NetworkGet retrieves a network object
