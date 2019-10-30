@@ -7,22 +7,21 @@ import (
 
 //InstanceArray object describes a collection of identical instances
 type InstanceArray struct {
-	InstanceArrayID                 int      `json:"instance_array_id,omitempty"`
-	InstanceArrayLabel              string   `json:"instance_array_label,omitempty"`
-	InstanceArraySubdomain          string   `json:"instance_array_subdomain,omitempty"`
-	InstanceArrayBootMethod         string   `json:"instance_array_boot_method,omitempty"`
-	InstanceArrayInstanceCount      int      `json:"instance_array_instance_count,omitempty"`
-	InstanceArrayRAMGbytes          int      `json:"instance_array_ram_gbytes,omitempty"`
-	InstanceArrayProcessorCount     int      `json:"instance_array_processor_count,omitempty"`
-	InstanceArrayProcessorCoreMHZ   int      `json:"instance_array_processor_core_mhz,omitempty"`
-	InstanceArrayProcessorCoreCount int      `json:"instance_array_processor_core_count,omitempty"`
-	InstanceArrayDiskCount          int      `json:"instance_array_disk_count,omitempty"`
-	InstanceArrayDiskSizeMBytes     int      `json:"instance_array_disk_size_mbytes,omitempty"`
-	InstanceArrayDiskTypes          []string `json:"instance_array_disk_types,omitempty"`
-	InfrastructureID                int      `json:"infrastructure_id,omitempty"`
-	InstanceArrayServiceStatus      string   `json:"instance_array_service_status,omitempty"`
-
-	//	instance_array_interfaces = [];
+	InstanceArrayID                 int                      `json:"instance_array_id,omitempty"`
+	InstanceArrayLabel              string                   `json:"instance_array_label,omitempty"`
+	InstanceArraySubdomain          string                   `json:"instance_array_subdomain,omitempty"`
+	InstanceArrayBootMethod         string                   `json:"instance_array_boot_method,omitempty"`
+	InstanceArrayInstanceCount      int                      `json:"instance_array_instance_count,omitempty"`
+	InstanceArrayRAMGbytes          int                      `json:"instance_array_ram_gbytes,omitempty"`
+	InstanceArrayProcessorCount     int                      `json:"instance_array_processor_count,omitempty"`
+	InstanceArrayProcessorCoreMHZ   int                      `json:"instance_array_processor_core_mhz,omitempty"`
+	InstanceArrayProcessorCoreCount int                      `json:"instance_array_processor_core_count,omitempty"`
+	InstanceArrayDiskCount          int                      `json:"instance_array_disk_count,omitempty"`
+	InstanceArrayDiskSizeMBytes     int                      `json:"instance_array_disk_size_mbytes,omitempty"`
+	InstanceArrayDiskTypes          []string                 `json:"instance_array_disk_types,omitempty"`
+	InfrastructureID                int                      `json:"infrastructure_id,omitempty"`
+	InstanceArrayServiceStatus      string                   `json:"instance_array_service_status,omitempty"`
+	InstanceArrayInterfaces         []InstanceArrayInterface `json:"instance_array_interfaces,omitempty"`
 
 	ClusterID                    int            `json:"cluster_id,omitempty"`
 	ClusterRoleGroup             string         `json:"cluster_role_group,omitempty"`
