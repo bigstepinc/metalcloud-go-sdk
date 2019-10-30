@@ -32,27 +32,27 @@ type InstanceArray struct {
 
 //InstanceArrayOperation object describes the changes that will be applied to an instance array
 type InstanceArrayOperation struct {
-	InstanceArrayID                 int                      `json:"instance_array_id,omitempty"`
-	InstanceArrayLabel              string                   `json:"instance_array_label,omitempty"`
-	InstanceArraySubdomain          string                   `json:"instance_array_subdomain,omitempty"`
-	InstanceArrayBootMethod         string                   `json:"instance_array_boot_method,omitempty"`
-	InstanceArrayInstanceCount      int                      `json:"instance_array_instance_count,omitempty"`
-	InstanceArrayRAMGbytes          int                      `json:"instance_array_ram_gbytes,omitempty"`
-	InstanceArrayProcessorCount     int                      `json:"instance_array_processor_count,omitempty"`
-	InstanceArrayProcessorCoreMHZ   int                      `json:"instance_array_processor_core_mhz,omitempty"`
-	InstanceArrayProcessorCoreCount int                      `json:"instance_array_processor_core_count,omitempty"`
-	InstanceArrayDiskCount          int                      `json:"instance_array_disk_count,omitempty"`
-	InstanceArrayDiskSizeMBytes     int                      `json:"instance_array_disk_size_mbytes,omitempty"`
-	InstanceArrayDiskTypes          []string                 `json:"instance_array_disk_types,omitempty"`
-	InstanceArrayServiceStatus      string                   `json:"instance_array_service_status,omitempty"`
-	InstanceArrayInterfaces         []InstanceArrayInterface `json:"instance_array_interfaces,omitempty"`
-	ClusterID                       int                      `json:"cluster_id,omitempty"`
-	ClusterRoleGroup                string                   `json:"cluster_role_group,omitempty"`
-	InstanceArrayFirewallManaged    bool                     `json:"instance_array_firewall_managed,omitempty"`
-	InstanceArrayFirewallRules      []FirewallRule           `json:"instance_array_firewall_rules,omitempty"`
-	VolumeTemplateID                int                      `json:"volume_template_id,omitempty"`
-	InstanceArrayDeployType         string                   `json:"instance_array_deploy_type,omitempty"`
-	InstanceArrayChangeID           int                      `json:"instance_array_change_id,omitempty"`
+	InstanceArrayID                 int                               `json:"instance_array_id,omitempty"`
+	InstanceArrayLabel              string                            `json:"instance_array_label,omitempty"`
+	InstanceArraySubdomain          string                            `json:"instance_array_subdomain,omitempty"`
+	InstanceArrayBootMethod         string                            `json:"instance_array_boot_method,omitempty"`
+	InstanceArrayInstanceCount      int                               `json:"instance_array_instance_count,omitempty"`
+	InstanceArrayRAMGbytes          int                               `json:"instance_array_ram_gbytes,omitempty"`
+	InstanceArrayProcessorCount     int                               `json:"instance_array_processor_count,omitempty"`
+	InstanceArrayProcessorCoreMHZ   int                               `json:"instance_array_processor_core_mhz,omitempty"`
+	InstanceArrayProcessorCoreCount int                               `json:"instance_array_processor_core_count,omitempty"`
+	InstanceArrayDiskCount          int                               `json:"instance_array_disk_count,omitempty"`
+	InstanceArrayDiskSizeMBytes     int                               `json:"instance_array_disk_size_mbytes,omitempty"`
+	InstanceArrayDiskTypes          []string                          `json:"instance_array_disk_types,omitempty"`
+	InstanceArrayServiceStatus      string                            `json:"instance_array_service_status,omitempty"`
+	InstanceArrayInterfaces         []InstanceArrayInterfaceOperation `json:"instance_array_interfaces,omitempty"`
+	ClusterID                       int                               `json:"cluster_id,omitempty"`
+	ClusterRoleGroup                string                            `json:"cluster_role_group,omitempty"`
+	InstanceArrayFirewallManaged    bool                              `json:"instance_array_firewall_managed,omitempty"`
+	InstanceArrayFirewallRules      []FirewallRule                    `json:"instance_array_firewall_rules,omitempty"`
+	VolumeTemplateID                int                               `json:"volume_template_id,omitempty"`
+	InstanceArrayDeployType         string                            `json:"instance_array_deploy_type,omitempty"`
+	InstanceArrayChangeID           int                               `json:"instance_array_change_id,omitempty"`
 }
 
 //FirewallRule describes a firewall rule that is to be applied on all instances of an array
