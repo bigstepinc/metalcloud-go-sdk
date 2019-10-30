@@ -97,7 +97,7 @@ type InstanceArrayInterfaceOperation struct {
 	InstanceArrayInterfaceServiceStatus    string        `json:"instance_array_interface_service_status,omitempty"`
 	InstanceArrayInterfaceCreatedTimestamp string        `json:"instance_array_interface_created_timestamp,omitempty"`
 	InstanceArrayInterfaceUpdatedTimestamp string        `json:"instance_array_interface_updated_timestamp,omitempty"`
-	NetworkChangeID                        int           `json:"network_change_id,omitempty"`
+	InstanceArrayInterfaceChangeID         int           `json:"instance_array_interface_change_id,omitempty"`
 }
 
 //InstanceArrayGet returns an InstanceArray with specified id
