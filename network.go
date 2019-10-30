@@ -12,10 +12,8 @@ type Network struct {
 	NetworkSubdomain          string            `json:"network_subdomain,omitempty"`
 	NetworkType               string            `json:"network_type,omitempty"`
 	InfrastructureID          int               `json:"infrastructure_id,omitempty"`
-	NetworkServiceStatus      string            `json:"network_service_status,omitempty"`
 	NetworkCreatedTimestamp   string            `json:"network_created_timestamp,omitempty"`
 	NetworkUpdatedTimestamp   string            `json:"network_updated_timestamp,omitempty"`
-	NetworkSuspendStatus      string            `json:"network_suspend_status,omitempty"`
 	NetworkLANAutoAllocateIPs bool              `json:"network_lan_autoallocate_ips,omitempty"`
 	NetworkOperation          *NetworkOperation `json:"network_operation,omitempty"`
 }
@@ -27,9 +25,6 @@ type NetworkOperation struct {
 	NetworkSubdomain          string `json:"network_subdomain,omitempty"`
 	NetworkType               string `json:"network_type,omitempty"`
 	InfrastructureID          int    `json:"infrastructure_id,omitempty"`
-	NetworkServiceStatus      string `json:"network_service_status,omitempty"`
-	NetworkCreatedTimestamp   string `json:"network_created_timestamp,omitempty"`
-	NetworkUpdatedTimestamp   string `json:"network_updated_timestamp,omitempty"`
 	NetworkLANAutoAllocateIPs bool   `json:"network_lan_autoallocate_ips,omitempty"`
 	NetworkDeployType         string `json:"network_deploy_type,omitempty"`
 	NetworkChangeID           int    `json:"network_change_id,omitempty"`
