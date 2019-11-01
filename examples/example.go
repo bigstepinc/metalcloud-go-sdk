@@ -1,83 +1,87 @@
 package main
-import "github.com/bigstepinc/metal-cloud-sdk-go"
-import "os"
-import "log"
-import "strconv"
-import "bufio"
-import "fmt"
 
-func main(){
-  user := os.Getenv("METALCLOUD_USER")
-  apiKey := os.Getenv("METALCLOUD_API_KEY")
-  endpoint := os.Getenv("METALCLOUD_ENDPOINT")
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
+	"strconv"
 
-  if(user=="" || apiKey=="" || endpoint==""){
-    log.Fatal("METALCLOUD_USER, METALCLOUD_API_KEY, METALCLOUD_ENDPOINT environment variables must be set")
-  }
+	metalcloud "github.com/bigstepinc/metal-cloud-sdk-go"
+)
 
-  client, err := metalcloud.GetMetalcloudClient(user, apiKey, endpoint,true)
-  if err != nil {
-    log.Fatal("Error initiating client: ", err)
-  }
+func main() {
+	user := os.Getenv("METALCLOUD_USER")
+	apiKey := os.Getenv("METALCLOUD_API_KEY")
+	endpoint := os.Getenv("METALCLOUD_ENDPOINT")
 
-  if(len(os.Args)<2){
-    log.Fatalf("syntax: %s list || delete <infrastructureID>\n",os.Args[0])
-  }
+	if user == "" || apiKey == "" || endpoint == "" {
+		log.Fatal("METALCLOUD_USER, METALCLOUD_API_KEY, METALCLOUD_ENDPOINT environment variables must be set")
+	}
 
-  switch op := os.Args[1]; op {
-    //list infrastructures
+	client, err := metalcloud.GetMetalcloudClient(user, apiKey, endpoint, true)
+	if err != nil {
+		log.Fatal("Error initiating client: ", err)
+	}
 
-    case "list":
-    
-      infras,err :=client.Infrastructures()
-      if err != nil {
-        log.Fatal("Error retrieving a list of infrastructures: ", err)
-      }
+	if len(os.Args) < 2 {
+		log.Fatalf("syntax: %s list || delete <infrastructureID>\n", os.Args[0])
+	}
 
-      for _,infra := range *infras{
-        log.Printf("\tInfrastructure: %s (%d) [%s]", infra.InfrastructureLabel, infra.InfrastructureID, infra.UserEmailOwner)
+	switch op := os.Args[1]; op {
+	//list infrastructures
 
-        instanceArrays, err := client.InstanceArrays(infra.InfrastructureID)
-        if err != nil {
-          log.Fatal("Error retrieving a list of instance arrays: ", err)
-        }
-        for _,ia := range *instanceArrays{
+	case "list":
 
-          log.Printf("\t\tInstanceArray: %s(%d)", ia.InstanceArrayLabel, ia.InstanceArrayID)
+		infras, err := client.Infrastructures()
+		if err != nil {
+			log.Fatal("Error retrieving a list of infrastructures: ", err)
+		}
 
-        }
-      }
-      break
+		for _, infra := range *infras {
+			log.Printf("\tInfrastructure: %s (%d) [%s]", infra.InfrastructureLabel, infra.InfrastructureID, infra.UserEmailOwner)
 
-    case "delete":
+			instanceArrays, err := client.InstanceArrays(infra.InfrastructureID)
+			if err != nil {
+				log.Fatal("Error retrieving a list of instance arrays: ", err)
+			}
+			for _, ia := range *instanceArrays {
 
-      if(len(os.Args[2])<3){
-        log.Fatalf("syntax: %s list || delete <infrastructureID>\n",os.Args[0])
-      }
+				log.Printf("\t\tInstanceArray: %s(%d)", ia.InstanceArrayLabel, ia.InstanceArrayID)
 
-      infrastructureID,err := strconv.Atoi(os.Args[2])
+			}
+		}
+		break
 
-      if(err!=nil){
-        log.Fatal("infrastructureID must be a number, it is %s\n",os.Args[2], err)
-      }
+	case "delete":
 
-      ret, err2 :=client.InfrastructureGet(infrastructureID)
-      if err2 != nil {
-          log.Fatal("Error retrieving infrastructure %d",infrastructureID, err2)
-      }
+		if len(os.Args[2]) < 3 {
+			log.Fatalf("syntax: %s list || delete <infrastructureID>\n", os.Args[0])
+		}
 
-      fmt.Printf("Deleting infrastructure %s (%d). Are you sure? Type \"yes\" to continue:", ret.InfrastructureLabel, infrastructureID)
-      reader := bufio.NewReader(os.Stdin)
-      yes, _ := reader.ReadString('\n')
-      
-      if(yes=="yes\n"){
-        err3 :=client.InfrastructureDelete(infrastructureID)
-        if err3 != nil {
-          log.Fatal("Error deleting infrastructure ", err3)
-        }
-      }else{
-        log.Printf("aborting\n")
-      }
-    }
+		infrastructureID, err := strconv.Atoi(os.Args[2])
+
+		if err != nil {
+			log.Fatalf("infrastructureID must be a number, it is %s %s\n", os.Args[2], err)
+		}
+
+		ret, err2 := client.InfrastructureGet(infrastructureID)
+		if err2 != nil {
+			log.Fatalf("Error retrieving infrastructure %d %s", infrastructureID, err2)
+		}
+
+		fmt.Printf("Deleting infrastructure %s (%d). Are you sure? Type \"yes\" to continue:", ret.InfrastructureLabel, infrastructureID)
+		reader := bufio.NewReader(os.Stdin)
+		yes, _ := reader.ReadString('\n')
+
+		if yes == "yes\n" {
+			err3 := client.InfrastructureDelete(infrastructureID)
+			if err3 != nil {
+				log.Fatal("Error deleting infrastructure ", err3)
+			}
+		} else {
+			log.Printf("aborting\n")
+		}
+	}
 
 }
