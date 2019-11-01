@@ -163,14 +163,18 @@ func (c *Client) InstanceArrayCreate(infrastructureID int, instanceArray Instanc
 }
 
 //InstanceArrayEdit alterns a deployed instance array. Requires deploy.
-func (c *Client) InstanceArrayEdit(instanceArrayID int, instanceArrayOperation InstanceArrayOperation) (*InstanceArray, error) {
+func (c *Client) InstanceArrayEdit(instanceArrayID int, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *[]ServerType, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
 	var createdObject InstanceArray
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
 		"instance_array_edit",
 		instanceArrayID,
-		instanceArrayOperation)
+		instanceArrayOperation,
+		bSwapExistingInstancesHardware,
+		bKeepDetachingDrives,
+		objServerTypeMatches,
+		arrInstancesToBeDeleted)
 
 	if err != nil {
 		log.Printf("%s", err)

@@ -31,13 +31,13 @@ type NetworkOperation struct {
 }
 
 //NetworkGet retrieves a network object
-func (c *Client) NetworkGet(NetworkID int) (*Network, error) {
+func (c *Client) NetworkGet(networkID int) (*Network, error) {
 	var createdObject Network
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
 		"network_get",
-		NetworkID)
+		networkID)
 
 	if err != nil {
 		fmt.Printf("%s", err)
