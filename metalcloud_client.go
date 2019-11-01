@@ -70,6 +70,16 @@ func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEna
 
 }
 
+//GetUserEmail returns the user configured for this connection
+func (c *Client) GetUserEmail() string {
+	return c.user
+}
+
+//GetEndpoint returns the endpoint configured for this connection
+func (c *Client) GetEndpoint() string {
+	return c.endpoint
+}
+
 type signatureAdderRoundTripper struct {
 	APIKey string
 	http.RoundTripper
@@ -101,6 +111,9 @@ func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 		log.Println(string(message))
 	}
 
+	//force close connection. This will avoid the keep-alive related issues for go < 1.6 https://go-review.googlesource.com/c/go/+/3210
+	req.Close = true
+
 	// Restore the io.ReadCloser to its original state
 	req.Body = ioutil.NopCloser(bytes.NewBuffer(message))
 
@@ -130,6 +143,7 @@ func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 
 	if !c.DryRun {
 		resp, err = http.DefaultTransport.RoundTrip(req)
+
 	}
 
 	if c.LoggingEnabled {
