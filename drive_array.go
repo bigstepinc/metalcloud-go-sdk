@@ -12,7 +12,7 @@ type DriveArray struct {
 	InstanceArrayID         int    `json:"instance_array_id,omitempty"`
 	InfrastructureID        int    `json:"infrastructure_id,omitempty"`
 	DriveArrayServiceStatus string `json:"drive_array_service_status,omitempty"`
-	DriveArrayCount         string `json:"drive_array_count,omitempty"`
+	DriveArrayCount         int    `json:"drive_array_count,omitempty"`
 
 	DriveArrayOperation *DriveArrayOperation `json:"drive_array_operation,omitempty"`
 }
