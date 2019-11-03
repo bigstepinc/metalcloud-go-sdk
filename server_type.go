@@ -1,7 +1,5 @@
 package metalcloud
 
-import "fmt"
-
 //ServerType struct defines a server type
 type ServerType struct {
 	ServerTypeID                   int    `json:"server_type_id,omitempty"`
@@ -46,7 +44,6 @@ func (c *Client) ServerTypeGet(serverTypeID int) (*ServerType, error) {
 		serverTypeID)
 
 	if err != nil {
-		fmt.Printf("%s", err)
 		return nil, err
 	}
 

@@ -1,10 +1,5 @@
 package metalcloud
 
-import (
-	"fmt"
-	"log"
-)
-
 //Network object describes an high level connection construct
 type Network struct {
 	NetworkID                 int               `json:"network_id,omitempty"`
@@ -40,7 +35,6 @@ func (c *Client) NetworkGet(networkID int) (*Network, error) {
 		networkID)
 
 	if err != nil {
-		fmt.Printf("%s", err)
 		return nil, err
 	}
 
@@ -85,7 +79,6 @@ func (c *Client) NetworkCreate(infrastructureID int, network Network) (*Network,
 		network)
 
 	if err != nil {
-		log.Printf("%s", err)
 		return nil, err
 	}
 
@@ -103,7 +96,6 @@ func (c *Client) NetworkEdit(networkID int, networkOperation NetworkOperation) (
 		networkOperation)
 
 	if err != nil {
-		log.Printf("%s", err)
 		return nil, err
 	}
 
@@ -118,7 +110,6 @@ func (c *Client) NetworkDelete(networkID int) error {
 		networkID)
 
 	if err != nil {
-		log.Printf("%s", err)
 		return err
 	}
 
@@ -134,7 +125,6 @@ func (c *Client) NetworkJoin(networkID int, networkToBeDeletedID int) error {
 		networkToBeDeletedID)
 
 	if err != nil {
-		log.Printf("%s", err)
 		return err
 	}
 

@@ -2,7 +2,6 @@ package metalcloud
 
 import (
 	"fmt"
-	"log"
 )
 
 //Infrastructure - the main infrastructure object
@@ -59,7 +58,6 @@ func (c *Client) InfrastructureCreate(infrastructure Infrastructure) (*Infrastru
 		infrastructure)
 
 	if err != nil {
-		log.Printf("%s", err)
 		return nil, err
 	}
 
@@ -77,7 +75,6 @@ func (c *Client) InfrastructureEdit(infrastructureID int, infrastructureOperatio
 		infrastructureOperation)
 
 	if err != nil {
-		log.Printf("%s", err)
 		return nil, err
 	}
 
@@ -119,7 +116,6 @@ func (c *Client) InfrastructureDeploy(infrastructureID int, shutdownOptions Shut
 	)
 
 	if err != nil {
-		log.Printf("%s", err)
 		return err
 	}
 
@@ -135,7 +131,7 @@ func (c *Client) InfrastructureGetByLabel(infrastructureLabel string) (*Infrastr
 	if err != nil || infrastructures == nil {
 		// rpc error handling goes here
 		// check response.Error.Code, response.Error.Message and optional response.Error.Data
-		log.Printf("%s", err)
+
 		return nil, err
 	}
 
@@ -145,7 +141,6 @@ func (c *Client) InfrastructureGetByLabel(infrastructureLabel string) (*Infrastr
 		}
 	}
 	err = fmt.Errorf("could not find infrastructure with label %s", infrastructureLabel)
-	log.Printf("%s", err)
 
 	return nil, err
 }
@@ -183,7 +178,6 @@ func (c *Client) InfrastructureGet(infrastructureID int) (*Infrastructure, error
 	err := c.rpcClient.CallFor(&infrastructure, "infrastructure_get", infrastructureID)
 
 	if err != nil {
-		log.Printf("%s", err)
 		return nil, err
 	}
 
@@ -197,7 +191,6 @@ func (c *Client) InfrastructureUserLimits(infrastructureID int) (*map[string]int
 	err := c.rpcClient.CallFor(&userLimits, "infrastructure_user_limits", infrastructureID)
 
 	if err != nil {
-		log.Printf("%s", err)
 		return nil, err
 	}
 

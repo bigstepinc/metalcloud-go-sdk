@@ -1,7 +1,5 @@
 package metalcloud
 
-import "log"
-
 //DriveArray represents a collection of identical drives
 type DriveArray struct {
 	DriveArrayID            int    `json:"drive_array_id,omitempty"`
@@ -67,7 +65,7 @@ func (c *Client) DriveArrayGet(driveArrayID int) (*DriveArray, error) {
 		driveArrayID)
 
 	if err != nil {
-		log.Printf("%s", err)
+
 		return nil, err
 	}
 
@@ -85,7 +83,7 @@ func (c *Client) DriveArrayCreate(infrastructureID int, driveArray DriveArray) (
 		driveArray)
 
 	if err != nil {
-		log.Printf("%s", err)
+
 		return nil, err
 	}
 
@@ -103,7 +101,7 @@ func (c *Client) DriveArrayEdit(driveArrayID int, driveArrayOperation DriveArray
 		driveArrayOperation)
 
 	if err != nil {
-		log.Printf("%s", err)
+
 		return nil, err
 	}
 
@@ -118,7 +116,7 @@ func (c *Client) DriveArrayDelete(driveArrayID int) error {
 		driveArrayID)
 
 	if err != nil {
-		log.Printf("%s", err)
+
 		return err
 	}
 

@@ -1,10 +1,5 @@
 package metalcloud
 
-import (
-	"fmt"
-	"log"
-)
-
 //InstanceArray object describes a collection of identical instances
 type InstanceArray struct {
 	InstanceArrayID                 int                      `json:"instance_array_id,omitempty"`
@@ -110,7 +105,6 @@ func (c *Client) InstanceArrayGet(instanceArrayID int) (*InstanceArray, error) {
 		instanceArrayID)
 
 	if err != nil {
-		fmt.Printf("%s", err)
 		return nil, err
 	}
 
@@ -155,7 +149,6 @@ func (c *Client) InstanceArrayCreate(infrastructureID int, instanceArray Instanc
 		instanceArray)
 
 	if err != nil {
-		log.Printf("%s", err)
 		return nil, err
 	}
 
@@ -177,7 +170,6 @@ func (c *Client) InstanceArrayEdit(instanceArrayID int, instanceArrayOperation I
 		arrInstancesToBeDeleted)
 
 	if err != nil {
-		log.Printf("%s", err)
 		return nil, err
 	}
 
@@ -192,7 +184,6 @@ func (c *Client) InstanceArrayDelete(instanceArrayID int) error {
 		instanceArrayID)
 
 	if err != nil {
-		log.Printf("%s", err)
 		return err
 	}
 
@@ -211,7 +202,6 @@ func (c *Client) InstanceArrayInterfaceAttachNetwork(instanceArrayID int, instan
 		networkID)
 
 	if err != nil {
-		log.Printf("%s", err)
 		return nil, err
 	}
 
@@ -229,7 +219,6 @@ func (c *Client) InstanceArrayInterfaceDetach(instanceArrayID int, instanceArray
 		instanceArrayInterfaceIndex)
 
 	if err != nil {
-		log.Printf("%s", err)
 		return nil, err
 	}
 
