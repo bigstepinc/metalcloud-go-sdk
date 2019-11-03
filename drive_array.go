@@ -2,28 +2,31 @@ package metalcloud
 
 //DriveArray represents a collection of identical drives
 type DriveArray struct {
-	DriveArrayID            int    `json:"drive_array_id,omitempty"`
-	DriveArrayLabel         string `json:"drive_array_label,omitempty"`
-	VolumeTemplateID        int    `json:"volume_template_id,omitempty"`
-	DriveArrayStorageType   string `json:"drive_array_storage_type,omitempty"`
-	DriveSizeMBytesDefault  int    `json:"drive_size_mbytes_default,omitempty"`
-	InstanceArrayID         int    `json:"instance_array_id,omitempty"`
-	InfrastructureID        int    `json:"infrastructure_id,omitempty"`
-	DriveArrayServiceStatus string `json:"drive_array_service_status,omitempty"`
-	DriveArrayCount         int    `json:"drive_array_count,omitempty"`
+	DriveArrayID                      int    `json:"drive_array_id,omitempty"`
+	DriveArrayLabel                   string `json:"drive_array_label,omitempty"`
+	VolumeTemplateID                  int    `json:"volume_template_id,omitempty"`
+	DriveArrayStorageType             string `json:"drive_array_storage_type,omitempty"`
+	DriveSizeMBytesDefault            int    `json:"drive_size_mbytes_default,omitempty"`
+	InstanceArrayID                   int    `json:"instance_array_id,omitempty"`
+	InfrastructureID                  int    `json:"infrastructure_id,omitempty"`
+	DriveArrayServiceStatus           string `json:"drive_array_service_status,omitempty"`
+	DriveArrayCount                   int    `json:"drive_array_count,omitempty"`
+	DriveArrayExpandWithInstanceArray bool   `json:"drive_array_expand_with_instance_array,omitempty"`
 
 	DriveArrayOperation *DriveArrayOperation `json:"drive_array_operation,omitempty"`
 }
 
 //DriveArrayOperation defines changes to be applied to a DriveArray
 type DriveArrayOperation struct {
-	DriveArrayID           int    `json:"drive_array_id,omitempty"`
-	DriveArrayLabel        string `json:"drive_array_label,omitempty"`
-	VolumeTemplateID       int    `json:"volume_template_id,omitempty"`
-	DriveArrayStorageType  string `json:"drive_array_storage_type,omitempty"`
-	DriveSizeMBytesDefault int    `json:"drive_size_mbytes_default,omitempty"`
-	InstanceArrayID        int    `json:"instance_array_id,omitempty"`
-	InfrastructureID       int    `json:"infrastructure_id,omitempty"`
+	DriveArrayID                      int    `json:"drive_array_id,omitempty"`
+	DriveArrayLabel                   string `json:"drive_array_label,omitempty"`
+	VolumeTemplateID                  int    `json:"volume_template_id,omitempty"`
+	DriveArrayStorageType             string `json:"drive_array_storage_type,omitempty"`
+	DriveSizeMBytesDefault            int    `json:"drive_size_mbytes_default,omitempty"`
+	InstanceArrayID                   int    `json:"instance_array_id,omitempty"`
+	InfrastructureID                  int    `json:"infrastructure_id,omitempty"`
+	DriveArrayCount                   int    `json:"drive_array_count,omitempty"`
+	DriveArrayExpandWithInstanceArray bool   `json:"drive_array_expand_with_instance_array,omitempty"`
 
 	DriveArrayDeployType string `json:"drive_array_deploy_type,omitempty"`
 	DriveArrayChangeID   int    `json:"drive_array_change_id,omitempty"`
