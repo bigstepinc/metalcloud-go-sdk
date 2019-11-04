@@ -28,8 +28,9 @@ type DriveArrayOperation struct {
 	DriveArrayCount                   int    `json:"drive_array_count,omitempty"`
 	DriveArrayExpandWithInstanceArray bool   `json:"drive_array_expand_with_instance_array,omitempty"`
 
-	DriveArrayDeployType string `json:"drive_array_deploy_type,omitempty"`
-	DriveArrayChangeID   int    `json:"drive_array_change_id,omitempty"`
+	DriveArrayDeployType   string `json:"drive_array_deploy_type,omitempty"`
+	DriveArrayDeployStatus string `json:"drive_array_deploy_status,omitempty"`
+	DriveArrayChangeID     int    `json:"drive_array_change_id,omitempty"`
 }
 
 //DriveArrays retrieves the list of drives arrays of an infrastructure

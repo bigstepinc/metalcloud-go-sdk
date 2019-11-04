@@ -47,6 +47,7 @@ type InstanceArrayOperation struct {
 	InstanceArrayFirewallRules      []FirewallRule                    `json:"instance_array_firewall_rules,omitempty"`
 	VolumeTemplateID                int                               `json:"volume_template_id,omitempty"`
 	InstanceArrayDeployType         string                            `json:"instance_array_deploy_type,omitempty"`
+	InstanceArrayDeployStatus       string                            `json:"instance_array_deploy_status,omitempty"`
 	InstanceArrayChangeID           int                               `json:"instance_array_change_id,omitempty"`
 }
 
