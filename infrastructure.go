@@ -2,6 +2,7 @@ package metalcloud
 
 import (
 	"fmt"
+	"log"
 )
 
 //Infrastructure - the main infrastructure object
@@ -83,9 +84,14 @@ func (c *Client) InfrastructureEdit(infrastructureID int, infrastructureOperatio
 
 //InfrastructureDelete deletes an infrastructure and all associated elements. Requires deploy
 func (c *Client) InfrastructureDelete(infrastructureID int) error {
-	_, err := c.rpcClient.Call("infrastructure_delete", infrastructureID)
+	resp, err := c.rpcClient.Call("infrastructure_delete", infrastructureID)
+
 	if err != nil {
 		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
 	}
 
 	return nil
@@ -93,7 +99,7 @@ func (c *Client) InfrastructureDelete(infrastructureID int) error {
 
 //InfrastructureOperationCancel reverts (undos) alterations done before deploy
 func (c *Client) InfrastructureOperationCancel(infrastructureID int) error {
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"infrastructure_operation_cancel",
 		infrastructureID)
 
@@ -101,12 +107,16 @@ func (c *Client) InfrastructureOperationCancel(infrastructureID int) error {
 		return err
 	}
 
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
 	return nil
 }
 
 //InfrastructureDeploy initiates a deploy operation that will apply all registered changes for the respective infrastructure
 func (c *Client) InfrastructureDeploy(infrastructureID int, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error {
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"infrastructure_deploy",
 		infrastructureID,
 		shutdownOptions,
@@ -117,6 +127,10 @@ func (c *Client) InfrastructureDeploy(infrastructureID int, shutdownOptions Shut
 
 	if err != nil {
 		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
 	}
 
 	return nil
@@ -131,7 +145,7 @@ func (c *Client) InfrastructureGetByLabel(infrastructureLabel string) (*Infrastr
 	if err != nil || infrastructures == nil {
 		// rpc error handling goes here
 		// check response.Error.Code, response.Error.Message and optional response.Error.Data
-
+		log.Printf("%s", err)
 		return nil, err
 	}
 
@@ -141,6 +155,7 @@ func (c *Client) InfrastructureGetByLabel(infrastructureLabel string) (*Infrastr
 		}
 	}
 	err = fmt.Errorf("could not find infrastructure with label %s", infrastructureLabel)
+	log.Printf("%s", err)
 
 	return nil, err
 }

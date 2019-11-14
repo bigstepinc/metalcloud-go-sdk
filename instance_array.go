@@ -1,5 +1,7 @@
 package metalcloud
 
+import "fmt"
+
 //InstanceArray object describes a collection of identical instances
 type InstanceArray struct {
 	InstanceArrayID                 int                      `json:"instance_array_id,omitempty"`
@@ -180,12 +182,16 @@ func (c *Client) InstanceArrayEdit(instanceArrayID int, instanceArrayOperation I
 //InstanceArrayDelete deletes an instance array. Requires deploy.
 func (c *Client) InstanceArrayDelete(instanceArrayID int) error {
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"instance_array_delete",
 		instanceArrayID)
 
 	if err != nil {
 		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
 	}
 
 	return nil

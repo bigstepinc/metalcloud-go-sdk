@@ -1,5 +1,7 @@
 package metalcloud
 
+import "fmt"
+
 //DriveArray represents a collection of identical drives
 type DriveArray struct {
 	DriveArrayID                      int    `json:"drive_array_id,omitempty"`
@@ -115,13 +117,17 @@ func (c *Client) DriveArrayEdit(driveArrayID int, driveArrayOperation DriveArray
 //DriveArrayDelete deletes a Drive Array with specified id
 func (c *Client) DriveArrayDelete(driveArrayID int) error {
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"drive_array_delete",
 		driveArrayID)
 
 	if err != nil {
 
 		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
 	}
 
 	return nil
