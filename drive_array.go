@@ -36,7 +36,12 @@ type DriveArrayOperation struct {
 }
 
 //DriveArrays retrieves the list of drives arrays of an infrastructure
-func (c *Client) DriveArrays(infrastructureID int) (*map[string]DriveArray, error) {
+func (c *Client) DriveArrays(infrastructureID ID) (*map[string]DriveArray, error) {
+
+	if err := checkID(infrastructureID); err != nil {
+		return nil, err
+	}
+
 	res, err := c.rpcClient.Call(
 		"drive_arrays",
 		infrastructureID)
@@ -62,8 +67,13 @@ func (c *Client) DriveArrays(infrastructureID int) (*map[string]DriveArray, erro
 }
 
 //DriveArrayGet retrieves a DriveArray object with specified ids
-func (c *Client) DriveArrayGet(driveArrayID int) (*DriveArray, error) {
+func (c *Client) DriveArrayGet(driveArrayID ID) (*DriveArray, error) {
+
 	var createdObject DriveArray
+
+	if err := checkID(driveArrayID); err != nil {
+		return nil, err
+	}
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
@@ -79,8 +89,12 @@ func (c *Client) DriveArrayGet(driveArrayID int) (*DriveArray, error) {
 }
 
 //DriveArrayCreate creates a drive array. Requires deploy.
-func (c *Client) DriveArrayCreate(infrastructureID int, driveArray DriveArray) (*DriveArray, error) {
+func (c *Client) DriveArrayCreate(infrastructureID ID, driveArray DriveArray) (*DriveArray, error) {
 	var createdObject DriveArray
+
+	if err := checkID(infrastructureID); err != nil {
+		return nil, err
+	}
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
@@ -97,8 +111,12 @@ func (c *Client) DriveArrayCreate(infrastructureID int, driveArray DriveArray) (
 }
 
 //DriveArrayEdit alters a deployed drive array. Requires deploy.
-func (c *Client) DriveArrayEdit(driveArrayID int, driveArrayOperation DriveArrayOperation) (*DriveArray, error) {
+func (c *Client) DriveArrayEdit(driveArrayID ID, driveArrayOperation DriveArrayOperation) (*DriveArray, error) {
 	var createdObject DriveArray
+
+	if err := checkID(driveArrayID); err != nil {
+		return nil, err
+	}
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
@@ -115,7 +133,11 @@ func (c *Client) DriveArrayEdit(driveArrayID int, driveArrayOperation DriveArray
 }
 
 //DriveArrayDelete deletes a Drive Array with specified id
-func (c *Client) DriveArrayDelete(driveArrayID int) error {
+func (c *Client) DriveArrayDelete(driveArrayID ID) error {
+
+	if err := checkID(driveArrayID); err != nil {
+		return err
+	}
 
 	resp, err := c.rpcClient.Call(
 		"drive_array_delete",

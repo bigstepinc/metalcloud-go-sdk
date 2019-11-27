@@ -2,17 +2,14 @@ package metalcloud
 
 import (
 	"fmt"
-	"log"
 )
 
 //Infrastructure - the main infrastructure object
 type Infrastructure struct {
-	InfrastructureLabel string `json:"infrastructure_label"`
-	DatacenterName      string `json:"datacenter_name"`
-
-	InfrastructureSubdomain string `json:"infrastructure_subdomain,omitempty"`
-
 	InfrastructureID               int                     `json:"infrastructure_id,omitempty"`
+	InfrastructureLabel            string                  `json:"infrastructure_label"`
+	DatacenterName                 string                  `json:"datacenter_name"`
+	InfrastructureSubdomain        string                  `json:"infrastructure_subdomain,omitempty"`
 	UserIDowner                    int                     `json:"user_id_owner,omitempty"`
 	UserEmailOwner                 string                  `json:"user_email_owner,omitempty"`
 	InfrastructureTouchUnixtime    string                  `json:"infrastructure_touch_unixtime,omitempty"`
@@ -27,14 +24,12 @@ type Infrastructure struct {
 
 //InfrastructureOperation - object with alternations to be applied
 type InfrastructureOperation struct {
-	InfrastructureLabel string `json:"infrastructure_label"`
-	DatacenterName      string `json:"datacenter_name"`
-
-	InfrastructureDeployStatus string `json:"infrastructure_deploy_status,omitempty"`
-	InfrastructureDeployType   string `json:"infrastructure_deploy_type,omitempty"`
-	InfrastructureSubdomain    string `json:"infrastructure_subdomain,omitempty"`
-
 	InfrastructureID               int    `json:"infrastructure_id,omitempty"`
+	InfrastructureLabel            string `json:"infrastructure_label"`
+	DatacenterName                 string `json:"datacenter_name"`
+	InfrastructureDeployStatus     string `json:"infrastructure_deploy_status,omitempty"`
+	InfrastructureDeployType       string `json:"infrastructure_deploy_type,omitempty"`
+	InfrastructureSubdomain        string `json:"infrastructure_subdomain,omitempty"`
 	UserIDOwner                    int    `json:"user_id_owner,omitempty"`
 	InfrastructureUpdatedTimestamp string `json:"infrastructure_updated_timestamp,omitempty"`
 	InfrastructureChangeID         int    `json:"infrastructure_change_id,omitempty"`
@@ -43,9 +38,9 @@ type InfrastructureOperation struct {
 
 //ShutdownOptions controls how the deploy engine handles running instances
 type ShutdownOptions struct {
-	HardShutdownAfterTimeout   bool `json:"hard_shutdown_after_timeout,omitempty"`
-	AttemptSoftShutdown        bool `json:"attempt_soft_shutdown,omitempty"`
-	SoftShutdownTimeoutSeconds int  `json:"soft_shutdown_timeout_seconds,omitempty"`
+	HardShutdownAfterTimeout   bool `json:"hard_shutdown_after_timeout"`
+	AttemptSoftShutdown        bool `json:"attempt_soft_shutdown"`
+	SoftShutdownTimeoutSeconds int  `json:"soft_shutdown_timeout_seconds"`
 }
 
 //InfrastructureCreate creates an infrastructure
@@ -66,8 +61,12 @@ func (c *Client) InfrastructureCreate(infrastructure Infrastructure) (*Infrastru
 }
 
 //InfrastructureEdit alters an infrastructure
-func (c *Client) InfrastructureEdit(infrastructureID int, infrastructureOperation InfrastructureOperation) (*Infrastructure, error) {
+func (c *Client) InfrastructureEdit(infrastructureID ID, infrastructureOperation InfrastructureOperation) (*Infrastructure, error) {
 	var createdObject Infrastructure
+
+	if err := checkID(infrastructureID); err != nil {
+		return nil, err
+	}
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
@@ -83,7 +82,12 @@ func (c *Client) InfrastructureEdit(infrastructureID int, infrastructureOperatio
 }
 
 //InfrastructureDelete deletes an infrastructure and all associated elements. Requires deploy
-func (c *Client) InfrastructureDelete(infrastructureID int) error {
+func (c *Client) InfrastructureDelete(infrastructureID ID) error {
+
+	if err := checkID(infrastructureID); err != nil {
+		return err
+	}
+
 	resp, err := c.rpcClient.Call("infrastructure_delete", infrastructureID)
 
 	if err != nil {
@@ -98,7 +102,12 @@ func (c *Client) InfrastructureDelete(infrastructureID int) error {
 }
 
 //InfrastructureOperationCancel reverts (undos) alterations done before deploy
-func (c *Client) InfrastructureOperationCancel(infrastructureID int) error {
+func (c *Client) InfrastructureOperationCancel(infrastructureID ID) error {
+
+	if err := checkID(infrastructureID); err != nil {
+		return err
+	}
+
 	resp, err := c.rpcClient.Call(
 		"infrastructure_operation_cancel",
 		infrastructureID)
@@ -115,7 +124,12 @@ func (c *Client) InfrastructureOperationCancel(infrastructureID int) error {
 }
 
 //InfrastructureDeploy initiates a deploy operation that will apply all registered changes for the respective infrastructure
-func (c *Client) InfrastructureDeploy(infrastructureID int, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error {
+func (c *Client) InfrastructureDeploy(infrastructureID ID, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error {
+
+	if err := checkID(infrastructureID); err != nil {
+		return err
+	}
+
 	resp, err := c.rpcClient.Call(
 		"infrastructure_deploy",
 		infrastructureID,
@@ -136,32 +150,9 @@ func (c *Client) InfrastructureDeploy(infrastructureID int, shutdownOptions Shut
 	return nil
 }
 
-//InfrastructureGetByLabel returns an infrastructure by label. This returns infrastructures of the current user
-//and of which the current user has access to
-func (c *Client) InfrastructureGetByLabel(infrastructureLabel string) (*Infrastructure, error) {
-	var infrastructures map[string]Infrastructure
-
-	err := c.rpcClient.CallFor(&infrastructures, "infrastructures", c.user)
-	if err != nil || infrastructures == nil {
-		// rpc error handling goes here
-		// check response.Error.Code, response.Error.Message and optional response.Error.Data
-		log.Printf("%s", err)
-		return nil, err
-	}
-
-	for _, infrastructure := range infrastructures {
-		if infrastructure.InfrastructureLabel == infrastructureLabel {
-			return &infrastructure, nil
-		}
-	}
-	err = fmt.Errorf("could not find infrastructure with label %s", infrastructureLabel)
-	log.Printf("%s", err)
-
-	return nil, err
-}
-
 //Infrastructures returns a list of infrastructures
 func (c *Client) Infrastructures() (*map[string]Infrastructure, error) {
+
 	res, err := c.rpcClient.Call(
 		"infrastructures",
 		c.user)
@@ -187,8 +178,12 @@ func (c *Client) Infrastructures() (*map[string]Infrastructure, error) {
 }
 
 //InfrastructureGet returns a specific infrastructure
-func (c *Client) InfrastructureGet(infrastructureID int) (*Infrastructure, error) {
+func (c *Client) InfrastructureGet(infrastructureID ID) (*Infrastructure, error) {
 	var infrastructure Infrastructure
+
+	if err := checkID(infrastructureID); err != nil {
+		return nil, err
+	}
 
 	err := c.rpcClient.CallFor(&infrastructure, "infrastructure_get", infrastructureID)
 
@@ -200,8 +195,12 @@ func (c *Client) InfrastructureGet(infrastructureID int) (*Infrastructure, error
 }
 
 //InfrastructureUserLimits returns user metadata
-func (c *Client) InfrastructureUserLimits(infrastructureID int) (*map[string]interface{}, error) {
+func (c *Client) InfrastructureUserLimits(infrastructureID ID) (*map[string]interface{}, error) {
 	var userLimits map[string]interface{}
+
+	if err := checkID(infrastructureID); err != nil {
+		return nil, err
+	}
 
 	err := c.rpcClient.CallFor(&userLimits, "infrastructure_user_limits", infrastructureID)
 

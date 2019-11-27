@@ -35,8 +35,12 @@ type HardwareConfiguration struct {
 }
 
 //ServerTypeGet retrieves a server type by id
-func (c *Client) ServerTypeGet(serverTypeID int) (*ServerType, error) {
+func (c *Client) ServerTypeGet(serverTypeID ID) (*ServerType, error) {
 	var createdObject ServerType
+
+	if err := checkID(serverTypeID); err != nil {
+		return nil, err
+	}
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
@@ -51,7 +55,11 @@ func (c *Client) ServerTypeGet(serverTypeID int) (*ServerType, error) {
 }
 
 //ServerTypesMatches matches available servers with a certain Instance's configuration, using the properties specified in the objHardwareConfiguration object, and returns the number of compatible servers for each server_type_id.
-func (c *Client) ServerTypesMatches(infrastructureID int, hardwareConfiguration HardwareConfiguration, instanceArrayID *int, bAllowServerSwap bool) (*map[string]ServerType, error) {
+func (c *Client) ServerTypesMatches(infrastructureID ID, hardwareConfiguration HardwareConfiguration, instanceArrayID *int, bAllowServerSwap bool) (*map[string]ServerType, error) {
+
+	if err := checkID(infrastructureID); err != nil {
+		return nil, err
+	}
 
 	res, err := c.rpcClient.Call(
 		"server_type_matches",

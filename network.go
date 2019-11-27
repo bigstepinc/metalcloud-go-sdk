@@ -26,8 +26,12 @@ type NetworkOperation struct {
 }
 
 //NetworkGet retrieves a network object
-func (c *Client) NetworkGet(networkID int) (*Network, error) {
+func (c *Client) NetworkGet(networkID ID) (*Network, error) {
 	var createdObject Network
+
+	if err := checkID(networkID); err != nil {
+		return nil, err
+	}
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
@@ -42,7 +46,11 @@ func (c *Client) NetworkGet(networkID int) (*Network, error) {
 }
 
 //Networks returns a list of all network objects of an infrastructure
-func (c *Client) Networks(infrastructureID int) (*map[string]Network, error) {
+func (c *Client) Networks(infrastructureID ID) (*map[string]Network, error) {
+
+	if err := checkID(infrastructureID); err != nil {
+		return nil, err
+	}
 
 	res, err := c.rpcClient.Call(
 		"networks",
@@ -69,8 +77,12 @@ func (c *Client) Networks(infrastructureID int) (*map[string]Network, error) {
 }
 
 //NetworkCreate creates a network
-func (c *Client) NetworkCreate(infrastructureID int, network Network) (*Network, error) {
+func (c *Client) NetworkCreate(infrastructureID ID, network Network) (*Network, error) {
 	var createdObject Network
+
+	if err := checkID(infrastructureID); err != nil {
+		return nil, err
+	}
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
@@ -86,8 +98,12 @@ func (c *Client) NetworkCreate(infrastructureID int, network Network) (*Network,
 }
 
 //NetworkEdit applies a change to an existing network
-func (c *Client) NetworkEdit(networkID int, networkOperation NetworkOperation) (*Network, error) {
+func (c *Client) NetworkEdit(networkID ID, networkOperation NetworkOperation) (*Network, error) {
 	var createdObject Network
+
+	if err := checkID(networkID); err != nil {
+		return nil, err
+	}
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
@@ -103,7 +119,11 @@ func (c *Client) NetworkEdit(networkID int, networkOperation NetworkOperation) (
 }
 
 //NetworkDelete deletes a network.
-func (c *Client) NetworkDelete(networkID int) error {
+func (c *Client) NetworkDelete(networkID ID) error {
+
+	if err := checkID(networkID); err != nil {
+		return err
+	}
 
 	_, err := c.rpcClient.Call(
 		"network_delete",
@@ -117,7 +137,15 @@ func (c *Client) NetworkDelete(networkID int) error {
 }
 
 //NetworkJoin merges two specified Network objects.
-func (c *Client) NetworkJoin(networkID int, networkToBeDeletedID int) error {
+func (c *Client) NetworkJoin(networkID ID, networkToBeDeletedID ID) error {
+
+	if err := checkID(networkID); err != nil {
+		return err
+	}
+
+	if err := checkID(networkToBeDeletedID); err != nil {
+		return err
+	}
 
 	_, err := c.rpcClient.Call(
 		"network_join",

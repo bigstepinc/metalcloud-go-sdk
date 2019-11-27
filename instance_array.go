@@ -99,8 +99,12 @@ type InstanceArrayInterfaceOperation struct {
 }
 
 //InstanceArrayGet returns an InstanceArray with specified id
-func (c *Client) InstanceArrayGet(instanceArrayID int) (*InstanceArray, error) {
+func (c *Client) InstanceArrayGet(instanceArrayID ID) (*InstanceArray, error) {
 	var createdObject InstanceArray
+
+	if err := checkID(instanceArrayID); err != nil {
+		return nil, err
+	}
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
@@ -115,7 +119,11 @@ func (c *Client) InstanceArrayGet(instanceArrayID int) (*InstanceArray, error) {
 }
 
 //InstanceArrays returns list of instance arrays of specified infrastructure
-func (c *Client) InstanceArrays(infrastructureID int) (*map[string]InstanceArray, error) {
+func (c *Client) InstanceArrays(infrastructureID ID) (*map[string]InstanceArray, error) {
+
+	if err := checkID(infrastructureID); err != nil {
+		return nil, err
+	}
 
 	res, err := c.rpcClient.Call(
 		"instance_arrays",
@@ -142,8 +150,12 @@ func (c *Client) InstanceArrays(infrastructureID int) (*map[string]InstanceArray
 }
 
 //InstanceArrayCreate creates an instance array (colletion of identical instances). Requires Deploy.
-func (c *Client) InstanceArrayCreate(infrastructureID int, instanceArray InstanceArray) (*InstanceArray, error) {
+func (c *Client) InstanceArrayCreate(infrastructureID ID, instanceArray InstanceArray) (*InstanceArray, error) {
 	var createdObject InstanceArray
+
+	if err := checkID(infrastructureID); err != nil {
+		return nil, err
+	}
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
@@ -159,8 +171,12 @@ func (c *Client) InstanceArrayCreate(infrastructureID int, instanceArray Instanc
 }
 
 //InstanceArrayEdit alterns a deployed instance array. Requires deploy.
-func (c *Client) InstanceArrayEdit(instanceArrayID int, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *[]ServerType, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
+func (c *Client) InstanceArrayEdit(instanceArrayID ID, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *[]ServerType, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
 	var createdObject InstanceArray
+
+	if err := checkID(instanceArrayID); err != nil {
+		return nil, err
+	}
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
@@ -180,7 +196,11 @@ func (c *Client) InstanceArrayEdit(instanceArrayID int, instanceArrayOperation I
 }
 
 //InstanceArrayDelete deletes an instance array. Requires deploy.
-func (c *Client) InstanceArrayDelete(instanceArrayID int) error {
+func (c *Client) InstanceArrayDelete(instanceArrayID ID) error {
+
+	if err := checkID(instanceArrayID); err != nil {
+		return err
+	}
 
 	resp, err := c.rpcClient.Call(
 		"instance_array_delete",

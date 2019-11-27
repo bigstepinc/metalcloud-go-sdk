@@ -48,8 +48,12 @@ func (c *Client) VolumeTemplates() (*map[string]VolumeTemplate, error) {
 }
 
 //VolumeTemplateGet returns the specified volume template
-func (c *Client) VolumeTemplateGet(volumeTemplateID int) (*VolumeTemplate, error) {
+func (c *Client) VolumeTemplateGet(volumeTemplateID ID) (*VolumeTemplate, error) {
 	var createdObject VolumeTemplate
+
+	if err := checkID(volumeTemplateID); err != nil {
+		return nil, err
+	}
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
