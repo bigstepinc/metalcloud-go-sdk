@@ -1,5 +1,7 @@
 package metalcloud
 
+//go:generate go run helper/gen_exports.go
+
 //ServerType struct defines a server type
 type ServerType struct {
 	ServerTypeID                   int    `json:"server_type_id,omitempty"`
@@ -34,8 +36,8 @@ type HardwareConfiguration struct {
 	InstanceArrayInstanceCount      int      `json:"instance_array_instance_count,omitempty"`
 }
 
-//ServerTypeGet retrieves a server type by id
-func (c *Client) ServerTypeGet(serverTypeID ID) (*ServerType, error) {
+//serverTypeGet retrieves a server type by id
+func (c *Client) serverTypeGet(serverTypeID id) (*ServerType, error) {
 	var createdObject ServerType
 
 	if err := checkID(serverTypeID); err != nil {
@@ -54,8 +56,8 @@ func (c *Client) ServerTypeGet(serverTypeID ID) (*ServerType, error) {
 	return &createdObject, nil
 }
 
-//ServerTypesMatches matches available servers with a certain Instance's configuration, using the properties specified in the objHardwareConfiguration object, and returns the number of compatible servers for each server_type_id.
-func (c *Client) ServerTypesMatches(infrastructureID ID, hardwareConfiguration HardwareConfiguration, instanceArrayID *int, bAllowServerSwap bool) (*map[string]ServerType, error) {
+//serverTypesMatches matches available servers with a certain Instance's configuration, using the properties specified in the objHardwareConfiguration object, and returns the number of compatible servers for each server_type_id.
+func (c *Client) serverTypesMatches(infrastructureID id, hardwareConfiguration HardwareConfiguration, instanceArrayID *int, bAllowServerSwap bool) (*map[string]ServerType, error) {
 
 	if err := checkID(infrastructureID); err != nil {
 		return nil, err

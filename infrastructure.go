@@ -1,5 +1,7 @@
 package metalcloud
 
+//go:generate go run helper/gen_exports.go
+
 import (
 	"fmt"
 )
@@ -60,8 +62,8 @@ func (c *Client) InfrastructureCreate(infrastructure Infrastructure) (*Infrastru
 	return &createdObject, nil
 }
 
-//InfrastructureEdit alters an infrastructure
-func (c *Client) InfrastructureEdit(infrastructureID ID, infrastructureOperation InfrastructureOperation) (*Infrastructure, error) {
+//infrastructureEdit alters an infrastructure
+func (c *Client) infrastructureEdit(infrastructureID id, infrastructureOperation InfrastructureOperation) (*Infrastructure, error) {
 	var createdObject Infrastructure
 
 	if err := checkID(infrastructureID); err != nil {
@@ -81,8 +83,8 @@ func (c *Client) InfrastructureEdit(infrastructureID ID, infrastructureOperation
 	return &createdObject, nil
 }
 
-//InfrastructureDelete deletes an infrastructure and all associated elements. Requires deploy
-func (c *Client) InfrastructureDelete(infrastructureID ID) error {
+//infrastructureDelete deletes an infrastructure and all associated elements. Requires deploy
+func (c *Client) infrastructureDelete(infrastructureID id) error {
 
 	if err := checkID(infrastructureID); err != nil {
 		return err
@@ -101,8 +103,8 @@ func (c *Client) InfrastructureDelete(infrastructureID ID) error {
 	return nil
 }
 
-//InfrastructureOperationCancel reverts (undos) alterations done before deploy
-func (c *Client) InfrastructureOperationCancel(infrastructureID ID) error {
+//infrastructureOperationCancel reverts (undos) alterations done before deploy
+func (c *Client) infrastructureOperationCancel(infrastructureID id) error {
 
 	if err := checkID(infrastructureID); err != nil {
 		return err
@@ -123,8 +125,8 @@ func (c *Client) InfrastructureOperationCancel(infrastructureID ID) error {
 	return nil
 }
 
-//InfrastructureDeploy initiates a deploy operation that will apply all registered changes for the respective infrastructure
-func (c *Client) InfrastructureDeploy(infrastructureID ID, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error {
+//infrastructureDeploy initiates a deploy operation that will apply all registered changes for the respective infrastructure
+func (c *Client) infrastructureDeploy(infrastructureID id, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error {
 
 	if err := checkID(infrastructureID); err != nil {
 		return err
@@ -177,8 +179,8 @@ func (c *Client) Infrastructures() (*map[string]Infrastructure, error) {
 	return &createdObject, nil
 }
 
-//InfrastructureGet returns a specific infrastructure
-func (c *Client) InfrastructureGet(infrastructureID ID) (*Infrastructure, error) {
+//infrastructureGet returns a specific infrastructure by id
+func (c *Client) infrastructureGet(infrastructureID id) (*Infrastructure, error) {
 	var infrastructure Infrastructure
 
 	if err := checkID(infrastructureID); err != nil {
@@ -194,8 +196,8 @@ func (c *Client) InfrastructureGet(infrastructureID ID) (*Infrastructure, error)
 	return &infrastructure, nil
 }
 
-//InfrastructureUserLimits returns user metadata
-func (c *Client) InfrastructureUserLimits(infrastructureID ID) (*map[string]interface{}, error) {
+//infrastructureUserLimits returns user metadata
+func (c *Client) infrastructureUserLimits(infrastructureID id) (*map[string]interface{}, error) {
 	var userLimits map[string]interface{}
 
 	if err := checkID(infrastructureID); err != nil {

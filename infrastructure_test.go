@@ -62,7 +62,7 @@ func TestInfrastructureGetWithLabel(t *testing.T) {
 	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
 	Expect(err).To(BeNil())
 
-	ret, err := mc.InfrastructureGet("my-test")
+	ret, err := mc.InfrastructureGetByLabel("my-test")
 	Expect(err).To(BeNil())
 	Expect(ret).NotTo(BeNil())
 
@@ -87,7 +87,7 @@ func TestInfrastructureGetWithWrongLabel(t *testing.T) {
 	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
 	Expect(err).To(BeNil())
 
-	ret, err := mc.InfrastructureGet("my_test")
+	ret, err := mc.InfrastructureGetByLabel("my_test")
 	Expect(err).NotTo(BeNil())
 	Expect(err.Error()).To(ContainSubstring("label"))
 	Expect(ret).To(BeNil())
@@ -168,7 +168,7 @@ func TestInfrastructureRevert(t *testing.T) {
 	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
 	Expect(err).To(BeNil())
 
-	err = mc.InfrastructureOperationCancel("test-asdasd")
+	err = mc.InfrastructureOperationCancelByLabel("test-asdasd")
 	Expect(err).To(BeNil())
 
 	body := (<-requestChan).body

@@ -1,5 +1,7 @@
 package metalcloud
 
+//go:generate go run helper/gen_exports.go
+
 import "fmt"
 
 //DriveArray represents a collection of identical drives
@@ -36,7 +38,16 @@ type DriveArrayOperation struct {
 }
 
 //DriveArrays retrieves the list of drives arrays of an infrastructure
-func (c *Client) DriveArrays(infrastructureID ID) (*map[string]DriveArray, error) {
+func (c *Client) DriveArrays(infrastructureID int) (*map[string]DriveArray, error) {
+	return c.driveArrays(infrastructureID)
+}
+
+//DriveArraysByLabel retrieves the list of drives arrays of an infrastructure
+func (c *Client) DriveArraysByLabel(infrastructureLabel string) (*map[string]DriveArray, error) {
+	return c.driveArrays(infrastructureLabel)
+}
+
+func (c *Client) driveArrays(infrastructureID id) (*map[string]DriveArray, error) {
 
 	if err := checkID(infrastructureID); err != nil {
 		return nil, err
@@ -67,7 +78,16 @@ func (c *Client) DriveArrays(infrastructureID ID) (*map[string]DriveArray, error
 }
 
 //DriveArrayGet retrieves a DriveArray object with specified ids
-func (c *Client) DriveArrayGet(driveArrayID ID) (*DriveArray, error) {
+func (c *Client) DriveArrayGet(driveArrayID int) (*DriveArray, error) {
+	return c.driveArrayGet(driveArrayID)
+}
+
+//DriveArrayGetByLabel retrieves a DriveArray object with specified ids
+func (c *Client) DriveArrayGetByLabel(driveArrayLabel string) (*DriveArray, error) {
+	return c.driveArrayGet(driveArrayLabel)
+}
+
+func (c *Client) driveArrayGet(driveArrayID id) (*DriveArray, error) {
 
 	var createdObject DriveArray
 
@@ -88,8 +108,8 @@ func (c *Client) DriveArrayGet(driveArrayID ID) (*DriveArray, error) {
 	return &createdObject, nil
 }
 
-//DriveArrayCreate creates a drive array. Requires deploy.
-func (c *Client) DriveArrayCreate(infrastructureID ID, driveArray DriveArray) (*DriveArray, error) {
+//driveArrayCreate creates a drive array. Requires deploy.
+func (c *Client) driveArrayCreate(infrastructureID id, driveArray DriveArray) (*DriveArray, error) {
 	var createdObject DriveArray
 
 	if err := checkID(infrastructureID); err != nil {
@@ -110,8 +130,8 @@ func (c *Client) DriveArrayCreate(infrastructureID ID, driveArray DriveArray) (*
 	return &createdObject, nil
 }
 
-//DriveArrayEdit alters a deployed drive array. Requires deploy.
-func (c *Client) DriveArrayEdit(driveArrayID ID, driveArrayOperation DriveArrayOperation) (*DriveArray, error) {
+//driveArrayEdit alters a deployed drive array. Requires deploy.
+func (c *Client) driveArrayEdit(driveArrayID id, driveArrayOperation DriveArrayOperation) (*DriveArray, error) {
 	var createdObject DriveArray
 
 	if err := checkID(driveArrayID); err != nil {
@@ -132,8 +152,8 @@ func (c *Client) DriveArrayEdit(driveArrayID ID, driveArrayOperation DriveArrayO
 	return &createdObject, nil
 }
 
-//DriveArrayDelete deletes a Drive Array with specified id
-func (c *Client) DriveArrayDelete(driveArrayID ID) error {
+//driveArrayDelete deletes a Drive Array with specified id
+func (c *Client) driveArrayDelete(driveArrayID id) error {
 
 	if err := checkID(driveArrayID); err != nil {
 		return err

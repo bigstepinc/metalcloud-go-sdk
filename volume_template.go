@@ -1,5 +1,7 @@
 package metalcloud
 
+//go:generate go run helper/gen_exports.go
+
 //OperatingSystem describes an OS
 type OperatingSystem struct {
 	OperatingSystemType         string `json:"operating_system_type,omitempty"`
@@ -47,8 +49,8 @@ func (c *Client) VolumeTemplates() (*map[string]VolumeTemplate, error) {
 	return &createdObject, nil
 }
 
-//VolumeTemplateGet returns the specified volume template
-func (c *Client) VolumeTemplateGet(volumeTemplateID ID) (*VolumeTemplate, error) {
+//volumeTemplateGet returns the specified volume template
+func (c *Client) volumeTemplateGet(volumeTemplateID id) (*VolumeTemplate, error) {
 	var createdObject VolumeTemplate
 
 	if err := checkID(volumeTemplateID); err != nil {

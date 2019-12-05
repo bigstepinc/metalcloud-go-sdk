@@ -1,5 +1,7 @@
 package metalcloud
 
+//go:generate go run helper/gen_exports.go
+
 //Network object describes an high level connection construct
 type Network struct {
 	NetworkID                 int               `json:"network_id,omitempty"`
@@ -25,8 +27,8 @@ type NetworkOperation struct {
 	NetworkChangeID           int    `json:"network_change_id,omitempty"`
 }
 
-//NetworkGet retrieves a network object
-func (c *Client) NetworkGet(networkID ID) (*Network, error) {
+//networkGet retrieves a network object
+func (c *Client) networkGet(networkID id) (*Network, error) {
 	var createdObject Network
 
 	if err := checkID(networkID); err != nil {
@@ -45,8 +47,8 @@ func (c *Client) NetworkGet(networkID ID) (*Network, error) {
 	return &createdObject, nil
 }
 
-//Networks returns a list of all network objects of an infrastructure
-func (c *Client) Networks(infrastructureID ID) (*map[string]Network, error) {
+//networks returns a list of all network objects of an infrastructure
+func (c *Client) networks(infrastructureID id) (*map[string]Network, error) {
 
 	if err := checkID(infrastructureID); err != nil {
 		return nil, err
@@ -76,8 +78,8 @@ func (c *Client) Networks(infrastructureID ID) (*map[string]Network, error) {
 	return &createdObject, nil
 }
 
-//NetworkCreate creates a network
-func (c *Client) NetworkCreate(infrastructureID ID, network Network) (*Network, error) {
+//networkCreate creates a network
+func (c *Client) networkCreate(infrastructureID id, network Network) (*Network, error) {
 	var createdObject Network
 
 	if err := checkID(infrastructureID); err != nil {
@@ -97,8 +99,8 @@ func (c *Client) NetworkCreate(infrastructureID ID, network Network) (*Network, 
 	return &createdObject, nil
 }
 
-//NetworkEdit applies a change to an existing network
-func (c *Client) NetworkEdit(networkID ID, networkOperation NetworkOperation) (*Network, error) {
+//networkEdit applies a change to an existing network
+func (c *Client) networkEdit(networkID id, networkOperation NetworkOperation) (*Network, error) {
 	var createdObject Network
 
 	if err := checkID(networkID); err != nil {
@@ -118,8 +120,8 @@ func (c *Client) NetworkEdit(networkID ID, networkOperation NetworkOperation) (*
 	return &createdObject, nil
 }
 
-//NetworkDelete deletes a network.
-func (c *Client) NetworkDelete(networkID ID) error {
+//networkDelete deletes a network.
+func (c *Client) networkDelete(networkID id) error {
 
 	if err := checkID(networkID); err != nil {
 		return err
@@ -136,8 +138,8 @@ func (c *Client) NetworkDelete(networkID ID) error {
 	return nil
 }
 
-//NetworkJoin merges two specified Network objects.
-func (c *Client) NetworkJoin(networkID ID, networkToBeDeletedID ID) error {
+//networkJoin merges two specified Network objects.
+func (c *Client) networkJoin(networkID id, networkToBeDeletedID id) error {
 
 	if err := checkID(networkID); err != nil {
 		return err

@@ -139,7 +139,7 @@ func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 
 	req.URL = url
 
-	var resp *http.Response = nil
+	var resp *http.Response
 
 	if !c.DryRun {
 		resp, err = http.DefaultTransport.RoundTrip(req)

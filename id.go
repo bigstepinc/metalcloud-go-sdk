@@ -6,7 +6,7 @@ import (
 )
 
 //ID interface is used where the type of the ID can be either an int or a string
-type ID interface{}
+type id interface{}
 
 func checkLabel(s string) error {
 	r := regexp.MustCompilePOSIX("^[a-zA-Z]{1,1}[a-zA-Z0-9-]{0,61}[a-zA-Z0-9]{1,1}|[a-zA-Z]{1,1}$")
@@ -17,7 +17,7 @@ func checkLabel(s string) error {
 	return nil
 }
 
-func checkID(i ID) error {
+func checkID(i id) error {
 
 	switch v := i.(type) {
 	case int:

@@ -45,7 +45,7 @@ Commands:
 
 		for _, infra := range *infras {
 			log.Printf("\tInfrastructure: %s (%s) [%s]", infra.InfrastructureLabel, infra.InfrastructureID, infra.UserEmailOwner)
-			_, err = client.InfrastructureGet(infra.InfrastructureLabel)
+			_, err = client.InfrastructureGetByLabel(infra.InfrastructureLabel)
 
 			instanceArrays, err := client.InstanceArrays(infra.InfrastructureID)
 			if err != nil {
@@ -98,8 +98,7 @@ Commands:
 			log.Fatalf("syntax: %s deploy <infrastructureID>\n", os.Args[0])
 		}
 
-		//infrastructureID, err := strconv.Atoi(os.Args[2])
-		infrastructureID := os.Args[2]
+		infrastructureID, err := strconv.Atoi(os.Args[2])
 
 		if err != nil {
 			log.Fatalf("infrastructureID must be a number, it is %s %s\n", os.Args[2], err)

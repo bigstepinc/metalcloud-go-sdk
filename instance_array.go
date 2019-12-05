@@ -1,5 +1,7 @@
 package metalcloud
 
+//go:generate go run helper/gen_exports.go
+
 import "fmt"
 
 //InstanceArray object describes a collection of identical instances
@@ -98,8 +100,8 @@ type InstanceArrayInterfaceOperation struct {
 	InstanceArrayInterfaceChangeID         int           `json:"instance_array_interface_change_id,omitempty"`
 }
 
-//InstanceArrayGet returns an InstanceArray with specified id
-func (c *Client) InstanceArrayGet(instanceArrayID ID) (*InstanceArray, error) {
+//instanceArrayGet returns an InstanceArray with specified id
+func (c *Client) instanceArrayGet(instanceArrayID id) (*InstanceArray, error) {
 	var createdObject InstanceArray
 
 	if err := checkID(instanceArrayID); err != nil {
@@ -118,8 +120,8 @@ func (c *Client) InstanceArrayGet(instanceArrayID ID) (*InstanceArray, error) {
 	return &createdObject, nil
 }
 
-//InstanceArrays returns list of instance arrays of specified infrastructure
-func (c *Client) InstanceArrays(infrastructureID ID) (*map[string]InstanceArray, error) {
+//instanceArrays returns list of instance arrays of specified infrastructure
+func (c *Client) instanceArrays(infrastructureID id) (*map[string]InstanceArray, error) {
 
 	if err := checkID(infrastructureID); err != nil {
 		return nil, err
@@ -149,8 +151,8 @@ func (c *Client) InstanceArrays(infrastructureID ID) (*map[string]InstanceArray,
 	return &createdObject, nil
 }
 
-//InstanceArrayCreate creates an instance array (colletion of identical instances). Requires Deploy.
-func (c *Client) InstanceArrayCreate(infrastructureID ID, instanceArray InstanceArray) (*InstanceArray, error) {
+//instanceArrayCreate creates an instance array (colletion of identical instances). Requires Deploy.
+func (c *Client) instanceArrayCreate(infrastructureID id, instanceArray InstanceArray) (*InstanceArray, error) {
 	var createdObject InstanceArray
 
 	if err := checkID(infrastructureID); err != nil {
@@ -170,8 +172,8 @@ func (c *Client) InstanceArrayCreate(infrastructureID ID, instanceArray Instance
 	return &createdObject, nil
 }
 
-//InstanceArrayEdit alterns a deployed instance array. Requires deploy.
-func (c *Client) InstanceArrayEdit(instanceArrayID ID, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *[]ServerType, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
+//instanceArrayEdit alterns a deployed instance array. Requires deploy.
+func (c *Client) instanceArrayEdit(instanceArrayID id, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *[]ServerType, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
 	var createdObject InstanceArray
 
 	if err := checkID(instanceArrayID); err != nil {
@@ -195,8 +197,8 @@ func (c *Client) InstanceArrayEdit(instanceArrayID ID, instanceArrayOperation In
 	return &createdObject, nil
 }
 
-//InstanceArrayDelete deletes an instance array. Requires deploy.
-func (c *Client) InstanceArrayDelete(instanceArrayID ID) error {
+//instanceArrayDelete deletes an instance array. Requires deploy.
+func (c *Client) instanceArrayDelete(instanceArrayID id) error {
 
 	if err := checkID(instanceArrayID); err != nil {
 		return err
