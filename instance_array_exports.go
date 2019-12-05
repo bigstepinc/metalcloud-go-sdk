@@ -24,22 +24,22 @@ func (c *Client) InstanceArraysByLabel(infrastructureLabel string) (*map[string]
 
 //InstanceArrayCreate creates an instance array (colletion of identical instances). Requires Deploy.
 func (c *Client) InstanceArrayCreate(infrastructureID int, instanceArray InstanceArray) (*InstanceArray, error) {
-	return c.instanceArrayCreate(infrastructureID, instanceArray)
+	return c.instanceArrayCreate(infrastructureID,instanceArray)
 }
 
 //InstanceArrayCreateByLabel creates an instance array (colletion of identical instances). Requires Deploy.
 func (c *Client) InstanceArrayCreateByLabel(infrastructureLabel string, instanceArray InstanceArray) (*InstanceArray, error) {
-	return c.instanceArrayCreate(infrastructureLabel, instanceArray)
+	return c.instanceArrayCreate(infrastructureLabel,instanceArray)
 }
 
 //InstanceArrayEdit alterns a deployed instance array. Requires deploy.
 func (c *Client) InstanceArrayEdit(instanceArrayID int, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *[]ServerType, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
-	return c.instanceArrayEdit(instanceArrayID, instanceArrayOperation, bSwapExistingInstancesHardware, bKeepDetachingDrives, objServerTypeMatches, arrInstancesToBeDeleted)
+	return c.instanceArrayEdit(instanceArrayID,instanceArrayOperation,bSwapExistingInstancesHardware,bKeepDetachingDrives,objServerTypeMatches,arrInstancesToBeDeleted)
 }
 
 //InstanceArrayEditByLabel alterns a deployed instance array. Requires deploy.
 func (c *Client) InstanceArrayEditByLabel(instanceArrayLabel string, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *[]ServerType, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
-	return c.instanceArrayEdit(instanceArrayLabel, instanceArrayOperation, bSwapExistingInstancesHardware, bKeepDetachingDrives, objServerTypeMatches, arrInstancesToBeDeleted)
+	return c.instanceArrayEdit(instanceArrayLabel,instanceArrayOperation,bSwapExistingInstancesHardware,bKeepDetachingDrives,objServerTypeMatches,arrInstancesToBeDeleted)
 }
 
 //InstanceArrayDelete deletes an instance array. Requires deploy.
