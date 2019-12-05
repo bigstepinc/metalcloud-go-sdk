@@ -44,7 +44,7 @@ Commands:
 		}
 
 		for _, infra := range *infras {
-			log.Printf("\tInfrastructure: %s (%s) [%s]", infra.InfrastructureLabel, infra.InfrastructureID, infra.UserEmailOwner)
+			log.Printf("\tInfrastructure: %s (%d) [%s]", infra.InfrastructureLabel, infra.InfrastructureID, infra.UserEmailOwner)
 			_, err = client.InfrastructureGetByLabel(infra.InfrastructureLabel)
 
 			instanceArrays, err := client.InstanceArrays(infra.InfrastructureID)
