@@ -26,6 +26,7 @@ type Client struct {
 	user      string
 	apiKey    string
 	endpoint  string
+	userID    int
 }
 
 //GetMetalcloudClient returns a metal cloud client
