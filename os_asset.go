@@ -115,8 +115,7 @@ func (c *Client) OSAssets() (*map[string]OSAsset, error) {
 
 	res, err := c.rpcClient.Call(
 		"os_assets",
-		*userID,
-		nil)
+		*userID)
 
 	if err != nil {
 		return nil, err
