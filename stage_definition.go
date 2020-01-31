@@ -27,6 +27,7 @@ type StageDefinition struct {
 type HTTPRequest struct {
 	URL     string              `json:"url,omitempty"`
 	Options WebFetchAAPIOptions `json:"options,omitempty"`
+	Type    string              `json:"type,omitempty"`
 }
 
 //WebFetchAAPIOptions represents node-fetch options which is follows the Web API Fetch specification. See https://github.com/node-fetch/node-fetch
@@ -57,6 +58,7 @@ type WebFetchAPIRequestHeaders struct {
 type AnsibleBundle struct {
 	AnsibleBundleArchiveFilename       string `json:"ansible_bundle_archive_filename,omitempty"`
 	AnsibleBundleArchiveContentsBase64 string `json:"ansible_bundle_archive_contents_base64,omitempty"`
+	Type                               string `json:"type,omitempty"`
 }
 
 //UnmarshalJSON custom json marshaling
@@ -80,6 +82,7 @@ func (s *StageDefinition) UnmarshalJSON(b []byte) error {
 		if err != nil {
 			return err
 		}
+		obj.Type = "AnsibleBundle"
 		s.StageDefinition = obj
 	case "HTTPRequest":
 		var obj HTTPRequest
@@ -91,6 +94,7 @@ func (s *StageDefinition) UnmarshalJSON(b []byte) error {
 		if err != nil {
 			return err
 		}
+		obj.Type = "HTTPRequest"
 		s.StageDefinition = obj
 	}
 	s.StageDefinitionID = w.StageDefinitionID
