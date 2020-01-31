@@ -1,6 +1,10 @@
 package metalcloud
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/ybbus/jsonrpc"
+)
 
 //Secret struct defines a server type
 type Secret struct {
@@ -107,11 +111,17 @@ func (c *Client) Secrets(usage string) (*map[string]Secret, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	res, err := c.rpcClient.Call(
-		"secrets",
-		*userID,
-		usage)
+	var res *jsonrpc.RPCResponse
+	if usage != "" {
+		res, err = c.rpcClient.Call(
+			"secrets",
+			*userID,
+			usage)
+	} else {
+		res, err = c.rpcClient.Call(
+			"secrets",
+			*userID)
+	}
 
 	if err != nil {
 		return nil, err

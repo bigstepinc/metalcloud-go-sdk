@@ -1,6 +1,10 @@
 package metalcloud
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/ybbus/jsonrpc"
+)
 
 //Variable struct defines a Variable type
 type Variable struct {
@@ -108,10 +112,17 @@ func (c *Client) Variables(usage string) (*map[string]Variable, error) {
 		return nil, err
 	}
 
-	res, err := c.rpcClient.Call(
-		"variables",
-		*userID,
-		usage)
+	var res *jsonrpc.RPCResponse
+	if usage != "" {
+		res, err = c.rpcClient.Call(
+			"variables",
+			*userID,
+			usage)
+	} else {
+		res, err = c.rpcClient.Call(
+			"variables",
+			*userID)
+	}
 
 	if err != nil {
 		return nil, err
