@@ -93,6 +93,7 @@ func (c *Client) GetEndpoint() string {
 	return c.endpoint
 }
 
+//GetUserID returns the ID of the user extracted from the API key
 func (c *Client) GetUserID() int {
 	return c.userID
 }
