@@ -176,7 +176,7 @@ func (c *Client) OSTemplates() (*map[string]OSTemplate, error) {
 }
 
 //OSTemplateOSAssets returns the OSAssets assigned to an OSTemplate.
-func (c *Client) OSTemplateOSAssets(osTemplateID int) (*map[string]OSTemplate, error) {
+func (c *Client) OSTemplateOSAssets(osTemplateID int) (*map[string]OSAsset, error) {
 
 	res, err := c.rpcClient.Call(
 		"os_template_os_assets",
@@ -188,11 +188,11 @@ func (c *Client) OSTemplateOSAssets(osTemplateID int) (*map[string]OSTemplate, e
 
 	_, ok := res.Result.([]interface{})
 	if ok {
-		var m = map[string]OSTemplate{}
+		var m = map[string]OSAsset{}
 		return &m, nil
 	}
 
-	var createdObject map[string]OSTemplate
+	var createdObject map[string]OSAsset
 
 	err2 := res.GetObject(&createdObject)
 	if err2 != nil {
