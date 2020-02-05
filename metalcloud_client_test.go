@@ -43,6 +43,14 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
+func TestClientUserID(t *testing.T) {
+	RegisterTestingT(t)
+	apiKey := "101:sdjasdkajkdnajsdnasd"
+	client, err := GetMetalcloudClient("u", apiKey, "http://host/api", false)
+	Expect(err).To(BeNil())
+	Expect(client.GetUserID()).To(Equal(101))
+}
+
 func TestSignature(t *testing.T) {
 	RegisterTestingT(t)
 

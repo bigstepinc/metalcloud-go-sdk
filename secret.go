@@ -22,15 +22,12 @@ type Secret struct {
 func (c *Client) SecretCreate(secret Secret) (*Secret, error) {
 	var createdObject Secret
 
-	userID, err := c.UserEmailToUserID(c.user)
-	if err != nil {
-		return nil, err
-	}
+	userID := c.GetUserID()
 
-	err = c.rpcClient.CallFor(
+	err := c.rpcClient.CallFor(
 		&createdObject,
 		"secret_create",
-		*userID,
+		userID,
 		secret)
 
 	if err != nil {
@@ -75,7 +72,6 @@ func (c *Client) SecretUpdate(secretID int, secret Secret) (*Secret, error) {
 		secret)
 
 	if err != nil {
-
 		return nil, err
 	}
 

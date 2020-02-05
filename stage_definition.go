@@ -116,15 +116,12 @@ func (s *StageDefinition) UnmarshalJSON(b []byte) error {
 func (c *Client) StageDefinitionCreate(stageDefinition StageDefinition) (*StageDefinition, error) {
 	var createdObject StageDefinition
 
-	userID, err := c.UserEmailToUserID(c.user)
-	if err != nil {
-		return nil, err
-	}
+	userID := c.GetUserID()
 
-	err = c.rpcClient.CallFor(
+	err := c.rpcClient.CallFor(
 		&createdObject,
 		"stage_definition_create",
-		*userID,
+		userID,
 		stageDefinition)
 
 	if err != nil {

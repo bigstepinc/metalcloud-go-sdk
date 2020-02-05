@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 
 	"github.com/ybbus/jsonrpc"
@@ -62,11 +63,22 @@ func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEna
 		HTTPClient: httpClient,
 	})
 
+	components := strings.Split(apiKey, ":")
+	userID := 0
+	if len(components) > 1 {
+		n, err := strconv.Atoi(components[0])
+		if err != nil {
+			return nil, err
+		}
+		userID = n
+	}
+
 	return &Client{
 		rpcClient: rpcClient,
 		user:      user,
 		apiKey:    apiKey,
 		endpoint:  endpoint,
+		userID:    userID,
 	}, nil
 
 }
@@ -79,6 +91,10 @@ func (c *Client) GetUserEmail() string {
 //GetEndpoint returns the endpoint configured for this connection
 func (c *Client) GetEndpoint() string {
 	return c.endpoint
+}
+
+func (c *Client) GetUserID() int {
+	return c.userID
 }
 
 type signatureAdderRoundTripper struct {
@@ -109,6 +125,7 @@ func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 	}
 
 	if c.LoggingEnabled {
+		log.Printf("%s call to:%s\n", req.Method, req.URL)
 		log.Println(string(message))
 	}
 

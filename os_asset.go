@@ -108,14 +108,11 @@ func (c *Client) OSAssetGet(osAssetID int) (*OSAsset, error) {
 //OSAssets retrieves a list of all the OSAsset objects which a specified User is allowed to see through ownership or delegation. The OSAsset objects never return the actual protected OSAsset value.
 func (c *Client) OSAssets() (*map[string]OSAsset, error) {
 
-	userID, err := c.UserEmailToUserID(c.user)
-	if err != nil {
-		return nil, err
-	}
+	userID := c.GetUserID()
 
 	res, err := c.rpcClient.Call(
 		"os_assets",
-		*userID)
+		userID)
 
 	if err != nil {
 		return nil, err

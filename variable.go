@@ -107,25 +107,26 @@ func (c *Client) VariableGet(variableID int) (*Variable, error) {
 //Variables retrieves a list of all the Variable objects which a specified User is allowed to see through ownership or delegation. The Variable objects never return the actual protected Variable value.
 func (c *Client) Variables(usage string) (*map[string]Variable, error) {
 
-	userID, err := c.UserEmailToUserID(c.user)
-	if err != nil {
-		return nil, err
-	}
+	userID := c.GetUserID()
 
 	var res *jsonrpc.RPCResponse
 	if usage != "" {
-		res, err = c.rpcClient.Call(
+		v, err := c.rpcClient.Call(
 			"variables",
-			*userID,
+			userID,
 			usage)
+		if err != nil {
+			return nil, err
+		}
+		res = v
 	} else {
-		res, err = c.rpcClient.Call(
+		v, err := c.rpcClient.Call(
 			"variables",
-			*userID)
-	}
-
-	if err != nil {
-		return nil, err
+			userID)
+		if err != nil {
+			return nil, err
+		}
+		res = v
 	}
 
 	_, ok := res.Result.([]interface{})

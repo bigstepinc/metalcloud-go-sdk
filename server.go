@@ -137,10 +137,7 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 		},
 	}
 
-	userID, err := c.UserEmailToUserID(c.user)
-	if err != nil {
-		return nil, err
-	}
+	userID := c.GetUserID()
 
 	collapseType := "none"
 
