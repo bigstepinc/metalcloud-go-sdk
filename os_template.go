@@ -30,11 +30,11 @@ type OSTemplate struct {
 
 //OSTemplateCredentials holds information needed to connect to an OS installed by an OSTemplate.
 type OSTemplateCredentials struct {
-	InitialUser               string `json:"initial_user,omitempty"`
-	InitialPasswordEncrypted  string `json:"initial_password_encrypted,omitempty"`
-	InitialPassword           string `json:"initial_password,omitempty"`
-	InitialSSHPort            int    `json:"initial_ssh_port,omitempty"`
-	ChangePasswordAfterDeploy bool   `json:"change_password_after_deploy,omitempty"`
+	OSTemplateInitialUser               string `json:"os_template_initial_user,omitempty"`
+	OSTemplateInitialPasswordEncrypted  string `json:"os_template_initial_password_encrypted,omitempty"`
+	OSTemplateInitialPassword           string `json:"os_template_initial_password,omitempty"`
+	OSTemplateInitialSSHPort            int    `json:"os_template_initial_ssh_port,omitempty"`
+	OSTemplateChangePasswordAfterDeploy bool   `json:"os_template_change_password_after_deploy,omitempty"`
 }
 
 //OSTemplateCreate creates a osTemplate object
@@ -132,12 +132,12 @@ func (c *Client) OSTemplateGet(osTemplateID int, decryptPasswd bool) (*OSTemplat
 		err = c.rpcClient.CallFor(
 			&passwd,
 			"password_decrypt",
-			createdObject.OSTemplateCredentials.InitialPasswordEncrypted,
+			createdObject.OSTemplateCredentials.OSTemplateInitialPasswordEncrypted,
 		)
 		if err != nil {
 			return nil, err
 		}
-		createdObject.OSTemplateCredentials.InitialPassword = passwd
+		createdObject.OSTemplateCredentials.OSTemplateInitialPassword = passwd
 	}
 
 	return &createdObject, nil
