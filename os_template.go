@@ -132,7 +132,7 @@ func (c *Client) OSTemplateGet(osTemplateID int, decryptPasswd bool) (*OSTemplat
 		err = c.rpcClient.CallFor(
 			&passwd,
 			"password_decrypt",
-			createdObject.OSTemplateCredentials.OSTemplateInitialPasswordEncrypted,
+			createdObject.OSTemplateCredentials.OSTemplateInitialPassword,
 		)
 		if err != nil {
 			return nil, err
