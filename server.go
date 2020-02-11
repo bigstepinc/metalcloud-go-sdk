@@ -87,6 +87,22 @@ type SearchResultForServers struct {
 	RowsTotal            int                  `json:"rows_total,omitempty"`
 }
 
+//ServerComponent information about a server's components
+type ServerComponent struct {
+	ServerComponentID                              int      `json:"server_component_id,omitempty"`
+	ServerID                                       int      `json:"server_id,omitempty"`
+	ServerComponentName                            string   `json:"server_component_name,omitempty"`
+	ServerComponentFirmwareVersion                 string   `json:"server_component_firmware_version,omitempty"`
+	ServerComponentFirmwareUpdateable              bool     `json:"server_component_firmware_updateable,omitempty"`
+	ServerComponentFirmwareJSON                    string   `json:"server_component_firmware_json,omitempty"`
+	ServerComponentFirmwareUpdateAvailableVersions []string `json:"server_component_firmware_update_available_versions,omitempty"`
+	ServerComponentFirmwareStatus                  string   `json:"server_component_firmware_status,omitempty"`
+	ServerComponentType                            string   `json:"server_component_type,omitempty"`
+	ServerComponentFirmwareUpdateTimestamp         string   `json:"server_component_firmware_update_timestamp,omitempty"`
+	ServerComponentFirmwareTargetVersion           string   `json:"server_component_firmware_target_version,omitempty"`
+	ServerComponentFirmwareScheduledTimestamp      string   `json:"server_component_firmware_scheduled_timestamp,omitempty"`
+}
+
 //ServersSearch searches for servers matching certain filter
 func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 
@@ -199,6 +215,80 @@ func (c *Client) ServerGet(serverID int, decryptPasswd bool) (*Server, error) {
 		createdObject.ServerIPMInternalPassword = passwd
 	} else {
 		createdObject.ServerIPMInternalPassword = ""
+	}
+
+	return &createdObject, nil
+}
+
+//ServerFirmwareComponentUpgrade Creates a firmware upgrading session for the specified component.
+//If no strServerComponentFirmwareNewVersion or strFirmwareBinaryURL are provided the system will use the values from the database which should have been previously added
+func (c *Client) ServerFirmwareComponentUpgrade(serverID int, serverComponentID int, serverComponentFirmwareNewVersion string, firmwareBinaryURL string) error {
+
+	_, err := c.rpcClient.Call(
+		"server_firmware_component_upgrade",
+		serverID,
+		serverComponentID,
+		serverComponentFirmwareNewVersion,
+		firmwareBinaryURL,
+	)
+	return err
+}
+
+//ServerFirmwareUpgrade creates a firmware upgrading session that affects all components from the specified server that have a target version set and are updatable.
+func (c *Client) ServerFirmwareUpgrade(serverID int) error {
+
+	_, err := c.rpcClient.Call(
+		"server_firmware_upgrade",
+		serverID,
+	)
+	return err
+}
+
+//ServerFirmwareComponentTargetVersionSet Sets a firmware target version for the upgrading process. The system will apply the upgrade at the next upgrading session.
+func (c *Client) ServerFirmwareComponentTargetVersionSet(serverComponentID int, serverComponentFirmwareNewVersion string) error {
+
+	_, err := c.rpcClient.Call(
+		"server_firmware_component_target_version_set",
+		serverComponentID,
+		serverComponentFirmwareNewVersion,
+	)
+	return err
+}
+
+//ServerFirmwareComponentTargetVersionUpdate Updates for every component of the specified server the available firmware versions that can be used as target by the firmware upgrading process. The available versions are extracted from a vendor specific catalog.
+func (c *Client) ServerFirmwareComponentTargetVersionUpdate(serverComponentID int) error {
+
+	_, err := c.rpcClient.Call(
+		"server_firmware_component_available_versions_update",
+		serverComponentID,
+	)
+	return err
+}
+
+//ServerFirmwareComponentTargetVersionAdd Adds a new available firmware version for a server component along with the url of the binary. If the version already exists the old url will be overwritten.
+func (c *Client) ServerFirmwareComponentTargetVersionAdd(serverComponentID int, version string, firmareBinaryURL string) error {
+
+	_, err := c.rpcClient.Call(
+		"server_firmware_component_available_versions_add",
+		serverComponentID,
+		version,
+		firmareBinaryURL,
+	)
+	return err
+}
+
+//ServerComponentGet returns a server's component's details
+func (c *Client) ServerComponentGet(serverComponentID int) (*ServerComponent, error) {
+
+	var createdObject ServerComponent
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_get_internal",
+		serverComponentID)
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil

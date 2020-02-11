@@ -2,6 +2,7 @@ package metalcloud
 
 import (
 	"fmt"
+	"strings"
 )
 
 //OSTemplate A template can be created based on a drive and it has the same characteristics and holds the same information as the parent drive.
@@ -122,17 +123,16 @@ func (c *Client) OSTemplateGet(osTemplateID int, decryptPasswd bool) (*OSTemplat
 
 	if decryptPasswd {
 
-		/*
-			passwdComponents := strings.Split(createdObject.ServerIPMInternalPassword, ":")
-			if len(passwdComponents) != 2 {
-				return nil, fmt.Errorf("Password not returned with proper components")
-			}
-		*/
+		passwdComponents := strings.Split(createdObject.OSTemplateCredentials.OSTemplateInitialPassword, ":")
+		if len(passwdComponents) != 2 {
+			return nil, fmt.Errorf("Password not returned with proper components")
+		}
+
 		var passwd string
 		err = c.rpcClient.CallFor(
 			&passwd,
 			"password_decrypt",
-			createdObject.OSTemplateCredentials.OSTemplateInitialPassword,
+			passwdComponents[1],
 		)
 		if err != nil {
 			return nil, err
