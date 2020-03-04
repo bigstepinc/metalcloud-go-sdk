@@ -103,6 +103,14 @@ type ServerComponent struct {
 	ServerComponentFirmwareScheduledTimestamp      string   `json:"server_component_firmware_scheduled_timestamp,omitempty"`
 }
 
+//SearchResultForServerComponents describes a search result
+type SearchResultForServerComponents struct {
+	DurationMilliseconds int               `json:"duration_millisecnds,omitempty"`
+	Rows                 []ServerComponent `json:"rows,omitempty"`
+	RowsOrder            [][]string        `json:"rows_order,omitempty"`
+	RowsTotal            int               `json:"rows_total,omitempty"`
+}
+
 //ServersSearch searches for servers matching certain filter
 func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 
@@ -292,4 +300,54 @@ func (c *Client) ServerComponentGet(serverComponentID int) (*ServerComponent, er
 	}
 
 	return &createdObject, nil
+}
+
+//ServerComponents searches for servers matching certain filter
+func (c *Client) ServerComponents(serverID int, filter string) (*[]ServerComponent, error) {
+
+	tables := []string{"_server_components"}
+	columns := map[string][]string{
+		"_server_components": {
+			"server_component_name",
+			"server_component_id",
+			"server_component_firmware_json",
+			"server_component_type",
+			"server_component_firmware_update_timestamp",
+			"server_component_firmware_status",
+			"server_component_firmware_update_available_versions",
+			"server_component_firmware_updateable",
+			"server_component_firmware_version",
+			"server_component_firmware_status",
+		},
+	}
+
+	userID := c.GetUserID()
+
+	collapseType := "none"
+	filterWithServerID := fmt.Sprintf("+server_id:%d %s", serverID, filter)
+	res, err := c.rpcClient.Call(
+		"search",
+		userID,
+		filterWithServerID,
+		tables,
+		columns,
+		collapseType)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var createdObject map[string]SearchResultForServerComponents
+
+	err2 := res.GetObject(&createdObject)
+	if err2 != nil {
+		return nil, err2
+	}
+
+	list := []ServerComponent{}
+	for _, s := range createdObject[tables[0]].Rows {
+		list = append(list, s)
+	}
+
+	return &list, nil
 }

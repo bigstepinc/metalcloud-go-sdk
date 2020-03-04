@@ -24,7 +24,7 @@ type OSTemplate struct {
 	VolumeTemplateDeprecationStatus    string                 `json:"volume_template_deprecation_status,omitempty"`
 	OSTemplateCredentials              *OSTemplateCredentials `json:"os_template_credentials,omitempty"`
 	VolumeTemplateTags                 []string               `json:"volume_template_tags,omitempty"`
-	OSTemplateArchitecture             string                 `json:"os_template_architecture,omitempty"`
+	OSTemplatePreBootArchitecture      string                 `json:"os_template_pre_boot_architecture,omitempty"`
 	OSAssetIDBootloaderLocalInstall    int                    `json:"os_asset_id_bootloader_local_install,omitempty"`
 	OSAssetIDBootloaderOSBoot          int                    `json:"os_asset_id_bootloader_os_boot,omitempty"`
 }
