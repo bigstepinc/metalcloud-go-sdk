@@ -179,9 +179,9 @@ func (c *Client) WorkflowStages(workflowID int) (*[]WorkflowStageDefinitionRefer
 }
 
 //WorkflowStageGet returns a StageDefinition specified by workflowStageID.
-func (c *Client) WorkflowStageGet(workflowStageID int) (*StageDefinition, error) {
+func (c *Client) WorkflowStageGet(workflowStageID int) (*WorkflowStageDefinitionReference, error) {
 
-	var createdObject StageDefinition
+	var createdObject WorkflowStageDefinitionReference
 
 	if err := checkID(workflowStageID); err != nil {
 		return nil, err
