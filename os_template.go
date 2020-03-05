@@ -42,15 +42,12 @@ type OSTemplateCredentials struct {
 func (c *Client) OSTemplateCreate(osTemplate OSTemplate) (*OSTemplate, error) {
 	var createdObject OSTemplate
 
-	userID, err := c.UserEmailToUserID(c.user)
-	if err != nil {
-		return nil, err
-	}
+	userID := c.GetUserID()
 
-	err = c.rpcClient.CallFor(
+	err := c.rpcClient.CallFor(
 		&createdObject,
 		"os_template_create",
-		*userID,
+		userID,
 		osTemplate)
 
 	if err != nil {
@@ -146,14 +143,10 @@ func (c *Client) OSTemplateGet(osTemplateID int, decryptPasswd bool) (*OSTemplat
 //OSTemplates retrieves a list of all the OSTemplate objects which a specified User is allowed to see through ownership or delegation. The OSTemplate objects never return the actual protected OSTemplate value.
 func (c *Client) OSTemplates() (*map[string]OSTemplate, error) {
 
-	userID, err := c.UserEmailToUserID(c.user)
-	if err != nil {
-		return nil, err
-	}
-
+	userID := c.GetUserID()
 	res, err := c.rpcClient.Call(
 		"os_templates",
-		*userID)
+		userID)
 
 	if err != nil {
 		return nil, err

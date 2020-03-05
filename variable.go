@@ -22,15 +22,12 @@ type Variable struct {
 func (c *Client) VariableCreate(variable Variable) (*Variable, error) {
 	var createdObject Variable
 
-	userID, err := c.UserEmailToUserID(c.user)
-	if err != nil {
-		return nil, err
-	}
+	userID := c.GetUserID()
 
-	err = c.rpcClient.CallFor(
+	err := c.rpcClient.CallFor(
 		&createdObject,
 		"variable_create",
-		*userID,
+		userID,
 		variable)
 
 	if err != nil {

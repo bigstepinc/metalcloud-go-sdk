@@ -61,6 +61,62 @@ type AnsibleBundle struct {
 	Type                               string `json:"type,omitempty"`
 }
 
+//WorkflowReference points to a Workflow object via its workflow_id. To be used as a stage definition.
+type WorkflowReference struct {
+	WorkflowID int    `json:"workflow_id,omitempty"`
+	Type       string `json:"type,omitempty"`
+}
+
+//SSHExec executes a command on a remote server using the SSH exec functionality (not through a shell).
+type SSHExec struct {
+	Command   string           `json:"command,omitempty"`
+	SSHTarget SSHClientOptions `json:"ssh_target,omitempty"`
+	Timeout   int              `json:"timeout,omitempty"`
+	Type      string           `json:"type,omitempty"`
+}
+
+//SSHClientOptions defines an ssh cnnection such as the host, port, user, password, private keys, etc. All properties support template-like variables; for example, ${{instance_credentials_password}} may be used as value for the password property.
+type SSHClientOptions struct {
+	Host         string        `json:"host,omitempty"`
+	Port         int           `json:"port,omitempty"`
+	ForceIPv4    bool          `json:"forceIPv4,omitempty"`
+	ForceIPv6    bool          `json:"forceIPv6,omitempty"`
+	HostHash     string        `json:"hostHash,omitempty"`
+	HashedKey    string        `json:"hashedKey,omitempty"`
+	Username     string        `json:"username,omitempty"`
+	Password     string        `json:"password,omitempty"`
+	PrivateKey   string        `json:"privateKey,omitempty"`
+	Passphrase   string        `json:"passphrase,omitempty"`
+	ReadyTimeout int           `json:"readyTimeout,omitempty"`
+	StrictVendor bool          `json:"strictVendor,omitempty"`
+	Algorithms   SSHAlgorithms `json:"algorithms,omitempty"`
+	Compress     string        `json:"compress,omitempty"`
+}
+
+//SSHAlgorithms defines algorithms that can be used during an ssh session
+type SSHAlgorithms struct {
+	Kex           []string `json:"kex,omitempty"`
+	Cipher        []string `json:"cipher,omitempty"`
+	ServerHostKey []string `json:"serverHostKey,omitempty"`
+	HMAC          []string `json:"hmac,omitempty"`
+	Compress      []string `json:"compress,omitempty"`
+}
+
+//Copy defines the source and destination of a SCP operation. The source may be of various types. SCP and HTTP requests are streamed so they are recommended as sources. The destination has to be a SCP resource.
+type Copy struct {
+	Source                     interface{}         `json:"source,omitempty"`
+	Destination                SCPResourceLocation `json:"destination,omitempty"`
+	TimeoutMinutes             int                 `json:"timeoutMinutes,omitempty"`
+	IfDestinationAlreadyExists string              `json:"ifDestinationAlreadyExists,omitempty"`
+	Type                       string              `json:"type,omitempty"`
+}
+
+//SCPResourceLocation defines a file path and SSH client connection options for use with Secure Copy Protocol (SCP).
+type SCPResourceLocation struct {
+	Path      string           `json:"path,omitempty"`
+	SSHTarget SSHClientOptions `json:"ssh_target,omitempty"`
+}
+
 //UnmarshalJSON custom json marshaling
 func (s *StageDefinition) UnmarshalJSON(b []byte) error {
 	type Alias StageDefinition
@@ -84,6 +140,7 @@ func (s *StageDefinition) UnmarshalJSON(b []byte) error {
 		}
 		obj.Type = "AnsibleBundle"
 		s.StageDefinition = obj
+
 	case "HTTPRequest":
 		var obj HTTPRequest
 		b, err := json.Marshal(w.StageDefinition)
@@ -95,6 +152,45 @@ func (s *StageDefinition) UnmarshalJSON(b []byte) error {
 			return err
 		}
 		obj.Type = "HTTPRequest"
+		s.StageDefinition = obj
+
+	case "WorkflowReference":
+		var obj WorkflowReference
+		b, err := json.Marshal(w.StageDefinition)
+		if err != nil {
+			return err
+		}
+		err = json.Unmarshal(b, &obj)
+		if err != nil {
+			return err
+		}
+		obj.Type = "WorkflowReference"
+		s.StageDefinition = obj
+
+	case "SSHExec":
+		var obj SSHExec
+		b, err := json.Marshal(w.StageDefinition)
+		if err != nil {
+			return err
+		}
+		err = json.Unmarshal(b, &obj)
+		if err != nil {
+			return err
+		}
+		obj.Type = "SSHExec"
+		s.StageDefinition = obj
+
+	case "Copy":
+		var obj Copy
+		b, err := json.Marshal(w.StageDefinition)
+		if err != nil {
+			return err
+		}
+		err = json.Unmarshal(b, &obj)
+		if err != nil {
+			return err
+		}
+		obj.Type = "Copy"
 		s.StageDefinition = obj
 	}
 	s.StageDefinitionID = w.StageDefinitionID
@@ -198,15 +294,14 @@ func (c *Client) StageDefinitionGet(stageDefinitionID int) (*StageDefinition, er
 //StageDefinitions retrieves a list of all the StageDefinition objects which a specified User is allowed to see through ownership or delegation. The stageDefinition objects never return the actual protected stageDefinition value.
 func (c *Client) StageDefinitions() (*map[string]StageDefinition, error) {
 
-	userID, err := c.UserEmailToUserID(c.user)
-	if err != nil {
-		return nil, err
-	}
+	userID := c.GetUserID()
+
 	var res *jsonrpc.RPCResponse
+	var err error
 
 	res, err = c.rpcClient.Call(
 		"stage_definitions",
-		*userID)
+		userID)
 
 	if err != nil {
 		return nil, err

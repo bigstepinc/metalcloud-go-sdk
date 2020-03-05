@@ -103,20 +103,19 @@ func (c *Client) SecretGet(secretID int) (*Secret, error) {
 //Secrets retrieves a list of all the Secret objects which a specified User is allowed to see through ownership or delegation. The secret objects never return the actual protected secret value.
 func (c *Client) Secrets(usage string) (*map[string]Secret, error) {
 
-	userID, err := c.UserEmailToUserID(c.user)
-	if err != nil {
-		return nil, err
-	}
+	userID := c.GetUserID()
+
+	var err error
 	var res *jsonrpc.RPCResponse
 	if usage != "" {
 		res, err = c.rpcClient.Call(
 			"secrets",
-			*userID,
+			userID,
 			usage)
 	} else {
 		res, err = c.rpcClient.Call(
 			"secrets",
-			*userID)
+			userID)
 	}
 
 	if err != nil {

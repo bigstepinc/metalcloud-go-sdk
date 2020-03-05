@@ -23,15 +23,12 @@ type OSAsset struct {
 func (c *Client) OSAssetCreate(osAsset OSAsset) (*OSAsset, error) {
 	var createdObject OSAsset
 
-	userID, err := c.UserEmailToUserID(c.user)
-	if err != nil {
-		return nil, err
-	}
+	userID := c.GetUserID()
 
-	err = c.rpcClient.CallFor(
+	err := c.rpcClient.CallFor(
 		&createdObject,
 		"os_asset_create",
-		*userID,
+		userID,
 		osAsset)
 
 	if err != nil {
