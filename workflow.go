@@ -240,26 +240,6 @@ func (c *Client) WorkflowStageAddIntoRunLevel(workflowID int, stageDefinitionID 
 	return nil
 }
 
-//WorkflowDeleteFromRunLevel removes a  stage in this workflow from a runlevel
-func (c *Client) WorkflowDeleteFromRunLevel(workflowID int, stageDefinitionID int, destinationRunLevel int) error {
-
-	if err := checkID(workflowID); err != nil {
-		return err
-	}
-
-	resp, err := c.rpcClient.Call("workflow_stage_delete_from_runlevel", workflowID, stageDefinitionID, destinationRunLevel)
-
-	if err != nil {
-		return err
-	}
-
-	if resp.Error != nil {
-		return fmt.Errorf(resp.Error.Message)
-	}
-
-	return nil
-}
-
 //WorkflowMoveAsNewRunLevel moves a stage in this workflow from a runlevel to another
 func (c *Client) WorkflowMoveAsNewRunLevel(workflowID int, stageDefinitionID int, sourceRunLevel int, destinationRunLevel int) error {
 
@@ -288,6 +268,26 @@ func (c *Client) WorkflowMoveIntoRunLevel(workflowID int, stageDefinitionID int,
 	}
 
 	resp, err := c.rpcClient.Call("workflow_stage_move_into_runlevel", workflowID, stageDefinitionID, sourceRunLevel, destinationRunLevel)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
+	return nil
+}
+
+//WorkflowStageDelete deletes a stage from a workflow entirelly
+func (c *Client) WorkflowStageDelete(workflowStageID int) error {
+
+	if err := checkID(workflowStageID); err != nil {
+		return err
+	}
+
+	resp, err := c.rpcClient.Call("workflow_stage_delete", workflowStageID)
 
 	if err != nil {
 		return err
