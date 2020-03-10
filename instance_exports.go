@@ -21,3 +21,33 @@ func (c *Client) InstanceGet(instanceID int) (*Instance, error) {
 func (c *Client) InstanceGetByLabel(instanceLabel string) (*Instance, error) {
 	return c.instanceGet(instanceLabel)
 }
+
+//InstanceServerPowerSet reboots or powers on an instance
+func (c *Client) InstanceServerPowerSet(instanceID int, operation string) error {
+	return c.instanceServerPowerSet(instanceID,operation)
+}
+
+//InstanceServerPowerSetByLabel reboots or powers on an instance
+func (c *Client) InstanceServerPowerSetByLabel(instanceLabel string, operation string) error {
+	return c.instanceServerPowerSet(instanceLabel,operation)
+}
+
+//InstanceServerPowerGet returns the power status of an instance
+func (c *Client) InstanceServerPowerGet(instanceID int) (*string, error) {
+	return c.instanceServerPowerGet(instanceID)
+}
+
+//InstanceServerPowerGetByLabel returns the power status of an instance
+func (c *Client) InstanceServerPowerGetByLabel(instanceLabel string) (*string, error) {
+	return c.instanceServerPowerGet(instanceLabel)
+}
+
+//InstanceServerPowerGetBatch returns the power status of multiple instances
+func (c *Client) InstanceServerPowerGetBatch(infrastructureID int, instanceIDs []int) (*map[string]string, error) {
+	return c.instanceServerPowerGetBatch(infrastructureID,instanceIDs)
+}
+
+//InstanceServerPowerGetBatchByLabel returns the power status of multiple instances
+func (c *Client) InstanceServerPowerGetBatchByLabel(infrastructureLabel string, instanceIDs []int) (*map[string]string, error) {
+	return c.instanceServerPowerGetBatch(infrastructureLabel,instanceIDs)
+}

@@ -174,3 +174,34 @@ func (c *Client) driveArrayDelete(driveArrayID id) error {
 
 	return nil
 }
+
+//driveArrayDrives returns the drives of a drive array
+func (c *Client) driveArrayDrives(driveArray id) (*map[string]Drive, error) {
+
+	if err := checkID(driveArray); err != nil {
+		return nil, err
+	}
+
+	res, err := c.rpcClient.Call(
+		"drive_array_drives",
+		driveArray)
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := res.Result.([]interface{})
+	if ok {
+		var m = map[string]Drive{}
+		return &m, nil
+	}
+
+	var createdObject map[string]Drive
+
+	err2 := res.GetObject(&createdObject)
+	if err2 != nil {
+		return nil, err2
+	}
+
+	return &createdObject, nil
+}

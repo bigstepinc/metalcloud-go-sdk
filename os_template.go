@@ -25,8 +25,8 @@ type OSTemplate struct {
 	OSTemplateCredentials              *OSTemplateCredentials `json:"os_template_credentials,omitempty"`
 	VolumeTemplateTags                 []string               `json:"volume_template_tags,omitempty"`
 	OSTemplatePreBootArchitecture      string                 `json:"os_template_pre_boot_architecture,omitempty"`
-	OSAssetIDBootloaderLocalInstall    int                    `json:"os_asset_id_bootloader_local_install,omitempty"`
-	OSAssetIDBootloaderOSBoot          int                    `json:"os_asset_id_bootloader_os_boot,omitempty"`
+	OSAssetBootloaderLocalInstall      int                    `json:"os_asset_id_bootloader_local_install,omitempty"`
+	OSAssetBootloaderOSBoot            int                    `json:"os_asset_id_bootloader_os_boot,omitempty"`
 }
 
 //OSTemplateCredentials holds information needed to connect to an OS installed by an OSTemplate.

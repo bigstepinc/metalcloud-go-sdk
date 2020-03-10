@@ -1,5 +1,7 @@
 package metalcloud
 
+import "fmt"
+
 //go:generate go run helper/gen_exports.go
 
 //Instance object describes an instance
@@ -239,4 +241,69 @@ func (c *Client) instanceGet(instanceID id) (*Instance, error) {
 	}
 
 	return &instance, nil
+}
+
+//instanceServerPowerSet reboots or powers on an instance
+func (c *Client) instanceServerPowerSet(instanceID id, operation string) error {
+	if err := checkID(instanceID); err != nil {
+		return err
+	}
+
+	resp, err := c.rpcClient.Call("instance_server_power_set", instanceID, operation)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
+	return nil
+}
+
+//instanceServerPowerGet returns the power status of an instance
+func (c *Client) instanceServerPowerGet(instanceID id) (*string, error) {
+	var power string
+
+	if err := checkID(instanceID); err != nil {
+		return nil, err
+	}
+
+	err := c.rpcClient.CallFor(&power, "instance_server_power_get", instanceID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &power, nil
+}
+
+//instanceServerPowerGetBatch returns the power status of multiple instances
+func (c *Client) instanceServerPowerGetBatch(infrastructureID id, instanceIDs []int) (*map[string]string, error) {
+
+	if err := checkID(infrastructureID); err != nil {
+		return nil, err
+	}
+
+	res, err := c.rpcClient.Call("instance_server_power_get_batch", infrastructureID, instanceIDs)
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := res.Result.([]interface{})
+	if ok {
+		var m = map[string]string{}
+		return &m, nil
+	}
+
+	var createdObject map[string]string
+
+	err2 := res.GetObject(&createdObject)
+	if err2 != nil {
+		return nil, err2
+	}
+
+	return &createdObject, nil
 }
