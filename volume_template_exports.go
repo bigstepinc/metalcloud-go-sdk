@@ -13,11 +13,11 @@ func (c *Client) VolumeTemplateGetByLabel(volumeTemplateLabel string) (*VolumeTe
 }
 
 //VolumeTemplateCreate creates a private volume template from a drive
-func (c *Client) VolumeTemplateCreate(driveID int, label string, description string, displayName string, bootType string, deprecationStatus string, bootMethodsSupported string, volumeTemplateTags []string) (*VolumeTemplate, error) {
+func (c *Client) VolumeTemplateCreate(driveID int, label string, description string, displayName string, bootType string, deprecationStatus bool, bootMethodsSupported string, volumeTemplateTags []string) (*VolumeTemplate, error) {
 	return c.volumeTemplateCreate(driveID,label,description,displayName,bootType,deprecationStatus,bootMethodsSupported,volumeTemplateTags)
 }
 
 //VolumeTemplateCreateByLabel creates a private volume template from a drive
-func (c *Client) VolumeTemplateCreateByLabel(driveLabel string, label string, description string, displayName string, bootType string, deprecationStatus string, bootMethodsSupported string, volumeTemplateTags []string) (*VolumeTemplate, error) {
+func (c *Client) VolumeTemplateCreateByLabel(driveLabel string, label string, description string, displayName string, bootType string, deprecationStatus bool, bootMethodsSupported string, volumeTemplateTags []string) (*VolumeTemplate, error) {
 	return c.volumeTemplateCreate(driveLabel,label,description,displayName,bootType,deprecationStatus,bootMethodsSupported,volumeTemplateTags)
 }
