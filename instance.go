@@ -92,13 +92,12 @@ type InstanceCredentials struct {
 
 //SSH credentials for the installed OS.
 type SSH struct {
-	Port            int     `json:"port,omitempty"`
-	Username        string  `json:"username,omitempty"`
-	InitialPassword string  `json:"initial_password,omitempty"`
-	InitialSSHKeys  *SSHKey `json:"initial_ssh_keys,omitempty"`
+	Port            int    `json:"port,omitempty"`
+	Username        string `json:"username,omitempty"`
+	InitialPassword string `json:"initial_password,omitempty"`
 }
 
-//SSHKey represents an SSH key added by a user
+//SSHKey represents an SSH keys added by a user
 type SSHKey struct {
 	UserSSHKeyID               int    `json:"user_ssh_key_id,omitempty"`
 	UserID                     int    `json:"user_id,omitempty"`
