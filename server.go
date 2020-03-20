@@ -34,10 +34,12 @@ type ServerSearchResult struct {
 	ServerVendor                       string            `json:"server_vendor,omitempty"`
 	ServerVendorSKUID                  string            `json:"server_vendor_sku_id,omitempty"`
 	ServerComments                     string            `json:"server_comments,omitempty"`
-	InstanceLabel                      string            `json:"instance_label,omitempty"`
-	InstanceID                         int               `json:"instance_id,omitempty"`
-	InstanceArrayID                    int               `json:"instance_array_id,omitempty"`
-	InfrastructureID                   int               `json:"infrastructure_id,omitempty"`
+	InstanceLabel                      []string          `json:"instance_label,omitempty"`
+	InstanceID                         []int             `json:"instance_id,omitempty"`
+	InstanceArrayID                    []int             `json:"instance_array_id,omitempty"`
+	InfrastructureID                   []int             `json:"infrastructure_id,omitempty"`
+	UserEmail                          [][]string        `json:"user_email,omitempty"`
+	UserID                             [][]int           `json:"user_id,omitempty"`
 	DatacenterName                     string            `json:"datacenter_name,omitempty"`
 }
 
@@ -121,8 +123,8 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 			"server_type_name",
 			"server_type_boot_type",
 			"server_product_name",
-			"server_status",
 			"datacenter_name",
+			"server_status",
 			"server_class",
 			"server_created_timestamp",
 			"server_vendor",
@@ -163,7 +165,7 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 
 	userID := c.GetUserID()
 
-	collapseType := "none"
+	collapseType := "array_row_span"
 
 	res, err := c.rpcClient.Call(
 		"search",
