@@ -100,6 +100,16 @@ type InstanceArrayInterfaceOperation struct {
 	InstanceArrayInterfaceChangeID         int           `json:"instance_array_interface_change_id,omitempty"`
 }
 
+//ServerTypeMatches used in InstanceArrayEdit operations to specify which server types to use
+type ServerTypeMatches struct {
+	ServerTypes map[int]ServerTypeMatch `json:"server_types,omitempty"`
+}
+
+//ServerTypeMatch what exact server types to use
+type ServerTypeMatch struct {
+	ServerCount int `json:"server_count,omitempty"`
+}
+
 //instanceArrayGet returns an InstanceArray with specified id
 func (c *Client) instanceArrayGet(instanceArrayID id) (*InstanceArray, error) {
 	var createdObject InstanceArray
@@ -173,7 +183,7 @@ func (c *Client) instanceArrayCreate(infrastructureID id, instanceArray Instance
 }
 
 //instanceArrayEdit alterns a deployed instance array. Requires deploy.
-func (c *Client) instanceArrayEdit(instanceArrayID id, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *[]ServerType, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
+func (c *Client) instanceArrayEdit(instanceArrayID id, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *ServerTypeMatches, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
 	var createdObject InstanceArray
 
 	if err := checkID(instanceArrayID); err != nil {
@@ -246,6 +256,40 @@ func (c *Client) InstanceArrayInterfaceDetach(instanceArrayID int, instanceArray
 		"instance_array_interface_detach",
 		instanceArrayID,
 		instanceArrayInterfaceIndex)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdObject, nil
+}
+
+//instanceArrayStop stops a specified InstanceArray.
+func (c *Client) instanceArrayStop(instanceArrayID id) (*InstanceArray, error) {
+
+	var createdObject InstanceArray
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"instance_array_stop",
+		instanceArrayID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdObject, nil
+}
+
+//instanceArrayStart starts a specified InstanceArray.
+func (c *Client) instanceArrayStart(instanceArrayID id) (*InstanceArray, error) {
+
+	var createdObject InstanceArray
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"instance_array_start",
+		instanceArrayID)
 
 	if err != nil {
 		return nil, err

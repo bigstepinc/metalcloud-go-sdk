@@ -40,10 +40,6 @@ type HardwareConfiguration struct {
 func (c *Client) serverTypeGet(serverTypeID id) (*ServerType, error) {
 	var createdObject ServerType
 
-	if err := checkID(serverTypeID); err != nil {
-		return nil, err
-	}
-
 	err := c.rpcClient.CallFor(
 		&createdObject,
 		"server_type_get",

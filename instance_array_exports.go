@@ -33,12 +33,12 @@ func (c *Client) InstanceArrayCreateByLabel(infrastructureLabel string, instance
 }
 
 //InstanceArrayEdit alterns a deployed instance array. Requires deploy.
-func (c *Client) InstanceArrayEdit(instanceArrayID int, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *[]ServerType, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
+func (c *Client) InstanceArrayEdit(instanceArrayID int, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *ServerTypeMatches, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
 	return c.instanceArrayEdit(instanceArrayID,instanceArrayOperation,bSwapExistingInstancesHardware,bKeepDetachingDrives,objServerTypeMatches,arrInstancesToBeDeleted)
 }
 
 //InstanceArrayEditByLabel alterns a deployed instance array. Requires deploy.
-func (c *Client) InstanceArrayEditByLabel(instanceArrayLabel string, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *[]ServerType, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
+func (c *Client) InstanceArrayEditByLabel(instanceArrayLabel string, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *ServerTypeMatches, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
 	return c.instanceArrayEdit(instanceArrayLabel,instanceArrayOperation,bSwapExistingInstancesHardware,bKeepDetachingDrives,objServerTypeMatches,arrInstancesToBeDeleted)
 }
 
@@ -50,4 +50,24 @@ func (c *Client) InstanceArrayDelete(instanceArrayID int) error {
 //InstanceArrayDeleteByLabel deletes an instance array. Requires deploy.
 func (c *Client) InstanceArrayDeleteByLabel(instanceArrayLabel string) error {
 	return c.instanceArrayDelete(instanceArrayLabel)
+}
+
+//InstanceArrayStop stops a specified InstanceArray.
+func (c *Client) InstanceArrayStop(instanceArrayID int) (*InstanceArray, error) {
+	return c.instanceArrayStop(instanceArrayID)
+}
+
+//InstanceArrayStopByLabel stops a specified InstanceArray.
+func (c *Client) InstanceArrayStopByLabel(instanceArrayLabel string) (*InstanceArray, error) {
+	return c.instanceArrayStop(instanceArrayLabel)
+}
+
+//InstanceArrayStart starts a specified InstanceArray.
+func (c *Client) InstanceArrayStart(instanceArrayID int) (*InstanceArray, error) {
+	return c.instanceArrayStart(instanceArrayID)
+}
+
+//InstanceArrayStartByLabel starts a specified InstanceArray.
+func (c *Client) InstanceArrayStartByLabel(instanceArrayLabel string) (*InstanceArray, error) {
+	return c.instanceArrayStart(instanceArrayLabel)
 }
