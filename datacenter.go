@@ -1,8 +1,9 @@
 package metalcloud
 
-import "fmt"
-
-//go:generate go run helper/gen_exports.go
+import (
+	"fmt"
+	"strings"
+)
 
 //Datacenter - datacenter description
 type Datacenter struct {
@@ -59,22 +60,23 @@ type VPLSProvisioner struct {
 	NorthWANVLANRange string `json:"NorthWANVLANRange,omitempty"`
 }
 
-//Datacenters returns all datacenters
-func (c *Client) Datacenters() (*map[string]Datacenter, error) {
-	return c.DatacentersByUserID(nil, false)
+//Datacenters returns datacenters for all users
+func (c *Client) Datacenters(onlyActive bool) (*map[string]Datacenter, error) {
+	return c.datacenters(nil, onlyActive)
 }
 
-//DatacentersOnlyActive returns all active datacenters
-func (c *Client) DatacentersOnlyActive() (*map[string]Datacenter, error) {
-	return c.DatacentersByUserID(nil, true)
+//DatacentersByUserID returns datacenters for specific user
+func (c *Client) DatacentersByUserID(userID int, onlyActive bool) (*map[string]Datacenter, error) {
+	return c.datacenters(userID, onlyActive)
 }
 
-//DatacentersByUserID returns datacenters belonging to a particular user
-func (c *Client) DatacentersByUserID(userID id, onlyActive bool) (*map[string]Datacenter, error) {
+//DatacentersByUserEmail returns datacenters by email
+func (c *Client) DatacentersByUserEmail(userEmail string, onlyActive bool) (*map[string]Datacenter, error) {
+	return c.datacenters(userEmail, onlyActive)
+}
 
-	if err := checkID(userID); err != nil {
-		return nil, err
-	}
+//datacenters returns datacenters
+func (c *Client) datacenters(userID id, onlyActive bool) (*map[string]Datacenter, error) {
 
 	res, err := c.rpcClient.Call(
 		"datacenters",
@@ -104,16 +106,22 @@ func (c *Client) DatacentersByUserID(userID id, onlyActive bool) (*map[string]Da
 
 //DatacenterGet returns details of a specific datacenter
 func (c *Client) DatacenterGet(datacenterName string) (*Datacenter, error) {
-	return c.DatacenterGetForUser(datacenterName, nil)
+	return c.datacenterGetForUser(datacenterName, nil)
+}
+
+//DatacenterGetForUserByEmail returns details of a specific datacenter
+func (c *Client) DatacenterGetForUserByEmail(datacenterName string, userID string) (*Datacenter, error) {
+	return c.datacenterGetForUser(datacenterName, userID)
+}
+
+//DatacenterGetForUserByID returns details of a specific datacenter
+func (c *Client) DatacenterGetForUserByID(datacenterName string, userID int) (*Datacenter, error) {
+	return c.datacenterGetForUser(datacenterName, userID)
 }
 
 //DatacenterGetForUser returns details of a specific datacenter
-func (c *Client) DatacenterGetForUser(datacenterName string, userID id) (*Datacenter, error) {
+func (c *Client) datacenterGetForUser(datacenterName string, userID id) (*Datacenter, error) {
 	var datacenter Datacenter
-
-	if err := checkID(userID); err != nil {
-		return nil, err
-	}
 
 	err := c.rpcClient.CallFor(&datacenter,
 		"datacenter_get",
@@ -178,4 +186,46 @@ func (c *Client) DatacenterCreate(datacenter Datacenter, datacenterConfig Datace
 	}
 
 	return &createdObj, nil
+}
+
+//bsideveloper.datacenter_agents_config_json_download_url('uk-reading')
+
+//structure to hold the return for datacenter_agents_config_json_download_url
+type datacenterConfigJSONURL struct {
+	URL string `json:"datacenter_agents_config_json_download_url,omitempty"`
+}
+
+//DatacenterAgentsConfigJSONDownloadURL returns the agent url (and automatically decrypts it)
+func (c *Client) DatacenterAgentsConfigJSONDownloadURL(datacenterName string, decrypt bool) (string, error) {
+	var createdObj datacenterConfigJSONURL
+
+	err := c.rpcClient.CallFor(
+		&createdObj,
+		"datacenter_agents_config_json_download_url",
+		datacenterName)
+
+	if err != nil {
+		return "", err
+	}
+
+	agentConfigURL := createdObj.URL
+
+	if decrypt {
+		passwdComponents := strings.Split(createdObj.URL, ":")
+		if len(passwdComponents) != 2 {
+			return "", fmt.Errorf("Password not returned with proper components")
+		}
+		var decryptedURL string
+		err = c.rpcClient.CallFor(
+			&decryptedURL,
+			"password_decrypt",
+			passwdComponents[1],
+		)
+		if err != nil {
+			return "", err
+		}
+		agentConfigURL = decryptedURL
+	}
+
+	return agentConfigURL, nil
 }
