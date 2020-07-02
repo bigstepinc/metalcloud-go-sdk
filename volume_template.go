@@ -85,6 +85,7 @@ func (c *Client) volumeTemplateCreate(driveID id, label string, description stri
 		description,
 		displayName,
 		bootType,
+		deprecationStatus,
 		bootMethodsSupported,
 		volumeTemplateTags)
 
