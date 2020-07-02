@@ -70,7 +70,7 @@ func (c *Client) volumeTemplateGet(volumeTemplateID id) (*VolumeTemplate, error)
 }
 
 //volumeTemplateCreate creates a private volume template from a drive
-func (c *Client) volumeTemplateCreate(driveID id, label string, description string, displayName string, bootType string, deprecationStatus bool, bootMethodsSupported string, volumeTemplateTags []string) (*VolumeTemplate, error) {
+func (c *Client) volumeTemplateCreate(driveID id, label string, description string, displayName string, bootType string, deprecationStatus string, bootMethodsSupported string, volumeTemplateTags []string) (*VolumeTemplate, error) {
 	var createdObject VolumeTemplate
 
 	if err := checkID(driveID); err != nil {
