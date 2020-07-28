@@ -78,16 +78,16 @@ type ServerInterface struct {
 
 //InstanceCredentials contains information needed to connect to the server via IPMI, iLO etc.
 type InstanceCredentials struct {
-	SSH                *SSH            `json:"ssh,omitempty"`
-	RDP                *RDP            `json:"rdp,omitempty"`
-	IPMI               *IPMI           `json:"ipmi,omitempty"`
-	ILO                *ILO            `json:"ilo,omitempty"`
-	IDRAC              *IDRAC          `json:"idrac,omitempty"`
-	ISCSI              *ISCSIInitiator `json:"iscsi,omitempty"`
-	RemoteConsole      *RemoteConsole  `json:"remote_console,omitempty"`
-	SharedDrives       []ISCSI         `json:"shared_drives,omitempty"`
-	IPAddressesPublic  []IP            `json:"ip_addresses_public,omitempty"`
-	IPAddressesPrivate []IP            `json:"ip_addresses_private,omitempty"`
+	SSH                *SSH             `json:"ssh,omitempty"`
+	RDP                *RDP             `json:"rdp,omitempty"`
+	IPMI               *IPMI            `json:"ipmi,omitempty"`
+	ILO                *ILO             `json:"ilo,omitempty"`
+	IDRAC              *IDRAC           `json:"idrac,omitempty"`
+	ISCSI              *ISCSIInitiator  `json:"iscsi,omitempty"`
+	RemoteConsole      *RemoteConsole   `json:"remote_console,omitempty"`
+	SharedDrives       map[string]ISCSI `json:"shared_drives,omitempty"`
+	IPAddressesPublic  []IP             `json:"ip_addresses_public,omitempty"`
+	IPAddressesPrivate []IP             `json:"ip_addresses_private,omitempty"`
 }
 
 //SSH credentials for the installed OS.

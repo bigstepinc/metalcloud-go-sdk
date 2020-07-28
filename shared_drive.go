@@ -19,7 +19,7 @@ type SharedDrive struct {
 	SharedDriveSizeMbytes             int                  `json:"shared_drive_size_mbytes,omitempty"`
 	SharedDriveAttachedInstanceArrays []int                `json:"shared_drive_attached_instance_arrays,omitempty"`
 	SharedDriveOperation              SharedDriveOperation `json:"shared_drive_operation,omitempty"`
-	SharedDriveCredentials            []ISCSI              `json:"shared_drive_credentials,omitempty"`
+	SharedDriveCredentials            ISCSI                `json:"shared_drive_credentials,omitempty"`
 
 	SharedDriveChangeID int `json:"shared_drive_change_id,omitempty"`
 }
