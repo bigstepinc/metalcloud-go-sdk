@@ -41,7 +41,6 @@ func TestInstanceArrayUnmarshalTest2(t *testing.T) {
 	Expect(i).NotTo(BeNil())
 
 	Expect(i.InstanceCredentials.ISCSI.Password).To(Equal("asdasdasdasd"))
-	Expect(i.InstanceCredentials.SharedDrives["csivolumename"].LunID).To(Equal(0))
 
 }
 
