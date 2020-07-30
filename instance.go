@@ -1,6 +1,9 @@
 package metalcloud
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 //go:generate go run helper/gen_exports.go
 
@@ -87,6 +90,61 @@ type InstanceCredentials struct {
 	RemoteConsole      *RemoteConsole  `json:"remote_console,omitempty"`
 	IPAddressesPublic  []IP            `json:"ip_addresses_public,omitempty"`
 	IPAddressesPrivate []IP            `json:"ip_addresses_private,omitempty"`
+	SharedDrives       map[string]ISCSI
+}
+
+//UnmarshalJSON custom InstanceCredentials unmarshaling
+func (b *InstanceCredentials) UnmarshalJSON(data []byte) error {
+
+	var objmap map[string]*json.RawMessage
+
+	if err := json.Unmarshal(data, &objmap); err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal(*objmap["ssh"], &b.SSH); err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal(*objmap["rdp"], &b.RDP); err != nil {
+		return err
+	}
+	if err := json.Unmarshal(*objmap["ipmi"], &b.IPMI); err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal(*objmap["ilo"], &b.ILO); err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal(*objmap["idrac"], &b.IDRAC); err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal(*objmap["iscsi"], &b.ISCSI); err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal(*objmap["remote_console"], &b.RemoteConsole); err != nil {
+		return err
+	}
+	if err := json.Unmarshal(*objmap["ip_addresses_public"], &b.IPAddressesPublic); err != nil {
+		return err
+	}
+	if err := json.Unmarshal(*objmap["ip_addresses_private"], &b.IPAddressesPrivate); err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal(*objmap["shared_drives"], &b.SharedDrives); err != nil {
+		//if ew get an error it's possible that the input is a an empty array instead of an empty map (some nodejs quirk)
+		//if it's an empty array then we won't have an error below and we do nothing.
+		var dummy []string
+		if err2 := json.Unmarshal(*objmap["shared_drives"], &dummy); err2 != nil {
+			return err // if we do have an error it means it's not an empty arrray and we return the original error
+		}
+		b.SharedDrives = map[string]ISCSI{}
+	}
+	return nil
 }
 
 //SSH credentials for the installed OS.
