@@ -27,7 +27,7 @@ type OSTemplate struct {
 	OSTemplatePreBootArchitecture      string                 `json:"os_template_pre_boot_architecture,omitempty"`
 	OSAssetBootloaderLocalInstall      int                    `json:"os_asset_id_bootloader_local_install,omitempty"`
 	OSAssetBootloaderOSBoot            int                    `json:"os_asset_id_bootloader_os_boot,omitempty"`
-	VolumeTemplateVariablesJSON        string                 `json:"volume_template_variables_json,omitempty`
+	VolumeTemplateVariablesJSON        string                 `json:"volume_template_variables_json,omitempty"`
 }
 
 //OSTemplateCredentials holds information needed to connect to an OS installed by an OSTemplate.
@@ -39,11 +39,12 @@ type OSTemplateCredentials struct {
 	OSTemplateChangePasswordAfterDeploy bool   `json:"os_template_change_password_after_deploy,omitempty"`
 }
 
+//OSTemplateOSAssetData holds asset-template information
 type OSTemplateOSAssetData struct {
-	OSAsset                            *OSAsset  `json:"os_asset,omitempty"`
-	OSAssetFilePath                    string    `json:"os_asset_file_path",omitempty`
-	OSTemplateOSAssetUpdatedTimestamp  string    `json:"volume_template_os_asset_updated_timestamp,omitempty"`
-	OSTemplateOSAssetVariablesJSON     string    `json:"volume_template_os_asset_variables_json",omitempty`
+	OSAsset                           *OSAsset `json:"os_asset,omitempty"`
+	OSAssetFilePath                   string   `json:"os_asset_file_path,omitempty"`
+	OSTemplateOSAssetUpdatedTimestamp string   `json:"volume_template_os_asset_updated_timestamp,omitempty"`
+	OSTemplateOSAssetVariablesJSON    string   `json:"volume_template_os_asset_variables_json,omitempty"`
 }
 
 //OSTemplateCreate creates a osTemplate object
@@ -203,6 +204,7 @@ func (c *Client) OSTemplateOSAssets(osTemplateID int) (*map[string]OSTemplateOSA
 	return &createdObject, nil
 }
 
+//OSTemplateAddOSAsset adds an asset to a template
 func (c *Client) OSTemplateAddOSAsset(osTemplateID int, osAssetID int, path string, variablesJSON string) error {
 
 	_, err := c.rpcClient.Call(
@@ -219,6 +221,7 @@ func (c *Client) OSTemplateAddOSAsset(osTemplateID int, osAssetID int, path stri
 	return nil
 }
 
+//OSTemplateRemoveOSAsset removes an asset from a template
 func (c *Client) OSTemplateRemoveOSAsset(osTemplateID int, osAssetID int) error {
 
 	_, err := c.rpcClient.Call(
@@ -233,6 +236,7 @@ func (c *Client) OSTemplateRemoveOSAsset(osTemplateID int, osAssetID int) error 
 	return nil
 }
 
+//OSTemplateUpdateOSAssetPath updates an asset mapping
 func (c *Client) OSTemplateUpdateOSAssetPath(osTemplateID int, osAssetID int, path string) error {
 
 	_, err := c.rpcClient.Call(
@@ -248,6 +252,7 @@ func (c *Client) OSTemplateUpdateOSAssetPath(osTemplateID int, osAssetID int, pa
 	return nil
 }
 
+//OSTemplateUpdateOSAssetVariables updates an asset variable
 func (c *Client) OSTemplateUpdateOSAssetVariables(osTemplateID int, osAssetID int, variablesJSON string) error {
 
 	_, err := c.rpcClient.Call(
