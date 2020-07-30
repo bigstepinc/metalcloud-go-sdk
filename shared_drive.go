@@ -16,12 +16,17 @@ type SharedDrive struct {
 	SharedDriveCreatedTimestamp string `json:"shared_drive_created_timestamp,omitempty"`
 	SharedDriveUpdatedTimestamp string `json:"shared_drive_updated_timestamp,omitempty"`
 
-	SharedDriveSizeMbytes             int                  `json:"shared_drive_size_mbytes,omitempty"`
-	SharedDriveAttachedInstanceArrays []int                `json:"shared_drive_attached_instance_arrays,omitempty"`
-	SharedDriveOperation              SharedDriveOperation `json:"shared_drive_operation,omitempty"`
-	SharedDriveCredentials            ISCSI                `json:"shared_drive_credentials,omitempty"`
+	SharedDriveSizeMbytes             int                    `json:"shared_drive_size_mbytes,omitempty"`
+	SharedDriveAttachedInstanceArrays []int                  `json:"shared_drive_attached_instance_arrays,omitempty"`
+	SharedDriveOperation              SharedDriveOperation   `json:"shared_drive_operation,omitempty"`
+	SharedDriveCredentials            SharedDriveCredentials `json:"shared_drive_credentials,omitempty"`
 
 	SharedDriveChangeID int `json:"shared_drive_change_id,omitempty"`
+}
+
+//SharedDriveCredentials iscsi or other forms of connection details
+type SharedDriveCredentials struct {
+	ISCSI ISCSI `json:"iscsi,omitempty"`
 }
 
 //SharedDriveOperation represents an ongoing or new operation on a shared drive
