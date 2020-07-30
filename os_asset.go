@@ -4,19 +4,20 @@ import "fmt"
 
 //OSAsset struct defines a server type
 type OSAsset struct {
-	OSAssetID                int    `json:"os_asset_id,omitempty"`
-	UserIDOwner              int    `json:"user_id_owner,omitempty"`
-	UserIDAuthenticated      int    `json:"user_id_authenticated,omitempty"`
-	OSAssetISPublic          bool   `json:"os_asset_is_public,omitempty"`
-	OSAssetFileName          string `json:"os_asset_filename,omitempty"`
-	OSAssetFileSizeBytes     int    `json:"os_asset_file_size_bytes,omitempty"`
-	OSAssetFileMime          string `json:"os_asset_file_mime,omitempty"`
-	OSAssetContentsBase64    string `json:"os_asset_contents_base64,omitempty"`
-	OSAssetContentsSHA256Hex string `json:"os_asset_contents_sha256_hex,omitempty"`
-	OSAssetUsage             string `json:"os_asset_usage,omitempty"`
-	OSAssetSourceURL         string `json:"os_asset_source_url,omitempty"`
-	OSAssetCreatedTimestamp  string `json:"os_asset_created_timestamp,omitempty"`
-	OSAssetUpdatedTimestamp  string `json:"os_asset_updated_timestamp,omitempty"`
+	OSAssetID                        int      `json:"os_asset_id,omitempty"`
+	UserIDOwner                      int      `json:"user_id_owner,omitempty"`
+	UserIDAuthenticated              int      `json:"user_id_authenticated,omitempty"`
+	OSAssetFileName                  string   `json:"os_asset_filename,omitempty"`
+	OSAssetFileSizeBytes             int      `json:"os_asset_file_size_bytes,omitempty"`
+	OSAssetFileMime                  string   `json:"os_asset_file_mime,omitempty"`
+	OSAssetContentsBase64            string   `json:"os_asset_contents_base64,omitempty"`
+	OSAssetContentsSHA256Hex         string   `json:"os_asset_contents_sha256_hex,omitempty"`
+	OSAssetUsage                     string   `json:"os_asset_usage,omitempty"`
+	OSAssetSourceURL                 string   `json:"os_asset_source_url,omitempty"`
+	OSAssetVariableNamesRequired     []string `json:"os_asset_variable_names_required",omitempty`
+	OSAssetTags                      []string `json:"os_asset_tags",omitempty`
+	OSAssetCreatedTimestamp          string   `json:"os_asset_created_timestamp,omitempty"`
+	OSAssetUpdatedTimestamp          string   `json:"os_asset_updated_timestamp,omitempty"`
 }
 
 //OSAssetCreate creates a osAsset object
