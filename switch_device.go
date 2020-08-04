@@ -1,6 +1,9 @@
 package metalcloud
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 //SwitchDevice Represents a switch installed in a datacenter.
 type SwitchDevice struct {
@@ -45,7 +48,7 @@ type SwitchDevice struct {
 }
 
 //SwitchDeviceGet Retrieves information regarding a specified SwitchDevice.
-func (c *Client) SwitchDeviceGet(networkEquipmentID int) (*SwitchDevice, error) {
+func (c *Client) SwitchDeviceGet(networkEquipmentID int, decryptPasswd bool) (*SwitchDevice, error) {
 
 	var createdObject SwitchDevice
 
@@ -57,6 +60,25 @@ func (c *Client) SwitchDeviceGet(networkEquipmentID int) (*SwitchDevice, error) 
 	if err != nil {
 
 		return nil, err
+	}
+
+	if decryptPasswd {
+		passwdComponents := strings.Split(createdObject.NetworkEquipmentManagementPassword, ":")
+		if len(passwdComponents) != 2 {
+			return nil, fmt.Errorf("Password not returned with proper components")
+		}
+		var passwd string
+		err = c.rpcClient.CallFor(
+			&passwd,
+			"password_decrypt",
+			passwdComponents[1],
+		)
+		if err != nil {
+			return nil, err
+		}
+		createdObject.NetworkEquipmentManagementPassword = passwd
+	} else {
+		createdObject.NetworkEquipmentManagementPassword = ""
 	}
 
 	return &createdObject, nil
