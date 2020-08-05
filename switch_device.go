@@ -85,7 +85,7 @@ func (c *Client) SwitchDeviceGet(networkEquipmentID int, decryptPasswd bool) (*S
 }
 
 //SwitchDeviceGetByIdentifierString Retrieves information regarding a specified SwitchDevice by identifier string.
-func (c *Client) SwitchDeviceGetByIdentifierString(networkEquipmentIdentifierString string) (*SwitchDevice, error) {
+func (c *Client) SwitchDeviceGetByIdentifierString(networkEquipmentIdentifierString string, decryptPasswd bool) (*SwitchDevice, error) {
 
 	var createdObject SwitchDevice
 
@@ -97,6 +97,25 @@ func (c *Client) SwitchDeviceGetByIdentifierString(networkEquipmentIdentifierStr
 	if err != nil {
 
 		return nil, err
+	}
+
+	if decryptPasswd {
+		passwdComponents := strings.Split(createdObject.NetworkEquipmentManagementPassword, ":")
+		if len(passwdComponents) != 2 {
+			return nil, fmt.Errorf("Password not returned with proper components")
+		}
+		var passwd string
+		err = c.rpcClient.CallFor(
+			&passwd,
+			"password_decrypt",
+			passwdComponents[1],
+		)
+		if err != nil {
+			return nil, err
+		}
+		createdObject.NetworkEquipmentManagementPassword = passwd
+	} else {
+		createdObject.NetworkEquipmentManagementPassword = ""
 	}
 
 	return &createdObject, nil
