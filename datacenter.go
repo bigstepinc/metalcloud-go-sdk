@@ -22,23 +22,32 @@ type Datacenter struct {
 
 //DatacenterConfig - datacenter configuration
 type DatacenterConfig struct {
-	SANRoutedSubnet                       string          `json:"SANRoutedSubnet,omitempty"`
-	BSIVRRPListenIPv4                     string          `json:"BSIVRRPListenIPv4,omitempty"`
-	BSIMachineListenIPv4List              []string        `json:"BSIMachineListenIPv4List,omitempty"`
-	BSIExternallyVisibleIPv4              string          `json:"BSIExternallyVisibleIPv4,omitempty"`
-	RepoURLRoot                           string          `json:"repoURLRoot,omitempty"`
-	RepoURLRootQuarantineNetwork          string          `json:"repoURLRootQuarantineNetwork,omitempty"`
-	NTPServers                            []string        `json:"NTPServers,omitempty"`
-	DNSServers                            []string        `json:"DNSServers,omitempty"`
-	KMS                                   string          `json:"KMS,omitempty"`
-	TFTPServerWANVRRPListenIPv4           string          `json:"TFTPServerWANVRRPListenIPv4,omitempty"`
-	DataLakeEnabled                       bool            `json:"dataLakeEnabled,omitempty"`
-	MonitoringGraphitePlainTextSocketHost string          `json:"monitoringGraphitePlainTextSocketHost,omitempty"`
-	MonitoringGraphiteRenderURLHost       string          `json:"monitoringGraphiteRenderURLHost,omitempty"`
-	Latitude                              float64         `json:"latitude,omitempty"`
-	Longitude                             float64         `json:"longitude,omitempty"`
-	Address                               string          `json:"address,omitempty"`
-	VLANProvisioner                       VLANProvisioner `json:"VLANProvisioner,omitempty"`
+	BSIMachinesSubnetIPv4CIDR             string   `json:"BSIMachinesSubnetIPv4CIDR,omitempty" yaml:"BSIMachinesSubnetIPv4CIDR,omitempty"`
+	BSIVRRPListenIPv4                     string   `json:"BSIVRRPListenIPv4,omitempty" yaml:"BSIVRRPListenIPv4,omitempty"`
+	BSIMachineListenIPv4List              []string `json:"BSIMachineListenIPv4List,omitempty" yaml:"BSIMachineListenIPv4List,omitempty"`
+	BSIExternallyVisibleIPv4              string   `json:"BSIExternallyVisibleIPv4,omitempty" yaml:"BSIExternallyVisibleIPv4,omitempty"`
+	RepoURLRoot                           string   `json:"repoURLRoot,omitempty" yaml:"repoURLRoot,omitempty"`
+	RepoURLRootQuarantineNetwork          string   `json:"repoURLRootQuarantineNetwork,omitempty" yaml:"repoURLRootQuarantineNetwork,omitempty"`
+	SANRoutedSubnet                       string   `json:"SANRoutedSubnet,omitempty" yaml:"SANRoutedSubnet,omitempty"`
+	NTPServers                            []string `json:"NTPServers,omitempty" yaml:"NTPServers,omitempty"`
+	DNSServers                            []string `json:"DNSServers,omitempty" yaml:"DNSServers,omitempty"`
+	KMS                                   string   `json:"KMS,omitempty" yaml:"KMS,omitempty"`
+	TFTPServerWANVRRPListenIPv4           string   `json:"TFTPServerWANVRRPListenIPv4,omitempty" yaml:"TFTPServerWANVRRPListenIPv4,omitempty"`
+	DataLakeEnabled                       bool     `json:"dataLakeEnabled" yaml:"dataLakeEnabled"`
+	MonitoringGraphitePlainTextSocketHost string   `json:"monitoringGraphitePlainTextSocketHost,omitempty" yaml:"monitoringGraphitePlainTextSocketHost,omitempty"`
+	MonitoringGraphiteRenderURLHost       string   `json:"monitoringGraphiteRenderURLHost,omitempty" yaml:"monitoringGraphiteRenderURLHost,omitempty"`
+	Latitude                              float64  `json:"latitude,omitempty" yaml:"latitude,omitempty"`
+	Longitude                             float64  `json:"longitude,omitempty" yaml:"longitude,omitempty"`
+	Address                               string   `json:"address,omitempty" yaml:"address,omitempty"`
+	//SwitchProvisioner                     *SwitchProvisioner `json:"SwitchProvisioner,omitempty" yaml:"switchProvisioner,omitempty"`
+	SwitchProvisioner map[string]interface{} `json:"switchProvisioner,omitempty" yaml:"switchProvisioner,omitempty"`
+}
+
+/*
+//SwitchProvisioner provisioner base struct
+type SwitchProvisioner struct {
+	Provisioner interface{}
+	Type        string
 }
 
 //VLANProvisioner - defines settings for the networking provisioning architecture that uses vlans
@@ -46,20 +55,83 @@ type VLANProvisioner struct {
 	LANVLANRange     string `json:"LANVLANRange,omitempty"`
 	WANVLANRange     string `json:"WANVLANRange,omitempty"`
 	QuarantineVLANID int    `json:"quarantineVLANID,omitempty"`
+	Type             string `json:"type,omitempty"`
 }
 
 //VPLSProvisioner - defines settings for the networking provisioning architecture that uses vpls
 type VPLSProvisioner struct {
-	ACLSAN            string `json:"ACLSAN,omitempty"`
-	ACLWAN            string `json:"ACLWAN,omitempty"`
+	ACLSAN            int    `json:"ACLSAN,omitempty"`
+	ACLWAN            int    `json:"ACLWAN,omitempty"`
 	SANACLRange       string `json:"SANACLRange,omitempty"`
 	ToRLANVLANRange   string `json:"ToRLANVLANRange,omitempty"`
 	ToRSANVLANRange   string `json:"ToRSANVLANRange,omitempty"`
 	ToRWANVLANRange   string `json:"ToRWANVLANRange,omitempty"`
 	QuarantineVLANID  int    `json:"quarantineVLANID,omitempty"`
 	NorthWANVLANRange string `json:"NorthWANVLANRange,omitempty"`
+	Type              string `json:"type,omitempty"`
 }
 
+//UnmarshalJSON custom unmarshaling
+func (o *SwitchProvisioner) UnmarshalJSON(data []byte) error {
+	var p struct {
+		Type string `json:"type,omitempty"`
+	}
+
+	err := json.Unmarshal(data, &p)
+	if err != nil {
+		return err
+	}
+
+	o.Type = p.Type
+
+	switch p.Type {
+	case "VLANProvisioner":
+
+		var provisioner VLANProvisioner
+		err := json.Unmarshal(data, &provisioner)
+		if err != nil {
+			return err
+		}
+		o.Provisioner = provisioner
+
+	case "VPLSProvisioner":
+		var provisioner VPLSProvisioner
+
+		err := json.Unmarshal(data, &provisioner)
+		if err != nil {
+			return err
+		}
+
+		o.Provisioner = provisioner
+	default:
+		return fmt.Errorf("Cannot unmarshal unsupported provisioner type %s", p.Type)
+	}
+
+	return nil
+}
+
+//MarshalJSON custom marshaling
+func (o *SwitchProvisioner) MarshalJSON() ([]byte, error) {
+
+	switch o.Type {
+	case "VLANProvisioner":
+
+		provisioner := o.Provisioner.(VLANProvisioner)
+		provisioner.Type = o.Type
+
+		return json.Marshal(&provisioner)
+
+	case "VPLSProvisioner":
+		provisioner := o.Provisioner.(VPLSProvisioner)
+		provisioner.Type = o.Type
+		return json.Marshal(&provisioner)
+
+	default:
+		return nil, fmt.Errorf("Cannot marshal unsupported provisioner type %s", o.Type)
+	}
+
+}
+*/
 //Datacenters returns datacenters for all users
 func (c *Client) Datacenters(onlyActive bool) (*map[string]Datacenter, error) {
 	return c.datacenters(nil, onlyActive)
