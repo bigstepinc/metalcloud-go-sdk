@@ -74,11 +74,6 @@ type InstanceInterfaceOperation struct {
 	InstanceInterfaceChangeID     int    `json:"instance_interface_change_id,omitempty"`
 }
 
-//ServerInterface contains server connectivity information.
-type ServerInterface struct {
-	ServerInterfaceMACAddress string `json:"server_interface_mac_address,omitempty"`
-}
-
 //InstanceCredentials contains information needed to connect to the server via IPMI, iLO etc.
 type InstanceCredentials struct {
 	SSH                *SSH            `json:"ssh,omitempty"`

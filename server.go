@@ -7,78 +7,83 @@ import (
 
 //ServerSearchResult represents a server in a datacenter.
 type ServerSearchResult struct {
-	ServerID                           int               `json:"server_id,omitempty"`
-	ServerUUID                         string            `json:"server_uuid,omitempty"`
-	ServerNetworkTotalCapacityMbps     int               `json:"server_network_total_capacity_mbps,omitempty"`
-	ServerPowerStatus                  string            `json:"server_power_status,omitempty"`
-	ServerProcessorCoreCount           int               `json:"server_processor_core_count,omitempty"`
-	ServerProcessorCoreMhz             int               `json:"server_processor_core_mhz,omitempty"`
-	ServerProcessorCount               int               `json:"server_processor_count,omitempty"`
-	ServerRAMGbytes                    int               `json:"server_ram_gbytes,omitempty"`
-	ServerDiskCount                    int               `json:"server_disk_count,omitempty"`
-	ServerDiskSizeMbytes               int               `json:"server_disk_size_mbytes,omitempty"`
-	ServerDiskType                     string            `json:"server_disk_type,omitempty"`
-	ServerProcessorName                string            `json:"server_processor_name,omitempty"`
-	ServerProductName                  string            `json:"server_product_name,omitempty"`
-	ServerTypeID                       int               `json:"server_type_id,omitempty"`
-	ServerTypeName                     string            `json:"server_type_name,omitempty"`
-	ServerTypeBootType                 string            `json:"server_type_boot_type,omitempty"`
-	ServerInterfaces                   []ServerInterface `json:"server_interfaces,omitempty"`
-	ServerDisks                        []ServerDisk      `json:"server_disks,omitempty"`
-	ServerTags                         []string          `json:"server_tags,omitempty"`
-	ServerIPMIHost                     string            `json:"server_ipmi_host,omitempty"`
-	ServerIPMInternalUsername          string            `json:"server_ipmi_internal_username,omitempty"`
-	ServerIPMInternalPasswordEncrypted string            `json:"server_ipmi_internal_password_encrypted,omitempty"`
-	ServerStatus                       string            `json:"server_status,omitempty"`
-	ServerSerialNumber                 string            `json:"server_serial_number,omitempty"`
-	ServerVendor                       string            `json:"server_vendor,omitempty"`
-	ServerVendorSKUID                  string            `json:"server_vendor_sku_id,omitempty"`
-	ServerComments                     string            `json:"server_comments,omitempty"`
-	InstanceLabel                      []string          `json:"instance_label,omitempty"`
-	InstanceID                         []int             `json:"instance_id,omitempty"`
-	InstanceArrayID                    []int             `json:"instance_array_id,omitempty"`
-	InfrastructureID                   []int             `json:"infrastructure_id,omitempty"`
-	UserEmail                          [][]string        `json:"user_email,omitempty"`
-	UserID                             [][]int           `json:"user_id,omitempty"`
-	DatacenterName                     string            `json:"datacenter_name,omitempty"`
+	ServerID                           int               `json:"server_id,omitempty" yaml:"id,omitempty"`
+	ServerUUID                         string            `json:"server_uuid,omitempty" yaml:"uuid,omitempty"`
+	ServerNetworkTotalCapacityMbps     int               `json:"server_network_total_capacity_mbps,omitempty" yaml:"networkTotalCapacityMbps,omitempty"`
+	ServerPowerStatus                  string            `json:"server_power_status,omitempty" yaml:"powerStatus,omitempty"`
+	ServerProcessorCoreCount           int               `json:"server_processor_core_count,omitempty" yaml:"processorCoreCount,omitempty"`
+	ServerProcessorCoreMhz             int               `json:"server_processor_core_mhz,omitempty" yaml:"processorCoreMhz,omitempty"`
+	ServerProcessorCount               int               `json:"server_processor_count,omitempty" yaml:"processorCount,omitempty"`
+	ServerRAMGbytes                    int               `json:"server_ram_gbytes,omitempty" yaml:"ramGbytes,omitempty"`
+	ServerDiskCount                    int               `json:"server_disk_count,omitempty" yaml:"diskCount,omitempty"`
+	ServerDiskSizeMbytes               int               `json:"server_disk_size_mbytes,omitempty" yaml:"diskSizeMbytes,omitempty"`
+	ServerDiskType                     string            `json:"server_disk_type,omitempty" yaml:"diskType,omitempty"`
+	ServerProcessorName                string            `json:"server_processor_name,omitempty" yaml:"processorName,omitempty"`
+	ServerProductName                  string            `json:"server_product_name,omitempty" yaml:"productName,omitempty"`
+	ServerTypeID                       int               `json:"server_type_id,omitempty" yaml:"typeID,omitempty"`
+	ServerTypeName                     string            `json:"server_type_name,omitempty" yaml:"type,omitempty"`
+	ServerTypeBootType                 string            `json:"server_type_boot_type,omitempty" yaml:"serverBootType,omitempty"`
+	ServerInterfaces                   []ServerInterface `json:"server_interfaces,omitempty" yaml:"interfaces,omitempty"`
+	ServerDisks                        []ServerDisk      `json:"server_disks,omitempty" yaml:"disks,omitempty"`
+	ServerTags                         []string          `json:"server_tags,omitempty" yaml:"tags,omitempty"`
+	ServerIPMIHost                     string            `json:"server_ipmi_host,omitempty" yaml:"IPMIHostname,omitempty"`
+	ServerIPMInternalUsername          string            `json:"server_ipmi_internal_username,omitempty" yaml:"IPMIUsername,omitempty"`
+	ServerIPMInternalPasswordEncrypted string            `json:"server_ipmi_internal_password_encrypted,omitempty" yaml:"IPMIPasswordEncrypted,omitempty"`
+	ServerStatus                       string            `json:"server_status,omitempty" yaml:"status,omitempty"`
+	ServerSerialNumber                 string            `json:"server_serial_number,omitempty" yaml:"serial_number,omitempty"`
+	ServerVendor                       string            `json:"server_vendor,omitempty" yaml:"vendor,omitempty"`
+	ServerVendorSKUID                  string            `json:"server_vendor_sku_id,omitempty" yaml:"vendorSKUID,omitempty"`
+	ServerComments                     string            `json:"server_comments,omitempty" yaml:"comments,omitempty"`
+	InstanceLabel                      []string          `json:"instance_label,omitempty" yaml:"instanceLabel,omitempty"`
+	InstanceID                         []int             `json:"instance_id,omitempty" yaml:"instanceID,omitempty"`
+	InstanceArrayID                    []int             `json:"instance_array_id,omitempty" yaml:"instanceArrayID,omitempty"`
+	InfrastructureID                   []int             `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
+	UserEmail                          [][]string        `json:"user_email,omitempty" yaml:"userEmail,omitempty"`
+	UserID                             [][]int           `json:"user_id,omitempty" yaml:"users,omitempty"`
+	DatacenterName                     string            `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
 }
 
 //Server represents a server in a datacenter.
 type Server struct {
-	ServerID                       int               `json:"server_id,omitempty"`
-	ServerUUID                     string            `json:"server_uuid,omitempty"`
-	ServerNetworkTotalCapacityMbps int               `json:"server_network_total_capacity_mbps,omitempty"`
-	ServerPowerStatus              string            `json:"server_power_status,omitempty"`
-	ServerProcessorCoreCount       int               `json:"server_processor_core_count,omitempty"`
-	ServerProcessorCoreMhz         int               `json:"server_processor_core_mhz,omitempty"`
-	ServerProcessorCount           int               `json:"server_processor_count,omitempty"`
-	ServerRAMGbytes                int               `json:"server_ram_gbytes,omitempty"`
-	ServerDiskCount                int               `json:"server_disk_count,omitempty"`
-	ServerDiskSizeMbytes           int               `json:"server_disk_size_mbytes,omitempty"`
-	ServerDiskType                 string            `json:"server_disk_type,omitempty"`
-	ServerProcessorName            string            `json:"server_processor_name,omitempty"`
-	ServerProductName              string            `json:"server_product_name,omitempty"`
-	ServerTypeID                   int               `json:"server_type_id,omitempty"`
-	ServerInterfaces               []ServerInterface `json:"server_interfaces,omitempty"`
-	ServerDisks                    []ServerDisk      `json:"server_disks,omitempty"`
-	ServerTags                     []string          `json:"server_tags,omitempty"`
-	ServerIPMIHost                 string            `json:"server_ipmi_host,omitempty"`
-	ServerIPMInternalUsername      string            `json:"server_ipmi_internal_username,omitempty"`
-	ServerIPMInternalPassword      string            `json:"server_ipmi_internal_password,omitempty"`
-	ServerStatus                   string            `json:"server_status,omitempty"`
-	ServerSerialNumber             string            `json:"server_serial_number,omitempty"`
-	ServerVendor                   string            `json:"server_vendor,omitempty"`
-	ServerVendorSKUID              string            `json:"server_vendor_sku_id,omitempty"`
-	ServerComments                 string            `json:"server_comments,omitempty"`
-	DatacenterName                 string            `json:"datacenter_name,omitempty"`
+	DatacenterName                 string            `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+	ServerID                       int               `json:"server_id,omitempty" yaml:"id,omitempty"`
+	ServerUUID                     string            `json:"server_uuid,omitempty" yaml:"UUID,omitempty"`
+	ServerNetworkTotalCapacityMbps int               `json:"server_network_total_capacity_mbps,omitempty" yaml:"networkTotalCapacityMbps,omitempty"`
+	ServerPowerStatus              string            `json:"server_power_status,omitempty" yaml:"powerStatus,omitempty"`
+	ServerProcessorName            string            `json:"server_processor_name,omitempty" yaml:"processorName,omitempty"`
+	ServerProcessorCoreCount       int               `json:"server_processor_core_count,omitempty" yaml:"processorCoreCount,omitempty"`
+	ServerProcessorCoreMhz         int               `json:"server_processor_core_mhz,omitempty" yaml:"processorCoreMhz,omitempty"`
+	ServerProcessorCount           int               `json:"server_processor_count,omitempty" yaml:"processorCount,omitempty"`
+	ServerRAMGbytes                int               `json:"server_ram_gbytes,omitempty" yaml:"ramGbytes,omitempty"`
+	ServerDisks                    []ServerDisk      `json:"server_disks,omitempty" yaml:"disks,omitempty"`
+	ServerDiskCount                int               `json:"server_disk_count,omitempty" yaml:"diskCount,omitempty"`
+	ServerDiskSizeMbytes           int               `json:"server_disk_size_mbytes,omitempty" yaml:"diskSizeMbytes,omitempty"`
+	ServerDiskType                 string            `json:"server_disk_type,omitempty" yaml:"diskType,omitempty"`
+	ServerProductName              string            `json:"server_product_name,omitempty" yaml:"productName,omitempty"`
+	ServerTypeID                   int               `json:"server_type_id,omitempty" yaml:"typeID,omitempty"`
+	ServerInterfaces               []ServerInterface `json:"server_interfaces,omitempty" yaml:"interfaces,omitempty"`
+	ServerTags                     []string          `json:"server_tags,omitempty" yaml:"tags,omitempty"`
+	ServerIPMIHost                 string            `json:"server_ipmi_host,omitempty" yaml:"IPMIHostname,omitempty"`
+	ServerIPMInternalUsername      string            `json:"server_ipmi_internal_username,omitempty" yaml:"IPMIUsername,omitempty"`
+	ServerIPMInternalPassword      string            `json:"server_ipmi_internal_password,omitempty" yaml:"IPMIPassword,omitempty"`
+	ServerStatus                   string            `json:"server_status,omitempty" yaml:"status,omitempty"`
+	ServerSerialNumber             string            `json:"server_serial_number,omitempty" yaml:"serialNumber,omitempty"`
+	ServerVendor                   string            `json:"server_vendor,omitempty" yaml:"vendor,omitempty"`
+	ServerVendorSKUID              string            `json:"server_vendor_sku_id,omitempty" yaml:"vendorSKU,omitempty"`
+	ServerComments                 string            `json:"server_comments,omitempty" yaml:"comments,omitempty"`
 }
 
 //await bsideveloper.search(2, '*',["_servers_instances"])
 
 //ServerDisk describes a disk
 type ServerDisk struct {
-	ServerDiskType   string `json:"server_disk_type,omitempty"`
-	ServerDiskSizeGB string `json:"server_disk_size_gb,omitempty"`
+	ServerDiskType   string `json:"server_disk_type,omitempty" yaml:"diskType,omitempty"`
+	ServerDiskSizeGB string `json:"server_disk_size_gb,omitempty" yaml:"diskSizeGB,omitempty"`
+}
+
+//ServerInterface contains server connectivity information.
+type ServerInterface struct {
+	ServerInterfaceMACAddress string `json:"server_interface_mac_address,omitempty" yaml:"macAddress,omitempty"`
 }
 
 //SearchResultForServers describes a serach result
@@ -91,18 +96,18 @@ type SearchResultForServers struct {
 
 //ServerComponent information about a server's components
 type ServerComponent struct {
-	ServerComponentID                              int      `json:"server_component_id,omitempty"`
-	ServerID                                       int      `json:"server_id,omitempty"`
-	ServerComponentName                            string   `json:"server_component_name,omitempty"`
-	ServerComponentFirmwareVersion                 string   `json:"server_component_firmware_version,omitempty"`
-	ServerComponentFirmwareUpdateable              bool     `json:"server_component_firmware_updateable,omitempty"`
-	ServerComponentFirmwareJSON                    string   `json:"server_component_firmware_json,omitempty"`
-	ServerComponentFirmwareUpdateAvailableVersions []string `json:"server_component_firmware_update_available_versions,omitempty"`
-	ServerComponentFirmwareStatus                  string   `json:"server_component_firmware_status,omitempty"`
-	ServerComponentType                            string   `json:"server_component_type,omitempty"`
-	ServerComponentFirmwareUpdateTimestamp         string   `json:"server_component_firmware_update_timestamp,omitempty"`
-	ServerComponentFirmwareTargetVersion           string   `json:"server_component_firmware_target_version,omitempty"`
-	ServerComponentFirmwareScheduledTimestamp      string   `json:"server_component_firmware_scheduled_timestamp,omitempty"`
+	ServerComponentID                              int      `json:"server_component_id,omitempty" yaml:"id,omitempty"`
+	ServerID                                       int      `json:"server_id,omitempty" yaml:"serverID,omitempty"`
+	ServerComponentName                            string   `json:"server_component_name,omitempty" yaml:"componentName,omitempty"`
+	ServerComponentFirmwareVersion                 string   `json:"server_component_firmware_version,omitempty" yaml:"firmwareVersion,omitempty"`
+	ServerComponentFirmwareUpdateable              bool     `json:"server_component_firmware_updateable,omitempty" yaml:"firmwareUpdateable,omitempty"`
+	ServerComponentFirmwareJSON                    string   `json:"server_component_firmware_json,omitempty" yaml:"firmwareJSON,omitempty"`
+	ServerComponentFirmwareUpdateAvailableVersions []string `json:"server_component_firmware_update_available_versions,omitempty" yaml:"firmwareUpdateAvailableVersions,omitempty"`
+	ServerComponentFirmwareStatus                  string   `json:"server_component_firmware_status,omitempty" yaml:"firmwareStatus,omitempty"`
+	ServerComponentType                            string   `json:"server_component_type,omitempty" yaml:"type,omitempty"`
+	ServerComponentFirmwareUpdateTimestamp         string   `json:"server_component_firmware_update_timestamp,omitempty" yaml:"firmwareUpdateTimestamp,omitempty"`
+	ServerComponentFirmwareTargetVersion           string   `json:"server_component_firmware_target_version,omitempty" yaml:"firmwareTargetVersion,omitempty"`
+	ServerComponentFirmwareScheduledTimestamp      string   `json:"server_component_firmware_scheduled_timestamp,omitempty" yaml:"firmwareScheduledTimestamp,omitempty"`
 }
 
 //SearchResultForServerComponents describes a search result
@@ -194,6 +199,43 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 	return &servers, nil
 }
 
+//ServerGetByUUID retrieves information about a specified Server by using the server's UUID
+func (c *Client) ServerGetByUUID(serverUUID string, decryptPasswd bool) (*Server, error) {
+
+	var createdObject Server
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_with_uuid_get",
+		serverUUID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if decryptPasswd {
+		passwdComponents := strings.Split(createdObject.ServerIPMInternalPassword, ":")
+		if len(passwdComponents) != 2 {
+			return nil, fmt.Errorf("Password not returned with proper components")
+		}
+		var passwd string
+		err = c.rpcClient.CallFor(
+			&passwd,
+			"password_decrypt",
+			passwdComponents[1],
+		)
+		if err != nil {
+			return nil, err
+		}
+		createdObject.ServerIPMInternalPassword = passwd
+	} else {
+		createdObject.ServerIPMInternalPassword = ""
+	}
+
+	return &createdObject, nil
+
+}
+
 //ServerGet returns a server's details
 func (c *Client) ServerGet(serverID int, decryptPasswd bool) (*Server, error) {
 
@@ -228,6 +270,92 @@ func (c *Client) ServerGet(serverID int, decryptPasswd bool) (*Server, error) {
 	}
 
 	return &createdObject, nil
+}
+
+//ServerCreate manually creates a server record
+func (c *Client) ServerCreate(server Server, autoGenerate bool) (*Server, error) {
+
+	var createdObject Server
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_create",
+		server,
+		autoGenerate,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdObject, nil
+}
+
+//ServerEditComplete - perform a complete edit
+func (c *Client) ServerEditComplete(serverID int, server Server) (*Server, error) {
+	return c.ServerEdit(serverID, "complete", server)
+}
+
+//ServerEditIPMI - edit only IPMI settings
+func (c *Client) ServerEditIPMI(serverID int, server Server) (*Server, error) {
+	return c.ServerEdit(serverID, "ipmi", server)
+}
+
+//ServerEditAvailability - edit only server availability settings
+func (c *Client) ServerEditAvailability(serverID int, server Server) (*Server, error) {
+	return c.ServerEdit(serverID, "availability", server)
+}
+
+//ServerEdit edits a server record
+func (c *Client) ServerEdit(serverID int, serverEditType string, server Server) (*Server, error) {
+
+	var createdObject Server
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_edit",
+		serverID,
+		serverEditType,
+		server,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdObject, nil
+}
+
+//ServerDelete deletes all the information about a specified Server.
+func (c *Client) ServerDelete(serverID int, skipIPMI bool) error {
+
+	resp, err := c.rpcClient.Call("server_delete", serverID, skipIPMI)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
+	return nil
+}
+
+//ServerDecomission decomissions the server row and deletes all child rows.
+func (c *Client) ServerDecomission(serverID int, skipIPMI bool) error {
+
+	resp, err := c.rpcClient.Call("server_decomission", serverID, skipIPMI)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
+	return nil
 }
 
 //ServerFirmwareComponentUpgrade Creates a firmware upgrading session for the specified component.
