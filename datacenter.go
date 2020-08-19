@@ -132,6 +132,7 @@ func (o *SwitchProvisioner) MarshalJSON() ([]byte, error) {
 
 }
 */
+
 //Datacenters returns datacenters for all users
 func (c *Client) Datacenters(onlyActive bool) (*map[string]Datacenter, error) {
 	return c.datacenters(nil, onlyActive)

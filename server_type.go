@@ -139,12 +139,39 @@ func (c *Client) ServerTypeDatacenter(datacenterName string) (*[]int, error) {
 }
 
 //ServerTypes retrieves all ServerType objects from the database.
-func (c *Client) ServerTypes(datacenterName string, bOnlyAvailable bool) (*map[int]ServerType, error) {
+func (c *Client) ServerTypes(bOnlyAvailable bool) (*map[int]ServerType, error) {
 
 	res, err := c.rpcClient.Call(
 		"server_types",
-		datacenterName,
+		nil,
 		bOnlyAvailable)
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := res.Result.([]interface{})
+	if ok {
+		var m = map[int]ServerType{}
+		return &m, nil
+	}
+
+	var createdObject map[int]ServerType
+
+	err2 := res.GetObject(&createdObject)
+	if err2 != nil {
+		return nil, err2
+	}
+
+	return &createdObject, nil
+}
+
+//ServerTypesForDatacenter retrieves all ServerType objects from the database.
+func (c *Client) ServerTypesForDatacenter(datacenterName string, bOnlyAvailable bool) (*map[int]ServerType, error) {
+
+	res, err := c.rpcClient.Call(
+		"server_types_datacenter",
+		datacenterName)
 
 	if err != nil {
 		return nil, err
