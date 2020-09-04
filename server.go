@@ -87,12 +87,15 @@ type Server struct {
 	ServerCustomJSON               string            `json:"server_custom_json" yaml:"CustomJSON"`
 }
 
-//await bsideveloper.search(2, '*',["_servers_instances"])
-
 //ServerDisk describes a disk
 type ServerDisk struct {
-	ServerDiskType   string `json:"server_disk_type,omitempty" yaml:"diskType,omitempty"`
-	ServerDiskSizeGB int    `json:"server_disk_size_gb,omitempty" yaml:"diskSizeGB,omitempty"`
+	ServerDiskID     int    `json:"server_disk_id,omitempty" yaml:"id,omitempty"`
+	ServerDiskModel  string `json:"server_disk_model,omitempty" yaml:"model,omitempty"`
+	ServerDiskType   string `json:"server_disk_type,omitempty" yaml:"type,omitempty"`
+	ServerDiskVendor string `json:"server_disk_vendor,omitempty" yaml:"vendor,omitempty"`
+	ServerDiskStatus string `json:"server_disk_status,omitempty" yaml:"status,omitempty"`
+	ServerDiskSerial string `json:"server_disk_serial,omitempty" yaml:"serial_number,omitempty"`
+	ServerDiskSizeGB int    `json:"server_disk_size_gb,omitempty" yaml:"sizeGB,omitempty"`
 }
 
 //ServerInterface contains server connectivity information.
