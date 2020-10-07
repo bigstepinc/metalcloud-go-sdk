@@ -22,23 +22,26 @@ type Datacenter struct {
 
 //DatacenterConfig - datacenter configuration
 type DatacenterConfig struct {
-	BSIMachinesSubnetIPv4CIDR             string   `json:"BSIMachinesSubnetIPv4CIDR,omitempty" yaml:"BSIMachinesSubnetIPv4CIDR,omitempty"`
-	BSIVRRPListenIPv4                     string   `json:"BSIVRRPListenIPv4,omitempty" yaml:"BSIVRRPListenIPv4,omitempty"`
-	BSIMachineListenIPv4List              []string `json:"BSIMachineListenIPv4List,omitempty" yaml:"BSIMachineListenIPv4List,omitempty"`
-	BSIExternallyVisibleIPv4              string   `json:"BSIExternallyVisibleIPv4,omitempty" yaml:"BSIExternallyVisibleIPv4,omitempty"`
-	RepoURLRoot                           string   `json:"repoURLRoot,omitempty" yaml:"repoURLRoot,omitempty"`
-	RepoURLRootQuarantineNetwork          string   `json:"repoURLRootQuarantineNetwork,omitempty" yaml:"repoURLRootQuarantineNetwork,omitempty"`
-	SANRoutedSubnet                       string   `json:"SANRoutedSubnet,omitempty" yaml:"SANRoutedSubnet,omitempty"`
-	NTPServers                            []string `json:"NTPServers,omitempty" yaml:"NTPServers,omitempty"`
-	DNSServers                            []string `json:"DNSServers,omitempty" yaml:"DNSServers,omitempty"`
-	KMS                                   string   `json:"KMS,omitempty" yaml:"KMS,omitempty"`
-	TFTPServerWANVRRPListenIPv4           string   `json:"TFTPServerWANVRRPListenIPv4,omitempty" yaml:"TFTPServerWANVRRPListenIPv4,omitempty"`
-	DataLakeEnabled                       bool     `json:"dataLakeEnabled" yaml:"dataLakeEnabled"`
-	MonitoringGraphitePlainTextSocketHost string   `json:"monitoringGraphitePlainTextSocketHost,omitempty" yaml:"monitoringGraphitePlainTextSocketHost,omitempty"`
-	MonitoringGraphiteRenderURLHost       string   `json:"monitoringGraphiteRenderURLHost,omitempty" yaml:"monitoringGraphiteRenderURLHost,omitempty"`
-	Latitude                              float64  `json:"latitude,omitempty" yaml:"latitude,omitempty"`
-	Longitude                             float64  `json:"longitude,omitempty" yaml:"longitude,omitempty"`
-	Address                               string   `json:"address,omitempty" yaml:"address,omitempty"`
+	BSIMachinesSubnetIPv4CIDR                          string   `json:"BSIMachinesSubnetIPv4CIDR,omitempty" yaml:"BSIMachinesSubnetIPv4CIDR,omitempty"`
+	BSIVRRPListenIPv4                                  string   `json:"BSIVRRPListenIPv4,omitempty" yaml:"BSIVRRPListenIPv4,omitempty"`
+	BSIMachineListenIPv4List                           []string `json:"BSIMachineListenIPv4List,omitempty" yaml:"BSIMachineListenIPv4List,omitempty"`
+	BSIExternallyVisibleIPv4                           string   `json:"BSIExternallyVisibleIPv4,omitempty" yaml:"BSIExternallyVisibleIPv4,omitempty"`
+	RepoURLRoot                                        string   `json:"repoURLRoot,omitempty" yaml:"repoURLRoot,omitempty"`
+	RepoURLRootQuarantineNetwork                       string   `json:"repoURLRootQuarantineNetwork,omitempty" yaml:"repoURLRootQuarantineNetwork,omitempty"`
+	SANRoutedSubnet                                    string   `json:"SANRoutedSubnet,omitempty" yaml:"SANRoutedSubnet,omitempty"`
+	NTPServers                                         []string `json:"NTPServers,omitempty" yaml:"NTPServers,omitempty"`
+	DNSServers                                         []string `json:"DNSServers,omitempty" yaml:"DNSServers,omitempty"`
+	KMS                                                string   `json:"KMS,omitempty" yaml:"KMS,omitempty"`
+	TFTPServerWANVRRPListenIPv4                        string   `json:"TFTPServerWANVRRPListenIPv4,omitempty" yaml:"TFTPServerWANVRRPListenIPv4,omitempty"`
+	DataLakeEnabled                                    bool     `json:"dataLakeEnabled" yaml:"dataLakeEnabled"`
+	MonitoringGraphitePlainTextSocketHost              string   `json:"monitoringGraphitePlainTextSocketHost,omitempty" yaml:"monitoringGraphitePlainTextSocketHost,omitempty"`
+	MonitoringGraphiteRenderURLHost                    string   `json:"monitoringGraphiteRenderURLHost,omitempty" yaml:"monitoringGraphiteRenderURLHost,omitempty"`
+	Latitude                                           float64  `json:"latitude,omitempty" yaml:"latitude,omitempty"`
+	Longitude                                          float64  `json:"longitude,omitempty" yaml:"longitude,omitempty"`
+	Address                                            string   `json:"address,omitempty" yaml:"address,omitempty"`
+	ServerRegisterUsingGeneratedIPMICredentialsEnabled bool     `json:"ServerRegisterUsingGeneratedIPMICredentialsEnabled,omitempty" yaml:"ServerRegisterUsingGeneratedIPMICredentialsEnabled,omitempty"`
+	DatacenterNetworksLayer2Only                       bool     `json:"DatacenterNetworksLayer2Only,omitempty" yaml:"DatacenterNetworksLayer2Only,omitempty"`
+
 	//SwitchProvisioner                     *SwitchProvisioner `json:"SwitchProvisioner,omitempty" yaml:"switchProvisioner,omitempty"`
 	SwitchProvisioner map[string]interface{} `json:"switchProvisioner,omitempty" yaml:"switchProvisioner,omitempty"`
 }
