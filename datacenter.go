@@ -39,8 +39,8 @@ type DatacenterConfig struct {
 	Latitude                                           float64  `json:"latitude,omitempty" yaml:"latitude,omitempty"`
 	Longitude                                          float64  `json:"longitude,omitempty" yaml:"longitude,omitempty"`
 	Address                                            string   `json:"address,omitempty" yaml:"address,omitempty"`
-	ServerRegisterUsingGeneratedIPMICredentialsEnabled bool     `json:"ServerRegisterUsingGeneratedIPMICredentialsEnabled,omitempty" yaml:"ServerRegisterUsingGeneratedIPMICredentialsEnabled,omitempty"`
-	DatacenterNetworksLayer2Only                       bool     `json:"DatacenterNetworksLayer2Only,omitempty" yaml:"DatacenterNetworksLayer2Only,omitempty"`
+	ServerRegisterUsingGeneratedIPMICredentialsEnabled bool     `json:"serverRegisterUsingGeneratedIPMICredentialsEnabled,omitempty" yaml:"serverRegisterUsingGeneratedIPMICredentialsEnabled,omitempty"`
+	DatacenterNetworksLayer2Only                       bool     `json:"datacenterNetworkIsLayer2Only,omitempty" yaml:"datacenterNetworkIsLayer2Only,omitempty"`
 
 	//SwitchProvisioner                     *SwitchProvisioner `json:"SwitchProvisioner,omitempty" yaml:"switchProvisioner,omitempty"`
 	SwitchProvisioner map[string]interface{} `json:"switchProvisioner,omitempty" yaml:"switchProvisioner,omitempty"`
