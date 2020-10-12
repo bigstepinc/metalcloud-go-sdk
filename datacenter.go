@@ -40,7 +40,7 @@ type DatacenterConfig struct {
 	Longitude                                          float64                `json:"longitude,omitempty" yaml:"longitude,omitempty"`
 	Address                                            string                 `json:"address,omitempty" yaml:"address,omitempty"`
 	ServerRegisterUsingGeneratedIPMICredentialsEnabled bool                   `json:"serverRegisterUsingGeneratedIPMICredentialsEnabled" yaml:"serverRegisterUsingGeneratedIPMICredentialsEnabled"`
-	DatacenterNetworksLayer2Only                       bool                   `json:"datacenterNetworkIsLayer2Only,omitempty" yaml:"datacenterNetworkIsLayer2Only,omitempty"`
+	DatacenterNetworksLayer2Only                       bool                   `json:"datacenterNetworkIsLayer2Only" yaml:"datacenterNetworkIsLayer2Only"`
 	SwitchProvisioner                                  map[string]interface{} `json:"switchProvisioner,omitempty" yaml:"switchProvisioner,omitempty"`
 }
 
