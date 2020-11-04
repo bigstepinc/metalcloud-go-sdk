@@ -18,9 +18,11 @@ type VolumeTemplate struct {
 	VolumeTemplateDescription          string          `json:"volume_template_description,omitempty"`
 	VolumeTemplateLocalDiskSupported   bool            `json:"volume_template_local_supported,omitempty"`
 	VolumeTemplateBootMethodsSupported string          `json:"volume_template_boot_methods_supported,omitempty"`
+	VolumeTemplateBootType             string          `json:"volume_template_boot_type,omitempty"`
 	VolumeTemplateDeprecationStatus    string          `json:"volume_template_deprecation_status,omitempty"`
 	VolumeTemplateRepoURL              string          `json:"volume_template_repo_url,omitempty"`
 	VolumeTemplateOperatingSystem      OperatingSystem `json:"volume_template_operating_system,omitempty"`
+	VolumeTemplateTags                 []string        `json:"volume_template_tags,omitempty"`
 }
 
 //VolumeTemplates retrives the list of available templates
@@ -70,7 +72,7 @@ func (c *Client) volumeTemplateGet(volumeTemplateID id) (*VolumeTemplate, error)
 }
 
 //volumeTemplateCreate creates a private volume template from a drive
-func (c *Client) volumeTemplateCreate(driveID id, label string, description string, displayName string, bootType string, deprecationStatus string, bootMethodsSupported string, volumeTemplateTags []string) (*VolumeTemplate, error) {
+func (c *Client) volumeTemplateCreateFromDrive(driveID id, objVolumeTemplate VolumeTemplate) (*VolumeTemplate, error) {
 	var createdObject VolumeTemplate
 
 	if err := checkID(driveID); err != nil {
@@ -81,13 +83,7 @@ func (c *Client) volumeTemplateCreate(driveID id, label string, description stri
 		&createdObject,
 		"volume_template_create",
 		driveID,
-		label,
-		description,
-		displayName,
-		bootType,
-		deprecationStatus,
-		bootMethodsSupported,
-		volumeTemplateTags)
+		objVolumeTemplate)
 
 	if err != nil {
 		return nil, err
