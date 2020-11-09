@@ -511,8 +511,8 @@ func (c *Client) ServerComponents(serverID int, filter string) (*[]ServerCompone
 	return &list, nil
 }
 
-//serverPowerSet reboots or powers on a server
-func (c *Client) serverPowerSet(serverID id, operation string) error {
+//ServerPowerSet reboots or powers on a server
+func (c *Client) ServerPowerSet(serverID int, operation string) error {
 	if err := checkID(serverID); err != nil {
 		return err
 	}
