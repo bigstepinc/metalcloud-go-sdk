@@ -510,3 +510,25 @@ func (c *Client) ServerComponents(serverID int, filter string) (*[]ServerCompone
 
 	return &list, nil
 }
+
+//serverPowerSet reboots or powers on a server
+func (c *Client) serverPowerSet(serverID id, operation string) error {
+	if err := checkID(serverID); err != nil {
+		return err
+	}
+
+	resp, err := c.rpcClient.Call(
+		"server_power_set",
+		serverID,
+		operation)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
+	return nil
+}
