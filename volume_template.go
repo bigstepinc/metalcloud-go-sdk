@@ -92,3 +92,32 @@ func (c *Client) volumeTemplateCreateFromDrive(driveID id, objVolumeTemplate Vol
 
 	return &createdObject, nil
 }
+
+//VolumeTemplateMakePublic makes a template public
+func (c *Client) VolumeTemplateMakePublic(volumeTemplateID int) error {
+	_, err := c.rpcClient.Call(
+		"volume_template_make_public",
+		volumeTemplateID,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+//VolumeTemplateMakePrivate makes a template private
+func (c *Client) VolumeTemplateMakePrivate(volumeTemplateID int, userID int) error {
+	_, err := c.rpcClient.Call(
+		"volume_template_make_private",
+		volumeTemplateID,
+		userID,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
