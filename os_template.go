@@ -268,3 +268,32 @@ func (c *Client) OSTemplateUpdateOSAssetVariables(osTemplateID int, osAssetID in
 
 	return nil
 }
+
+//OSTemplateMakePublic makes a template public
+func (c *Client) OSTemplateMakePublic(osTemplateID int) error {
+	_, err := c.rpcClient.Call(
+		"os_template_make_public",
+		osTemplateID,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+//OSTemplateMakePrivate makes a template private
+func (c *Client) OSTemplateMakePrivate(osTemplateID int, userID int) error {
+	_, err := c.rpcClient.Call(
+		"os_template_make_private",
+		osTemplateID,
+		userID,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
