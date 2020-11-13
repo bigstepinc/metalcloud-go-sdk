@@ -43,6 +43,10 @@ type DatacenterConfig struct {
 	DatacenterNetworksLayer2Only                       bool                   `json:"datacenterNetworkIsLayer2Only" yaml:"datacenterNetworkIsLayer2Only"`
 	SwitchProvisioner                                  map[string]interface{} `json:"switchProvisioner,omitempty" yaml:"switchProvisioner,omitempty"`
 	EnableTenantAccessToIPMI                           bool                   `json:"enableTenantAccessToIPMI,omitempty" yaml:"enableTenantAccessToIPMI,omitempty"`
+	ProxyURL                                           string                 `json:"proxyURL,omitempty" yaml:"proxyURL,omitempty"`
+	ProxyUsername                                      string                 `json:"proxyUsername,omitempty" yaml:"proxyUsername,omitempty"`
+	ProxyPassword                                      string                 `json:"proxyPassword,omitempty" yaml:"proxyPassword,omitempty"`
+	EnableProxyURL                                     bool                   `json:"enableProxyURL,omitempty" yaml:"enableProxyURL,omitempty"`
 }
 
 /*
