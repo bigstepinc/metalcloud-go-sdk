@@ -8,14 +8,14 @@ import (
 
 //Secret struct defines a server type
 type Secret struct {
-	SecretID               int    `json:"secret_id,omitempty"`
-	UserIDOwner            int    `json:"user_id_owner,omitempty"`
-	UserIDAuthenticated    int    `json:"user_id_authenticated,omitempty"`
-	SecretName             string `json:"secret_name,omitempty"`
-	SecretUsage            string `json:"secret_usage,omitempty"`
-	SecretBase64           string `json:"secret_base64,omitempty"`
-	SecretCreatedTimestamp string `json:"secret_created_timestamp,omitempty"`
-	SecretUpdatedTimestamp string `json:"secret_updated_timestamp,omitempty"`
+	SecretID               int    `json:"secret_id,omitempty" yaml:"id,omitempty"`
+	UserIDOwner            int    `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	UserIDAuthenticated    int    `json:"user_id_authenticated,omitempty" yaml:"userIDAuthenticated,omitempty"`
+	SecretName             string `json:"secret_name,omitempty" yaml:"name,omitempty"`
+	SecretUsage            string `json:"secret_usage,omitempty" yaml:"usage,omitempty"`
+	SecretBase64           string `json:"secret_base64,omitempty" yaml:"base64,omitempty"`
+	SecretCreatedTimestamp string `json:"secret_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	SecretUpdatedTimestamp string `json:"secret_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
 }
 
 //SecretCreate creates a secret
@@ -136,4 +136,58 @@ func (c *Client) Secrets(usage string) (*map[string]Secret, error) {
 	}
 
 	return &createdObject, nil
+}
+
+//CreateOrUpdate implements interface Applier
+func (s Secret) CreateOrUpdate(c interface{}) error {
+	client := c.(*Client)
+
+	var err error
+
+	if s.SecretID != 0 {
+		_, err = client.SecretGet(s.SecretID)
+	} else if s.SecretName != "" {
+		secrets, err := client.Secrets("")
+		if err != nil {
+			return err
+		}
+		err = fmt.Errorf("secret not found")
+
+		for _, secret := range *secrets {
+			if secret.SecretName == s.SecretName {
+				err = nil
+			}
+		}
+	} else {
+		return fmt.Errorf("id is required")
+	}
+
+	if err != nil {
+		_, err = client.SecretCreate(s)
+
+		if err != nil {
+			return err
+		}
+	} else {
+		_, err = client.SecretUpdate(s.SecretID, s)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//Delete implements interface Applier
+func (s Secret) Delete(c interface{}) error {
+	client := c.(*Client)
+
+	err := client.SecretDelete(s.SecretID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -7,17 +7,17 @@ import (
 
 //Datacenter - datacenter description
 type Datacenter struct {
-	DatacenterName             string   `json:"datacenter_name,omitempty"`
-	DatacenterNameParent       string   `json:"datacenter_name_parent,omitempty"`
-	UserID                     int      `json:"user_id,omitempty"`
-	DatacenterDisplayName      string   `json:"datacenter_display_name,omitempty"`
-	DatacenterIsMaster         bool     `json:"datacenter_is_master,omitempty"`
-	DatacenterIsMaintenance    bool     `json:"datacenter_is_maintenance,omitempty"`
-	DatacenterType             string   `json:"datacenter_type,omitempty"`
-	DatacenterCreatedTimestamp string   `json:"datacenter_created_timestamp,omitempty"`
-	DatacenterUpdatedTimestamp string   `json:"datacenter_updated_timestamp,omitempty"`
-	DatacenterHidden           bool     `json:"datacenter_hidden,omitempty"`
-	DatacenterTags             []string `json:"datacenter_tags,omitempty"`
+	DatacenterName             string   `json:"datacenter_name,omitempty" yaml:"datacentername,omitempty"`
+	DatacenterNameParent       string   `json:"datacenter_name_parent,omitempty" yaml:"datacenternameparent,omitempty"`
+	UserID                     int      `json:"user_id,omitempty" yaml:"userid,omitempty"`
+	DatacenterDisplayName      string   `json:"datacenter_display_name,omitempty" yaml:"displayname,omitempty"`
+	DatacenterIsMaster         bool     `json:"datacenter_is_master,omitempty" yaml:"ismaster,omitempty"`
+	DatacenterIsMaintenance    bool     `json:"datacenter_is_maintenance,omitempty" yaml:"ismaintenance,omitempty"`
+	DatacenterType             string   `json:"datacenter_type,omitempty" yaml:"type,omitempty"`
+	DatacenterCreatedTimestamp string   `json:"datacenter_created_timestamp,omitempty" yaml:"createdtimestamp,omitempty"`
+	DatacenterUpdatedTimestamp string   `json:"datacenter_updated_timestamp,omitempty" yaml:"updatedtimestamp,omitempty"`
+	DatacenterHidden           bool     `json:"datacenter_hidden,omitempty" yaml:"ishidden,omitempty"`
+	DatacenterTags             []string `json:"datacenter_tags,omitempty" yaml:"tags,omitempty"`
 }
 
 //DatacenterConfig - datacenter configuration
@@ -307,4 +307,25 @@ func (c *Client) DatacenterAgentsConfigJSONDownloadURL(datacenterName string, de
 	}
 
 	return agentConfigURL, nil
+}
+
+//CreateOrUpdate implements interface Applier
+func (dc Datacenter) CreateOrUpdate(c interface{}) error {
+	client := c.(*Client)
+	_, err := client.DatacenterGet(dc.DatacenterName)
+
+	if err != nil {
+		_, err = client.DatacenterCreate(dc, DatacenterConfig{})
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//Delete implements interface Applier
+func (dc Datacenter) Delete(c interface{}) error {
+	return nil
 }

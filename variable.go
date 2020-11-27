@@ -8,14 +8,14 @@ import (
 
 //Variable struct defines a Variable type
 type Variable struct {
-	VariableID               int    `json:"variable_id,omitempty"`
-	UserIDOwner              int    `json:"user_id_owner,omitempty"`
-	UserIDAuthenticated      int    `json:"user_id_authenticated,omitempty"`
-	VariableName             string `json:"variable_name,omitempty"`
-	VariableUsage            string `json:"variable_usage,omitempty"`
-	VariableJSON             string `json:"variable_json,omitempty"`
-	VariableCreatedTimestamp string `json:"variable_created_timestamp,omitempty"`
-	VariableUpdatedTimestamp string `json:"variable_updated_timestamp,omitempty"`
+	VariableID               int    `json:"variable_id,omitempty" yaml:"id,omitempty"`
+	UserIDOwner              int    `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	UserIDAuthenticated      int    `json:"user_id_authenticated,omitempty" yaml:"userIDAuthenticated,omitempty"`
+	VariableName             string `json:"variable_name,omitempty" yaml:"name,omitempty"`
+	VariableUsage            string `json:"variable_usage,omitempty" yaml:"usage,omitempty"`
+	VariableJSON             string `json:"variable_json,omitempty" yaml:"json,omitempty"`
+	VariableCreatedTimestamp string `json:"variable_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	VariableUpdatedTimestamp string `json:"variable_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
 }
 
 //VariableCreate creates a variable object
@@ -140,4 +140,56 @@ func (c *Client) Variables(usage string) (*map[string]Variable, error) {
 	}
 
 	return &createdObject, nil
+}
+
+//CreateOrUpdate implements interface Applier
+func (v Variable) CreateOrUpdate(c interface{}) error {
+	client := c.(*Client)
+	var err error
+
+	if v.VariableID != 0 {
+		_, err = client.VariableGet(v.VariableID)
+	} else if v.VariableName != "" {
+		vars, err := client.Variables("")
+		if err != nil {
+			return err
+		}
+		err = fmt.Errorf("variable not found")
+
+		for _, variable := range *vars {
+			if variable.VariableName == v.VariableName {
+				err = nil
+			}
+		}
+	} else {
+		return fmt.Errorf("id is required")
+	}
+
+	if err != nil {
+		_, err = client.VariableCreate(v)
+
+		if err != nil {
+			return err
+		}
+	} else {
+		_, err = client.VariableUpdate(v.VariableID, v)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//Delete implements interface Applier
+func (v Variable) Delete(c interface{}) error {
+	client := c.(*Client)
+
+	err := client.VariableDelete(v.VariableID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -206,10 +206,10 @@ type RemoteConsole struct {
 
 //ISCSI provides target IQN, IP address, port number and the LUN ID.
 type ISCSI struct {
-	TargetIQN        string `json:"target_iqn,omitempty"`
-	StorageIPAddress string `json:"storage_ip_address,omitempty"`
-	StoragePort      int    `json:"storage_port,omitempty"`
-	LunID            int    `json:"lun_id,omitempty"`
+	TargetIQN        string `json:"target_iqn,omitempty" yaml:"targetIQN,omitempty"`
+	StorageIPAddress string `json:"storage_ip_address,omitempty" yaml:"storageIPAddress,omitempty"`
+	StoragePort      int    `json:"storage_port,omitempty" yaml:"storagePort,omitempty"`
+	LunID            int    `json:"lun_id,omitempty" yaml:"LunID,omitempty"`
 }
 
 //IP object contains information regarding an IP address.

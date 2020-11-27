@@ -532,3 +532,47 @@ func (c *Client) ServerPowerSet(serverID int, operation string) error {
 
 	return nil
 }
+
+//CreateOrUpdate implements interface Applier
+func (s Server) CreateOrUpdate(c interface{}) error {
+	client := c.(*Client)
+
+	var err error
+
+	if s.ServerID != 0 {
+		_, err = client.ServerGet(s.ServerID, false)
+	} else if s.ServerUUID != "" {
+		_, err = client.ServerGetByUUID(s.ServerUUID, false)
+	} else {
+		return fmt.Errorf("id is required")
+	}
+
+	if err != nil {
+		_, err = client.ServerCreate(s, false)
+
+		if err != nil {
+			return err
+		}
+	} else {
+		_, err = client.ServerEditComplete(s.ServerID, s)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//Delete implements interface Applier
+func (s Server) Delete(c interface{}) error {
+	client := c.(*Client)
+
+	err := client.ServerDelete(s.ServerID, true)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

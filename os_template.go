@@ -7,37 +7,37 @@ import (
 
 //OSTemplate A template can be created based on a drive and it has the same characteristics and holds the same information as the parent drive.
 type OSTemplate struct {
-	VolumeTemplateID                   int                    `json:"volume_template_id,omitempty"`
-	VolumeTemplateLabel                string                 `json:"volume_template_label,omitempty"`
-	VolumeTemplateDisplayName          string                 `json:"volume_template_display_name,omitempty"`
-	VolumeTemplateSizeMBytes           int                    `json:"volume_template_size_mbytes,omitempty"`
-	VolumeTemplateLocalDiskSupported   bool                   `json:"volume_template_local_disk_supported,omitempty"`
-	VolumeTemplateIsOSTemplate         bool                   `json:"volume_template_is_os_template,omitempty"`
-	VolumeTemplateBootMethodsSupported string                 `json:"volume_template_boot_methods_supported,omitempty"`
-	VolumeTemplateBootType             string                 `json:"volume_template_boot_type,omitempty"`
-	VolumeTemplateDescription          string                 `json:"volume_template_description,omitempty"`
-	VolumeTemplateCreatedTimestamp     string                 `json:"volume_template_created_timestamp,omitempty"`
-	VolumeTemplateUpdatedTimestamp     string                 `json:"volume_template_updated_timestamp,omitempty"`
-	UserID                             int                    `json:"user_id,omitempty"`
-	VolumeTemplateOperatingSystem      *OperatingSystem       `json:"volume_template_operating_system,omitempty"`
-	VolumeTemplateRepoURL              string                 `json:"volume_template_repo_url,omitempty"`
-	VolumeTemplateDeprecationStatus    string                 `json:"volume_template_deprecation_status,omitempty"`
-	OSTemplateCredentials              *OSTemplateCredentials `json:"os_template_credentials,omitempty"`
-	VolumeTemplateTags                 []string               `json:"volume_template_tags,omitempty"`
-	OSTemplatePreBootArchitecture      string                 `json:"os_template_pre_boot_architecture,omitempty"`
-	OSAssetBootloaderLocalInstall      int                    `json:"os_asset_id_bootloader_local_install,omitempty"`
-	OSAssetBootloaderOSBoot            int                    `json:"os_asset_id_bootloader_os_boot,omitempty"`
-	VolumeTemplateVariablesJSON        string                 `json:"volume_template_variables_json,omitempty"`
+	VolumeTemplateID                   int                    `json:"volume_template_id,omitempty" yaml:"vtID,omitempty"`
+	VolumeTemplateLabel                string                 `json:"volume_template_label,omitempty" yaml:"vtLabel,omitempty"`
+	VolumeTemplateDisplayName          string                 `json:"volume_template_display_name,omitempty" yaml:"vtName,omitempty"`
+	VolumeTemplateSizeMBytes           int                    `json:"volume_template_size_mbytes,omitempty" yaml:"vtSizeMBytes,omitempty"`
+	VolumeTemplateLocalDiskSupported   bool                   `json:"volume_template_local_disk_supported,omitempty" yaml:"vtLocalDisk,omitempty"`
+	VolumeTemplateIsOSTemplate         bool                   `json:"volume_template_is_os_template,omitempty" yaml:"vtIsOsTemplate,omitempty"`
+	VolumeTemplateBootMethodsSupported string                 `json:"volume_template_boot_methods_supported,omitempty" yaml:"vtBootMethods,omitempty"`
+	VolumeTemplateBootType             string                 `json:"volume_template_boot_type,omitempty" yaml:"vtBootType,omitempty"`
+	VolumeTemplateDescription          string                 `json:"volume_template_description,omitempty" yaml:"vtDescription,omitempty"`
+	VolumeTemplateCreatedTimestamp     string                 `json:"volume_template_created_timestamp,omitempty" yaml:"vtCreatedTimestamp,omitempty"`
+	VolumeTemplateUpdatedTimestamp     string                 `json:"volume_template_updated_timestamp,omitempty" yaml:"vtUpdatedTimestamp,omitempty"`
+	UserID                             int                    `json:"user_id,omitempty" yaml:"userID,omitempty"`
+	VolumeTemplateOperatingSystem      *OperatingSystem       `json:"volume_template_operating_system,omitempty" yaml:"vtOS,omitempty"`
+	VolumeTemplateRepoURL              string                 `json:"volume_template_repo_url,omitempty" yaml:"vtRepoURL,omitempty"`
+	VolumeTemplateDeprecationStatus    string                 `json:"volume_template_deprecation_status,omitempty" yaml:"vtDeprecationStatus,omitempty"`
+	OSTemplateCredentials              *OSTemplateCredentials `json:"os_template_credentials,omitempty" yaml:"credentials,omitempty"`
+	VolumeTemplateTags                 []string               `json:"volume_template_tags,omitempty" yaml:"vtTags,omitempty"`
+	OSTemplatePreBootArchitecture      string                 `json:"os_template_pre_boot_architecture,omitempty" yaml:"preBootArchitecture,omitempty"`
+	OSAssetBootloaderLocalInstall      int                    `json:"os_asset_id_bootloader_local_install,omitempty" yaml:"OSAssetIDBootloaderLocalInstall,omitempty"`
+	OSAssetBootloaderOSBoot            int                    `json:"os_asset_id_bootloader_os_boot,omitempty" yaml:"OSAssetIDBootloaderOSBoot,omitempty"`
+	VolumeTemplateVariablesJSON        string                 `json:"volume_template_variables_json,omitempty" yaml:"vtVariablesJSON,omitempty"`
 }
 
 //OSTemplateCredentials holds information needed to connect to an OS installed by an OSTemplate.
 type OSTemplateCredentials struct {
-	OSTemplateInitialUser                     string `json:"os_template_initial_user,omitempty"`
-	OSTemplateInitialPasswordEncrypted        string `json:"os_template_initial_password_encrypted,omitempty"`
-	OSTemplateInitialPassword                 string `json:"os_template_initial_password,omitempty"`
-	OSTemplateInitialSSHPort                  int    `json:"os_template_initial_ssh_port,omitempty"`
-	OSTemplateChangePasswordAfterDeploy       bool   `json:"os_template_change_password_after_deploy,omitempty"`
-	OSTemplateUseAutogeneratedInitialPassword bool   `json:"os_template_use_autogenerated_initial_password,omitempty"`
+	OSTemplateInitialUser                     string `json:"os_template_initial_user,omitempty" yaml:"initialUser,omitempty"`
+	OSTemplateInitialPasswordEncrypted        string `json:"os_template_initial_password_encrypted,omitempty" yaml:"initialPasswordEncrypted,omitempty"`
+	OSTemplateInitialPassword                 string `json:"os_template_initial_password,omitempty" yaml:"initialPassword,omitempty"`
+	OSTemplateInitialSSHPort                  int    `json:"os_template_initial_ssh_port,omitempty" yaml:"initialSSHPort,omitempty"`
+	OSTemplateChangePasswordAfterDeploy       bool   `json:"os_template_change_password_after_deploy,omitempty" yaml:"changePasswordAfterDeploy,omitempty"`
+	OSTemplateUseAutogeneratedInitialPassword bool   `json:"os_template_use_autogenerated_initial_password,omitempty" yaml:"useAutogeneratedInitialPassword,omitempty"`
 }
 
 //OSTemplateOSAssetData holds asset-template information
@@ -290,6 +290,60 @@ func (c *Client) OSTemplateMakePrivate(osTemplateID int, userID int) error {
 		osTemplateID,
 		userID,
 	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+//CreateOrUpdate implements interface Applier
+func (t OSTemplate) CreateOrUpdate(c interface{}) error {
+	client := c.(*Client)
+
+	var err error
+
+	if t.VolumeTemplateID != 0 {
+		_, err = client.OSTemplateGet(t.VolumeTemplateID, false)
+	} else if t.VolumeTemplateLabel != "" {
+		templates, err := client.OSTemplates()
+		if err != nil {
+			return err
+		}
+		err = fmt.Errorf("template not found")
+
+		for _, temp := range *templates {
+			if temp.VolumeTemplateLabel == t.VolumeTemplateLabel {
+				err = nil
+			}
+		}
+	} else {
+		return fmt.Errorf("id is required")
+	}
+
+	if err != nil {
+		_, err = client.OSTemplateCreate(t)
+
+		if err != nil {
+			return err
+		}
+	} else {
+		_, err = client.OSTemplateUpdate(t.VolumeTemplateID, t)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//Delete implements interface Applier
+func (t OSTemplate) Delete(c interface{}) error {
+	client := c.(*Client)
+
+	err := client.OSTemplateDelete(t.VolumeTemplateID)
 
 	if err != nil {
 		return err

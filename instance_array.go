@@ -6,98 +6,98 @@ import "fmt"
 
 //InstanceArray object describes a collection of identical instances
 type InstanceArray struct {
-	InstanceArrayID                 int                      `json:"instance_array_id,omitempty"`
-	InstanceArrayLabel              string                   `json:"instance_array_label,omitempty"`
-	InstanceArraySubdomain          string                   `json:"instance_array_subdomain,omitempty"`
-	InstanceArrayBootMethod         string                   `json:"instance_array_boot_method,omitempty"`
-	InstanceArrayInstanceCount      int                      `json:"instance_array_instance_count,omitempty"`
-	InstanceArrayRAMGbytes          int                      `json:"instance_array_ram_gbytes,omitempty"`
-	InstanceArrayProcessorCount     int                      `json:"instance_array_processor_count,omitempty"`
-	InstanceArrayProcessorCoreMHZ   int                      `json:"instance_array_processor_core_mhz,omitempty"`
-	InstanceArrayProcessorCoreCount int                      `json:"instance_array_processor_core_count,omitempty"`
-	InstanceArrayDiskCount          int                      `json:"instance_array_disk_count,omitempty"`
-	InstanceArrayDiskSizeMBytes     int                      `json:"instance_array_disk_size_mbytes,omitempty"`
-	InstanceArrayDiskTypes          []string                 `json:"instance_array_disk_types,omitempty"`
-	InfrastructureID                int                      `json:"infrastructure_id,omitempty"`
-	InstanceArrayServiceStatus      string                   `json:"instance_array_service_status,omitempty"`
-	InstanceArrayInterfaces         []InstanceArrayInterface `json:"instance_array_interfaces,omitempty"`
-	ClusterID                       int                      `json:"cluster_id,omitempty"`
-	ClusterRoleGroup                string                   `json:"cluster_role_group,omitempty"`
-	InstanceArrayFirewallManaged    bool                     `json:"instance_array_firewall_managed,omitempty"`
-	InstanceArrayFirewallRules      []FirewallRule           `json:"instance_array_firewall_rules,omitempty"`
-	VolumeTemplateID                int                      `json:"volume_template_id,omitempty"`
-	InstanceArrayOperation          *InstanceArrayOperation  `json:"instance_array_operation,omitempty"`
+	InstanceArrayID                 int                      `json:"instance_array_id,omitempty" yaml:"instanceID,omitempty"`
+	InstanceArrayLabel              string                   `json:"instance_array_label,omitempty" yaml:"label,omitempty"`
+	InstanceArraySubdomain          string                   `json:"instance_array_subdomain,omitempty" yaml:"subdomain,omitempty"`
+	InstanceArrayBootMethod         string                   `json:"instance_array_boot_method,omitempty" yaml:"bootMethod,omitempty"`
+	InstanceArrayInstanceCount      int                      `json:"instance_array_instance_count,omitempty" yaml:"instanceCount,omitempty"`
+	InstanceArrayRAMGbytes          int                      `json:"instance_array_ram_gbytes,omitempty" yaml:"ramGBytes,omitempty"`
+	InstanceArrayProcessorCount     int                      `json:"instance_array_processor_count,omitempty" yaml:"processorCount,omitempty"`
+	InstanceArrayProcessorCoreMHZ   int                      `json:"instance_array_processor_core_mhz,omitempty" yaml:"processorCoreMhz,omitempty"`
+	InstanceArrayProcessorCoreCount int                      `json:"instance_array_processor_core_count,omitempty" yaml:"processorCoreCount,omitempty"`
+	InstanceArrayDiskCount          int                      `json:"instance_array_disk_count,omitempty" yaml:"diskCount,omitempty"`
+	InstanceArrayDiskSizeMBytes     int                      `json:"instance_array_disk_size_mbytes,omitempty" yaml:"diskSizeMBytes,omitempty"`
+	InstanceArrayDiskTypes          []string                 `json:"instance_array_disk_types,omitempty" yaml:"diskTypes,omitempty"`
+	InfrastructureID                int                      `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
+	InstanceArrayServiceStatus      string                   `json:"instance_array_service_status,omitempty" yaml:"serviceStatus,omitempty"`
+	InstanceArrayInterfaces         []InstanceArrayInterface `json:"instance_array_interfaces,omitempty" yaml:"interfaces,omitempty"`
+	ClusterID                       int                      `json:"cluster_id,omitempty" yaml:"clusterID,omitempty"`
+	ClusterRoleGroup                string                   `json:"cluster_role_group,omitempty" yaml:"clusterRoleGroup,omitempty"`
+	InstanceArrayFirewallManaged    bool                     `json:"instance_array_firewall_managed,omitempty" yaml:"firewallManaged,omitempty"`
+	InstanceArrayFirewallRules      []FirewallRule           `json:"instance_array_firewall_rules,omitempty" yaml:"firewallRules,omitempty"`
+	VolumeTemplateID                int                      `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
+	InstanceArrayOperation          *InstanceArrayOperation  `json:"instance_array_operation,omitempty" yaml:"operation,omitempty"`
 }
 
 //InstanceArrayOperation object describes the changes that will be applied to an instance array
 type InstanceArrayOperation struct {
-	InstanceArrayID                 int                               `json:"instance_array_id,omitempty"`
-	InstanceArrayLabel              string                            `json:"instance_array_label,omitempty"`
-	InstanceArraySubdomain          string                            `json:"instance_array_subdomain,omitempty"`
-	InstanceArrayBootMethod         string                            `json:"instance_array_boot_method,omitempty"`
-	InstanceArrayInstanceCount      int                               `json:"instance_array_instance_count,omitempty"`
-	InstanceArrayRAMGbytes          int                               `json:"instance_array_ram_gbytes,omitempty"`
-	InstanceArrayProcessorCount     int                               `json:"instance_array_processor_count,omitempty"`
-	InstanceArrayProcessorCoreMHZ   int                               `json:"instance_array_processor_core_mhz,omitempty"`
-	InstanceArrayProcessorCoreCount int                               `json:"instance_array_processor_core_count,omitempty"`
-	InstanceArrayDiskCount          int                               `json:"instance_array_disk_count,omitempty"`
-	InstanceArrayDiskSizeMBytes     int                               `json:"instance_array_disk_size_mbytes,omitempty"`
-	InstanceArrayDiskTypes          []string                          `json:"instance_array_disk_types,omitempty"`
-	InstanceArrayServiceStatus      string                            `json:"instance_array_service_status,omitempty"`
-	InstanceArrayInterfaces         []InstanceArrayInterfaceOperation `json:"instance_array_interfaces,omitempty"`
-	ClusterID                       int                               `json:"cluster_id,omitempty"`
-	ClusterRoleGroup                string                            `json:"cluster_role_group,omitempty"`
-	InstanceArrayFirewallManaged    bool                              `json:"instance_array_firewall_managed,omitempty"`
-	InstanceArrayFirewallRules      []FirewallRule                    `json:"instance_array_firewall_rules,omitempty"`
-	VolumeTemplateID                int                               `json:"volume_template_id,omitempty"`
-	InstanceArrayDeployType         string                            `json:"instance_array_deploy_type,omitempty"`
-	InstanceArrayDeployStatus       string                            `json:"instance_array_deploy_status,omitempty"`
-	InstanceArrayChangeID           int                               `json:"instance_array_change_id,omitempty"`
+	InstanceArrayID                 int                               `json:"instance_array_id,omitempty" yaml:"id,omitempty"`
+	InstanceArrayLabel              string                            `json:"instance_array_label,omitempty" yaml:"label,omitempty"`
+	InstanceArraySubdomain          string                            `json:"instance_array_subdomain,omitempty" yaml:"subdomain,omitempty"`
+	InstanceArrayBootMethod         string                            `json:"instance_array_boot_method,omitempty" yaml:"bootMethod,omitempty"`
+	InstanceArrayInstanceCount      int                               `json:"instance_array_instance_count,omitempty" yaml:"instanceCount,omitempty"`
+	InstanceArrayRAMGbytes          int                               `json:"instance_array_ram_gbytes,omitempty" yaml:"ramGBytes,omitempty"`
+	InstanceArrayProcessorCount     int                               `json:"instance_array_processor_count,omitempty" yaml:"processorCount,omitempty"`
+	InstanceArrayProcessorCoreMHZ   int                               `json:"instance_array_processor_core_mhz,omitempty" yaml:"processorCoreMhz,omitempty"`
+	InstanceArrayProcessorCoreCount int                               `json:"instance_array_processor_core_count,omitempty" yaml:"processorCoreCount,omitempty"`
+	InstanceArrayDiskCount          int                               `json:"instance_array_disk_count,omitempty" yaml:"diskCount,omitempty"`
+	InstanceArrayDiskSizeMBytes     int                               `json:"instance_array_disk_size_mbytes,omitempty" yaml:"diskSizeMBytes,omitempty"`
+	InstanceArrayDiskTypes          []string                          `json:"instance_array_disk_types,omitempty" yaml:"diskTypes,omitempty"`
+	InstanceArrayServiceStatus      string                            `json:"instance_array_service_status,omitempty" yaml:"serviceStatus,omitempty"`
+	InstanceArrayInterfaces         []InstanceArrayInterfaceOperation `json:"instance_array_interfaces,omitempty" yaml:"interfaces,omitempty"`
+	ClusterID                       int                               `json:"cluster_id,omitempty" yaml:"clusterID,omitempty"`
+	ClusterRoleGroup                string                            `json:"cluster_role_group,omitempty" yaml:"clusterRoleGroup,omitempty"`
+	InstanceArrayFirewallManaged    bool                              `json:"instance_array_firewall_managed,omitempty" yaml:"firewallManaged,omitempty"`
+	InstanceArrayFirewallRules      []FirewallRule                    `json:"instance_array_firewall_rules,omitempty" yaml:"firewallRules,omitempty"`
+	VolumeTemplateID                int                               `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
+	InstanceArrayDeployType         string                            `json:"instance_array_deploy_type,omitempty" yaml:"deployType,omitempty"`
+	InstanceArrayDeployStatus       string                            `json:"instance_array_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
+	InstanceArrayChangeID           int                               `json:"instance_array_change_id,omitempty" yaml:"changeID,omitempty"`
 }
 
 //FirewallRule describes a firewall rule that is to be applied on all instances of an array
 type FirewallRule struct {
-	FirewallRuleDescription                    string `json:"firewall_rule_description,omitempty"`
-	FirewallRulePortRangeStart                 int    `json:"firewall_rule_port_range_start,omitempty"`
-	FirewallRulePortRangeEnd                   int    `json:"firewall_rule_port_range_end,omitempty"`
-	FirewallRuleSourceIPAddressRangeStart      string `json:"firewall_rule_source_ip_address_range_start,omitempty"`
-	FirewallRuleSourceIPAddressRangeEnd        string `json:"firewall_rule_source_ip_address_range_end,omitempty"`
-	FirewallRuleDestinationIPAddressRangeStart string `json:"firewall_rule_destination_ip_address_range_start,omitempty"`
-	FirewallRuleDestinationIPAddressRangeEnd   string `json:"firewall_rule_destination_ip_address_range_end,omitempty"`
-	FirewallRuleProtocol                       string `json:"firewall_rule_protocol,omitempty"`
-	FirewallRuleIPAddressType                  string `json:"firewall_rule_ip_address_type,omitempty"`
-	FirewallRuleEnabled                        bool   `json:"firewall_rule_enabled,omitempty"`
+	FirewallRuleDescription                    string `json:"firewall_rule_description,omitempty" yaml:"description,omitempty"`
+	FirewallRulePortRangeStart                 int    `json:"firewall_rule_port_range_start,omitempty" yaml:"portRangeStart,omitempty"`
+	FirewallRulePortRangeEnd                   int    `json:"firewall_rule_port_range_end,omitempty" yaml:"portRangeEnd,omitempty"`
+	FirewallRuleSourceIPAddressRangeStart      string `json:"firewall_rule_source_ip_address_range_start,omitempty" yaml:"sourceIPAddressRangeStart,omitempty"`
+	FirewallRuleSourceIPAddressRangeEnd        string `json:"firewall_rule_source_ip_address_range_end,omitempty" yaml:"sourceIPAddressRangeEnd,omitempty"`
+	FirewallRuleDestinationIPAddressRangeStart string `json:"firewall_rule_destination_ip_address_range_start,omitempty" yaml:"destinationIPAddressRangeStart,omitempty"`
+	FirewallRuleDestinationIPAddressRangeEnd   string `json:"firewall_rule_destination_ip_address_range_end,omitempty" yaml:"destinationIPAddressRangeEnd,omitempty"`
+	FirewallRuleProtocol                       string `json:"firewall_rule_protocol,omitempty" yaml:"protocol,omitempty"`
+	FirewallRuleIPAddressType                  string `json:"firewall_rule_ip_address_type,omitempty" yaml:"IPAddressType,omitempty"`
+	FirewallRuleEnabled                        bool   `json:"firewall_rule_enabled,omitempty" yaml:"enabled,omitempty"`
 }
 
 //InstanceArrayInterface describes a network interface of the array.
 //It's properties will be applied to all InstanceInterfaces of the array's instances.
 type InstanceArrayInterface struct {
-	InstanceArrayInterfaceLabel            string                           `json:"instance_array_interface_label,omitempty"`
-	InstanceArrayInterfaceSubdomain        string                           `json:"instance_array_interface_subdomain,omitempty"`
-	InstanceArrayInterfaceID               int                              `json:"instance_array_interface_id,omitempty"`
-	InstanceArrayID                        int                              `json:"instance_array_id,omitempty"`
-	NetworkID                              int                              `json:"network_id,omitempty"`
-	InstanceArrayInterfaceLAGGIndexes      []interface{}                    `json:"instance_array_interface_lagg_indexes,omitempty"`
-	InstanceArrayInterfaceIndex            int                              `json:"instance_array_interface_index,omitempty"`
-	InstanceArrayInterfaceServiceStatus    string                           `json:"instance_array_interface_service_status,omitempty"`
-	InstanceArrayInterfaceCreatedTimestamp string                           `json:"instance_array_interface_created_timestamp,omitempty"`
-	InstanceArrayInterfaceUpdatedTimestamp string                           `json:"instance_array_interface_updated_timestamp,omitempty"`
-	InstanceArrayInterfaceOperation        *InstanceArrayInterfaceOperation `json:"instance_array_interface_operation,omitempty"`
+	InstanceArrayInterfaceLabel            string                           `json:"instance_array_interface_label,omitempty" yaml:"label,omitempty"`
+	InstanceArrayInterfaceSubdomain        string                           `json:"instance_array_interface_subdomain,omitempty" yaml:"subdomain,omitempty"`
+	InstanceArrayInterfaceID               int                              `json:"instance_array_interface_id,omitempty" yaml:"id,omitempty"`
+	InstanceArrayID                        int                              `json:"instance_array_id,omitempty" yaml:"instanceArrayID,omitempty"`
+	NetworkID                              int                              `json:"network_id,omitempty" yaml:"networkID,omitempty"`
+	InstanceArrayInterfaceLAGGIndexes      []interface{}                    `json:"instance_array_interface_lagg_indexes,omitempty" yaml:"LAGGIndexes,omitempty"`
+	InstanceArrayInterfaceIndex            int                              `json:"instance_array_interface_index,omitempty" yaml:"index,omitempty"`
+	InstanceArrayInterfaceServiceStatus    string                           `json:"instance_array_interface_service_status,omitempty" yaml:"serviceStatus,omitempty"`
+	InstanceArrayInterfaceCreatedTimestamp string                           `json:"instance_array_interface_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	InstanceArrayInterfaceUpdatedTimestamp string                           `json:"instance_array_interface_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
+	InstanceArrayInterfaceOperation        *InstanceArrayInterfaceOperation `json:"instance_array_interface_operation,omitempty" yaml:"operation,omitempty"`
 }
 
 //InstanceArrayInterfaceOperation describes changes to a network array interface
 type InstanceArrayInterfaceOperation struct {
-	InstanceArrayInterfaceLabel            string        `json:"instance_array_interface_label,omitempty"`
-	InstanceArrayInterfaceSubdomain        string        `json:"instance_array_interface_subdomain,omitempty"`
-	InstanceArrayInterfaceID               int           `json:"instance_array_interface_id,omitempty"`
-	InstanceArrayID                        int           `json:"instance_array_id,omitempty"`
-	NetworkID                              int           `json:"network_id,omitempty"`
-	InstanceArrayInterfaceLAGGIndexes      []interface{} `json:"instance_array_interface_lagg_indexes,omitempty"`
-	InstanceArrayInterfaceIndex            int           `json:"instance_array_interface_index,omitempty"`
-	InstanceArrayInterfaceServiceStatus    string        `json:"instance_array_interface_service_status,omitempty"`
-	InstanceArrayInterfaceCreatedTimestamp string        `json:"instance_array_interface_created_timestamp,omitempty"`
-	InstanceArrayInterfaceUpdatedTimestamp string        `json:"instance_array_interface_updated_timestamp,omitempty"`
-	InstanceArrayInterfaceChangeID         int           `json:"instance_array_interface_change_id,omitempty"`
+	InstanceArrayInterfaceLabel            string        `json:"instance_array_interface_label,omitempty" yaml:"label,omitempty"`
+	InstanceArrayInterfaceSubdomain        string        `json:"instance_array_interface_subdomain,omitempty" yaml:"subdomain,omitempty"`
+	InstanceArrayInterfaceID               int           `json:"instance_array_interface_id,omitempty" yaml:"id,omitempty"`
+	InstanceArrayID                        int           `json:"instance_array_id,omitempty" yaml:"instanceArrayID,omitempty"`
+	NetworkID                              int           `json:"network_id,omitempty" yaml:"networkID,omitempty"`
+	InstanceArrayInterfaceLAGGIndexes      []interface{} `json:"instance_array_interface_lagg_indexes,omitempty" yaml:"LAGGIndexes,omitempty"`
+	InstanceArrayInterfaceIndex            int           `json:"instance_array_interface_index,omitempty" yaml:"index,omitempty"`
+	InstanceArrayInterfaceServiceStatus    string        `json:"instance_array_interface_service_status,omitempty" yaml:"serviceStatus,omitempty"`
+	InstanceArrayInterfaceCreatedTimestamp string        `json:"instance_array_interface_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	InstanceArrayInterfaceUpdatedTimestamp string        `json:"instance_array_interface_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
+	InstanceArrayInterfaceChangeID         int           `json:"instance_array_interface_change_id,omitempty" yaml:"changeID,omitempty"`
 }
 
 //ServerTypeMatches used in InstanceArrayEdit operations to specify which server types to use
@@ -296,4 +296,53 @@ func (c *Client) instanceArrayStart(instanceArrayID id) (*InstanceArray, error) 
 	}
 
 	return &createdObject, nil
+}
+
+//CreateOrUpdate implements interface Applier
+func (ia InstanceArray) CreateOrUpdate(c interface{}) error {
+	client := c.(*Client)
+
+	var result *InstanceArray
+	var err error
+
+	if ia.InstanceArrayID != 0 {
+		result, err = client.instanceArrayGet(ia.InstanceArrayID)
+	} else if ia.InstanceArrayLabel != "" {
+		result, err = client.instanceArrayGet(ia.InstanceArrayLabel)
+	} else {
+		return fmt.Errorf("id is required")
+	}
+
+	if err != nil {
+		_, err = client.instanceArrayCreate(ia.InfrastructureID, ia)
+
+		if err != nil {
+			return err
+		}
+	} else {
+		var bKeepDetachingDrives, bSwapExistingInstancesHardware bool = false, false
+		if ia.InstanceArrayOperation == nil {
+			return fmt.Errorf("operation is required")
+		}
+		ia.InstanceArrayOperation.InstanceArrayChangeID = result.InstanceArrayOperation.InstanceArrayChangeID
+		_, err = client.instanceArrayEdit(ia.InstanceArrayLabel, *ia.InstanceArrayOperation, &bSwapExistingInstancesHardware, &bKeepDetachingDrives, nil, nil)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//Delete implements interface Applier
+func (ia InstanceArray) Delete(c interface{}) error {
+	client := c.(*Client)
+	err := client.infrastructureDelete(ia.InstanceArrayLabel)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

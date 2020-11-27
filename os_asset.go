@@ -4,20 +4,20 @@ import "fmt"
 
 //OSAsset struct defines a server type
 type OSAsset struct {
-	OSAssetID                    int      `json:"os_asset_id,omitempty"`
-	UserIDOwner                  int      `json:"user_id_owner,omitempty"`
-	UserIDAuthenticated          int      `json:"user_id_authenticated,omitempty"`
-	OSAssetFileName              string   `json:"os_asset_filename,omitempty"`
-	OSAssetFileSizeBytes         int      `json:"os_asset_file_size_bytes,omitempty"`
-	OSAssetFileMime              string   `json:"os_asset_file_mime,omitempty"`
-	OSAssetContentsBase64        string   `json:"os_asset_contents_base64,omitempty"`
-	OSAssetContentsSHA256Hex     string   `json:"os_asset_contents_sha256_hex,omitempty"`
-	OSAssetUsage                 string   `json:"os_asset_usage,omitempty"`
-	OSAssetSourceURL             string   `json:"os_asset_source_url,omitempty"`
-	OSAssetVariableNamesRequired []string `json:"os_asset_variable_names_required,omitempty"`
-	OSAssetTags                  []string `json:"os_asset_tags,omitempty"`
-	OSAssetCreatedTimestamp      string   `json:"os_asset_created_timestamp,omitempty"`
-	OSAssetUpdatedTimestamp      string   `json:"os_asset_updated_timestamp,omitempty"`
+	OSAssetID                    int      `json:"os_asset_id,omitempty" yaml:"id,omitempty"`
+	UserIDOwner                  int      `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	UserIDAuthenticated          int      `json:"user_id_authenticated,omitempty" yaml:"userIDAuthenticated,omitempty"`
+	OSAssetFileName              string   `json:"os_asset_filename,omitempty" yaml:"fileName,omitempty"`
+	OSAssetFileSizeBytes         int      `json:"os_asset_file_size_bytes,omitempty" yaml:"fileSizeBytes,omitempty"`
+	OSAssetFileMime              string   `json:"os_asset_file_mime,omitempty" yaml:"fileMime,omitempty"`
+	OSAssetContentsBase64        string   `json:"os_asset_contents_base64,omitempty" yaml:"contentBase64,omitempty"`
+	OSAssetContentsSHA256Hex     string   `json:"os_asset_contents_sha256_hex,omitempty" yaml:"contentSHA256Hex,omitempty"`
+	OSAssetUsage                 string   `json:"os_asset_usage,omitempty" yaml:"usage,omitempty"`
+	OSAssetSourceURL             string   `json:"os_asset_source_url,omitempty" yaml:"sourceURL,omitempty"`
+	OSAssetVariableNamesRequired []string `json:"os_asset_variable_names_required,omitempty" yaml:"variables,omitempty"`
+	OSAssetTags                  []string `json:"os_asset_tags,omitempty" yaml:"tags,omitempty"`
+	OSAssetCreatedTimestamp      string   `json:"os_asset_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	OSAssetUpdatedTimestamp      string   `json:"os_asset_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
 }
 
 //OSAssetCreate creates a osAsset object
@@ -130,4 +130,58 @@ func (c *Client) OSAssets() (*map[string]OSAsset, error) {
 	}
 
 	return &createdObject, nil
+}
+
+//CreateOrUpdate implements interface Applier
+func (asset OSAsset) CreateOrUpdate(c interface{}) error {
+	client := c.(*Client)
+
+	var err error
+
+	if asset.OSAssetID != 0 {
+		_, err = client.OSAssetGet(asset.OSAssetID)
+	} else if asset.OSAssetFileName != "" {
+		assets, err := client.OSAssets()
+		if err != nil {
+			return err
+		}
+
+		err = fmt.Errorf("asset not found")
+		for _, a := range *assets {
+			if a.OSAssetFileName == asset.OSAssetFileName {
+				err = nil
+			}
+		}
+	} else {
+		return fmt.Errorf("id is required")
+	}
+
+	if err != nil {
+		_, err = client.OSAssetCreate(asset)
+
+		if err != nil {
+			return err
+		}
+	} else {
+		_, err = client.OSAssetUpdate(asset.OSAssetID, asset)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//Delete implements interface Applier
+func (asset OSAsset) Delete(c interface{}) error {
+	client := c.(*Client)
+
+	err := client.OSAssetDelete(asset.OSAssetID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
