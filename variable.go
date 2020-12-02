@@ -193,3 +193,8 @@ func (v Variable) Delete(c interface{}) error {
 
 	return nil
 }
+
+//Validate implements interface Applier
+func (v Variable) Validate() error {
+	return nil
+}

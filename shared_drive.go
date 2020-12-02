@@ -162,6 +162,19 @@ func (c *Client) sharedDrives(infrastructureID id) (*map[string]SharedDrive, err
 	return &createdObject, nil
 }
 
+func (sd *SharedDrive) instanceToOperation(op *SharedDriveOperation) {
+	operation := sd.SharedDriveOperation
+	operation.SharedDriveID = sd.SharedDriveID
+	operation.SharedDriveLabel = sd.SharedDriveLabel
+	operation.SharedDriveSubdomain = sd.SharedDriveSubdomain
+	operation.SharedDriveSizeMbytes = sd.SharedDriveSizeMbytes
+	operation.SharedDriveStorageType = sd.SharedDriveStorageType
+	operation.SharedDriveHasGFS = sd.SharedDriveHasGFS
+	operation.InfrastructureID = sd.InfrastructureID
+	operation.SharedDriveAttachedInstanceArrays = sd.SharedDriveAttachedInstanceArrays
+	operation.SharedDriveChangeID = op.SharedDriveChangeID
+}
+
 //CreateOrUpdate implements interface Applier
 func (sd SharedDrive) CreateOrUpdate(c interface{}) error {
 	client := c.(*Client)
@@ -184,8 +197,7 @@ func (sd SharedDrive) CreateOrUpdate(c interface{}) error {
 			return err
 		}
 	} else {
-		sd.SharedDriveOperation.SharedDriveChangeID = result.SharedDriveOperation.SharedDriveChangeID
-		sd.SharedDriveOperation.SharedDriveChangeID = result.SharedDriveOperation.SharedDriveChangeID
+		sd.instanceToOperation(&result.SharedDriveOperation)
 		_, err = client.sharedDriveEdit(sd.SharedDriveID, sd.SharedDriveOperation)
 
 		if err != nil {
@@ -206,5 +218,10 @@ func (sd SharedDrive) Delete(c interface{}) error {
 		return err
 	}
 
+	return nil
+}
+
+//Validate implements interface Applier
+func (sd SharedDrive) Validate() error {
 	return nil
 }

@@ -405,3 +405,11 @@ func (w Workflow) Delete(c interface{}) error {
 
 	return nil
 }
+
+//Validate implements interface Applier
+func (w Workflow) Validate() error {
+	if w.WorkflowUsage == "" {
+		return fmt.Errorf("usage is required")
+	}
+	return nil
+}

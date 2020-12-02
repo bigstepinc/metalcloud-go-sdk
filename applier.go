@@ -4,4 +4,5 @@ package metalcloud
 type Applier interface {
 	CreateOrUpdate(interface{}) error
 	Delete(interface{}) error
+	Validate() error
 }

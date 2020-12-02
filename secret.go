@@ -191,3 +191,8 @@ func (s Secret) Delete(c interface{}) error {
 
 	return nil
 }
+
+//Validate implements interface Applier
+func (s Secret) Validate() error {
+	return nil
+}

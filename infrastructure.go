@@ -213,6 +213,16 @@ func (c *Client) infrastructureUserLimits(infrastructureID id) (*map[string]inte
 	return &userLimits, nil
 }
 
+func (i *Infrastructure) instanceToOperation(op *InfrastructureOperation) {
+	operation := i.InfrastructureOperation
+	operation.InfrastructureID = i.InfrastructureID
+	operation.InfrastructureLabel = i.InfrastructureLabel
+	operation.DatacenterName = i.DatacenterName
+	operation.InfrastructureSubdomain = i.InfrastructureSubdomain
+	operation.InfrastructureUpdatedTimestamp = i.InfrastructureUpdatedTimestamp
+	operation.InfrastructureChangeID = op.InfrastructureChangeID
+}
+
 //CreateOrUpdate implements interface Applier
 func (i Infrastructure) CreateOrUpdate(c interface{}) error {
 	client := c.(*Client)
@@ -235,7 +245,7 @@ func (i Infrastructure) CreateOrUpdate(c interface{}) error {
 			return err
 		}
 	} else {
-		i.InfrastructureOperation.InfrastructureChangeID = result.InfrastructureOperation.InfrastructureChangeID
+		i.instanceToOperation(&result.InfrastructureOperation)
 		_, err = client.InfrastructureEdit(i.InfrastructureID, i.InfrastructureOperation)
 
 		if err != nil {
@@ -256,5 +266,10 @@ func (i Infrastructure) Delete(c interface{}) error {
 		return err
 	}
 
+	return nil
+}
+
+//Validate implements interface Applier
+func (i Infrastructure) Validate() error {
 	return nil
 }

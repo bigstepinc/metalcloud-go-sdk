@@ -7,27 +7,27 @@ import (
 
 //OSTemplate A template can be created based on a drive and it has the same characteristics and holds the same information as the parent drive.
 type OSTemplate struct {
-	VolumeTemplateID                   int                    `json:"volume_template_id,omitempty" yaml:"vtID,omitempty"`
-	VolumeTemplateLabel                string                 `json:"volume_template_label,omitempty" yaml:"vtLabel,omitempty"`
-	VolumeTemplateDisplayName          string                 `json:"volume_template_display_name,omitempty" yaml:"vtName,omitempty"`
-	VolumeTemplateSizeMBytes           int                    `json:"volume_template_size_mbytes,omitempty" yaml:"vtSizeMBytes,omitempty"`
-	VolumeTemplateLocalDiskSupported   bool                   `json:"volume_template_local_disk_supported,omitempty" yaml:"vtLocalDisk,omitempty"`
-	VolumeTemplateIsOSTemplate         bool                   `json:"volume_template_is_os_template,omitempty" yaml:"vtIsOsTemplate,omitempty"`
-	VolumeTemplateBootMethodsSupported string                 `json:"volume_template_boot_methods_supported,omitempty" yaml:"vtBootMethods,omitempty"`
-	VolumeTemplateBootType             string                 `json:"volume_template_boot_type,omitempty" yaml:"vtBootType,omitempty"`
-	VolumeTemplateDescription          string                 `json:"volume_template_description,omitempty" yaml:"vtDescription,omitempty"`
-	VolumeTemplateCreatedTimestamp     string                 `json:"volume_template_created_timestamp,omitempty" yaml:"vtCreatedTimestamp,omitempty"`
-	VolumeTemplateUpdatedTimestamp     string                 `json:"volume_template_updated_timestamp,omitempty" yaml:"vtUpdatedTimestamp,omitempty"`
+	VolumeTemplateID                   int                    `json:"volume_template_id,omitempty" yaml:"id,omitempty"`
+	VolumeTemplateLabel                string                 `json:"volume_template_label,omitempty" yaml:"label,omitempty"`
+	VolumeTemplateDisplayName          string                 `json:"volume_template_display_name,omitempty" yaml:"name,omitempty"`
+	VolumeTemplateSizeMBytes           int                    `json:"volume_template_size_mbytes,omitempty" yaml:"sizeMBytes,omitempty"`
+	VolumeTemplateLocalDiskSupported   bool                   `json:"volume_template_local_disk_supported,omitempty" yaml:"localDisk,omitempty"`
+	VolumeTemplateIsOSTemplate         bool                   `json:"volume_template_is_os_template,omitempty" yaml:"isOsTemplate,omitempty"`
+	VolumeTemplateBootMethodsSupported string                 `json:"volume_template_boot_methods_supported,omitempty" yaml:"bootMethods,omitempty"`
+	VolumeTemplateBootType             string                 `json:"volume_template_boot_type,omitempty" yaml:"bootType,omitempty"`
+	VolumeTemplateDescription          string                 `json:"volume_template_description,omitempty" yaml:"description,omitempty"`
+	VolumeTemplateCreatedTimestamp     string                 `json:"volume_template_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	VolumeTemplateUpdatedTimestamp     string                 `json:"volume_template_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
 	UserID                             int                    `json:"user_id,omitempty" yaml:"userID,omitempty"`
-	VolumeTemplateOperatingSystem      *OperatingSystem       `json:"volume_template_operating_system,omitempty" yaml:"vtOS,omitempty"`
-	VolumeTemplateRepoURL              string                 `json:"volume_template_repo_url,omitempty" yaml:"vtRepoURL,omitempty"`
-	VolumeTemplateDeprecationStatus    string                 `json:"volume_template_deprecation_status,omitempty" yaml:"vtDeprecationStatus,omitempty"`
+	VolumeTemplateOperatingSystem      *OperatingSystem       `json:"volume_template_operating_system,omitempty" yaml:"os,omitempty"`
+	VolumeTemplateRepoURL              string                 `json:"volume_template_repo_url,omitempty" yaml:"repoURL,omitempty"`
+	VolumeTemplateDeprecationStatus    string                 `json:"volume_template_deprecation_status,omitempty" yaml:"deprecationStatus,omitempty"`
 	OSTemplateCredentials              *OSTemplateCredentials `json:"os_template_credentials,omitempty" yaml:"credentials,omitempty"`
-	VolumeTemplateTags                 []string               `json:"volume_template_tags,omitempty" yaml:"vtTags,omitempty"`
+	VolumeTemplateTags                 []string               `json:"volume_template_tags,omitempty" yaml:"tags,omitempty"`
 	OSTemplatePreBootArchitecture      string                 `json:"os_template_pre_boot_architecture,omitempty" yaml:"preBootArchitecture,omitempty"`
 	OSAssetBootloaderLocalInstall      int                    `json:"os_asset_id_bootloader_local_install,omitempty" yaml:"OSAssetIDBootloaderLocalInstall,omitempty"`
 	OSAssetBootloaderOSBoot            int                    `json:"os_asset_id_bootloader_os_boot,omitempty" yaml:"OSAssetIDBootloaderOSBoot,omitempty"`
-	VolumeTemplateVariablesJSON        string                 `json:"volume_template_variables_json,omitempty" yaml:"vtVariablesJSON,omitempty"`
+	VolumeTemplateVariablesJSON        string                 `json:"volume_template_variables_json,omitempty" yaml:"variablesJSON,omitempty"`
 }
 
 //OSTemplateCredentials holds information needed to connect to an OS installed by an OSTemplate.
@@ -347,6 +347,29 @@ func (t OSTemplate) Delete(c interface{}) error {
 
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+//Validate implements interface Applier
+func (t OSTemplate) Validate() error {
+	if t.VolumeTemplateDisplayName == "" {
+		return fmt.Errorf("name is required")
+	}
+
+	if t.VolumeTemplateBootType == "" {
+		return fmt.Errorf("bootType is required")
+	}
+
+	if t.VolumeTemplateOperatingSystem.OperatingSystemType == "" {
+		return fmt.Errorf("type is required")
+	}
+	if t.VolumeTemplateOperatingSystem.OperatingSystemVersion == "" {
+		return fmt.Errorf("version is required")
+	}
+	if t.VolumeTemplateOperatingSystem.OperatingSystemArchitecture == "" {
+		return fmt.Errorf("architecture is required")
 	}
 
 	return nil
