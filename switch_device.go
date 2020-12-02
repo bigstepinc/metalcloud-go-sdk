@@ -12,7 +12,7 @@ import (
 type SwitchDevice struct {
 	NetworkEquipmentID                             int      `json:"network_equipment_id,omitempty" yaml:"id,omitempty"`
 	NetworkEquipmentIdentifierString               string   `json:"network_equipment_identifier_string,omitempty" yaml:"identifierString,omitempty"`
-	DatacenterName                                 string   `json:"datacenter_name,omitempty" yaml:"datacenterName,omitempty"`
+	DatacenterName                                 string   `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
 	NetworkEquipmentProvisionerType                string   `json:"network_equipment_provisioner_type,omitempty" yaml:"provisionerType,omitempty"`
 	NetworkEquipmentProvisionerPosition            string   `json:"network_equipment_position,omitempty" yaml:"provisionerPosition,omitempty"`
 	NetworkEquipmentDriver                         string   `json:"network_equipment_driver,omitempty" yaml:"driver,omitempty"`
@@ -39,7 +39,7 @@ type SwitchDevice struct {
 	NetworkEquipmentDescription                    string   `json:"network_equipment_description,omitempty" yaml:"description,omitempty"`
 	NetworkEquipmentCountry                        string   `json:"network_equipment_country,omitempty" yaml:"country,omitempty"`
 	NetworkEquipmentCity                           string   `json:"network_equipment_city,omitempty" yaml:"city,omitempty"`
-	NetworkEquipmentDatacenter                     string   `json:"network_equipment_datacenter,omitempty" yaml:"datacenter,omitempty"`
+	NetworkEquipmentDatacenter                     string   `json:"network_equipment_datacenter,omitempty" yaml:"netDatacenter,omitempty"`
 	NetworkEquipmentDatacenterRoom                 string   `json:"network_equipment_datacenter_room,omitempty" yaml:"datacenterRoom,omitempty"`
 	NetworkEquipmentDatacenterRack                 string   `json:"network_equipment_datacenter_rack,omitempty" yaml:"datacenterRack,omitempty"`
 	NetworkEquipmentRackPositionUpperUnit          int      `json:"network_equipment_rack_position_upper_unit,omitempty" yaml:"rackPositionUpperUnit,omitempty"`
@@ -59,7 +59,7 @@ func (s *SwitchDevice) UnmarshalJSON(data []byte) error {
 	var v struct {
 		NetworkEquipmentID                             int      `json:"network_equipment_id,omitempty" yaml:"id,omitempty"`
 		NetworkEquipmentIdentifierString               string   `json:"network_equipment_identifier_string,omitempty" yaml:"identifierString,omitempty"`
-		DatacenterName                                 string   `json:"datacenter_name,omitempty" yaml:"datacenterName,omitempty"`
+		DatacenterName                                 string   `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
 		NetworkEquipmentProvisionerType                string   `json:"network_equipment_provisioner_type,omitempty" yaml:"provisionerType,omitempty"`
 		NetworkEquipmentProvisionerPosition            string   `json:"network_equipment_position,omitempty" yaml:"provisionerPosition,omitempty"`
 		NetworkEquipmentDriver                         string   `json:"network_equipment_driver,omitempty" yaml:"driver,omitempty"`
@@ -283,4 +283,48 @@ func (c *Client) SwitchDeviceUpdate(networkEquipmentID int, switchDevice SwitchD
 	}
 
 	return &createdObject, nil
+}
+
+//CreateOrUpdate implements interface Applier
+func (s SwitchDevice) CreateOrUpdate(c interface{}) error {
+	client := c.(*Client)
+
+	var err error
+	var switchDevice *SwitchDevice
+	if s.NetworkEquipmentIdentifierString != "" {
+		switchDevice, err = client.SwitchDeviceGetByIdentifierString(s.NetworkEquipmentIdentifierString, false)
+	} else if s.NetworkEquipmentID != 0 {
+		switchDevice, err = client.SwitchDeviceGet(s.NetworkEquipmentID, false)
+	} else {
+		return fmt.Errorf("id is required")
+	}
+
+	if err != nil {
+		_, err := client.SwitchDeviceCreate(s, false)
+
+		if err != nil {
+			return err
+		}
+	} else {
+		_, err := client.SwitchDeviceUpdate(switchDevice.NetworkEquipmentID, s, false)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//Delete implements interface Applier
+func (s SwitchDevice) Delete(c interface{}) error {
+	client := c.(*Client)
+
+	err := client.SwitchDeviceDelete(s.NetworkEquipmentID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

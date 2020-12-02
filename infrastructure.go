@@ -8,34 +8,34 @@ import (
 
 //Infrastructure - the main infrastructure object
 type Infrastructure struct {
-	InfrastructureID               int                     `json:"infrastructure_id,omitempty"`
-	InfrastructureLabel            string                  `json:"infrastructure_label"`
-	DatacenterName                 string                  `json:"datacenter_name"`
-	InfrastructureSubdomain        string                  `json:"infrastructure_subdomain,omitempty"`
-	UserIDowner                    int                     `json:"user_id_owner,omitempty"`
-	UserEmailOwner                 string                  `json:"user_email_owner,omitempty"`
-	InfrastructureTouchUnixtime    string                  `json:"infrastructure_touch_unixtime,omitempty"`
-	InfrastructureServiceStatus    string                  `json:"infrastructure_service_status,omitempty"`
-	InfrastructureCreatedTimestamp string                  `json:"infrastructure_created_timestamp,omitempty"`
-	InfrastructureUpdatedTimestamp string                  `json:"infrastructure_updated_timestamp,omitempty"`
-	InfrastructureChangeID         int                     `json:"infrastructure_change_id,omitempty"`
-	InfrastructureDeployID         int                     `json:"infrastructure_deploy_id,omitempty"`
-	InfrastructureDesignIsLocked   bool                    `json:"infrastructure_design_is_locked,omitempty"`
-	InfrastructureOperation        InfrastructureOperation `json:"infrastructure_operation,omitempty"`
+	InfrastructureID               int                     `json:"infrastructure_id,omitempty" yaml:"id,omitempty"`
+	InfrastructureLabel            string                  `json:"infrastructure_label" yaml:"label"`
+	DatacenterName                 string                  `json:"datacenter_name" yaml:"datacenter"`
+	InfrastructureSubdomain        string                  `json:"infrastructure_subdomain,omitempty" yaml:"subdomain,omitempty"`
+	UserIDowner                    int                     `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	UserEmailOwner                 string                  `json:"user_email_owner,omitempty" yaml:"ownerEmail,omitempty"`
+	InfrastructureTouchUnixtime    string                  `json:"infrastructure_touch_unixtime,omitempty" yaml:"touchUnixTime,omitempty"`
+	InfrastructureServiceStatus    string                  `json:"infrastructure_service_status,omitempty" yaml:"serviceStatus,omitempty"`
+	InfrastructureCreatedTimestamp string                  `json:"infrastructure_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	InfrastructureUpdatedTimestamp string                  `json:"infrastructure_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
+	InfrastructureChangeID         int                     `json:"infrastructure_change_id,omitempty" yaml:"changeID,omitempty"`
+	InfrastructureDeployID         int                     `json:"infrastructure_deploy_id,omitempty" yaml:"deployID,omitempty"`
+	InfrastructureDesignIsLocked   bool                    `json:"infrastructure_design_is_locked,omitempty" yaml:"designIsLocked,omitempty"`
+	InfrastructureOperation        InfrastructureOperation `json:"infrastructure_operation,omitempty" yaml:"operation,omitempty"`
 }
 
 //InfrastructureOperation - object with alternations to be applied
 type InfrastructureOperation struct {
-	InfrastructureID               int    `json:"infrastructure_id,omitempty"`
-	InfrastructureLabel            string `json:"infrastructure_label"`
-	DatacenterName                 string `json:"datacenter_name"`
-	InfrastructureDeployStatus     string `json:"infrastructure_deploy_status,omitempty"`
-	InfrastructureDeployType       string `json:"infrastructure_deploy_type,omitempty"`
-	InfrastructureSubdomain        string `json:"infrastructure_subdomain,omitempty"`
-	UserIDOwner                    int    `json:"user_id_owner,omitempty"`
-	InfrastructureUpdatedTimestamp string `json:"infrastructure_updated_timestamp,omitempty"`
-	InfrastructureChangeID         int    `json:"infrastructure_change_id,omitempty"`
-	InfrastructureDeployID         int    `json:"infrastructure_deploy_id,omitempty"`
+	InfrastructureID               int    `json:"infrastructure_id,omitempty" yaml:"id,omitempty"`
+	InfrastructureLabel            string `json:"infrastructure_label" yaml:"label"`
+	DatacenterName                 string `json:"datacenter_name" yaml:"datacenter"`
+	InfrastructureDeployStatus     string `json:"infrastructure_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
+	InfrastructureDeployType       string `json:"infrastructure_deploy_type,omitempty" yaml:"deployType,omitempty"`
+	InfrastructureSubdomain        string `json:"infrastructure_subdomain,omitempty" yaml:"subdomain,omitempty"`
+	UserIDOwner                    int    `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	InfrastructureUpdatedTimestamp string `json:"infrastructure_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
+	InfrastructureChangeID         int    `json:"infrastructure_change_id,omitempty" yaml:"changeID,omitempty"`
+	InfrastructureDeployID         int    `json:"infrastructure_deploy_id,omitempty" yaml:"deployID,omitempty"`
 }
 
 //ShutdownOptions controls how the deploy engine handles running instances
@@ -211,4 +211,50 @@ func (c *Client) infrastructureUserLimits(infrastructureID id) (*map[string]inte
 	}
 
 	return &userLimits, nil
+}
+
+//CreateOrUpdate implements interface Applier
+func (i Infrastructure) CreateOrUpdate(c interface{}) error {
+	client := c.(*Client)
+
+	var result *Infrastructure
+	var err error
+
+	if i.InfrastructureID != 0 {
+		result, err = client.infrastructureGet(i.InfrastructureID)
+	} else if i.InfrastructureLabel != "" {
+		result, err = client.infrastructureGet(i.InfrastructureLabel)
+	} else {
+		return fmt.Errorf("id is required")
+	}
+
+	if err != nil {
+		_, err = client.InfrastructureCreate(i)
+
+		if err != nil {
+			return err
+		}
+	} else {
+		i.InfrastructureOperation.InfrastructureChangeID = result.InfrastructureOperation.InfrastructureChangeID
+		_, err = client.InfrastructureEdit(i.InfrastructureID, i.InfrastructureOperation)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//Delete implements interface Applier
+func (i Infrastructure) Delete(c interface{}) error {
+	client := c.(*Client)
+
+	err := client.infrastructureDelete(i.InfrastructureID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

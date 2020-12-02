@@ -8,17 +8,17 @@ import (
 
 //Workflow struct defines a server type
 type Workflow struct {
-	WorkflowID               int    `json:"workflow_id,omitempty"`
-	UserIDOwner              int    `json:"user_id_owner,omitempty"`
-	UserIDAuthenticated      int    `json:"user_id_authenticated,omitempty"`
-	WorkflowLabel            string `json:"workflow_label,omitempty"`
-	WorkflowUsage            string `json:"workflow_usage,omitempty"`
-	WorkflowTitle            string `json:"workflow_title,omitempty"`
-	WorkflowDescription      string `json:"workflow_description,omitempty"`
-	WorkflowIsDeprecated     bool   `json:"workflow_is_deprecated,omitempty"`
-	IconAssetDataURI         string `json:"icon_asset_data_uri,omitempty"`
-	WorkflowCreatedTimestamp string `json:"workflow_created_timestamp,omitempty"`
-	WorkflowUpdatedTimestamp string `json:"workflow_updated_timestamp,omitempty"`
+	WorkflowID               int    `json:"workflow_id,omitempty" yaml:"id,omitempty"`
+	UserIDOwner              int    `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	UserIDAuthenticated      int    `json:"user_id_authenticated,omitempty" yaml:"userIDAuthenticated,omitempty"`
+	WorkflowLabel            string `json:"workflow_label,omitempty" yaml:"label,omitempty"`
+	WorkflowUsage            string `json:"workflow_usage,omitempty" yaml:"usage,omitempty"`
+	WorkflowTitle            string `json:"workflow_title,omitempty" yaml:"title,omitempty"`
+	WorkflowDescription      string `json:"workflow_description,omitempty" yaml:"description,omitempty"`
+	WorkflowIsDeprecated     bool   `json:"workflow_is_deprecated,omitempty" yaml:"isDeprecated,omitempty"`
+	IconAssetDataURI         string `json:"icon_asset_data_uri,omitempty" yaml:"assetDataURI,omitempty"`
+	WorkflowCreatedTimestamp string `json:"workflow_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	WorkflowUpdatedTimestamp string `json:"workflow_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
 }
 
 //WorkflowStageDefinitionReference defines where in a workflow a stage definition resides
@@ -354,4 +354,54 @@ func (c *Client) InfrastructureDeployCustomStages(infraID int, stageDefinitionTy
 	}
 
 	return &createdObject, nil
+}
+
+//CreateOrUpdate implements interface Applier
+func (w Workflow) CreateOrUpdate(c interface{}) error {
+	client := c.(*Client)
+	var err error
+
+	if w.WorkflowID != 0 {
+		_, err = client.WorkflowGet(w.WorkflowID)
+	} else if w.WorkflowLabel != "" {
+		wflows, err := client.Workflows()
+		if err != nil {
+			return err
+		}
+		for _, wflow := range *wflows {
+			if wflow.WorkflowLabel == w.WorkflowLabel {
+				err = nil
+			}
+		}
+	} else {
+		return fmt.Errorf("id is required")
+	}
+
+	if err != nil {
+		_, err = client.WorkflowCreate(w)
+
+		if err != nil {
+			return err
+		}
+	} else {
+		_, err = client.WorkflowUpdate(w.WorkflowID, w)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//Delete implements interface Applier
+func (w Workflow) Delete(c interface{}) error {
+	client := c.(*Client)
+
+	err := client.WorkflowDelete(w.WorkflowID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

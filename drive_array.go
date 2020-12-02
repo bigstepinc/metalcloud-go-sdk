@@ -6,35 +6,33 @@ import "fmt"
 
 //DriveArray represents a collection of identical drives
 type DriveArray struct {
-	DriveArrayID                      int    `json:"drive_array_id,omitempty"`
-	DriveArrayLabel                   string `json:"drive_array_label,omitempty"`
-	VolumeTemplateID                  int    `json:"volume_template_id,omitempty"`
-	DriveArrayStorageType             string `json:"drive_array_storage_type,omitempty"`
-	DriveSizeMBytesDefault            int    `json:"drive_size_mbytes_default,omitempty"`
-	InstanceArrayID                   int    `json:"instance_array_id,omitempty"`
-	InfrastructureID                  int    `json:"infrastructure_id,omitempty"`
-	DriveArrayServiceStatus           string `json:"drive_array_service_status,omitempty"`
-	DriveArrayCount                   int    `json:"drive_array_count,omitempty"`
-	DriveArrayExpandWithInstanceArray bool   `json:"drive_array_expand_with_instance_array,omitempty"`
-
-	DriveArrayOperation *DriveArrayOperation `json:"drive_array_operation,omitempty"`
+	DriveArrayID                      int                  `json:"drive_array_id,omitempty" yaml:"id,omitempty"`
+	DriveArrayLabel                   string               `json:"drive_array_label,omitempty" yaml:"label,omitempty"`
+	VolumeTemplateID                  int                  `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
+	DriveArrayStorageType             string               `json:"drive_array_storage_type,omitempty" yaml:"storageType,omitempty"`
+	DriveSizeMBytesDefault            int                  `json:"drive_size_mbytes_default,omitempty" yaml:"sizeMBytesDefault,omitempty"`
+	InstanceArrayID                   int                  `json:"instance_array_id,omitempty" yaml:"instanceArrayID,omitempty"`
+	InfrastructureID                  int                  `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
+	DriveArrayServiceStatus           string               `json:"drive_array_service_status,omitempty" yaml:"serviceStatus,omitempty"`
+	DriveArrayCount                   int                  `json:"drive_array_count,omitempty" yaml:"count,omitempty"`
+	DriveArrayExpandWithInstanceArray bool                 `json:"drive_array_expand_with_instance_array,omitempty" yaml:"expandWithInstanceArray,omitempty"`
+	DriveArrayOperation               *DriveArrayOperation `json:"drive_array_operation,omitempty" yaml:"operation,omitempty"`
 }
 
 //DriveArrayOperation defines changes to be applied to a DriveArray
 type DriveArrayOperation struct {
-	DriveArrayID                      int    `json:"drive_array_id,omitempty"`
-	DriveArrayLabel                   string `json:"drive_array_label,omitempty"`
-	VolumeTemplateID                  int    `json:"volume_template_id,omitempty"`
-	DriveArrayStorageType             string `json:"drive_array_storage_type,omitempty"`
-	DriveSizeMBytesDefault            int    `json:"drive_size_mbytes_default,omitempty"`
-	InstanceArrayID                   int    `json:"instance_array_id,omitempty"`
-	InfrastructureID                  int    `json:"infrastructure_id,omitempty"`
-	DriveArrayCount                   int    `json:"drive_array_count,omitempty"`
-	DriveArrayExpandWithInstanceArray bool   `json:"drive_array_expand_with_instance_array,omitempty"`
-
-	DriveArrayDeployType   string `json:"drive_array_deploy_type,omitempty"`
-	DriveArrayDeployStatus string `json:"drive_array_deploy_status,omitempty"`
-	DriveArrayChangeID     int    `json:"drive_array_change_id,omitempty"`
+	DriveArrayID                      int    `json:"drive_array_id,omitempty" yaml:"id,omitempty"`
+	DriveArrayLabel                   string `json:"drive_array_label,omitempty" yaml:"label,omitempty"`
+	VolumeTemplateID                  int    `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
+	DriveArrayStorageType             string `json:"drive_array_storage_type,omitempty" yaml:"storageType,omitempty"`
+	DriveSizeMBytesDefault            int    `json:"drive_size_mbytes_default,omitempty" yaml:"sizeMBytes,omitempty"`
+	InstanceArrayID                   int    `json:"instance_array_id,omitempty" yaml:"instanceArrayID,omitempty"`
+	InfrastructureID                  int    `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
+	DriveArrayCount                   int    `json:"drive_array_count,omitempty" yaml:"count,omitempty"`
+	DriveArrayExpandWithInstanceArray bool   `json:"drive_array_expand_with_instance_array,omitempty" yaml:"expandWithInstanceArray,omitempty"`
+	DriveArrayDeployType              string `json:"drive_array_deploy_type,omitempty" yaml:"deployType,omitempty"`
+	DriveArrayDeployStatus            string `json:"drive_array_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
+	DriveArrayChangeID                int    `json:"drive_array_change_id,omitempty" yaml:"changeID,omitempty"`
 }
 
 //DriveArrays retrieves the list of drives arrays of an infrastructure
@@ -204,4 +202,52 @@ func (c *Client) driveArrayDrives(driveArray id) (*map[string]Drive, error) {
 	}
 
 	return &createdObject, nil
+}
+
+//CreateOrUpdate implements interface Applier
+func (da DriveArray) CreateOrUpdate(c interface{}) error {
+	client := c.(*Client)
+	var result *DriveArray
+	var err error
+
+	if da.DriveArrayID != 0 {
+		result, err = client.driveArrayGet(da.DriveArrayID)
+	} else if da.DriveArrayLabel != "" {
+		result, err = client.driveArrayGet(da.DriveArrayLabel)
+	} else {
+		return fmt.Errorf("id is required")
+	}
+
+	if err != nil {
+		_, err = client.driveArrayCreate(da.InfrastructureID, da)
+
+		if err != nil {
+			return err
+		}
+	} else {
+		if da.DriveArrayOperation == nil {
+			return fmt.Errorf("operation is required")
+		}
+		da.DriveArrayOperation.DriveArrayChangeID = result.DriveArrayOperation.DriveArrayChangeID
+		_, err = client.driveArrayEdit(da.DriveArrayID, *da.DriveArrayOperation)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//Delete implements interface Applier
+func (da DriveArray) Delete(c interface{}) error {
+	client := c.(*Client)
+
+	err := client.driveArrayDelete(da.DriveArrayID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

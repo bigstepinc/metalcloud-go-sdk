@@ -4,9 +4,9 @@ package metalcloud
 
 //OperatingSystem describes an OS
 type OperatingSystem struct {
-	OperatingSystemType         string `json:"operating_system_type,omitempty"`
-	OperatingSystemVersion      string `json:"operating_system_version,omitempty"`
-	OperatingSystemArchitecture string `json:"operating_system_architecture,omitempty"`
+	OperatingSystemType         string `json:"operating_system_type,omitempty" yaml:"type,omitempty"`
+	OperatingSystemVersion      string `json:"operating_system_version,omitempty" yaml:"version,omitempty"`
+	OperatingSystemArchitecture string `json:"operating_system_architecture,omitempty" yaml:"architecture,omitempty"`
 }
 
 //VolumeTemplate describes an OS template

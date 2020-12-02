@@ -1,30 +1,32 @@
 package metalcloud
 
+import "fmt"
+
 //go:generate go run helper/gen_exports.go
 
 //Network object describes an high level connection construct
 type Network struct {
-	NetworkID                 int               `json:"network_id,omitempty"`
-	NetworkLabel              string            `json:"network_label,omitempty"`
-	NetworkSubdomain          string            `json:"network_subdomain,omitempty"`
-	NetworkType               string            `json:"network_type,omitempty"`
-	InfrastructureID          int               `json:"infrastructure_id,omitempty"`
-	NetworkCreatedTimestamp   string            `json:"network_created_timestamp,omitempty"`
-	NetworkUpdatedTimestamp   string            `json:"network_updated_timestamp,omitempty"`
-	NetworkLANAutoAllocateIPs bool              `json:"network_lan_autoallocate_ips,omitempty"`
-	NetworkOperation          *NetworkOperation `json:"network_operation,omitempty"`
+	NetworkID                 int               `json:"network_id,omitempty" yaml:"id,omitempty"`
+	NetworkLabel              string            `json:"network_label,omitempty" yaml:"label,omitempty"`
+	NetworkSubdomain          string            `json:"network_subdomain,omitempty" yaml:"subdomain,omitempty"`
+	NetworkType               string            `json:"network_type,omitempty" yaml:"type,omitempty"`
+	InfrastructureID          int               `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
+	NetworkCreatedTimestamp   string            `json:"network_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	NetworkUpdatedTimestamp   string            `json:"network_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
+	NetworkLANAutoAllocateIPs bool              `json:"network_lan_autoallocate_ips,omitempty" yaml:"LANAutoAllocateIPs,omitempty"`
+	NetworkOperation          *NetworkOperation `json:"network_operation,omitempty" yaml:"operation,omitempty"`
 }
 
 //NetworkOperation object describes the change(s) required to be applied to a Network
 type NetworkOperation struct {
-	NetworkID                 int    `json:"network_id,omitempty"`
-	NetworkLabel              string `json:"network_label,omitempty"`
-	NetworkSubdomain          string `json:"network_subdomain,omitempty"`
-	NetworkType               string `json:"network_type,omitempty"`
-	InfrastructureID          int    `json:"infrastructure_id,omitempty"`
-	NetworkLANAutoAllocateIPs bool   `json:"network_lan_autoallocate_ips,omitempty"`
-	NetworkDeployType         string `json:"network_deploy_type,omitempty"`
-	NetworkChangeID           int    `json:"network_change_id,omitempty"`
+	NetworkID                 int    `json:"network_id,omitempty" yaml:"id,omitempty"`
+	NetworkLabel              string `json:"network_label,omitempty" yaml:"label,omitempty"`
+	NetworkSubdomain          string `json:"network_subdomain,omitempty" yaml:"subdomain,omitempty"`
+	NetworkType               string `json:"network_type,omitempty" yaml:"type,omitempty"`
+	InfrastructureID          int    `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
+	NetworkLANAutoAllocateIPs bool   `json:"network_lan_autoallocate_ips,omitempty" yaml:"LANAutoAllocateIPs,omitempty"`
+	NetworkDeployType         string `json:"network_deploy_type,omitempty" yaml:"deployType,omitempty"`
+	NetworkChangeID           int    `json:"network_change_id,omitempty" yaml:"changeID,omitempty"`
 }
 
 //networkGet retrieves a network object
@@ -153,6 +155,55 @@ func (c *Client) networkJoin(networkID id, networkToBeDeletedID id) error {
 		"network_join",
 		networkID,
 		networkToBeDeletedID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+//CreateOrUpdate implements interface Applier
+func (n Network) CreateOrUpdate(c interface{}) error {
+	client := c.(*Client)
+
+	var result *Network
+	var err error
+
+	if n.NetworkID != 0 {
+		result, err = client.networkGet(n.NetworkID)
+	} else if n.NetworkLabel != "" {
+		result, err = client.networkGet(n.NetworkLabel)
+	} else {
+		return fmt.Errorf("id is required")
+	}
+
+	if err != nil {
+		_, err = client.networkCreate(n.InfrastructureID, n)
+
+		if err != nil {
+			return err
+		}
+	} else {
+		if n.NetworkOperation == nil {
+			return fmt.Errorf("operation is required")
+		}
+		n.NetworkOperation.NetworkChangeID = result.NetworkOperation.NetworkChangeID
+		_, err = client.networkEdit(n.NetworkID, *n.NetworkOperation)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//Delete implements interface Applier
+func (n Network) Delete(c interface{}) error {
+	client := c.(*Client)
+
+	err := client.networkDelete(n.NetworkID)
 
 	if err != nil {
 		return err

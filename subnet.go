@@ -226,3 +226,36 @@ func (c *Client) SubnetPoolSearch(filter string) (*[]SubnetPool, error) {
 	return &list, nil
 
 }
+
+//CreateOrUpdate implements interface Applier
+func (s SubnetPool) CreateOrUpdate(c interface{}) error {
+	client := c.(*Client)
+
+	if s.SubnetPoolID == 0 {
+		return fmt.Errorf("id is required")
+	}
+	_, err := client.SubnetPoolGet(s.SubnetPoolID)
+
+	if err != nil {
+		_, err := client.SubnetPoolCreate(s)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//Delete implements interface Applier
+func (s SubnetPool) Delete(c interface{}) error {
+	client := c.(*Client)
+
+	err := client.SubnetPoolDelete(s.SubnetPoolID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
