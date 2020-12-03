@@ -146,33 +146,33 @@ func (c *Client) Variables(usage string) (*map[string]Variable, error) {
 func (v Variable) CreateOrUpdate(c interface{}) error {
 	client := c.(*Client)
 	var err error
+	var result *Variable
 
 	if v.VariableID != 0 {
-		_, err = client.VariableGet(v.VariableID)
+		result, err = client.VariableGet(v.VariableID)
 	} else if v.VariableName != "" {
 		vars, err := client.Variables("")
 		if err != nil {
 			return err
 		}
-		err = fmt.Errorf("variable not found")
 
 		for _, variable := range *vars {
 			if variable.VariableName == v.VariableName {
-				err = nil
+				result = &variable
 			}
 		}
 	} else {
 		return fmt.Errorf("id is required")
 	}
 
-	if err != nil {
+	if result == nil {
 		_, err = client.VariableCreate(v)
 
 		if err != nil {
 			return err
 		}
 	} else {
-		_, err = client.VariableUpdate(v.VariableID, v)
+		_, err = client.VariableUpdate(result.VariableID, v)
 		if err != nil {
 			return err
 		}

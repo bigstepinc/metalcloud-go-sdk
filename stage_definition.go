@@ -327,33 +327,33 @@ func (c *Client) StageDefinitions() (*map[string]StageDefinition, error) {
 func (s StageDefinition) CreateOrUpdate(c interface{}) error {
 	client := c.(*Client)
 	var err error
+	var result *StageDefinition
 
 	if s.StageDefinitionID != 0 {
-		_, err = client.StageDefinitionGet(s.StageDefinitionID)
+		result, err = client.StageDefinitionGet(s.StageDefinitionID)
 	} else if s.StageDefinitionLabel != "" {
 		definitions, err := client.StageDefinitions()
 		if err != nil {
 			return err
 		}
-		err = fmt.Errorf("stage definition not found")
 
 		for _, def := range *definitions {
 			if def.StageDefinitionLabel == s.StageDefinitionLabel {
-				err = nil
+				result = &def
 			}
 		}
 	} else {
 		return fmt.Errorf("id is required")
 	}
 
-	if err != nil {
+	if result == nil {
 		_, err = client.StageDefinitionCreate(s)
 
 		if err != nil {
 			return err
 		}
 	} else {
-		_, err = client.StageDefinitionUpdate(s.StageDefinitionID, s)
+		_, err = client.StageDefinitionUpdate(result.StageDefinitionID, s)
 
 		if err != nil {
 			return err

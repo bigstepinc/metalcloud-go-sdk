@@ -238,7 +238,7 @@ func (i Infrastructure) CreateOrUpdate(c interface{}) error {
 		return fmt.Errorf("id is required")
 	}
 
-	if err != nil {
+	if result == nil {
 		_, err = client.InfrastructureCreate(i)
 
 		if err != nil {
@@ -246,7 +246,7 @@ func (i Infrastructure) CreateOrUpdate(c interface{}) error {
 		}
 	} else {
 		i.instanceToOperation(&result.InfrastructureOperation)
-		_, err = client.InfrastructureEdit(i.InfrastructureID, i.InfrastructureOperation)
+		_, err = client.InfrastructureEdit(result.InfrastructureID, i.InfrastructureOperation)
 
 		if err != nil {
 			return err

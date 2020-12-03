@@ -143,19 +143,19 @@ func (s Secret) CreateOrUpdate(c interface{}) error {
 	client := c.(*Client)
 
 	var err error
+	var result *Secret
 
 	if s.SecretID != 0 {
-		_, err = client.SecretGet(s.SecretID)
+		result, err = client.SecretGet(s.SecretID)
 	} else if s.SecretName != "" {
 		secrets, err := client.Secrets("")
 		if err != nil {
 			return err
 		}
-		err = fmt.Errorf("secret not found")
 
 		for _, secret := range *secrets {
 			if secret.SecretName == s.SecretName {
-				err = nil
+				result = &secret
 			}
 		}
 	} else {
@@ -169,7 +169,7 @@ func (s Secret) CreateOrUpdate(c interface{}) error {
 			return err
 		}
 	} else {
-		_, err = client.SecretUpdate(s.SecretID, s)
+		_, err = client.SecretUpdate(result.SecretID, s)
 
 		if err != nil {
 			return err

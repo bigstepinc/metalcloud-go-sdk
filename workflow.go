@@ -360,9 +360,10 @@ func (c *Client) InfrastructureDeployCustomStages(infraID int, stageDefinitionTy
 func (w Workflow) CreateOrUpdate(c interface{}) error {
 	client := c.(*Client)
 	var err error
+	var result *Workflow
 
 	if w.WorkflowID != 0 {
-		_, err = client.WorkflowGet(w.WorkflowID)
+		result, err = client.WorkflowGet(w.WorkflowID)
 	} else if w.WorkflowLabel != "" {
 		wflows, err := client.Workflows()
 		if err != nil {
@@ -370,21 +371,21 @@ func (w Workflow) CreateOrUpdate(c interface{}) error {
 		}
 		for _, wflow := range *wflows {
 			if wflow.WorkflowLabel == w.WorkflowLabel {
-				err = nil
+				result = &wflow
 			}
 		}
 	} else {
 		return fmt.Errorf("id is required")
 	}
 
-	if err != nil {
+	if result == nil {
 		_, err = client.WorkflowCreate(w)
 
 		if err != nil {
 			return err
 		}
 	} else {
-		_, err = client.WorkflowUpdate(w.WorkflowID, w)
+		_, err = client.WorkflowUpdate(result.WorkflowID, w)
 		if err != nil {
 			return err
 		}

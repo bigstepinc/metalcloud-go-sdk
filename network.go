@@ -169,7 +169,6 @@ func (n *Network) instanceToOperation(op *NetworkOperation) {
 	operation.NetworkLabel = n.NetworkLabel
 	operation.NetworkSubdomain = n.NetworkSubdomain
 	operation.NetworkType = n.NetworkType
-	operation.InfrastructureID = n.InfrastructureID
 	operation.NetworkLANAutoAllocateIPs = n.NetworkLANAutoAllocateIPs
 	operation.NetworkChangeID = op.NetworkChangeID
 }
@@ -197,7 +196,7 @@ func (n Network) CreateOrUpdate(c interface{}) error {
 		}
 	} else {
 		n.instanceToOperation(result.NetworkOperation)
-		_, err = client.networkEdit(n.NetworkID, *n.NetworkOperation)
+		_, err = client.networkEdit(result.NetworkID, *n.NetworkOperation)
 
 		if err != nil {
 			return err
