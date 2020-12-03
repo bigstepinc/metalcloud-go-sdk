@@ -375,3 +375,16 @@ func (s StageDefinition) Delete(c interface{}) error {
 
 	return nil
 }
+
+//Validate implements interface Applier
+func (s StageDefinition) Validate() error {
+	if s.StageDefinitionType == "" {
+		return fmt.Errorf("type is required")
+	}
+
+	if s.StageDefinitionTitle == "" {
+		return fmt.Errorf("title is required")
+	}
+
+	return nil
+}

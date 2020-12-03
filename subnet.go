@@ -259,3 +259,8 @@ func (s SubnetPool) Delete(c interface{}) error {
 
 	return nil
 }
+
+//Validate implements interface Applier
+func (s SubnetPool) Validate() error {
+	return nil
+}

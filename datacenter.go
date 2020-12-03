@@ -7,17 +7,18 @@ import (
 
 //Datacenter - datacenter description
 type Datacenter struct {
-	DatacenterName             string   `json:"datacenter_name,omitempty" yaml:"datacentername,omitempty"`
-	DatacenterNameParent       string   `json:"datacenter_name_parent,omitempty" yaml:"datacenternameparent,omitempty"`
-	UserID                     int      `json:"user_id,omitempty" yaml:"userid,omitempty"`
-	DatacenterDisplayName      string   `json:"datacenter_display_name,omitempty" yaml:"displayname,omitempty"`
-	DatacenterIsMaster         bool     `json:"datacenter_is_master,omitempty" yaml:"ismaster,omitempty"`
-	DatacenterIsMaintenance    bool     `json:"datacenter_is_maintenance,omitempty" yaml:"ismaintenance,omitempty"`
-	DatacenterType             string   `json:"datacenter_type,omitempty" yaml:"type,omitempty"`
-	DatacenterCreatedTimestamp string   `json:"datacenter_created_timestamp,omitempty" yaml:"createdtimestamp,omitempty"`
-	DatacenterUpdatedTimestamp string   `json:"datacenter_updated_timestamp,omitempty" yaml:"updatedtimestamp,omitempty"`
-	DatacenterHidden           bool     `json:"datacenter_hidden,omitempty" yaml:"ishidden,omitempty"`
-	DatacenterTags             []string `json:"datacenter_tags,omitempty" yaml:"tags,omitempty"`
+	DatacenterName             string            `json:"datacenter_name,omitempty" yaml:"name,omitempty"`
+	DatacenterNameParent       string            `json:"datacenter_name_parent,omitempty" yaml:"parentName,omitempty"`
+	UserID                     int               `json:"user_id,omitempty" yaml:"userid,omitempty"`
+	DatacenterDisplayName      string            `json:"datacenter_display_name,omitempty" yaml:"displayname,omitempty"`
+	DatacenterIsMaster         bool              `json:"datacenter_is_master,omitempty" yaml:"ismaster,omitempty"`
+	DatacenterIsMaintenance    bool              `json:"datacenter_is_maintenance,omitempty" yaml:"ismaintenance,omitempty"`
+	DatacenterType             string            `json:"datacenter_type,omitempty" yaml:"type,omitempty"`
+	DatacenterCreatedTimestamp string            `json:"datacenter_created_timestamp,omitempty" yaml:"createdtimestamp,omitempty"`
+	DatacenterUpdatedTimestamp string            `json:"datacenter_updated_timestamp,omitempty" yaml:"updatedtimestamp,omitempty"`
+	DatacenterHidden           bool              `json:"datacenter_hidden,omitempty" yaml:"ishidden,omitempty"`
+	DatacenterTags             []string          `json:"datacenter_tags,omitempty" yaml:"tags,omitempty"`
+	DatacenterConfig           *DatacenterConfig `json:"datacenter_config_json,omitempty" yaml:"config,omitempty"`
 }
 
 //DatacenterConfig - datacenter configuration
@@ -315,7 +316,13 @@ func (dc Datacenter) CreateOrUpdate(c interface{}) error {
 	_, err := client.DatacenterGet(dc.DatacenterName)
 
 	if err != nil {
-		_, err = client.DatacenterCreate(dc, DatacenterConfig{})
+		_, err = client.DatacenterCreate(dc, *dc.DatacenterConfig)
+
+		if err != nil {
+			return err
+		}
+	} else {
+		err = client.DatacenterConfigUpdate(dc.DatacenterName, *dc.DatacenterConfig)
 
 		if err != nil {
 			return err
@@ -327,5 +334,14 @@ func (dc Datacenter) CreateOrUpdate(c interface{}) error {
 
 //Delete implements interface Applier
 func (dc Datacenter) Delete(c interface{}) error {
+	return nil
+}
+
+//Validate implements interface Applier
+func (dc Datacenter) Validate() error {
+	if dc.DatacenterName == "" {
+		return fmt.Errorf("name is required")
+	}
+
 	return nil
 }

@@ -328,3 +328,8 @@ func (s SwitchDevice) Delete(c interface{}) error {
 
 	return nil
 }
+
+//Validate implements interface Applier
+func (s SwitchDevice) Validate() error {
+	return nil
+}

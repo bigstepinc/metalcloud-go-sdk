@@ -298,6 +298,24 @@ func (c *Client) instanceArrayStart(instanceArrayID id) (*InstanceArray, error) 
 	return &createdObject, nil
 }
 
+func (ia *InstanceArray) instanceToOperation(op *InstanceArrayOperation) {
+	operation := ia.InstanceArrayOperation
+	operation.InstanceArrayID = ia.InstanceArrayID
+	operation.InstanceArrayLabel = ia.InstanceArrayLabel
+	operation.InstanceArraySubdomain = ia.InstanceArraySubdomain
+	operation.InstanceArrayBootMethod = ia.InstanceArrayBootMethod
+	operation.InstanceArrayInstanceCount = ia.InstanceArrayInstanceCount
+	operation.InstanceArrayRAMGbytes = ia.InstanceArrayRAMGbytes
+	operation.InstanceArrayProcessorCount = ia.InstanceArrayProcessorCount
+	operation.InstanceArrayProcessorCoreMHZ = ia.InstanceArrayProcessorCoreMHZ
+	operation.InstanceArrayProcessorCoreCount = ia.InstanceArrayProcessorCoreCount
+	operation.InstanceArrayDiskCount = ia.InstanceArrayDiskCount
+	operation.InstanceArrayDiskSizeMBytes = ia.InstanceArrayDiskSizeMBytes
+	operation.InstanceArrayFirewallManaged = ia.InstanceArrayFirewallManaged
+	operation.VolumeTemplateID = ia.VolumeTemplateID
+	operation.InstanceArrayChangeID = op.InstanceArrayChangeID
+}
+
 //CreateOrUpdate implements interface Applier
 func (ia InstanceArray) CreateOrUpdate(c interface{}) error {
 	client := c.(*Client)
@@ -321,10 +339,8 @@ func (ia InstanceArray) CreateOrUpdate(c interface{}) error {
 		}
 	} else {
 		var bKeepDetachingDrives, bSwapExistingInstancesHardware bool = false, false
-		if ia.InstanceArrayOperation == nil {
-			return fmt.Errorf("operation is required")
-		}
-		ia.InstanceArrayOperation.InstanceArrayChangeID = result.InstanceArrayOperation.InstanceArrayChangeID
+
+		ia.instanceToOperation(result.InstanceArrayOperation)
 		_, err = client.instanceArrayEdit(ia.InstanceArrayLabel, *ia.InstanceArrayOperation, &bSwapExistingInstancesHardware, &bKeepDetachingDrives, nil, nil)
 
 		if err != nil {
@@ -344,5 +360,10 @@ func (ia InstanceArray) Delete(c interface{}) error {
 		return err
 	}
 
+	return nil
+}
+
+//Validate implements interface Applier
+func (ia InstanceArray) Validate() error {
 	return nil
 }

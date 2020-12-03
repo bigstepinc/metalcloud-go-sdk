@@ -163,6 +163,17 @@ func (c *Client) networkJoin(networkID id, networkToBeDeletedID id) error {
 	return nil
 }
 
+func (n *Network) instanceToOperation(op *NetworkOperation) {
+	operation := n.NetworkOperation
+	operation.NetworkID = n.NetworkID
+	operation.NetworkLabel = n.NetworkLabel
+	operation.NetworkSubdomain = n.NetworkSubdomain
+	operation.NetworkType = n.NetworkType
+	operation.InfrastructureID = n.InfrastructureID
+	operation.NetworkLANAutoAllocateIPs = n.NetworkLANAutoAllocateIPs
+	operation.NetworkChangeID = op.NetworkChangeID
+}
+
 //CreateOrUpdate implements interface Applier
 func (n Network) CreateOrUpdate(c interface{}) error {
 	client := c.(*Client)
@@ -185,10 +196,7 @@ func (n Network) CreateOrUpdate(c interface{}) error {
 			return err
 		}
 	} else {
-		if n.NetworkOperation == nil {
-			return fmt.Errorf("operation is required")
-		}
-		n.NetworkOperation.NetworkChangeID = result.NetworkOperation.NetworkChangeID
+		n.instanceToOperation(result.NetworkOperation)
 		_, err = client.networkEdit(n.NetworkID, *n.NetworkOperation)
 
 		if err != nil {
@@ -209,5 +217,10 @@ func (n Network) Delete(c interface{}) error {
 		return err
 	}
 
+	return nil
+}
+
+//Validate implements interface Applier
+func (n Network) Validate() error {
 	return nil
 }

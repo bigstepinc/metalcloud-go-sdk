@@ -185,3 +185,8 @@ func (asset OSAsset) Delete(c interface{}) error {
 
 	return nil
 }
+
+//Validate implements interface Applier
+func (asset OSAsset) Validate() error {
+	return nil
+}

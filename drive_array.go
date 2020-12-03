@@ -204,6 +204,19 @@ func (c *Client) driveArrayDrives(driveArray id) (*map[string]Drive, error) {
 	return &createdObject, nil
 }
 
+func (da *DriveArray) instanceToOperation(op *DriveArrayOperation) {
+	operation := da.DriveArrayOperation
+	operation.DriveArrayID = da.DriveArrayID
+	operation.DriveArrayLabel = da.DriveArrayLabel
+	operation.VolumeTemplateID = da.VolumeTemplateID
+	operation.DriveArrayStorageType = da.DriveArrayStorageType
+	operation.DriveSizeMBytesDefault = da.DriveSizeMBytesDefault
+	operation.InstanceArrayID = da.InstanceArrayID
+	operation.DriveArrayCount = da.DriveArrayCount
+	operation.DriveArrayExpandWithInstanceArray = da.DriveArrayExpandWithInstanceArray
+	operation.DriveArrayChangeID = op.DriveArrayChangeID
+}
+
 //CreateOrUpdate implements interface Applier
 func (da DriveArray) CreateOrUpdate(c interface{}) error {
 	client := c.(*Client)
@@ -225,10 +238,8 @@ func (da DriveArray) CreateOrUpdate(c interface{}) error {
 			return err
 		}
 	} else {
-		if da.DriveArrayOperation == nil {
-			return fmt.Errorf("operation is required")
-		}
-		da.DriveArrayOperation.DriveArrayChangeID = result.DriveArrayOperation.DriveArrayChangeID
+		da.instanceToOperation(result.DriveArrayOperation)
+
 		_, err = client.driveArrayEdit(da.DriveArrayID, *da.DriveArrayOperation)
 
 		if err != nil {
@@ -249,5 +260,10 @@ func (da DriveArray) Delete(c interface{}) error {
 		return err
 	}
 
+	return nil
+}
+
+//Validate implements interface Applier
+func (da DriveArray) Validate() error {
 	return nil
 }

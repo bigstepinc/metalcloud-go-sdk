@@ -576,3 +576,8 @@ func (s Server) Delete(c interface{}) error {
 
 	return nil
 }
+
+//Validate implements interface Applier
+func (s Server) Validate() error {
+	return nil
+}
