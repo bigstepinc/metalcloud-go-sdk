@@ -163,14 +163,13 @@ func (c *Client) sharedDrives(infrastructureID id) (*map[string]SharedDrive, err
 }
 
 func (sd *SharedDrive) instanceToOperation(op *SharedDriveOperation) {
-	operation := sd.SharedDriveOperation
+	operation := &sd.SharedDriveOperation
 	operation.SharedDriveID = sd.SharedDriveID
 	operation.SharedDriveLabel = sd.SharedDriveLabel
 	operation.SharedDriveSubdomain = sd.SharedDriveSubdomain
 	operation.SharedDriveSizeMbytes = sd.SharedDriveSizeMbytes
 	operation.SharedDriveStorageType = sd.SharedDriveStorageType
 	operation.SharedDriveHasGFS = sd.SharedDriveHasGFS
-	operation.InfrastructureID = sd.InfrastructureID
 	operation.SharedDriveAttachedInstanceArrays = sd.SharedDriveAttachedInstanceArrays
 	operation.SharedDriveChangeID = op.SharedDriveChangeID
 }
@@ -198,7 +197,8 @@ func (sd SharedDrive) CreateOrUpdate(c interface{}) error {
 		}
 	} else {
 		sd.instanceToOperation(&result.SharedDriveOperation)
-		_, err = client.sharedDriveEdit(sd.SharedDriveID, sd.SharedDriveOperation)
+		// return fmt.Errorf("value is obj %+v", sd)
+		_, err = client.sharedDriveEdit(result.SharedDriveID, sd.SharedDriveOperation)
 
 		if err != nil {
 			return err
