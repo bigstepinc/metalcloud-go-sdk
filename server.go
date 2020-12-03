@@ -538,23 +538,24 @@ func (s Server) CreateOrUpdate(c interface{}) error {
 	client := c.(*Client)
 
 	var err error
+	var result *Server
 
 	if s.ServerID != 0 {
-		_, err = client.ServerGet(s.ServerID, false)
+		result, err = client.ServerGet(s.ServerID, false)
 	} else if s.ServerUUID != "" {
-		_, err = client.ServerGetByUUID(s.ServerUUID, false)
+		result, err = client.ServerGetByUUID(s.ServerUUID, false)
 	} else {
 		return fmt.Errorf("id is required")
 	}
 
-	if err != nil {
+	if result == nil {
 		_, err = client.ServerCreate(s, false)
 
 		if err != nil {
 			return err
 		}
 	} else {
-		_, err = client.ServerEditComplete(s.ServerID, s)
+		_, err = client.ServerEditComplete(result.ServerID, s)
 
 		if err != nil {
 			return err

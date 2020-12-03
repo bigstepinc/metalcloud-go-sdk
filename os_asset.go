@@ -137,26 +137,26 @@ func (asset OSAsset) CreateOrUpdate(c interface{}) error {
 	client := c.(*Client)
 
 	var err error
+	var result *OSAsset
 
 	if asset.OSAssetID != 0 {
-		_, err = client.OSAssetGet(asset.OSAssetID)
+		result, err = client.OSAssetGet(asset.OSAssetID)
 	} else if asset.OSAssetFileName != "" {
 		assets, err := client.OSAssets()
 		if err != nil {
 			return err
 		}
 
-		err = fmt.Errorf("asset not found")
 		for _, a := range *assets {
 			if a.OSAssetFileName == asset.OSAssetFileName {
-				err = nil
+				result = &a
 			}
 		}
 	} else {
 		return fmt.Errorf("id is required")
 	}
 
-	if err != nil {
+	if result == nil {
 		_, err = client.OSAssetCreate(asset)
 
 		if err != nil {

@@ -331,7 +331,7 @@ func (ia InstanceArray) CreateOrUpdate(c interface{}) error {
 		return fmt.Errorf("id is required")
 	}
 
-	if err != nil {
+	if result == nil {
 		_, err = client.instanceArrayCreate(ia.InfrastructureID, ia)
 
 		if err != nil {
@@ -341,7 +341,7 @@ func (ia InstanceArray) CreateOrUpdate(c interface{}) error {
 		var bKeepDetachingDrives, bSwapExistingInstancesHardware bool = false, false
 
 		ia.instanceToOperation(result.InstanceArrayOperation)
-		_, err = client.instanceArrayEdit(ia.InstanceArrayLabel, *ia.InstanceArrayOperation, &bSwapExistingInstancesHardware, &bKeepDetachingDrives, nil, nil)
+		_, err = client.instanceArrayEdit(result.InstanceArrayLabel, *ia.InstanceArrayOperation, &bSwapExistingInstancesHardware, &bKeepDetachingDrives, nil, nil)
 
 		if err != nil {
 			return err

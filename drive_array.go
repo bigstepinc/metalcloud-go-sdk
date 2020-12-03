@@ -231,7 +231,7 @@ func (da DriveArray) CreateOrUpdate(c interface{}) error {
 		return fmt.Errorf("id is required")
 	}
 
-	if err != nil {
+	if result == nil {
 		_, err = client.driveArrayCreate(da.InfrastructureID, da)
 
 		if err != nil {
@@ -240,7 +240,7 @@ func (da DriveArray) CreateOrUpdate(c interface{}) error {
 	} else {
 		da.instanceToOperation(result.DriveArrayOperation)
 
-		_, err = client.driveArrayEdit(da.DriveArrayID, *da.DriveArrayOperation)
+		_, err = client.driveArrayEdit(result.DriveArrayID, *da.DriveArrayOperation)
 
 		if err != nil {
 			return err

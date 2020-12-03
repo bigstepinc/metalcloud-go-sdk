@@ -303,33 +303,33 @@ func (t OSTemplate) CreateOrUpdate(c interface{}) error {
 	client := c.(*Client)
 
 	var err error
+	var result *OSTemplate
 
 	if t.VolumeTemplateID != 0 {
-		_, err = client.OSTemplateGet(t.VolumeTemplateID, false)
+		result, err = client.OSTemplateGet(t.VolumeTemplateID, false)
 	} else if t.VolumeTemplateLabel != "" {
 		templates, err := client.OSTemplates()
 		if err != nil {
 			return err
 		}
-		err = fmt.Errorf("template not found")
 
 		for _, temp := range *templates {
 			if temp.VolumeTemplateLabel == t.VolumeTemplateLabel {
-				err = nil
+				result = &temp
 			}
 		}
 	} else {
 		return fmt.Errorf("id is required")
 	}
 
-	if err != nil {
+	if result == nil {
 		_, err = client.OSTemplateCreate(t)
 
 		if err != nil {
 			return err
 		}
 	} else {
-		_, err = client.OSTemplateUpdate(t.VolumeTemplateID, t)
+		_, err = client.OSTemplateUpdate(result.VolumeTemplateID, t)
 
 		if err != nil {
 			return err
