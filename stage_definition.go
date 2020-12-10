@@ -324,14 +324,18 @@ func (c *Client) StageDefinitions() (*map[string]StageDefinition, error) {
 }
 
 //CreateOrUpdate implements interface Applier
-func (s StageDefinition) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
+func (s StageDefinition) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var result *StageDefinition
+	err = s.Validate()
+
+	if err != nil {
+		return err
+	}
 
 	if s.StageDefinitionID != 0 {
 		result, err = client.StageDefinitionGet(s.StageDefinitionID)
-	} else if s.StageDefinitionLabel != "" {
+	} else {
 		definitions, err := client.StageDefinitions()
 		if err != nil {
 			return err
@@ -342,11 +346,9 @@ func (s StageDefinition) CreateOrUpdate(c interface{}) error {
 				result = &def
 			}
 		}
-	} else {
-		return fmt.Errorf("id is required")
 	}
 
-	if result == nil {
+	if err != nil {
 		_, err = client.StageDefinitionCreate(s)
 
 		if err != nil {
@@ -364,10 +366,13 @@ func (s StageDefinition) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (s StageDefinition) Delete(c interface{}) error {
-	client := c.(*Client)
+func (s StageDefinition) Delete(client MetalCloudClient) error {
+	err := s.Validate()
 
-	err := client.ServerDelete(s.StageDefinitionID, true)
+	if err != nil {
+		return err
+	}
+	err = client.StageDefinitionDelete(s.StageDefinitionID)
 
 	if err != nil {
 		return err
@@ -378,6 +383,10 @@ func (s StageDefinition) Delete(c interface{}) error {
 
 //Validate implements interface Applier
 func (s StageDefinition) Validate() error {
+	if s.StageDefinitionID == 0 && s.StageDefinitionLabel == "" {
+		return fmt.Errorf("id is required")
+	}
+
 	if s.StageDefinitionType == "" {
 		return fmt.Errorf("type is required")
 	}

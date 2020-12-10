@@ -175,22 +175,23 @@ func (sd *SharedDrive) instanceToOperation(op *SharedDriveOperation) {
 }
 
 //CreateOrUpdate implements interface Applier
-func (sd SharedDrive) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
-
+func (sd SharedDrive) CreateOrUpdate(client MetalCloudClient) error {
 	var result *SharedDrive
 	var err error
+	err = sd.Validate()
+
+	if err != nil {
+		return err
+	}
 
 	if sd.SharedDriveID != 0 {
-		result, err = client.sharedDriveGet(sd.SharedDriveID)
-	} else if sd.SharedDriveLabel != "" {
-		result, err = client.sharedDriveGet(sd.SharedDriveLabel)
+		result, err = client.SharedDriveGet(sd.SharedDriveID)
 	} else {
-		return fmt.Errorf("id is required")
+		result, err = client.SharedDriveGetByLabel(sd.SharedDriveLabel)
 	}
 
 	if err != nil {
-		_, err = client.sharedDriveCreate(sd.InfrastructureID, sd)
+		_, err = client.SharedDriveCreate(sd.InfrastructureID, sd)
 
 		if err != nil {
 			return err
@@ -198,7 +199,7 @@ func (sd SharedDrive) CreateOrUpdate(c interface{}) error {
 	} else {
 		sd.instanceToOperation(&result.SharedDriveOperation)
 		// return fmt.Errorf("value is obj %+v", sd)
-		_, err = client.sharedDriveEdit(result.SharedDriveID, sd.SharedDriveOperation)
+		_, err = client.SharedDriveEdit(result.SharedDriveID, sd.SharedDriveOperation)
 
 		if err != nil {
 			return err
@@ -209,10 +210,13 @@ func (sd SharedDrive) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (sd SharedDrive) Delete(c interface{}) error {
-	client := c.(*Client)
+func (sd SharedDrive) Delete(client MetalCloudClient) error {
+	err := sd.Validate()
 
-	err := client.sharedDriveDelete(sd.SharedDriveID)
+	if err != nil {
+		return err
+	}
+	err = client.SharedDriveDelete(sd.SharedDriveID)
 
 	if err != nil {
 		return err
@@ -223,5 +227,8 @@ func (sd SharedDrive) Delete(c interface{}) error {
 
 //Validate implements interface Applier
 func (sd SharedDrive) Validate() error {
+	if sd.SharedDriveID == 0 && sd.SharedDriveLabel == "" {
+		return fmt.Errorf("id is required")
+	}
 	return nil
 }

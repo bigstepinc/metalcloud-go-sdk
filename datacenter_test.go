@@ -30,6 +30,7 @@ func TestDatacenterConfiglUnmarshalTest(t *testing.T) {
 }
 
 const _DCConfigFixture = "{\"SANRoutedSubnet\":\"100.64.0.0/21\",\"BSIVRRPListenIPv4\":\"172.16.10.6\",\"BSIMachineListenIPv4List\":[\"172.16.10.6\"],\"BSIMachinesSubnetIPv4CIDR\":\"10.255.226.0/24\",\"BSIExternallyVisibleIPv4\":\"89.36.24.2\",\"repoURLRoot\":\"https://repointegrationpublic.bigstepcloud.com\",\"repoURLRootQuarantineNetwork\":\"https://repointegrationpublic.bigstepcloud.com\",\"DNSServers\":[\"84.40.63.27\"],\"NTPServers\":[\"84.40.58.44\",\"84.40.58.45\"],\"KMS\":\"\",\"TFTPServerWANVRRPListenIPv4\":\"172.16.10.6\",\"dataLakeEnabled\":false,\"monitoringGraphitePlainTextSocketHost\":\"\",\"monitoringGraphiteRenderURLHost\":\"\",\"latitude\":0,\"longitude\":0,\"address\":\"\",\"switchProvisioner\":{\"type\":\"VPLSProvisioner\",\"ACLSAN\":3999,\"ACLWAN\":3399,\"SANACLRange\":\"3700-3998\",\"ToRLANVLANRange\":\"400-699\",\"ToRSANVLANRange\":\"700-999\",\"ToRWANVLANRange\":\"100-300\",\"quarantineVLANID\":5,\"NorthWANVLANRange\":\"1001-2000\"},\"childDatacentersConfigDefault\":[]}"
+const _DCFixture = "{\"user_id\": 1, \"datacenter_name\": \"test\",\"datacenter_config_json\": {\"SANRoutedSubnet\":\"100.64.0.0/21\",\"BSIVRRPListenIPv4\":\"172.16.10.6\",\"BSIMachineListenIPv4List\":[\"172.16.10.6\"],\"BSIMachinesSubnetIPv4CIDR\":\"10.255.226.0/24\",\"BSIExternallyVisibleIPv4\":\"89.36.24.2\",\"repoURLRoot\":\"https://repointegrationpublic.bigstepcloud.com\",\"repoURLRootQuarantineNetwork\":\"https://repointegrationpublic.bigstepcloud.com\",\"DNSServers\":[\"84.40.63.27\"],\"NTPServers\":[\"84.40.58.44\",\"84.40.58.45\"],\"KMS\":\"\",\"TFTPServerWANVRRPListenIPv4\":\"172.16.10.6\",\"dataLakeEnabled\":false,\"monitoringGraphitePlainTextSocketHost\":\"\",\"monitoringGraphiteRenderURLHost\":\"\",\"latitude\":0,\"longitude\":0,\"address\":\"\",\"switchProvisioner\":{\"type\":\"VPLSProvisioner\",\"ACLSAN\":3999,\"ACLWAN\":3399,\"SANACLRange\":\"3700-3998\",\"ToRLANVLANRange\":\"400-699\",\"ToRSANVLANRange\":\"700-999\",\"ToRWANVLANRange\":\"100-300\",\"quarantineVLANID\":5,\"NorthWANVLANRange\":\"1001-2000\"},\"childDatacentersConfigDefault\":[]}"
 
 func TestDatacenterConfigMarshalTest(t *testing.T) {
 
@@ -56,4 +57,148 @@ func TestDatacenterConfigMarshalTest(t *testing.T) {
 	Expect(dc2.SwitchProvisioner["ACLSAN"]).To(Equal(3999.0))
 	//Expect(dc2.SwitchProvisioner.Provisioner.(VPLSProvisioner).ACLSAN).To(Equal(3999))
 
+}
+
+func TestDatacenterCreateOrUpdate(t *testing.T) {
+
+	RegisterTestingT(t)
+
+	responseBody = `{"result": ` + _driveArrayFixture1 + `,"jsonrpc": "2.0","id": 0}`
+
+	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	Expect(err).To(BeNil())
+
+	obj := Datacenter{
+		DatacenterName: "dctest",
+		UserID:         1,
+		DatacenterConfig: &DatacenterConfig{
+			SANRoutedSubnet:                       "100.64.0.0/21",
+			BSIVRRPListenIPv4:                     "172.16.10.6",
+			BSIMachineListenIPv4List:              []string{"172.16.10.6"},
+			BSIMachinesSubnetIPv4CIDR:             "10.255.226.0/24",
+			BSIExternallyVisibleIPv4:              "89.36.24.2",
+			RepoURLRoot:                           "https://repointegrationpublic.bigstepcloud.com",
+			RepoURLRootQuarantineNetwork:          "https://repointegrationpublic.bigstepcloud.com",
+			DNSServers:                            []string{"84.40.63.27"},
+			NTPServers:                            []string{"84.40.58.44", "84.40.58.45"},
+			KMS:                                   "",
+			TFTPServerWANVRRPListenIPv4:           "172.16.10.6",
+			DataLakeEnabled:                       false,
+			MonitoringGraphitePlainTextSocketHost: "",
+			MonitoringGraphiteRenderURLHost:       "",
+			Latitude:                              0,
+			Longitude:                             0,
+			SwitchProvisioner: map[string]interface{}{
+				"type":                          "VPLSProvisioner",
+				"ACLSAN":                        3399,
+				"SANACLRange":                   "3700-3998",
+				"ToRLANVLANRange":               "400-699",
+				"ToRSANVLANRange":               "700-999",
+				"ToRWANVLANRange":               "100-300",
+				"quarantineVLANID":              5,
+				"NorthWANVLANRange":             "1001-2000",
+				"childDatacentersConfigDefault": []string{},
+			},
+		},
+	}
+
+	err = obj.CreateOrUpdate(mc)
+	Expect(err).To(BeNil())
+
+	body := (<-requestChan).body
+	var m map[string]interface{}
+	err2 := json.Unmarshal([]byte(body), &m)
+	Expect(err2).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	Expect(m["method"].(string)).To(Equal("datacenter_get"))
+
+	params := (m["params"].([]interface{}))
+
+	Expect(params[1].(string)).To(Equal("dctest"))
+
+	body = (<-requestChan).body
+
+	err2 = json.Unmarshal([]byte(body), &m)
+	Expect(err2).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	Expect(m["method"].(string)).To(Equal("datacenter_config_update"))
+
+	params = (m["params"].([]interface{}))
+
+	Expect(params[0].(string)).To(Equal("dctest"))
+
+	responseBody = `{"error": {"message": "Datacenter not found.","code": 269}, "jsonrpc": "2.0", "id": 0}`
+
+	err = obj.CreateOrUpdate(mc)
+
+	body = (<-requestChan).body
+	err2 = json.Unmarshal([]byte(body), &m)
+	Expect(err2).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	Expect(m["method"].(string)).To(Equal("datacenter_get"))
+
+	params = (m["params"].([]interface{}))
+
+	Expect(params[1].(string)).To(Equal("dctest"))
+
+	body = (<-requestChan).body
+
+	err2 = json.Unmarshal([]byte(body), &m)
+	Expect(err2).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	Expect(m["method"].(string)).To(Equal("datacenter_create"))
+
+	params = (m["params"].([]interface{}))
+	Expect(params[0].(map[string]interface{})["user_id"].(float64)).To(Equal(1.0))
+}
+
+func TestDatacenterDeleteForApply(t *testing.T) {
+
+	RegisterTestingT(t)
+
+	responseBody = `{"result": [] ,"jsonrpc": "2.0","id": 0}`
+
+	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	Expect(err).To(BeNil())
+
+	obj := Datacenter{
+		DatacenterName: "dctest",
+		UserID:         1,
+		DatacenterConfig: &DatacenterConfig{
+			SANRoutedSubnet:                       "100.64.0.0/21",
+			BSIVRRPListenIPv4:                     "172.16.10.6",
+			BSIMachineListenIPv4List:              []string{"172.16.10.6"},
+			BSIMachinesSubnetIPv4CIDR:             "10.255.226.0/24",
+			BSIExternallyVisibleIPv4:              "89.36.24.2",
+			RepoURLRoot:                           "https://repointegrationpublic.bigstepcloud.com",
+			RepoURLRootQuarantineNetwork:          "https://repointegrationpublic.bigstepcloud.com",
+			DNSServers:                            []string{"84.40.63.27"},
+			NTPServers:                            []string{"84.40.58.44", "84.40.58.45"},
+			KMS:                                   "",
+			TFTPServerWANVRRPListenIPv4:           "172.16.10.6",
+			DataLakeEnabled:                       false,
+			MonitoringGraphitePlainTextSocketHost: "",
+			MonitoringGraphiteRenderURLHost:       "",
+			Latitude:                              0,
+			Longitude:                             0,
+			SwitchProvisioner: map[string]interface{}{
+				"type":                          "VPLSProvisioner",
+				"ACLSAN":                        3399,
+				"SANACLRange":                   "3700-3998",
+				"ToRLANVLANRange":               "400-699",
+				"ToRSANVLANRange":               "700-999",
+				"ToRWANVLANRange":               "100-300",
+				"quarantineVLANID":              5,
+				"NorthWANVLANRange":             "1001-2000",
+				"childDatacentersConfigDefault": []string{},
+			},
+		},
+	}
+	err = obj.Delete(mc)
+
+	Expect(err).To(BeNil())
 }

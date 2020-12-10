@@ -174,29 +174,30 @@ func (n *Network) instanceToOperation(op *NetworkOperation) {
 }
 
 //CreateOrUpdate implements interface Applier
-func (n Network) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
-
+func (n Network) CreateOrUpdate(client MetalCloudClient) error {
 	var result *Network
 	var err error
+	err = n.Validate()
+
+	if err != nil {
+		return err
+	}
 
 	if n.NetworkID != 0 {
-		result, err = client.networkGet(n.NetworkID)
-	} else if n.NetworkLabel != "" {
-		result, err = client.networkGet(n.NetworkLabel)
+		result, err = client.NetworkGet(n.NetworkID)
 	} else {
-		return fmt.Errorf("id is required")
+		result, err = client.NetworkGetByLabel(n.NetworkLabel)
 	}
 
 	if err != nil {
-		_, err = client.networkCreate(n.InfrastructureID, n)
+		_, err = client.NetworkCreate(n.InfrastructureID, n)
 
 		if err != nil {
 			return err
 		}
 	} else {
 		n.instanceToOperation(result.NetworkOperation)
-		_, err = client.networkEdit(result.NetworkID, *n.NetworkOperation)
+		_, err = client.NetworkEdit(result.NetworkID, *n.NetworkOperation)
 
 		if err != nil {
 			return err
@@ -207,10 +208,13 @@ func (n Network) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (n Network) Delete(c interface{}) error {
-	client := c.(*Client)
+func (n Network) Delete(client MetalCloudClient) error {
+	err := n.Validate()
 
-	err := client.networkDelete(n.NetworkID)
+	if err != nil {
+		return err
+	}
+	err = client.NetworkDelete(n.NetworkID)
 
 	if err != nil {
 		return err
@@ -221,5 +225,8 @@ func (n Network) Delete(c interface{}) error {
 
 //Validate implements interface Applier
 func (n Network) Validate() error {
+	if n.NetworkID == 0 && n.NetworkLabel == "" {
+		return fmt.Errorf("id is required")
+	}
 	return nil
 }

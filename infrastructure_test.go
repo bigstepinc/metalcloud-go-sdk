@@ -186,4 +186,149 @@ func TestInfrastructureRevert(t *testing.T) {
 
 }
 
+func TestInfrastructureCreateOrUpdate(t *testing.T) {
+
+	RegisterTestingT(t)
+
+	responseBody = `{"result": ` + _infrastructureFixture + `,"jsonrpc": "2.0","id": 0}`
+
+	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	Expect(err).To(BeNil())
+
+	obj := Infrastructure{
+		InfrastructureID:               4103,
+		DatacenterName:                 "us-santaclara",
+		UserIDowner:                    2,
+		InfrastructureLabel:            "demo",
+		InfrastructureCreatedTimestamp: "2019-11-12T20:44:04Z",
+		InfrastructureSubdomain:        "demo.2.poc.metalcloud.io",
+		InfrastructureChangeID:         8805,
+		InfrastructureServiceStatus:    "active",
+		InfrastructureTouchUnixtime:    "1573829237.9229",
+		InfrastructureUpdatedTimestamp: "2019-11-12T20:44:04Z",
+		InfrastructureDeployID:         10420,
+		InfrastructureDesignIsLocked:   false,
+		InfrastructureOperation: InfrastructureOperation{
+			InfrastructureChangeID:         8805,
+			InfrastructureID:               4103,
+			DatacenterName:                 "us-santaclara",
+			UserIDOwner:                    2,
+			InfrastructureLabel:            "demo",
+			InfrastructureSubdomain:        "demo.2.poc.metalcloud.io",
+			InfrastructureDeployType:       "create",
+			InfrastructureDeployStatus:     "finished",
+			InfrastructureUpdatedTimestamp: "2019-11-12T20:44:04Z",
+		},
+	}
+	err = obj.CreateOrUpdate(mc)
+	Expect(err).To(BeNil())
+
+	body := (<-requestChan).body
+	var m map[string]interface{}
+	err2 := json.Unmarshal([]byte(body), &m)
+	Expect(err2).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	Expect(m["method"].(string)).To(Equal("infrastructure_get"))
+
+	params := (m["params"].([]interface{}))
+
+	Expect(params[0].(float64)).To(Equal(4103.0))
+
+	body = (<-requestChan).body
+
+	err2 = json.Unmarshal([]byte(body), &m)
+	Expect(err2).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	Expect(m["method"].(string)).To(Equal("infrastructure_edit"))
+
+	params = (m["params"].([]interface{}))
+
+	//make sure we ask for the proper ID
+	Expect(params[0].(float64)).To(Equal(4103.0))
+
+	responseBody = `{"error": {"message": "Infrastructure not found.","code": 103}, "jsonrpc": "2.0", "id": 0}`
+
+	err = obj.CreateOrUpdate(mc)
+
+	body = (<-requestChan).body
+	err2 = json.Unmarshal([]byte(body), &m)
+	Expect(err2).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	Expect(m["method"].(string)).To(Equal("infrastructure_get"))
+
+	params = (m["params"].([]interface{}))
+
+	Expect(params[0].(float64)).To(Equal(4103.0))
+
+	body = (<-requestChan).body
+
+	err2 = json.Unmarshal([]byte(body), &m)
+	Expect(err2).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	Expect(m["method"].(string)).To(Equal("infrastructure_create"))
+
+	params = (m["params"].([]interface{}))
+
+	Expect(params[1].(map[string]interface{})["datacenter_name"].(string)).To(Equal("us-santaclara"))
+}
+
+func TestInfrastructureDeleteForApply(t *testing.T) {
+
+	RegisterTestingT(t)
+
+	responseBody = `{"result": [] ,"jsonrpc": "2.0","id": 0}`
+
+	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	Expect(err).To(BeNil())
+
+	obj := Infrastructure{
+		InfrastructureID:               4103,
+		DatacenterName:                 "us-santaclara",
+		UserIDowner:                    2,
+		InfrastructureLabel:            "demo",
+		InfrastructureCreatedTimestamp: "2019-11-12T20:44:04Z",
+		InfrastructureSubdomain:        "demo.2.poc.metalcloud.io",
+		InfrastructureChangeID:         8805,
+		InfrastructureServiceStatus:    "active",
+		InfrastructureTouchUnixtime:    "1573829237.9229",
+		InfrastructureUpdatedTimestamp: "2019-11-12T20:44:04Z",
+		InfrastructureDeployID:         10420,
+		InfrastructureDesignIsLocked:   false,
+		InfrastructureOperation: InfrastructureOperation{
+			InfrastructureChangeID:         8805,
+			InfrastructureID:               4103,
+			DatacenterName:                 "us-santaclara",
+			UserIDOwner:                    2,
+			InfrastructureLabel:            "demo",
+			InfrastructureSubdomain:        "demo.2.poc.metalcloud.io",
+			InfrastructureDeployType:       "create",
+			InfrastructureDeployStatus:     "finished",
+			InfrastructureUpdatedTimestamp: "2019-11-12T20:44:04Z",
+		},
+	}
+
+	err = obj.Delete(mc)
+	Expect(err).To(BeNil())
+
+	body := (<-requestChan).body
+
+	var m map[string]interface{}
+	err2 := json.Unmarshal([]byte(body), &m)
+	Expect(err2).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	//make sure we use the proper method
+	Expect(m["method"].(string)).To(Equal("infrastructure_delete"))
+
+	params := (m["params"].([]interface{}))
+
+	//make sure we ask for the proper ID
+	Expect(params[0].(float64)).To(Equal(4103.0))
+
+}
+
 const _infrastructureFixture = "{\"infrastructure_id\":4103,\"datacenter_name\":\"us-santaclara\",\"user_id_owner\":2,\"infrastructure_label\":\"demo\",\"infrastructure_created_timestamp\":\"2019-11-12T20:44:04Z\",\"infrastructure_subdomain\":\"demo.2.poc.metalcloud.io\",\"infrastructure_change_id\":8805,\"infrastructure_service_status\":\"active\",\"infrastructure_touch_unixtime\":\"1573829237.9229\",\"infrastructure_updated_timestamp\":\"2019-11-12T20:44:04Z\",\"infrastructure_gui_settings_json\":\"\",\"infrastructure_private_datacenters_json\":null,\"infrastructure_deploy_id\":10420,\"infrastructure_design_is_locked\":false,\"infrastructure_operation\":{\"infrastructure_change_id\":8805,\"infrastructure_id\":4103,\"datacenter_name\":\"us-santaclara\",\"user_id_owner\":2,\"infrastructure_label\":\"demo\",\"infrastructure_subdomain\":\"demo.2.poc.metalcloud.io\",\"infrastructure_deploy_type\":\"create\",\"infrastructure_deploy_status\":\"finished\",\"infrastructure_updated_timestamp\":\"2019-11-12T20:44:04Z\",\"infrastructure_gui_settings_json\":\"\",\"infrastructure_private_datacenters_json\":null,\"infrastructure_deploy_id\":10420,\"type\":\"InfrastructureOperation\",\"subnet_pool_lan\":null,\"infrastructure_reserved_lan_ip_ranges\":[]},\"type\":\"Infrastructure\",\"subnet_pool_lan\":null,\"infrastructure_reserved_lan_ip_ranges\":[],\"user_email_owner\":\"alex.bordei@bigstep.com\"}"

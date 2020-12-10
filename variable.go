@@ -143,14 +143,18 @@ func (c *Client) Variables(usage string) (*map[string]Variable, error) {
 }
 
 //CreateOrUpdate implements interface Applier
-func (v Variable) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
+func (v Variable) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var result *Variable
+	err = v.Validate()
+
+	if err != nil {
+		return err
+	}
 
 	if v.VariableID != 0 {
 		result, err = client.VariableGet(v.VariableID)
-	} else if v.VariableName != "" {
+	} else {
 		vars, err := client.Variables("")
 		if err != nil {
 			return err
@@ -161,11 +165,9 @@ func (v Variable) CreateOrUpdate(c interface{}) error {
 				result = &variable
 			}
 		}
-	} else {
-		return fmt.Errorf("id is required")
 	}
 
-	if result == nil {
+	if err != nil {
 		_, err = client.VariableCreate(v)
 
 		if err != nil {
@@ -182,10 +184,14 @@ func (v Variable) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (v Variable) Delete(c interface{}) error {
-	client := c.(*Client)
+func (v Variable) Delete(client MetalCloudClient) error {
+	err := v.Validate()
 
-	err := client.VariableDelete(v.VariableID)
+	if err != nil {
+		return err
+	}
+
+	err = client.VariableDelete(v.VariableID)
 
 	if err != nil {
 		return err
@@ -196,5 +202,8 @@ func (v Variable) Delete(c interface{}) error {
 
 //Validate implements interface Applier
 func (v Variable) Validate() error {
+	if v.VariableID == 0 && v.VariableName == "" {
+		return fmt.Errorf("id is required")
+	}
 	return nil
 }

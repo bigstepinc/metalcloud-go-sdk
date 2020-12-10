@@ -299,15 +299,18 @@ func (c *Client) OSTemplateMakePrivate(osTemplateID int, userID int) error {
 }
 
 //CreateOrUpdate implements interface Applier
-func (t OSTemplate) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
-
+func (t OSTemplate) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var result *OSTemplate
+	err = t.Validate()
+
+	if err != nil {
+		return err
+	}
 
 	if t.VolumeTemplateID != 0 {
 		result, err = client.OSTemplateGet(t.VolumeTemplateID, false)
-	} else if t.VolumeTemplateLabel != "" {
+	} else {
 		templates, err := client.OSTemplates()
 		if err != nil {
 			return err
@@ -318,11 +321,9 @@ func (t OSTemplate) CreateOrUpdate(c interface{}) error {
 				result = &temp
 			}
 		}
-	} else {
-		return fmt.Errorf("id is required")
 	}
 
-	if result == nil {
+	if err != nil {
 		_, err = client.OSTemplateCreate(t)
 
 		if err != nil {
@@ -340,10 +341,13 @@ func (t OSTemplate) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (t OSTemplate) Delete(c interface{}) error {
-	client := c.(*Client)
+func (t OSTemplate) Delete(client MetalCloudClient) error {
+	err := t.Validate()
 
-	err := client.OSTemplateDelete(t.VolumeTemplateID)
+	if err != nil {
+		return err
+	}
+	err = client.OSTemplateDelete(t.VolumeTemplateID)
 
 	if err != nil {
 		return err
@@ -354,6 +358,10 @@ func (t OSTemplate) Delete(c interface{}) error {
 
 //Validate implements interface Applier
 func (t OSTemplate) Validate() error {
+	if t.VolumeTemplateID == 0 && t.VolumeTemplateLabel == "" {
+		return fmt.Errorf("id is required")
+	}
+
 	if t.VolumeTemplateDisplayName == "" {
 		return fmt.Errorf("name is required")
 	}

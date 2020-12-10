@@ -534,21 +534,22 @@ func (c *Client) ServerPowerSet(serverID int, operation string) error {
 }
 
 //CreateOrUpdate implements interface Applier
-func (s Server) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
-
+func (s Server) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var result *Server
+	err = s.Validate()
+
+	if err != nil {
+		return err
+	}
 
 	if s.ServerID != 0 {
 		result, err = client.ServerGet(s.ServerID, false)
-	} else if s.ServerUUID != "" {
-		result, err = client.ServerGetByUUID(s.ServerUUID, false)
 	} else {
-		return fmt.Errorf("id is required")
+		result, err = client.ServerGetByUUID(s.ServerUUID, false)
 	}
 
-	if result == nil {
+	if err != nil {
 		_, err = client.ServerCreate(s, false)
 
 		if err != nil {
@@ -566,10 +567,13 @@ func (s Server) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (s Server) Delete(c interface{}) error {
-	client := c.(*Client)
+func (s Server) Delete(client MetalCloudClient) error {
+	err := s.Validate()
 
-	err := client.ServerDelete(s.ServerID, true)
+	if err != nil {
+		return err
+	}
+	err = client.ServerDelete(s.ServerID, true)
 
 	if err != nil {
 		return err
@@ -580,5 +584,8 @@ func (s Server) Delete(c interface{}) error {
 
 //Validate implements interface Applier
 func (s Server) Validate() error {
+	if s.ServerUUID == "" && s.ServerID == 0 {
+		return fmt.Errorf("id is required")
+	}
 	return nil
 }

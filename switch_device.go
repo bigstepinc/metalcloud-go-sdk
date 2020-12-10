@@ -286,17 +286,18 @@ func (c *Client) SwitchDeviceUpdate(networkEquipmentID int, switchDevice SwitchD
 }
 
 //CreateOrUpdate implements interface Applier
-func (s SwitchDevice) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
-
+func (s SwitchDevice) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var switchDevice *SwitchDevice
+	err = s.Validate()
+
+	if err != nil {
+		return err
+	}
 	if s.NetworkEquipmentIdentifierString != "" {
 		switchDevice, err = client.SwitchDeviceGetByIdentifierString(s.NetworkEquipmentIdentifierString, false)
-	} else if s.NetworkEquipmentID != 0 {
-		switchDevice, err = client.SwitchDeviceGet(s.NetworkEquipmentID, false)
 	} else {
-		return fmt.Errorf("id is required")
+		switchDevice, err = client.SwitchDeviceGet(s.NetworkEquipmentID, false)
 	}
 
 	if err != nil {
@@ -317,10 +318,13 @@ func (s SwitchDevice) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (s SwitchDevice) Delete(c interface{}) error {
-	client := c.(*Client)
+func (s SwitchDevice) Delete(client MetalCloudClient) error {
+	err := s.Validate()
 
-	err := client.SwitchDeviceDelete(s.NetworkEquipmentID)
+	if err != nil {
+		return err
+	}
+	err = client.SwitchDeviceDelete(s.NetworkEquipmentID)
 
 	if err != nil {
 		return err
@@ -331,5 +335,8 @@ func (s SwitchDevice) Delete(c interface{}) error {
 
 //Validate implements interface Applier
 func (s SwitchDevice) Validate() error {
+	if s.NetworkEquipmentID != 0 && s.NetworkEquipmentIdentifierString != "" {
+		return fmt.Errorf("id is required")
+	}
 	return nil
 }

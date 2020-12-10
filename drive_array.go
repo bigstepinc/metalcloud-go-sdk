@@ -218,29 +218,29 @@ func (da *DriveArray) instanceToOperation(op *DriveArrayOperation) {
 }
 
 //CreateOrUpdate implements interface Applier
-func (da DriveArray) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
+func (da DriveArray) CreateOrUpdate(client MetalCloudClient) error {
 	var result *DriveArray
 	var err error
+	err = da.Validate()
 
-	if da.DriveArrayID != 0 {
-		result, err = client.driveArrayGet(da.DriveArrayID)
-	} else if da.DriveArrayLabel != "" {
-		result, err = client.driveArrayGet(da.DriveArrayLabel)
-	} else {
-		return fmt.Errorf("id is required")
+	if err != nil {
+		return err
 	}
 
-	if result == nil {
-		_, err = client.driveArrayCreate(da.InfrastructureID, da)
+	if da.DriveArrayID != 0 {
+		result, err = client.DriveArrayGet(da.DriveArrayID)
+	} else {
+		result, err = client.DriveArrayGetByLabel(da.DriveArrayLabel)
+	}
+	if err != nil {
+		_, err = client.DriveArrayCreate(da.InfrastructureID, da)
 
 		if err != nil {
 			return err
 		}
 	} else {
 		da.instanceToOperation(result.DriveArrayOperation)
-
-		_, err = client.driveArrayEdit(result.DriveArrayID, *da.DriveArrayOperation)
+		_, err = client.DriveArrayEdit(result.DriveArrayID, *da.DriveArrayOperation)
 
 		if err != nil {
 			return err
@@ -251,10 +251,13 @@ func (da DriveArray) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (da DriveArray) Delete(c interface{}) error {
-	client := c.(*Client)
+func (da DriveArray) Delete(client MetalCloudClient) error {
+	err := da.Validate()
+	if err != nil {
+		return err
+	}
 
-	err := client.driveArrayDelete(da.DriveArrayID)
+	err = client.DriveArrayDelete(da.DriveArrayID)
 
 	if err != nil {
 		return err
@@ -265,5 +268,8 @@ func (da DriveArray) Delete(c interface{}) error {
 
 //Validate implements interface Applier
 func (da DriveArray) Validate() error {
+	if da.DriveArrayID == 0 && da.DriveArrayLabel == "" {
+		return fmt.Errorf("id is required")
+	}
 	return nil
 }
