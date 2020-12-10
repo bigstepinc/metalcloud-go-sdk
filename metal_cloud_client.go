@@ -2,9 +2,7 @@
 
 package metalcloud
 
-import (
-	"reflect"
-)
+
 
 // MetalCloudClient interface used for mocking and abstracting the backend
 type MetalCloudClient interface {
@@ -206,8 +204,6 @@ type MetalCloudClient interface {
 	OSTemplateMakePublic(osTemplateID int) error
 	//OSTemplateMakePrivate makes a template private
 	OSTemplateMakePrivate(osTemplateID int, userID int) error
-	//GetObjectByKind creates an object of type <name>
-	GetObjectByKind(name string) (reflect.Value, error)
 	//SecretCreate creates a secret
 	SecretCreate(secret Secret) (*Secret, error)
 	//SecretDelete Permanently destroys a Secret.

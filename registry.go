@@ -9,21 +9,21 @@ var typeRegistry = make(map[string]reflect.Type)
 
 func initTypeRegistry() {
 	myTypes := []Applier{
-		InstanceArray{},
-		Datacenter{},
-		DriveArray{},
-		Infrastructure{},
-		Network{},
-		OSAsset{},
-		OSTemplate{},
-		Secret{},
-		Server{},
-		SharedDrive{},
-		StageDefinition{},
-		Workflow{},
-		SubnetPool{},
-		SwitchDevice{},
-		Variable{},
+		&InstanceArray{},
+		&Datacenter{},
+		&DriveArray{},
+		&Infrastructure{},
+		&Network{},
+		&OSAsset{},
+		&OSTemplate{},
+		&Secret{},
+		&Server{},
+		&SharedDrive{},
+		&StageDefinition{},
+		&Workflow{},
+		&SubnetPool{},
+		&SwitchDevice{},
+		&Variable{},
 	}
 
 	for _, v := range myTypes {
@@ -34,9 +34,10 @@ func initTypeRegistry() {
 }
 
 //GetObjectByKind creates an object of type <name>
-func (c *Client) GetObjectByKind(name string) (reflect.Value, error) {
+func GetObjectByKind(name string) (reflect.Value, error) {
 	initTypeRegistry()
 	t, ok := typeRegistry[name]
+
 	if !ok {
 		return reflect.Value{}, fmt.Errorf("%s was not recongnized as a valid product", name)
 	}
