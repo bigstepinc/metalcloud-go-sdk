@@ -214,7 +214,7 @@ func (c *Client) infrastructureUserLimits(infrastructureID id) (*map[string]inte
 }
 
 func (i *Infrastructure) instanceToOperation(op *InfrastructureOperation) {
-	operation := i.InfrastructureOperation
+	operation := &i.InfrastructureOperation
 	operation.InfrastructureID = i.InfrastructureID
 	operation.InfrastructureLabel = i.InfrastructureLabel
 	operation.DatacenterName = i.DatacenterName
@@ -224,21 +224,23 @@ func (i *Infrastructure) instanceToOperation(op *InfrastructureOperation) {
 }
 
 //CreateOrUpdate implements interface Applier
-func (i Infrastructure) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
-
+func (i Infrastructure) CreateOrUpdate(client MetalCloudClient) error {
 	var result *Infrastructure
 	var err error
 
-	if i.InfrastructureID != 0 {
-		result, err = client.infrastructureGet(i.InfrastructureID)
-	} else if i.InfrastructureLabel != "" {
-		result, err = client.infrastructureGet(i.InfrastructureLabel)
-	} else {
-		return fmt.Errorf("id is required")
+	err = i.Validate()
+
+	if err != nil {
+		return err
 	}
 
-	if result == nil {
+	if i.InfrastructureID != 0 {
+		result, err = client.InfrastructureGet(i.InfrastructureID)
+	} else {
+		result, err = client.InfrastructureGetByLabel(i.InfrastructureLabel)
+	}
+
+	if err != nil {
 		_, err = client.InfrastructureCreate(i)
 
 		if err != nil {
@@ -257,10 +259,13 @@ func (i Infrastructure) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (i Infrastructure) Delete(c interface{}) error {
-	client := c.(*Client)
+func (i Infrastructure) Delete(client MetalCloudClient) error {
+	err := i.Validate()
 
-	err := client.infrastructureDelete(i.InfrastructureID)
+	if err != nil {
+		return err
+	}
+	err = client.InfrastructureDelete(i.InfrastructureID)
 
 	if err != nil {
 		return err
@@ -271,5 +276,8 @@ func (i Infrastructure) Delete(c interface{}) error {
 
 //Validate implements interface Applier
 func (i Infrastructure) Validate() error {
+	if i.InfrastructureID == 0 && i.InfrastructureLabel == "" {
+		return fmt.Errorf("id is required")
+	}
 	return nil
 }

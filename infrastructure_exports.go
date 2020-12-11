@@ -4,12 +4,12 @@ package metalcloud
 
 //InfrastructureEdit alters an infrastructure
 func (c *Client) InfrastructureEdit(infrastructureID int, infrastructureOperation InfrastructureOperation) (*Infrastructure, error) {
-	return c.infrastructureEdit(infrastructureID, infrastructureOperation)
+	return c.infrastructureEdit(infrastructureID,infrastructureOperation)
 }
 
 //InfrastructureEditByLabel alters an infrastructure
 func (c *Client) InfrastructureEditByLabel(infrastructureLabel string, infrastructureOperation InfrastructureOperation) (*Infrastructure, error) {
-	return c.infrastructureEdit(infrastructureLabel, infrastructureOperation)
+	return c.infrastructureEdit(infrastructureLabel,infrastructureOperation)
 }
 
 //InfrastructureDelete deletes an infrastructure and all associated elements. Requires deploy
@@ -34,12 +34,12 @@ func (c *Client) InfrastructureOperationCancelByLabel(infrastructureLabel string
 
 //InfrastructureDeploy initiates a deploy operation that will apply all registered changes for the respective infrastructure
 func (c *Client) InfrastructureDeploy(infrastructureID int, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error {
-	return c.infrastructureDeploy(infrastructureID, shutdownOptions, allowDataLoss, skipAnsible)
+	return c.infrastructureDeploy(infrastructureID,shutdownOptions,allowDataLoss,skipAnsible)
 }
 
 //InfrastructureDeployByLabel initiates a deploy operation that will apply all registered changes for the respective infrastructure
 func (c *Client) InfrastructureDeployByLabel(infrastructureLabel string, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error {
-	return c.infrastructureDeploy(infrastructureLabel, shutdownOptions, allowDataLoss, skipAnsible)
+	return c.infrastructureDeploy(infrastructureLabel,shutdownOptions,allowDataLoss,skipAnsible)
 }
 
 //InfrastructureGet returns a specific infrastructure by id

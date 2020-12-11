@@ -317,22 +317,18 @@ func (ia *InstanceArray) instanceToOperation(op *InstanceArrayOperation) {
 }
 
 //CreateOrUpdate implements interface Applier
-func (ia InstanceArray) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
-
+func (ia InstanceArray) CreateOrUpdate(client MetalCloudClient) error {
 	var result *InstanceArray
 	var err error
 
 	if ia.InstanceArrayID != 0 {
-		result, err = client.instanceArrayGet(ia.InstanceArrayID)
-	} else if ia.InstanceArrayLabel != "" {
-		result, err = client.instanceArrayGet(ia.InstanceArrayLabel)
+		result, err = client.InstanceArrayGet(ia.InstanceArrayID)
 	} else {
-		return fmt.Errorf("id is required")
+		result, err = client.InstanceArrayGetByLabel(ia.InstanceArrayLabel)
 	}
 
-	if result == nil {
-		_, err = client.instanceArrayCreate(ia.InfrastructureID, ia)
+	if err != nil {
+		_, err = client.InstanceArrayCreate(ia.InfrastructureID, ia)
 
 		if err != nil {
 			return err
@@ -341,7 +337,7 @@ func (ia InstanceArray) CreateOrUpdate(c interface{}) error {
 		var bKeepDetachingDrives, bSwapExistingInstancesHardware bool = false, false
 
 		ia.instanceToOperation(result.InstanceArrayOperation)
-		_, err = client.instanceArrayEdit(result.InstanceArrayLabel, *ia.InstanceArrayOperation, &bSwapExistingInstancesHardware, &bKeepDetachingDrives, nil, nil)
+		_, err = client.InstanceArrayEditByLabel(result.InstanceArrayLabel, *ia.InstanceArrayOperation, &bSwapExistingInstancesHardware, &bKeepDetachingDrives, nil, nil)
 
 		if err != nil {
 			return err
@@ -352,9 +348,13 @@ func (ia InstanceArray) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (ia InstanceArray) Delete(c interface{}) error {
-	client := c.(*Client)
-	err := client.infrastructureDelete(ia.InstanceArrayLabel)
+func (ia InstanceArray) Delete(client MetalCloudClient) error {
+	err := ia.Validate()
+
+	if err != nil {
+		return err
+	}
+	err = client.InstanceArrayDelete(ia.InstanceArrayID)
 
 	if err != nil {
 		return err
@@ -365,5 +365,9 @@ func (ia InstanceArray) Delete(c interface{}) error {
 
 //Validate implements interface Applier
 func (ia InstanceArray) Validate() error {
+	if ia.InstanceArrayID == 0 && ia.InstanceArrayLabel == "" {
+		return fmt.Errorf("id is required")
+	}
+
 	return nil
 }

@@ -311,9 +311,15 @@ func (c *Client) DatacenterAgentsConfigJSONDownloadURL(datacenterName string, de
 }
 
 //CreateOrUpdate implements interface Applier
-func (dc Datacenter) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
-	_, err := client.DatacenterGet(dc.DatacenterName)
+func (dc Datacenter) CreateOrUpdate(client MetalCloudClient) error {
+	var err error
+	err = dc.Validate()
+
+	if err != nil {
+		return err
+	}
+
+	_, err = client.DatacenterGet(dc.DatacenterName)
 
 	if err != nil {
 		_, err = client.DatacenterCreate(dc, *dc.DatacenterConfig)
@@ -333,7 +339,7 @@ func (dc Datacenter) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (dc Datacenter) Delete(c interface{}) error {
+func (dc Datacenter) Delete(client MetalCloudClient) error {
 	return nil
 }
 

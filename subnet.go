@@ -228,13 +228,14 @@ func (c *Client) SubnetPoolSearch(filter string) (*[]SubnetPool, error) {
 }
 
 //CreateOrUpdate implements interface Applier
-func (s SubnetPool) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
+func (s SubnetPool) CreateOrUpdate(client MetalCloudClient) error {
+	err := s.Validate()
 
-	if s.SubnetPoolID == 0 {
-		return fmt.Errorf("id is required")
+	if err != nil {
+		return err
 	}
-	_, err := client.SubnetPoolGet(s.SubnetPoolID)
+
+	_, err = client.SubnetPoolGet(s.SubnetPoolID)
 
 	if err != nil {
 		_, err := client.SubnetPoolCreate(s)
@@ -248,10 +249,13 @@ func (s SubnetPool) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (s SubnetPool) Delete(c interface{}) error {
-	client := c.(*Client)
+func (s SubnetPool) Delete(client MetalCloudClient) error {
+	err := s.Validate()
 
-	err := client.SubnetPoolDelete(s.SubnetPoolID)
+	if err != nil {
+		return err
+	}
+	err = client.SubnetPoolDelete(s.SubnetPoolID)
 
 	if err != nil {
 		return err
@@ -262,5 +266,8 @@ func (s SubnetPool) Delete(c interface{}) error {
 
 //Validate implements interface Applier
 func (s SubnetPool) Validate() error {
+	if s.SubnetPoolID == 0 {
+		return fmt.Errorf("id is required")
+	}
 	return nil
 }

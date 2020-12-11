@@ -357,14 +357,18 @@ func (c *Client) InfrastructureDeployCustomStages(infraID int, stageDefinitionTy
 }
 
 //CreateOrUpdate implements interface Applier
-func (w Workflow) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
+func (w Workflow) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var result *Workflow
+	err = w.Validate()
+
+	if err != nil {
+		return err
+	}
 
 	if w.WorkflowID != 0 {
 		result, err = client.WorkflowGet(w.WorkflowID)
-	} else if w.WorkflowLabel != "" {
+	} else {
 		wflows, err := client.Workflows()
 		if err != nil {
 			return err
@@ -374,11 +378,9 @@ func (w Workflow) CreateOrUpdate(c interface{}) error {
 				result = &wflow
 			}
 		}
-	} else {
-		return fmt.Errorf("id is required")
 	}
 
-	if result == nil {
+	if err != nil {
 		_, err = client.WorkflowCreate(w)
 
 		if err != nil {
@@ -395,10 +397,13 @@ func (w Workflow) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (w Workflow) Delete(c interface{}) error {
-	client := c.(*Client)
+func (w Workflow) Delete(client MetalCloudClient) error {
+	err := w.Validate()
 
-	err := client.WorkflowDelete(w.WorkflowID)
+	if err != nil {
+		return err
+	}
+	err = client.WorkflowDelete(w.WorkflowID)
 
 	if err != nil {
 		return err
@@ -409,6 +414,9 @@ func (w Workflow) Delete(c interface{}) error {
 
 //Validate implements interface Applier
 func (w Workflow) Validate() error {
+	if w.WorkflowID == 0 && w.WorkflowLabel == "" {
+		return fmt.Errorf("id is required")
+	}
 	if w.WorkflowUsage == "" {
 		return fmt.Errorf("usage is required")
 	}

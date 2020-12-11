@@ -133,15 +133,18 @@ func (c *Client) OSAssets() (*map[string]OSAsset, error) {
 }
 
 //CreateOrUpdate implements interface Applier
-func (asset OSAsset) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
-
+func (asset OSAsset) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var result *OSAsset
+	err = asset.Validate()
+
+	if err != nil {
+		return err
+	}
 
 	if asset.OSAssetID != 0 {
 		result, err = client.OSAssetGet(asset.OSAssetID)
-	} else if asset.OSAssetFileName != "" {
+	} else {
 		assets, err := client.OSAssets()
 		if err != nil {
 			return err
@@ -152,8 +155,6 @@ func (asset OSAsset) CreateOrUpdate(c interface{}) error {
 				result = &a
 			}
 		}
-	} else {
-		return fmt.Errorf("id is required")
 	}
 
 	if result == nil {
@@ -174,10 +175,13 @@ func (asset OSAsset) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (asset OSAsset) Delete(c interface{}) error {
-	client := c.(*Client)
+func (asset OSAsset) Delete(client MetalCloudClient) error {
+	err := asset.Validate()
 
-	err := client.OSAssetDelete(asset.OSAssetID)
+	if err != nil {
+		return err
+	}
+	err = client.OSAssetDelete(asset.OSAssetID)
 
 	if err != nil {
 		return err
@@ -188,5 +192,8 @@ func (asset OSAsset) Delete(c interface{}) error {
 
 //Validate implements interface Applier
 func (asset OSAsset) Validate() error {
+	if asset.OSAssetID == 0 && asset.OSAssetFileName == "" {
+		return fmt.Errorf("id is required")
+	}
 	return nil
 }

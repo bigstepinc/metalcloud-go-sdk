@@ -139,15 +139,18 @@ func (c *Client) Secrets(usage string) (*map[string]Secret, error) {
 }
 
 //CreateOrUpdate implements interface Applier
-func (s Secret) CreateOrUpdate(c interface{}) error {
-	client := c.(*Client)
-
+func (s Secret) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var result *Secret
+	err = s.Validate()
+
+	if err != nil {
+		return err
+	}
 
 	if s.SecretID != 0 {
 		result, err = client.SecretGet(s.SecretID)
-	} else if s.SecretName != "" {
+	} else {
 		secrets, err := client.Secrets("")
 		if err != nil {
 			return err
@@ -158,8 +161,6 @@ func (s Secret) CreateOrUpdate(c interface{}) error {
 				result = &secret
 			}
 		}
-	} else {
-		return fmt.Errorf("id is required")
 	}
 
 	if err != nil {
@@ -180,10 +181,13 @@ func (s Secret) CreateOrUpdate(c interface{}) error {
 }
 
 //Delete implements interface Applier
-func (s Secret) Delete(c interface{}) error {
-	client := c.(*Client)
+func (s Secret) Delete(client MetalCloudClient) error {
+	err := s.Validate()
 
-	err := client.SecretDelete(s.SecretID)
+	if err != nil {
+		return err
+	}
+	err = client.SecretDelete(s.SecretID)
 
 	if err != nil {
 		return err
@@ -194,5 +198,8 @@ func (s Secret) Delete(c interface{}) error {
 
 //Validate implements interface Applier
 func (s Secret) Validate() error {
+	if s.SecretID == 0 && s.SecretName == "" {
+		return fmt.Errorf("id is required")
+	}
 	return nil
 }
