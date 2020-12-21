@@ -80,6 +80,10 @@ type MetalCloudClient interface {
 	InfrastructureDeploy(infrastructureID int, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error
 	//InfrastructureDeployByLabel initiates a deploy operation that will apply all registered changes for the respective infrastructure
 	InfrastructureDeployByLabel(infrastructureLabel string, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error
+	//InfrastructureDeployWithOptions initiates a deploy operation that will apply all registered changes for the respective infrastructure. With options.
+	InfrastructureDeployWithOptions(infrastructureID int, shutdownOptions ShutdownOptions, deployOptions *DeployOptions, allowDataLoss bool, skipAnsible bool) error
+	//InfrastructureDeployWithOptionsByLabel initiates a deploy operation that will apply all registered changes for the respective infrastructure. With options.
+	InfrastructureDeployWithOptionsByLabel(infrastructureLabel string, shutdownOptions ShutdownOptions, deployOptions *DeployOptions, allowDataLoss bool, skipAnsible bool) error
 	//InfrastructureGet returns a specific infrastructure by id
 	InfrastructureGet(infrastructureID int) (*Infrastructure, error)
 	//InfrastructureGetByLabel returns a specific infrastructure by id

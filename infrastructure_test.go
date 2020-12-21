@@ -134,6 +134,71 @@ func TestInfrastructureDeploy(t *testing.T) {
 	Expect(param[4].(bool)).To(BeTrue())
 }
 
+func TestInfrastructureDeployWithOptions(t *testing.T) {
+	RegisterTestingT(t)
+
+	responseBody = `{"result": [],"jsonrpc": "2.0","id": 0}`
+
+	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	Expect(err).To(BeNil())
+
+	shOpts := ShutdownOptions{
+		HardShutdownAfterTimeout:   true,
+		SoftShutdownTimeoutSeconds: 181,
+		AttemptSoftShutdown:        false,
+	}
+
+	dpOpts := DeployOptions{
+		InstanceArrayMapping: map[int]map[string]DeployOptionsServerTypeMappingObject{
+			1023: {
+				"22": {
+					ServerCount: 1,
+					ServerIDs: []int{
+						1,
+						20,
+					},
+				},
+			},
+		},
+	}
+
+	err = mc.InfrastructureDeployWithOptions(100, shOpts, &dpOpts, false, true)
+	Expect(err).To(BeNil())
+
+	body := (<-requestChan).body
+
+	var m map[string]interface{}
+	err2 := json.Unmarshal([]byte(body), &m)
+	Expect(err2).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	param := m["params"].([]interface{})
+
+	Expect(param[0].(float64)).To(Equal(100.0))
+
+	shutDownOpts := param[1].(map[string]interface{})
+
+	Expect(shutDownOpts["soft_shutdown_timeout_seconds"]).To(Equal(float64(shOpts.SoftShutdownTimeoutSeconds)))
+	Expect(shutDownOpts["hard_shutdown_after_timeout"]).To(Equal(shOpts.HardShutdownAfterTimeout))
+	Expect(shutDownOpts["attempt_soft_shutdown"]).To(Equal(shOpts.AttemptSoftShutdown))
+
+	deployOpts := param[2].(map[string]interface{})
+
+	iaOpts := deployOpts["instance_array"].(map[string]interface{})
+	iaOpts2 := iaOpts["1023"].(map[string]interface{})
+	stOpts := iaOpts2["22"].(map[string]interface{})
+
+	Expect(stOpts["server_count"]).To(Equal(1.0))
+
+	stiOpts := stOpts["server_ids"].([]interface{})
+
+	Expect(stiOpts[0]).To(Equal(1.0))
+	Expect(stiOpts[1]).To(Equal(20.0))
+
+	Expect(param[3].(bool)).To(BeFalse())
+	Expect(param[4].(bool)).To(BeTrue())
+}
+
 func TestInfrastructureDelete(t *testing.T) {
 	RegisterTestingT(t)
 

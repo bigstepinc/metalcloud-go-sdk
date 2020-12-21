@@ -42,6 +42,16 @@ func (c *Client) InfrastructureDeployByLabel(infrastructureLabel string, shutdow
 	return c.infrastructureDeploy(infrastructureLabel,shutdownOptions,allowDataLoss,skipAnsible)
 }
 
+//InfrastructureDeployWithOptions initiates a deploy operation that will apply all registered changes for the respective infrastructure. With options.
+func (c *Client) InfrastructureDeployWithOptions(infrastructureID int, shutdownOptions ShutdownOptions, deployOptions *DeployOptions, allowDataLoss bool, skipAnsible bool) error {
+	return c.infrastructureDeployWithOptions(infrastructureID,shutdownOptions,deployOptions,allowDataLoss,skipAnsible)
+}
+
+//InfrastructureDeployWithOptionsByLabel initiates a deploy operation that will apply all registered changes for the respective infrastructure. With options.
+func (c *Client) InfrastructureDeployWithOptionsByLabel(infrastructureLabel string, shutdownOptions ShutdownOptions, deployOptions *DeployOptions, allowDataLoss bool, skipAnsible bool) error {
+	return c.infrastructureDeployWithOptions(infrastructureLabel,shutdownOptions,deployOptions,allowDataLoss,skipAnsible)
+}
+
 //InfrastructureGet returns a specific infrastructure by id
 func (c *Client) InfrastructureGet(infrastructureID int) (*Infrastructure, error) {
 	return c.infrastructureGet(infrastructureID)

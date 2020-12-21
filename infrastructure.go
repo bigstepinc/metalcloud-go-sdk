@@ -45,6 +45,17 @@ type ShutdownOptions struct {
 	SoftShutdownTimeoutSeconds int  `json:"soft_shutdown_timeout_seconds"`
 }
 
+//DeployOptions controls server allocation
+type DeployOptions struct {
+	InstanceArrayMapping map[int]map[string]DeployOptionsServerTypeMappingObject `json:"instance_array"`
+}
+
+//DeployOptionsServerTypeMappingObject respresents one of the server type mappings
+type DeployOptionsServerTypeMappingObject struct {
+	ServerCount int   `json:"server_count"`
+	ServerIDs   []int `json:"server_ids"`
+}
+
 //InfrastructureCreate creates an infrastructure
 func (c *Client) InfrastructureCreate(infrastructure Infrastructure) (*Infrastructure, error) {
 	var createdObject Infrastructure
@@ -127,6 +138,11 @@ func (c *Client) infrastructureOperationCancel(infrastructureID id) error {
 
 //infrastructureDeploy initiates a deploy operation that will apply all registered changes for the respective infrastructure
 func (c *Client) infrastructureDeploy(infrastructureID id, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error {
+	return c.infrastructureDeployWithOptions(infrastructureID, shutdownOptions, nil, allowDataLoss, skipAnsible)
+}
+
+//infrastructureDeployWithOptions initiates a deploy operation that will apply all registered changes for the respective infrastructure. With options.
+func (c *Client) infrastructureDeployWithOptions(infrastructureID id, shutdownOptions ShutdownOptions, deployOptions *DeployOptions, allowDataLoss bool, skipAnsible bool) error {
 
 	if err := checkID(infrastructureID); err != nil {
 		return err
@@ -136,7 +152,7 @@ func (c *Client) infrastructureDeploy(infrastructureID id, shutdownOptions Shutd
 		"infrastructure_deploy",
 		infrastructureID,
 		shutdownOptions,
-		nil,
+		deployOptions,
 		allowDataLoss,
 		skipAnsible,
 	)
