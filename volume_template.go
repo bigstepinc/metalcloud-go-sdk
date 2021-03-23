@@ -9,21 +9,31 @@ type OperatingSystem struct {
 	OperatingSystemArchitecture string `json:"operating_system_architecture,omitempty" yaml:"architecture,omitempty"`
 }
 
+type NetworkOperatingSystem struct {
+	OperatingSystemType            string `json:"operating_system_type,omitempty" yaml:"type,omitempty"`
+	OperatingSystemVersion         string `json:"operating_system_version,omitempty" yaml:"version,omitempty"`
+	OperatingSystemArchitecture    string `json:"operating_system_architecture,omitempty" yaml:"architecture,omitempty"`
+	OperatingSystemVendor          string `json:"operating_system_vendor,omitempty" yaml:"vendor,omitempty"`
+	OperatingSystemMachine         string `json:"operating_system_machine,omitempty" yaml:"machine,omitempty"`
+	OperatingSystemMachineRevision string `json:"operating_system_machine_revision,omitempty" yaml:"revisionMachine,omitempty"`
+}
+
 //VolumeTemplate describes an OS template
 type VolumeTemplate struct {
-	VolumeTemplateID                      int             `json:"volume_template_id,omitempty"`
-	VolumeTemplateLabel                   string          `json:"volume_template_label,omitempty"`
-	VolumeTemplateSizeMBytes              int             `json:"volume_template_size_mbytes,omitempty"`
-	VolumeTemplateDisplayName             string          `json:"volume_template_display_name,omitempty"`
-	VolumeTemplateDescription             string          `json:"volume_template_description,omitempty"`
-	VolumeTemplateLocalDiskSupported      bool            `json:"volume_template_local_supported,omitempty"`
-	VolumeTemplateBootMethodsSupported    string          `json:"volume_template_boot_methods_supported,omitempty"`
-	VolumeTemplateBootType                string          `json:"volume_template_boot_type,omitempty"`
-	VolumeTemplateDeprecationStatus       string          `json:"volume_template_deprecation_status,omitempty"`
-	VolumeTemplateRepoURL                 string          `json:"volume_template_repo_url,omitempty"`
-	VolumeTemplateOperatingSystem         OperatingSystem `json:"volume_template_operating_system,omitempty"`
-	VolumeTemplateTags                    []string        `json:"volume_template_tags,omitempty"`
-	VolumeTemplateOsBootstrapFunctionName string          `json:"volume_template_os_bootstrap_function_name,omitempty"`
+	VolumeTemplateID                      int                    `json:"volume_template_id,omitempty"`
+	VolumeTemplateLabel                   string                 `json:"volume_template_label,omitempty"`
+	VolumeTemplateSizeMBytes              int                    `json:"volume_template_size_mbytes,omitempty"`
+	VolumeTemplateDisplayName             string                 `json:"volume_template_display_name,omitempty"`
+	VolumeTemplateDescription             string                 `json:"volume_template_description,omitempty"`
+	VolumeTemplateLocalDiskSupported      bool                   `json:"volume_template_local_supported,omitempty"`
+	VolumeTemplateBootMethodsSupported    string                 `json:"volume_template_boot_methods_supported,omitempty"`
+	VolumeTemplateBootType                string                 `json:"volume_template_boot_type,omitempty"`
+	VolumeTemplateDeprecationStatus       string                 `json:"volume_template_deprecation_status,omitempty"`
+	VolumeTemplateRepoURL                 string                 `json:"volume_template_repo_url,omitempty"`
+	VolumeTemplateOperatingSystem         OperatingSystem        `json:"volume_template_operating_system,omitempty"`
+	VolumeTemplateTags                    []string               `json:"volume_template_tags,omitempty"`
+	VolumeTemplateOsBootstrapFunctionName string                 `json:"volume_template_os_bootstrap_function_name,omitempty"`
+	VolumeTemplateNetworkOperatingSystem  NetworkOperatingSystem `json:"volume_template_network_operating_system,omitempty"`
 }
 
 //VolumeTemplates retrives the list of available templates
