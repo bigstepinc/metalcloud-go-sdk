@@ -92,7 +92,7 @@ func (c *Client) volumeTemplateCreateFromDrive(driveID id, objVolumeTemplate Vol
 
 	err := c.rpcClient.CallFor(
 		&createdObject,
-		"volume_template_create",
+		"volume_template_create_from_drive",
 		driveID,
 		objVolumeTemplate)
 
