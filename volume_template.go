@@ -34,6 +34,8 @@ type VolumeTemplate struct {
 	VolumeTemplateTags                    []string               `json:"volume_template_tags,omitempty"`
 	VolumeTemplateOsBootstrapFunctionName string                 `json:"volume_template_os_bootstrap_function_name,omitempty"`
 	VolumeTemplateNetworkOperatingSystem  NetworkOperatingSystem `json:"volume_template_network_operating_system,omitempty"`
+	VolumeTemplateVersion                 string                 `json:"volume_template_version,omitempty"`
+	VolumeTemplateIsExperimental          bool                   `json:"volume_template_is_experimental,omitempty"`
 }
 
 //VolumeTemplates retrives the list of available templates

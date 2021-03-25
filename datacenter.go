@@ -7,6 +7,7 @@ import (
 
 //Datacenter - datacenter description
 type Datacenter struct {
+	DatacenterID               int               `json:"datacenter_id,omitempty" yaml:"id,omitempty"`
 	DatacenterName             string            `json:"datacenter_name,omitempty" yaml:"name,omitempty"`
 	DatacenterNameParent       string            `json:"datacenter_name_parent,omitempty" yaml:"parentName,omitempty"`
 	UserID                     int               `json:"user_id,omitempty" yaml:"userid,omitempty"`

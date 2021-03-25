@@ -29,6 +29,7 @@ type OSTemplate struct {
 	OSAssetBootloaderOSBoot              int                     `json:"os_asset_id_bootloader_os_boot,omitempty" yaml:"OSAssetIDBootloaderOSBoot,omitempty"`
 	VolumeTemplateVariablesJSON          string                  `json:"volume_template_variables_json,omitempty" yaml:"variablesJSON,omitempty"`
 	VolumeTemplateNetworkOperatingSystem *NetworkOperatingSystem `json:"volume_template_network_operating_system,omitempty" yaml:"networkOS,omitempty"`
+	VolumeTemplateVersion                string                  `json:"volume_template_version,omitempty"`
 }
 
 //OSTemplateCredentials holds information needed to connect to an OS installed by an OSTemplate.

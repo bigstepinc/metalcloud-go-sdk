@@ -8,20 +8,21 @@ import (
 
 //Infrastructure - the main infrastructure object
 type Infrastructure struct {
-	InfrastructureID               int                     `json:"infrastructure_id,omitempty" yaml:"id,omitempty"`
-	InfrastructureLabel            string                  `json:"infrastructure_label" yaml:"label"`
-	DatacenterName                 string                  `json:"datacenter_name" yaml:"datacenter"`
-	InfrastructureSubdomain        string                  `json:"infrastructure_subdomain,omitempty" yaml:"subdomain,omitempty"`
-	UserIDowner                    int                     `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
-	UserEmailOwner                 string                  `json:"user_email_owner,omitempty" yaml:"ownerEmail,omitempty"`
-	InfrastructureTouchUnixtime    string                  `json:"infrastructure_touch_unixtime,omitempty" yaml:"touchUnixTime,omitempty"`
-	InfrastructureServiceStatus    string                  `json:"infrastructure_service_status,omitempty" yaml:"serviceStatus,omitempty"`
-	InfrastructureCreatedTimestamp string                  `json:"infrastructure_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
-	InfrastructureUpdatedTimestamp string                  `json:"infrastructure_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
-	InfrastructureChangeID         int                     `json:"infrastructure_change_id,omitempty" yaml:"changeID,omitempty"`
-	InfrastructureDeployID         int                     `json:"infrastructure_deploy_id,omitempty" yaml:"deployID,omitempty"`
-	InfrastructureDesignIsLocked   bool                    `json:"infrastructure_design_is_locked,omitempty" yaml:"designIsLocked,omitempty"`
-	InfrastructureOperation        InfrastructureOperation `json:"infrastructure_operation,omitempty" yaml:"operation,omitempty"`
+	InfrastructureID                   int                     `json:"infrastructure_id,omitempty" yaml:"id,omitempty"`
+	InfrastructureLabel                string                  `json:"infrastructure_label" yaml:"label"`
+	DatacenterName                     string                  `json:"datacenter_name" yaml:"datacenter"`
+	InfrastructureSubdomain            string                  `json:"infrastructure_subdomain,omitempty" yaml:"subdomain,omitempty"`
+	UserIDowner                        int                     `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	UserEmailOwner                     string                  `json:"user_email_owner,omitempty" yaml:"ownerEmail,omitempty"`
+	InfrastructureTouchUnixtime        string                  `json:"infrastructure_touch_unixtime,omitempty" yaml:"touchUnixTime,omitempty"`
+	InfrastructureServiceStatus        string                  `json:"infrastructure_service_status,omitempty" yaml:"serviceStatus,omitempty"`
+	InfrastructureCreatedTimestamp     string                  `json:"infrastructure_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	InfrastructureUpdatedTimestamp     string                  `json:"infrastructure_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
+	InfrastructureChangeID             int                     `json:"infrastructure_change_id,omitempty" yaml:"changeID,omitempty"`
+	InfrastructureDeployID             int                     `json:"infrastructure_deploy_id,omitempty" yaml:"deployID,omitempty"`
+	InfrastructureDesignIsLocked       bool                    `json:"infrastructure_design_is_locked,omitempty" yaml:"designIsLocked,omitempty"`
+	InfrastructureOperation            InfrastructureOperation `json:"infrastructure_operation,omitempty" yaml:"operation,omitempty"`
+	InfrastructureExperimentalPriority string                  `json:"infrastructure_experimental_priority,omitempty"`
 }
 
 //InfrastructureOperation - object with alternations to be applied
