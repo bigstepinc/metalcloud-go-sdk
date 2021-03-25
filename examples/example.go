@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 
-	metalcloud "github.com/bigstepinc/metal-cloud-sdk-go"
+	metalcloud "github.com/bigstepinc/metal-cloud-sdk-go/v2"
 )
 
 func main() {
