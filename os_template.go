@@ -7,29 +7,30 @@ import (
 
 //OSTemplate A template can be created based on a drive and it has the same characteristics and holds the same information as the parent drive.
 type OSTemplate struct {
-	VolumeTemplateID                     int                     `json:"volume_template_id,omitempty" yaml:"id,omitempty"`
-	VolumeTemplateLabel                  string                  `json:"volume_template_label,omitempty" yaml:"label,omitempty"`
-	VolumeTemplateDisplayName            string                  `json:"volume_template_display_name,omitempty" yaml:"name,omitempty"`
-	VolumeTemplateSizeMBytes             int                     `json:"volume_template_size_mbytes,omitempty" yaml:"sizeMBytes,omitempty"`
-	VolumeTemplateLocalDiskSupported     bool                    `json:"volume_template_local_disk_supported,omitempty" yaml:"localDisk,omitempty"`
-	VolumeTemplateIsOSTemplate           bool                    `json:"volume_template_is_os_template,omitempty" yaml:"isOsTemplate,omitempty"`
-	VolumeTemplateBootMethodsSupported   string                  `json:"volume_template_boot_methods_supported,omitempty" yaml:"bootMethods,omitempty"`
-	VolumeTemplateBootType               string                  `json:"volume_template_boot_type,omitempty" yaml:"bootType,omitempty"`
-	VolumeTemplateDescription            string                  `json:"volume_template_description,omitempty" yaml:"description,omitempty"`
-	VolumeTemplateCreatedTimestamp       string                  `json:"volume_template_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
-	VolumeTemplateUpdatedTimestamp       string                  `json:"volume_template_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
-	UserID                               int                     `json:"user_id,omitempty" yaml:"userID,omitempty"`
-	VolumeTemplateOperatingSystem        *OperatingSystem        `json:"volume_template_operating_system,omitempty" yaml:"os,omitempty"`
-	VolumeTemplateRepoURL                string                  `json:"volume_template_repo_url,omitempty" yaml:"repoURL,omitempty"`
-	VolumeTemplateDeprecationStatus      string                  `json:"volume_template_deprecation_status,omitempty" yaml:"deprecationStatus,omitempty"`
-	OSTemplateCredentials                *OSTemplateCredentials  `json:"os_template_credentials,omitempty" yaml:"credentials,omitempty"`
-	VolumeTemplateTags                   []string                `json:"volume_template_tags,omitempty" yaml:"tags,omitempty"`
-	OSTemplatePreBootArchitecture        string                  `json:"os_template_pre_boot_architecture,omitempty" yaml:"preBootArchitecture,omitempty"`
-	OSAssetBootloaderLocalInstall        int                     `json:"os_asset_id_bootloader_local_install,omitempty" yaml:"OSAssetIDBootloaderLocalInstall,omitempty"`
-	OSAssetBootloaderOSBoot              int                     `json:"os_asset_id_bootloader_os_boot,omitempty" yaml:"OSAssetIDBootloaderOSBoot,omitempty"`
-	VolumeTemplateVariablesJSON          string                  `json:"volume_template_variables_json,omitempty" yaml:"variablesJSON,omitempty"`
-	VolumeTemplateNetworkOperatingSystem *NetworkOperatingSystem `json:"volume_template_network_operating_system,omitempty" yaml:"networkOS,omitempty"`
-	VolumeTemplateVersion                string                  `json:"volume_template_version,omitempty"`
+	VolumeTemplateID                      int                     `json:"volume_template_id,omitempty" yaml:"id,omitempty"`
+	VolumeTemplateLabel                   string                  `json:"volume_template_label,omitempty" yaml:"label,omitempty"`
+	VolumeTemplateDisplayName             string                  `json:"volume_template_display_name,omitempty" yaml:"name,omitempty"`
+	VolumeTemplateSizeMBytes              int                     `json:"volume_template_size_mbytes,omitempty" yaml:"sizeMBytes,omitempty"`
+	VolumeTemplateLocalDiskSupported      bool                    `json:"volume_template_local_disk_supported,omitempty" yaml:"localDisk,omitempty"`
+	VolumeTemplateIsOSTemplate            bool                    `json:"volume_template_is_os_template,omitempty" yaml:"isOsTemplate,omitempty"`
+	VolumeTemplateBootMethodsSupported    string                  `json:"volume_template_boot_methods_supported,omitempty" yaml:"bootMethods,omitempty"`
+	VolumeTemplateOsBootstrapFunctionName string                  `json:"volume_template_os_bootstrap_function_name,omitempty"`
+	VolumeTemplateBootType                string                  `json:"volume_template_boot_type,omitempty" yaml:"bootType,omitempty"`
+	VolumeTemplateDescription             string                  `json:"volume_template_description,omitempty" yaml:"description,omitempty"`
+	VolumeTemplateCreatedTimestamp        string                  `json:"volume_template_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	VolumeTemplateUpdatedTimestamp        string                  `json:"volume_template_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
+	UserID                                int                     `json:"user_id,omitempty" yaml:"userID,omitempty"`
+	VolumeTemplateOperatingSystem         *OperatingSystem        `json:"volume_template_operating_system,omitempty" yaml:"os,omitempty"`
+	VolumeTemplateRepoURL                 string                  `json:"volume_template_repo_url,omitempty" yaml:"repoURL,omitempty"`
+	VolumeTemplateDeprecationStatus       string                  `json:"volume_template_deprecation_status,omitempty" yaml:"deprecationStatus,omitempty"`
+	OSTemplateCredentials                 *OSTemplateCredentials  `json:"os_template_credentials,omitempty" yaml:"credentials,omitempty"`
+	VolumeTemplateTags                    []string                `json:"volume_template_tags,omitempty" yaml:"tags,omitempty"`
+	OSTemplatePreBootArchitecture         string                  `json:"os_template_pre_boot_architecture,omitempty" yaml:"preBootArchitecture,omitempty"`
+	OSAssetBootloaderLocalInstall         int                     `json:"os_asset_id_bootloader_local_install,omitempty" yaml:"OSAssetIDBootloaderLocalInstall,omitempty"`
+	OSAssetBootloaderOSBoot               int                     `json:"os_asset_id_bootloader_os_boot,omitempty" yaml:"OSAssetIDBootloaderOSBoot,omitempty"`
+	VolumeTemplateVariablesJSON           string                  `json:"volume_template_variables_json,omitempty" yaml:"variablesJSON,omitempty"`
+	VolumeTemplateNetworkOperatingSystem  *NetworkOperatingSystem `json:"volume_template_network_operating_system,omitempty" yaml:"networkOS,omitempty"`
+	VolumeTemplateVersion                 string                  `json:"volume_template_version,omitempty"`
 }
 
 //OSTemplateCredentials holds information needed to connect to an OS installed by an OSTemplate.
