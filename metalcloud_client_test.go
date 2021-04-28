@@ -76,6 +76,7 @@ func TestSignature(t *testing.T) {
 	Expect(gotSignature).To(Equal(expectedSignature))
 }
 
+
 func TestEmptyListReply(t *testing.T) {
 
 	RegisterTestingT(t)

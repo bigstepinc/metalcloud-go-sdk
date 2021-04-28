@@ -202,3 +202,21 @@ func TestDatacenterDeleteForApply(t *testing.T) {
 
 	Expect(err).To(BeNil())
 }
+
+
+
+
+const _DCFixture2 = "{\"datacenter_id\":4,\"datacenter_name\":\"slavedatacenter-140\",\"datacenter_name_parent\":null,\"user_id\":null,\"datacenter_is_master\":false,\"datacenter_is_maintenance\":false,\"datacenter_type\":\"metal_cloud\",\"datacenter_display_name\":\"Slave, Datacenter 140\",\"datacenter_hidden\":false,\"datacenter_created_timestamp\":\"2021-04-27T17:16:20Z\",\"datacenter_updated_timestamp\":\"2021-04-27T17:16:20Z\",\"type\":\"Datacenter\",\"datacenter_tags\":[]}"
+
+func TestDatacenterUnmarshalTest(t *testing.T) {
+
+	RegisterTestingT(t)
+
+	var dc Datacenter
+
+	err := json.Unmarshal([]byte(_DCFixture2), &dc)
+
+	Expect(err).To(BeNil())
+	Expect(dc).NotTo(BeNil())
+
+}
