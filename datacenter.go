@@ -45,10 +45,17 @@ type DatacenterConfig struct {
 	DatacenterNetworksLayer2Only                       bool                   `json:"datacenterNetworkIsLayer2Only" yaml:"datacenterNetworkIsLayer2Only"`
 	SwitchProvisioner                                  map[string]interface{} `json:"switchProvisioner,omitempty" yaml:"switchProvisioner,omitempty"`
 	EnableTenantAccessToIPMI                           bool                   `json:"enableTenantAccessToIPMI" yaml:"enableTenantAccessToIPMI"`
-	ProxyURL                                           string                 `json:"proxyURL" yaml:"proxyURL"`
-	ProxyUsername                                      string                 `json:"proxyUsername" yaml:"proxyUsername"`
-	ProxyPassword                                      string                 `json:"proxyPassword" yaml:"proxyPassword"`
-	EnableProxyURL                                     bool                   `json:"enableProxyURL" yaml:"enableProxyURL"`
+	AllowVLANOverrides                                 bool                   `json:"allowVLANOverrides" yaml:"allowVLANOverrides"`
+	ExtraInternalIPsPerSubnet                          int                    `json:"extraInternalIPsPerSubnet" yaml:"extraInternalIPsPerSubnet"`
+	ServerRAIDConfigurationEnabled                     bool                   `json:"serverRAIDConfigurationEnabled" yaml:"serverRAIDConfigurationEnabled"`
+	WebProxy                                           *WebProxy              `json:"webProxy" yaml:"webProxy"`
+}
+
+type WebProxy struct {
+	WebProxyServerIP   string `json:"ip,omitempty" yaml:"ip,omitempty"`
+	WebProxyServerPort int    `json:"port,omitempty" yaml:"port,omitempty"`
+	WebProxyUsername   string `json:"username,omitempty" yaml:"username,omitempty"`
+	WebProxyPassword   string `json:"password,omitempty" yaml:"password,omitempty"`
 }
 
 /*
