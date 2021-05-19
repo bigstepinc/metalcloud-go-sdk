@@ -307,6 +307,7 @@ func (s SwitchDevice) CreateOrUpdate(client MetalCloudClient) error {
 			return err
 		}
 	} else {
+		s.NetworkEquipmentID = switchDevice.NetworkEquipmentID
 		_, err := client.SwitchDeviceUpdate(switchDevice.NetworkEquipmentID, s, false)
 
 		if err != nil {
