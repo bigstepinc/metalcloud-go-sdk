@@ -234,7 +234,8 @@ func TestDriveArrayDeleteForApply(t *testing.T) {
 
 	RegisterTestingT(t)
 
-	responseBody = `{"result": [] ,"jsonrpc": "2.0","id": 0}`
+	// responseBody = `{"result": [] ,"jsonrpc": "2.0","id": 0}`
+	responseBody = `{"result": ` + _driveArrayFixture1 + `,"jsonrpc": "2.0","id": 0}`
 
 	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
 	Expect(err).To(BeNil())
@@ -246,26 +247,35 @@ func TestDriveArrayDeleteForApply(t *testing.T) {
 		DriveArrayServiceStatus: "active",
 		DriveArrayCount:         2,
 		DriveArrayLabel:         "drive-array-45928",
-		DriveArrayID:            1,
+		DriveArrayID:            45928,
 	}
 
 	err = obj.Delete(mc)
 	Expect(err).To(BeNil())
 
-	body := (<-requestChan).body
-
 	var m map[string]interface{}
+	body := (<-requestChan).body
 	err2 := json.Unmarshal([]byte(body), &m)
 	Expect(err2).To(BeNil())
 	Expect(m).NotTo(BeNil())
 
-	//make sure we use the proper method
-	Expect(m["method"].(string)).To(Equal("drive_array_delete"))
+	Expect(m["method"].(string)).To(Equal("drive_array_get"))
 
 	params := (m["params"].([]interface{}))
 
-	//make sure we ask for the proper ID
-	Expect(params[0].(float64)).To(Equal(1.0))
+	Expect(params[0].(string)).To(Equal("drive-array-45928"))
+
+	body = (<-requestChan).body
+
+	err2 = json.Unmarshal([]byte(body), &m)
+	Expect(err2).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	Expect(m["method"].(string)).To(Equal("drive_array_delete"))
+
+	params = (m["params"].([]interface{}))
+
+	Expect(params[0].(float64)).To(Equal(45928.0))
 
 }
 

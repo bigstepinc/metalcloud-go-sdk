@@ -91,7 +91,7 @@ func TestNetworkDeleteForApply(t *testing.T) {
 
 	RegisterTestingT(t)
 
-	responseBody = `{"result": [] ,"jsonrpc": "2.0","id": 0}`
+	responseBody = `{"result": ` + _networkFixture + `,"jsonrpc": "2.0","id": 0}`
 
 	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
 	Expect(err).To(BeNil())
@@ -113,7 +113,6 @@ func TestNetworkDeleteForApply(t *testing.T) {
 
 	err = obj.Delete(mc)
 	Expect(err).To(BeNil())
-
 	body := (<-requestChan).body
 
 	var m map[string]interface{}
@@ -122,9 +121,23 @@ func TestNetworkDeleteForApply(t *testing.T) {
 	Expect(m).NotTo(BeNil())
 
 	//make sure we use the proper method
-	Expect(m["method"].(string)).To(Equal("network_delete"))
+	Expect(m["method"].(string)).To(Equal("network_get"))
 
 	params := (m["params"].([]interface{}))
+
+	//make sure we ask for the proper ID
+	Expect(params[0].(string)).To(Equal("net-test"))
+
+	body = (<-requestChan).body
+
+	err2 = json.Unmarshal([]byte(body), &m)
+	Expect(err2).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	//make sure we use the proper method
+	Expect(m["method"].(string)).To(Equal("network_delete"))
+
+	params = (m["params"].([]interface{}))
 
 	//make sure we ask for the proper ID
 	Expect(params[0].(float64)).To(Equal(101.0))

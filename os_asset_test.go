@@ -81,7 +81,7 @@ func TestOSAssetDeleteForApply(t *testing.T) {
 
 	RegisterTestingT(t)
 
-	responseBody = `{"result": [] ,"jsonrpc": "2.0","id": 0}`
+	responseBody = `{"result": ` + _osAssetFixture + `,"jsonrpc": "2.0","id": 0}`
 
 	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
 	Expect(err).To(BeNil())
@@ -94,10 +94,11 @@ func TestOSAssetDeleteForApply(t *testing.T) {
 	err = obj.Delete(mc)
 	Expect(err).To(BeNil())
 
+	var m map[string]interface{}
 	body := (<-requestChan).body
 
-	var m map[string]interface{}
 	err2 := json.Unmarshal([]byte(body), &m)
+
 	Expect(err2).To(BeNil())
 	Expect(m).NotTo(BeNil())
 

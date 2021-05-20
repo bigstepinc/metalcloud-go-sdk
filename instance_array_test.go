@@ -87,7 +87,7 @@ func TestInstanceArrayDeleteForApply(t *testing.T) {
 
 	RegisterTestingT(t)
 
-	responseBody = `{"result": [] ,"jsonrpc": "2.0","id": 0}`
+	responseBody = `{"result": ` + _instanceArrayFixture + `,"jsonrpc": "2.0","id": 0}`
 
 	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
 	Expect(err).To(BeNil())
@@ -105,7 +105,6 @@ func TestInstanceArrayDeleteForApply(t *testing.T) {
 
 	err = obj.Delete(mc)
 	Expect(err).To(BeNil())
-
 	body := (<-requestChan).body
 
 	var m map[string]interface{}
@@ -114,9 +113,23 @@ func TestInstanceArrayDeleteForApply(t *testing.T) {
 	Expect(m).NotTo(BeNil())
 
 	//make sure we use the proper method
-	Expect(m["method"].(string)).To(Equal("instance_array_delete"))
+	Expect(m["method"].(string)).To(Equal("instance_array_get"))
 
 	params := (m["params"].([]interface{}))
+
+	//make sure we ask for the proper ID
+	Expect(params[0].(string)).To(Equal("ia-test"))
+
+	body = (<-requestChan).body
+
+	err2 = json.Unmarshal([]byte(body), &m)
+	Expect(err2).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	//make sure we use the proper method
+	Expect(m["method"].(string)).To(Equal("instance_array_delete"))
+
+	params = (m["params"].([]interface{}))
 
 	//make sure we ask for the proper ID
 	Expect(params[0].(float64)).To(Equal(100.0))
