@@ -176,12 +176,33 @@ func (asset OSAsset) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (asset OSAsset) Delete(client MetalCloudClient) error {
+	var result *OSAsset
+	var id int
+
 	err := asset.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.OSAssetDelete(asset.OSAssetID)
+
+	if asset.OSAssetID != 0 {
+		id = asset.OSAssetID
+	} else {
+		assets, err := client.OSAssets()
+		if err != nil {
+			return err
+		}
+
+		for _, a := range *assets {
+			if a.OSAssetFileName == asset.OSAssetFileName {
+				result = &a
+			}
+		}
+
+		id = result.OSAssetID
+	}
+
+	err = client.OSAssetDelete(id)
 
 	if err != nil {
 		return err

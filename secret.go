@@ -182,12 +182,31 @@ func (s Secret) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (s Secret) Delete(client MetalCloudClient) error {
+	var result *Secret
+	var id int
 	err := s.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.SecretDelete(s.SecretID)
+
+	if s.SecretID != 0 {
+		id = s.SecretID
+	} else {
+		secrets, err := client.Secrets("")
+		if err != nil {
+			return err
+		}
+
+		for _, secret := range *secrets {
+			if secret.SecretName == s.SecretName {
+				result = &secret
+			}
+		}
+
+		id = result.SecretID
+	}
+	err = client.SecretDelete(id)
 
 	if err != nil {
 		return err

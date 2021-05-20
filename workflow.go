@@ -398,12 +398,31 @@ func (w Workflow) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (w Workflow) Delete(client MetalCloudClient) error {
+	var result *Workflow
+	var id int
 	err := w.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.WorkflowDelete(w.WorkflowID)
+
+	if w.WorkflowID != 0 {
+		id = w.WorkflowID
+	} else {
+		wflows, err := client.Workflows()
+		if err != nil {
+			return err
+		}
+		for _, wflow := range *wflows {
+			if wflow.WorkflowLabel == w.WorkflowLabel {
+				result = &wflow
+			}
+		}
+
+		id = result.WorkflowID
+	}
+
+	err = client.WorkflowDelete(id)
 
 	if err != nil {
 		return err

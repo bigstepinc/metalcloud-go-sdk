@@ -185,13 +185,32 @@ func (v Variable) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (v Variable) Delete(client MetalCloudClient) error {
+	var result *Variable
+	var id int
 	err := v.Validate()
 
 	if err != nil {
 		return err
 	}
 
-	err = client.VariableDelete(v.VariableID)
+	if v.VariableID != 0 {
+		id = v.VariableID
+	} else {
+		vars, err := client.Variables("")
+		if err != nil {
+			return err
+		}
+
+		for _, variable := range *vars {
+			if variable.VariableName == v.VariableName {
+				result = &variable
+			}
+		}
+
+		id = result.VariableID
+	}
+
+	err = client.VariableDelete(id)
 
 	if err != nil {
 		return err

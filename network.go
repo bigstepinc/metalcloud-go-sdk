@@ -209,12 +209,24 @@ func (n Network) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (n Network) Delete(client MetalCloudClient) error {
+	var result *Network
+	var id int
 	err := n.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.NetworkDelete(n.NetworkID)
+
+	if n.NetworkLabel != "" {
+		result, err = client.NetworkGetByLabel(n.NetworkLabel)
+		if err != nil {
+			return err
+		}
+		id = result.NetworkID
+	} else {
+		id = n.NetworkID
+	}
+	err = client.NetworkDelete(id)
 
 	if err != nil {
 		return err

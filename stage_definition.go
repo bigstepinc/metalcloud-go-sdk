@@ -367,12 +367,31 @@ func (s StageDefinition) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (s StageDefinition) Delete(client MetalCloudClient) error {
+	var result *StageDefinition
+	var id int
 	err := s.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.StageDefinitionDelete(s.StageDefinitionID)
+
+	if s.StageDefinitionID != 0 {
+		id = s.StageDefinitionID
+	} else {
+		definitions, err := client.StageDefinitions()
+		if err != nil {
+			return err
+		}
+
+		for _, def := range *definitions {
+			if def.StageDefinitionLabel == s.StageDefinitionLabel {
+				result = &def
+			}
+		}
+
+		id = result.StageDefinitionID
+	}
+	err = client.StageDefinitionDelete(id)
 
 	if err != nil {
 		return err

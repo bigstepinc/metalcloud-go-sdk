@@ -211,12 +211,24 @@ func (sd SharedDrive) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (sd SharedDrive) Delete(client MetalCloudClient) error {
+	var result *SharedDrive
+	var id int
 	err := sd.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.SharedDriveDelete(sd.SharedDriveID)
+
+	if sd.SharedDriveLabel != "" {
+		result, err = client.SharedDriveGetByLabel(sd.SharedDriveLabel)
+		if err != nil {
+			return err
+		}
+		id = result.SharedDriveID
+	} else {
+		id = sd.SharedDriveID
+	}
+	err = client.SharedDriveDelete(id)
 
 	if err != nil {
 		return err

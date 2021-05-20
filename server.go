@@ -568,12 +568,25 @@ func (s Server) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (s Server) Delete(client MetalCloudClient) error {
+	var result *Server
+	var id int
 	err := s.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.ServerDelete(s.ServerID, true)
+
+	if s.ServerID != 0 {
+		id = s.ServerID
+	} else {
+		result, err = client.ServerGetByUUID(s.ServerUUID, false)
+		if err != nil {
+			return err
+		}
+		id = result.ServerID
+	}
+
+	err = client.ServerDelete(id, true)
 
 	if err != nil {
 		return err

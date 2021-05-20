@@ -321,11 +321,25 @@ func (s SwitchDevice) CreateOrUpdate(client MetalCloudClient) error {
 //Delete implements interface Applier
 func (s SwitchDevice) Delete(client MetalCloudClient) error {
 	err := s.Validate()
+	var switchDevice *SwitchDevice
+	var id int
 
 	if err != nil {
 		return err
 	}
-	err = client.SwitchDeviceDelete(s.NetworkEquipmentID)
+
+	if s.NetworkEquipmentIdentifierString != "" {
+		switchDevice, err = client.SwitchDeviceGetByIdentifierString(s.NetworkEquipmentIdentifierString, false)
+		if err != nil {
+			return err
+		}
+
+		id = switchDevice.NetworkEquipmentID
+	} else {
+		id = s.NetworkEquipmentID
+	}
+
+	err = client.SwitchDeviceDelete(id)
 
 	if err != nil {
 		return err
@@ -336,7 +350,7 @@ func (s SwitchDevice) Delete(client MetalCloudClient) error {
 
 //Validate implements interface Applier
 func (s SwitchDevice) Validate() error {
-	if s.NetworkEquipmentID != 0 && s.NetworkEquipmentIdentifierString != "" {
+	if s.NetworkEquipmentID == 0 && s.NetworkEquipmentIdentifierString == "" {
 		return fmt.Errorf("id is required")
 	}
 	return nil

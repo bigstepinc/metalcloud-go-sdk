@@ -277,12 +277,24 @@ func (i Infrastructure) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (i Infrastructure) Delete(client MetalCloudClient) error {
+	var result *Infrastructure
+	var id int
 	err := i.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.InfrastructureDelete(i.InfrastructureID)
+
+	if i.InfrastructureLabel != "" {
+		result, err = client.InfrastructureGetByLabel(i.InfrastructureLabel)
+		if err != nil {
+			return err
+		}
+		id = result.InfrastructureID
+	} else {
+		id = i.InfrastructureID
+	}
+	err = client.InfrastructureDelete(id)
 
 	if err != nil {
 		return err

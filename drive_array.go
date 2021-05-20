@@ -253,11 +253,24 @@ func (da DriveArray) CreateOrUpdate(client MetalCloudClient) error {
 //Delete implements interface Applier
 func (da DriveArray) Delete(client MetalCloudClient) error {
 	err := da.Validate()
+	var result *DriveArray
+	var id int
+
 	if err != nil {
 		return err
 	}
 
-	err = client.DriveArrayDelete(da.DriveArrayID)
+	if da.DriveArrayLabel != "" {
+		result, err = client.DriveArrayGetByLabel(da.DriveArrayLabel)
+		if err != nil {
+			return err
+		}
+		id = result.DriveArrayID
+	} else {
+		id = da.DriveArrayID
+	}
+
+	err = client.DriveArrayDelete(id)
 
 	if err != nil {
 		return err

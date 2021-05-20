@@ -345,12 +345,31 @@ func (t OSTemplate) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (t OSTemplate) Delete(client MetalCloudClient) error {
+	var result *OSTemplate
+	var id int
 	err := t.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.OSTemplateDelete(t.VolumeTemplateID)
+
+	if t.VolumeTemplateID != 0 {
+		id = t.VolumeTemplateID
+	} else {
+		templates, err := client.OSTemplates()
+		if err != nil {
+			return err
+		}
+
+		for _, temp := range *templates {
+			if temp.VolumeTemplateLabel == t.VolumeTemplateLabel {
+				result = &temp
+			}
+		}
+
+		id = result.VolumeTemplateID
+	}
+	err = client.OSTemplateDelete(id)
 
 	if err != nil {
 		return err

@@ -350,11 +350,25 @@ func (ia InstanceArray) CreateOrUpdate(client MetalCloudClient) error {
 //Delete implements interface Applier
 func (ia InstanceArray) Delete(client MetalCloudClient) error {
 	err := ia.Validate()
+	var result *InstanceArray
+	var id int
 
 	if err != nil {
 		return err
 	}
-	err = client.InstanceArrayDelete(ia.InstanceArrayID)
+
+	if ia.InstanceArrayLabel != "" {
+		result, err = client.InstanceArrayGetByLabel(ia.InstanceArrayLabel)
+
+		if err != nil {
+			return err
+		}
+
+		id = result.InstanceArrayID
+	} else {
+		id = ia.InstanceArrayID
+	}
+	err = client.InstanceArrayDelete(id)
 
 	if err != nil {
 		return err
