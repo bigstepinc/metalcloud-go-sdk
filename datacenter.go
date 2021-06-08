@@ -52,10 +52,10 @@ type DatacenterConfig struct {
 }
 
 type WebProxy struct {
-	WebProxyServerIP   string `json:"ip,omitempty" yaml:"ip,omitempty"`
-	WebProxyServerPort int    `json:"port,omitempty" yaml:"port,omitempty"`
-	WebProxyUsername   string `json:"username,omitempty" yaml:"username,omitempty"`
-	WebProxyPassword   string `json:"password,omitempty" yaml:"password,omitempty"`
+	WebProxyServerIP   string `json:"web_proxy_server_ip,omitempty" yaml:"ip,omitempty"`
+	WebProxyServerPort int    `json:"web_proxy_server_port,omitempty" yaml:"port,omitempty"`
+	WebProxyUsername   string `json:"web_proxy_username,omitempty" yaml:"username,omitempty"`
+	WebProxyPassword   string `json:"web_proxy_password,omitempty" yaml:"password,omitempty"`
 }
 
 /*
