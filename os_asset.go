@@ -132,6 +132,51 @@ func (c *Client) OSAssets() (*map[string]OSAsset, error) {
 	return &createdObject, nil
 }
 
+//OSAssetMakePublic makes an OS Asset public
+func (c *Client) OSAssetMakePublic(osAssetID int) (*OSAsset, error) {
+	var createdObject OSAsset
+
+	if err := checkID(osAssetID); err != nil {
+		return nil, err
+	}
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"os_asset_make_public",
+		osAssetID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdObject, nil
+}
+
+//OSAssetMakePrivate makes an OS Asset private and owned by the current user
+func (c *Client) OSAssetMakePrivate(osAssetID int, userID int) (*OSAsset, error) {
+	var createdObject OSAsset
+
+	if err := checkID(osAssetID); err != nil {
+		return nil, err
+	}
+
+	if err := checkID(userID); err != nil {
+		return nil, err
+	}
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"os_asset_make_private",
+		osAssetID,
+		userID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdObject, nil
+}
+
 //CreateOrUpdate implements interface Applier
 func (asset OSAsset) CreateOrUpdate(client MetalCloudClient) error {
 	var err error

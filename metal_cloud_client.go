@@ -184,6 +184,10 @@ type MetalCloudClient interface {
 	OSAssetGet(osAssetID int) (*OSAsset, error)
 	//OSAssets retrieves a list of all the OSAsset objects which a specified User is allowed to see through ownership or delegation. The OSAsset objects never return the actual protected OSAsset value.
 	OSAssets() (*map[string]OSAsset, error)
+	//OSAssetMakePublic makes an OS Asset public
+	OSAssetMakePublic(osAssetID int) (*OSAsset, error)
+	//OSAssetMakePrivate makes an OS Asset private and owned by the current user
+	OSAssetMakePrivate(osAssetID int, userID int) (*OSAsset, error)
 	//OSTemplateCreate creates a osTemplate object
 	OSTemplateCreate(osTemplate OSTemplate) (*OSTemplate, error)
 	//OSTemplateDelete permanently destroys a OSTemplate.
