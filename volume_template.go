@@ -1,5 +1,7 @@
 package metalcloud
 
+import "fmt"
+
 //go:generate go run helper/gen_exports.go
 
 //OperatingSystem describes an OS
@@ -40,25 +42,15 @@ type VolumeTemplate struct {
 
 //VolumeTemplates retrives the list of available templates
 func (c *Client) VolumeTemplates() (*map[string]VolumeTemplate, error) {
-	res, err := c.rpcClient.Call(
+	var createdObject map[string]VolumeTemplate
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"volume_templates",
 		c.user)
 
 	if err != nil {
 		return nil, err
-	}
-
-	_, ok := res.Result.([]interface{})
-	if ok {
-		var m = map[string]VolumeTemplate{}
-		return &m, nil
-	}
-
-	var createdObject map[string]VolumeTemplate
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
 	}
 
 	return &createdObject, nil
@@ -107,7 +99,7 @@ func (c *Client) volumeTemplateCreateFromDrive(driveID id, objVolumeTemplate Vol
 
 //VolumeTemplateMakePublic makes a template public
 func (c *Client) VolumeTemplateMakePublic(volumeTemplateID int) error {
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"volume_template_make_public",
 		volumeTemplateID,
 	)
@@ -116,12 +108,16 @@ func (c *Client) VolumeTemplateMakePublic(volumeTemplateID int) error {
 		return err
 	}
 
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
 	return nil
 }
 
 //VolumeTemplateMakePrivate makes a template private
 func (c *Client) VolumeTemplateMakePrivate(volumeTemplateID int, userID int) error {
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"volume_template_make_private",
 		volumeTemplateID,
 		userID,
@@ -129,6 +125,10 @@ func (c *Client) VolumeTemplateMakePrivate(volumeTemplateID int, userID int) err
 
 	if err != nil {
 		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
 	}
 
 	return nil

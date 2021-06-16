@@ -157,7 +157,10 @@ func (c *Client) OSTemplateGet(osTemplateID int, decryptPasswd bool) (*OSTemplat
 func (c *Client) OSTemplates() (*map[string]OSTemplate, error) {
 
 	userID := c.GetUserID()
-	res, err := c.rpcClient.Call(
+	var createdObject map[string]OSTemplate
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"os_templates",
 		userID)
 
@@ -165,44 +168,23 @@ func (c *Client) OSTemplates() (*map[string]OSTemplate, error) {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
-	if ok {
-		var m = map[string]OSTemplate{}
-		return &m, nil
-	}
-
-	var createdObject map[string]OSTemplate
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
-	}
-
 	return &createdObject, nil
 }
 
 //OSTemplateOSAssets returns the OSAssets assigned to an OSTemplate.
 func (c *Client) OSTemplateOSAssets(osTemplateID int) (*map[string]OSTemplateOSAssetData, error) {
+	if err := checkID(osTemplateID); err != nil {
+		return nil, err
+	}
+	var createdObject map[string]OSTemplateOSAssetData
 
-	res, err := c.rpcClient.Call(
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"os_template_os_assets",
 		osTemplateID)
 
 	if err != nil {
 		return nil, err
-	}
-
-	_, ok := res.Result.([]interface{})
-	if ok {
-		var m = map[string]OSTemplateOSAssetData{}
-		return &m, nil
-	}
-
-	var createdObject map[string]OSTemplateOSAssetData
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
 	}
 
 	return &createdObject, nil
@@ -211,7 +193,8 @@ func (c *Client) OSTemplateOSAssets(osTemplateID int) (*map[string]OSTemplateOSA
 //OSTemplateAddOSAsset adds an asset to a template
 func (c *Client) OSTemplateAddOSAsset(osTemplateID int, osAssetID int, path string, variablesJSON string) error {
 
-	_, err := c.rpcClient.Call(
+	// var cond bool
+	resp, err := c.rpcClient.Call(
 		"os_template_add_os_asset",
 		osTemplateID,
 		osAssetID,
@@ -222,13 +205,17 @@ func (c *Client) OSTemplateAddOSAsset(osTemplateID int, osAssetID int, path stri
 		return err
 	}
 
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
 	return nil
 }
 
 //OSTemplateRemoveOSAsset removes an asset from a template
 func (c *Client) OSTemplateRemoveOSAsset(osTemplateID int, osAssetID int) error {
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"os_template_remove_os_asset",
 		osTemplateID,
 		osAssetID)
@@ -237,13 +224,17 @@ func (c *Client) OSTemplateRemoveOSAsset(osTemplateID int, osAssetID int) error 
 		return err
 	}
 
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
 	return nil
 }
 
 //OSTemplateUpdateOSAssetPath updates an asset mapping
 func (c *Client) OSTemplateUpdateOSAssetPath(osTemplateID int, osAssetID int, path string) error {
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"os_template_update_os_asset_path",
 		osTemplateID,
 		osAssetID,
@@ -253,13 +244,17 @@ func (c *Client) OSTemplateUpdateOSAssetPath(osTemplateID int, osAssetID int, pa
 		return err
 	}
 
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
 	return nil
 }
 
 //OSTemplateUpdateOSAssetVariables updates an asset variable
 func (c *Client) OSTemplateUpdateOSAssetVariables(osTemplateID int, osAssetID int, variablesJSON string) error {
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"os_template_update_os_asset_variables",
 		osTemplateID,
 		osAssetID,
@@ -269,12 +264,16 @@ func (c *Client) OSTemplateUpdateOSAssetVariables(osTemplateID int, osAssetID in
 		return err
 	}
 
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
 	return nil
 }
 
 //OSTemplateMakePublic makes a template public
 func (c *Client) OSTemplateMakePublic(osTemplateID int) error {
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"os_template_make_public",
 		osTemplateID,
 	)
@@ -283,12 +282,16 @@ func (c *Client) OSTemplateMakePublic(osTemplateID int) error {
 		return err
 	}
 
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
 	return nil
 }
 
 //OSTemplateMakePrivate makes a template private
 func (c *Client) OSTemplateMakePrivate(osTemplateID int, userID int) error {
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"os_template_make_private",
 		osTemplateID,
 		userID,
@@ -296,6 +299,10 @@ func (c *Client) OSTemplateMakePrivate(osTemplateID int, userID int) error {
 
 	if err != nil {
 		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
 	}
 
 	return nil

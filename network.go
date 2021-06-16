@@ -55,26 +55,15 @@ func (c *Client) networks(infrastructureID id) (*map[string]Network, error) {
 	if err := checkID(infrastructureID); err != nil {
 		return nil, err
 	}
+	var createdObject map[string]Network
 
-	res, err := c.rpcClient.Call(
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"networks",
 		infrastructureID)
 
 	if err != nil {
 		return nil, err
-	}
-
-	_, ok := res.Result.([]interface{})
-	if ok {
-		var m = map[string]Network{}
-		return &m, nil
-	}
-
-	var createdObject map[string]Network
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
 	}
 
 	return &createdObject, nil
@@ -129,12 +118,16 @@ func (c *Client) networkDelete(networkID id) error {
 		return err
 	}
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"network_delete",
 		networkID)
 
 	if err != nil {
 		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
 	}
 
 	return nil
@@ -151,13 +144,17 @@ func (c *Client) networkJoin(networkID id, networkToBeDeletedID id) error {
 		return err
 	}
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"network_join",
 		networkID,
 		networkToBeDeletedID)
 
 	if err != nil {
 		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
 	}
 
 	return nil

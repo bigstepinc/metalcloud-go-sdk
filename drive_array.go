@@ -51,25 +51,15 @@ func (c *Client) driveArrays(infrastructureID id) (*map[string]DriveArray, error
 		return nil, err
 	}
 
-	res, err := c.rpcClient.Call(
+	var createdObject map[string]DriveArray
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"drive_arrays",
 		infrastructureID)
 
 	if err != nil {
 		return nil, err
-	}
-
-	_, ok := res.Result.([]interface{})
-	if ok {
-		var m = map[string]DriveArray{}
-		return &m, nil
-	}
-
-	var createdObject map[string]DriveArray
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
 	}
 
 	return &createdObject, nil
@@ -179,26 +169,15 @@ func (c *Client) driveArrayDrives(driveArray id) (*map[string]Drive, error) {
 	if err := checkID(driveArray); err != nil {
 		return nil, err
 	}
+	var createdObject map[string]Drive
 
-	res, err := c.rpcClient.Call(
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"drive_array_drives",
 		driveArray)
 
 	if err != nil {
 		return nil, err
-	}
-
-	_, ok := res.Result.([]interface{})
-	if ok {
-		var m = map[string]Drive{}
-		return &m, nil
-	}
-
-	var createdObject map[string]Drive
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
 	}
 
 	return &createdObject, nil

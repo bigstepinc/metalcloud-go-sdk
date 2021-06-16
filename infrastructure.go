@@ -171,26 +171,15 @@ func (c *Client) infrastructureDeployWithOptions(infrastructureID id, shutdownOp
 
 //Infrastructures returns a list of infrastructures
 func (c *Client) Infrastructures() (*map[string]Infrastructure, error) {
+	var createdObject map[string]Infrastructure
 
-	res, err := c.rpcClient.Call(
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"infrastructures",
 		c.user)
 
 	if err != nil {
 		return nil, err
-	}
-
-	_, ok := res.Result.([]interface{})
-	if ok {
-		var m = map[string]Infrastructure{}
-		return &m, nil
-	}
-
-	var createdObject map[string]Infrastructure
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
 	}
 
 	return &createdObject, nil

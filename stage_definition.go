@@ -3,8 +3,6 @@ package metalcloud
 import (
 	"encoding/json"
 	"fmt"
-
-	"github.com/ybbus/jsonrpc"
 )
 
 //StageDefinition contains a JavaScript file, HTTP request url and options, an AnsibleBundle or an API call template.
@@ -295,29 +293,15 @@ func (c *Client) StageDefinitionGet(stageDefinitionID int) (*StageDefinition, er
 func (c *Client) StageDefinitions() (*map[string]StageDefinition, error) {
 
 	userID := c.GetUserID()
+	var createdObject map[string]StageDefinition
 
-	var res *jsonrpc.RPCResponse
-	var err error
-
-	res, err = c.rpcClient.Call(
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"stage_definitions",
 		userID)
 
 	if err != nil {
 		return nil, err
-	}
-
-	_, ok := res.Result.([]interface{})
-	if ok {
-		var m = map[string]StageDefinition{}
-		return &m, nil
-	}
-
-	var createdObject map[string]StageDefinition
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
 	}
 
 	return &createdObject, nil

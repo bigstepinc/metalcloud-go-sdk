@@ -251,27 +251,16 @@ func (c *Client) instanceArrayInstances(instanceArrayID id) (*map[string]Instanc
 	if err := checkID(instanceArrayID); err != nil {
 		return nil, err
 	}
+	var createdObject map[string]Instance
 
-	res, err := c.rpcClient.Call(
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"instance_array_instances",
 		instanceArrayID,
 		nil)
 
 	if err != nil {
 		return nil, err
-	}
-
-	_, ok := res.Result.([]interface{})
-	if ok {
-		var m = map[string]Instance{}
-		return &m, nil
-	}
-
-	var createdObject map[string]Instance
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
 	}
 
 	return &createdObject, nil
@@ -337,23 +326,17 @@ func (c *Client) instanceServerPowerGetBatch(infrastructureID id, instanceIDs []
 		return nil, err
 	}
 
-	res, err := c.rpcClient.Call("instance_server_power_get_batch", infrastructureID, instanceIDs)
+	var createdObject map[string]string
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"instance_server_power_get_batch",
+		infrastructureID,
+		instanceIDs,
+	)
 
 	if err != nil {
 		return nil, err
-	}
-
-	_, ok := res.Result.([]interface{})
-	if ok {
-		var m = map[string]string{}
-		return &m, nil
-	}
-
-	var createdObject map[string]string
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
 	}
 
 	return &createdObject, nil

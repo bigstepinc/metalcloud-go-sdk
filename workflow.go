@@ -2,8 +2,6 @@ package metalcloud
 
 import (
 	"fmt"
-
-	"github.com/ybbus/jsonrpc"
 )
 
 //Workflow struct defines a server type
@@ -132,15 +130,18 @@ func (c *Client) WorkflowsWithUsage(usage string) (*map[string]Workflow, error) 
 
 	userID := c.GetUserID()
 
-	var res *jsonrpc.RPCResponse
 	var err error
+	var createdObject map[string]Workflow
+
 	if usage != "" {
-		res, err = c.rpcClient.Call(
+		err = c.rpcClient.CallFor(
+			&createdObject,
 			"workflows",
 			userID,
 			usage)
 	} else {
-		res, err = c.rpcClient.Call(
+		err = c.rpcClient.CallFor(
+			&createdObject,
 			"workflows",
 			userID)
 	}
@@ -149,40 +150,20 @@ func (c *Client) WorkflowsWithUsage(usage string) (*map[string]Workflow, error) 
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
-	if ok {
-		var m = map[string]Workflow{}
-		return &m, nil
-	}
-
-	var createdObject map[string]Workflow
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
-	}
-
 	return &createdObject, nil
 }
 
 //WorkflowStages retrieves a list of all the StageDefinitions objects in this workflow
 func (c *Client) WorkflowStages(workflowID int) (*[]WorkflowStageDefinitionReference, error) {
+	var createdObject []WorkflowStageDefinitionReference
 
-	var res *jsonrpc.RPCResponse
-
-	res, err := c.rpcClient.Call(
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"workflow_stages",
 		workflowID)
 
 	if err != nil {
 		return nil, err
-	}
-
-	var createdObject []WorkflowStageDefinitionReference
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
 	}
 
 	return &createdObject, nil
@@ -313,9 +294,13 @@ func (c *Client) WorkflowStageDelete(workflowStageID int) error {
 //InfrastructureDeployCustomStageAddIntoRunlevel adds a stage into a runlevel
 func (c *Client) InfrastructureDeployCustomStageAddIntoRunlevel(infraID int, stageID int, runLevel int, stageRunMoment string) error {
 
-	_, err := c.rpcClient.Call("infrastructure_deploy_custom_stage_add_into_runlevel", infraID, stageID, runLevel, stageRunMoment)
+	resp, err := c.rpcClient.Call("infrastructure_deploy_custom_stage_add_into_runlevel", infraID, stageID, runLevel, stageRunMoment)
 	if err != nil {
 		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
 	}
 
 	return nil
@@ -324,9 +309,13 @@ func (c *Client) InfrastructureDeployCustomStageAddIntoRunlevel(infraID int, sta
 //InfrastructureDeployCustomStageDeleteIntoRunlevel delete a stage into a runlevel
 func (c *Client) InfrastructureDeployCustomStageDeleteIntoRunlevel(infraID int, stageID int, runLevel int, stageRunMoment string) error {
 
-	_, err := c.rpcClient.Call("infrastructure_deploy_custom_stage_delete_into_runlevel", infraID, stageID, runLevel, stageRunMoment)
+	resp, err := c.rpcClient.Call("infrastructure_deploy_custom_stage_delete_into_runlevel", infraID, stageID, runLevel, stageRunMoment)
 	if err != nil {
 		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
 	}
 
 	return nil
@@ -334,23 +323,16 @@ func (c *Client) InfrastructureDeployCustomStageDeleteIntoRunlevel(infraID int, 
 
 //InfrastructureDeployCustomStages retrieves a list of all the StageDefinition objects which a specified User is allowed to see through ownership or delegation. The stageDefinition objects never return the actual protected stageDefinition value.
 func (c *Client) InfrastructureDeployCustomStages(infraID int, stageDefinitionType string) (*[]WorkflowStageAssociation, error) {
+	var createdObject []WorkflowStageAssociation
 
-	var res *jsonrpc.RPCResponse
-
-	res, err := c.rpcClient.Call(
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"infrastructure_deploy_custom_stages",
 		infraID,
 		stageDefinitionType)
 
 	if err != nil {
 		return nil, err
-	}
-
-	var createdObject []WorkflowStageAssociation
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
 	}
 
 	return &createdObject, nil

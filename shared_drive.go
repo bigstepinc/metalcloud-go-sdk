@@ -137,26 +137,15 @@ func (c *Client) sharedDrives(infrastructureID id) (*map[string]SharedDrive, err
 	if err := checkID(infrastructureID); err != nil {
 		return nil, err
 	}
+	var createdObject map[string]SharedDrive
 
-	res, err := c.rpcClient.Call(
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"shared_drives",
 		infrastructureID)
 
 	if err != nil {
 		return nil, err
-	}
-
-	_, ok := res.Result.([]interface{})
-	if ok {
-		var m = map[string]SharedDrive{}
-		return &m, nil
-	}
-
-	var createdObject map[string]SharedDrive
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
 	}
 
 	return &createdObject, nil

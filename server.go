@@ -190,8 +190,10 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 	userID := c.GetUserID()
 
 	collapseType := "array_row_span"
+	var createdObject map[string]SearchResultForServers
 
-	res, err := c.rpcClient.Call(
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"search",
 		userID,
 		filter,
@@ -201,13 +203,6 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 
 	if err != nil {
 		return nil, err
-	}
-
-	var createdObject map[string]SearchResultForServers
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
 	}
 
 	servers := []ServerSearchResult{}
@@ -391,56 +386,76 @@ func (c *Client) ServerDecomission(serverID int, skipIPMI bool) error {
 //If no strServerComponentFirmwareNewVersion or strFirmwareBinaryURL are provided the system will use the values from the database which should have been previously added
 func (c *Client) ServerFirmwareComponentUpgrade(serverID int, serverComponentID int, serverComponentFirmwareNewVersion string, firmwareBinaryURL string) error {
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"server_firmware_component_upgrade",
 		serverID,
 		serverComponentID,
 		serverComponentFirmwareNewVersion,
 		firmwareBinaryURL,
 	)
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
 	return err
 }
 
 //ServerFirmwareUpgrade creates a firmware upgrading session that affects all components from the specified server that have a target version set and are updatable.
 func (c *Client) ServerFirmwareUpgrade(serverID int) error {
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"server_firmware_upgrade",
 		serverID,
 	)
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
 	return err
 }
 
 //ServerFirmwareComponentTargetVersionSet Sets a firmware target version for the upgrading process. The system will apply the upgrade at the next upgrading session.
 func (c *Client) ServerFirmwareComponentTargetVersionSet(serverComponentID int, serverComponentFirmwareNewVersion string) error {
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"server_firmware_component_target_version_set",
 		serverComponentID,
 		serverComponentFirmwareNewVersion,
 	)
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
 	return err
 }
 
 //ServerFirmwareComponentTargetVersionUpdate Updates for every component of the specified server the available firmware versions that can be used as target by the firmware upgrading process. The available versions are extracted from a vendor specific catalog.
 func (c *Client) ServerFirmwareComponentTargetVersionUpdate(serverComponentID int) error {
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"server_firmware_component_available_versions_update",
 		serverComponentID,
 	)
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
 	return err
 }
 
 //ServerFirmwareComponentTargetVersionAdd Adds a new available firmware version for a server component along with the url of the binary. If the version already exists the old url will be overwritten.
 func (c *Client) ServerFirmwareComponentTargetVersionAdd(serverComponentID int, version string, firmareBinaryURL string) error {
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"server_firmware_component_available_versions_add",
 		serverComponentID,
 		version,
 		firmareBinaryURL,
 	)
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
 	return err
 }
 

@@ -108,25 +108,15 @@ func (c *Client) OSAssets() (*map[string]OSAsset, error) {
 
 	userID := c.GetUserID()
 
-	res, err := c.rpcClient.Call(
+	var createdObject map[string]OSAsset
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"os_assets",
 		userID)
 
 	if err != nil {
 		return nil, err
-	}
-
-	_, ok := res.Result.([]interface{})
-	if ok {
-		var m = map[string]OSAsset{}
-		return &m, nil
-	}
-
-	var createdObject map[string]OSAsset
-
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
 	}
 
 	return &createdObject, nil
