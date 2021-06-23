@@ -238,11 +238,26 @@ func (c *Client) SwitchDevices(datacenter string, switchType string) (*map[strin
 	}
 	var createdObject map[string]SwitchDevice
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
+	resp, err := c.rpcClient.Call(
 		"switch_devices",
 		dc,
-		st)
+		st,
+	)
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[string]SwitchDevice{}
+		return &m, nil
+	}
+
+	err = resp.GetObject(&createdObject)
 
 	if err != nil {
 		return nil, err

@@ -157,12 +157,28 @@ func (c *Client) OSTemplateGet(osTemplateID int, decryptPasswd bool) (*OSTemplat
 func (c *Client) OSTemplates() (*map[string]OSTemplate, error) {
 
 	userID := c.GetUserID()
+
+	resp, err := c.rpcClient.Call(
+		"os_templates",
+		userID,
+	)
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[string]OSTemplate{}
+		return &m, nil
+	}
 	var createdObject map[string]OSTemplate
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
-		"os_templates",
-		userID)
+	err = resp.GetObject(&createdObject)
 
 	if err != nil {
 		return nil, err
@@ -176,12 +192,29 @@ func (c *Client) OSTemplateOSAssets(osTemplateID int) (*map[string]OSTemplateOSA
 	if err := checkID(osTemplateID); err != nil {
 		return nil, err
 	}
+
+	resp, err := c.rpcClient.Call(
+		"os_template_os_assets",
+		osTemplateID,
+	)
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[string]OSTemplateOSAssetData{}
+		return &m, nil
+	}
+
 	var createdObject map[string]OSTemplateOSAssetData
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
-		"os_template_os_assets",
-		osTemplateID)
+	err = resp.GetObject(&createdObject)
 
 	if err != nil {
 		return nil, err

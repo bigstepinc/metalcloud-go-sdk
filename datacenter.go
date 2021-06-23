@@ -165,15 +165,30 @@ func (c *Client) DatacentersByUserEmail(userEmail string, onlyActive bool) (*map
 
 //datacenters returns datacenters
 func (c *Client) datacenters(userID id, onlyActive bool) (*map[string]Datacenter, error) {
-	var createdObject map[string]Datacenter
-
-	err := c.rpcClient.CallFor(
-		&createdObject,
+	resp, err := c.rpcClient.Call(
 		"datacenters",
 		userID,
 		onlyActive,
-		false)
+		false,
+	)
 
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[string]Datacenter{}
+		return &m, nil
+	}
+
+	var createdObject map[string]Datacenter
+
+	err = resp.GetObject(&createdObject)
 	if err != nil {
 		return nil, err
 	}

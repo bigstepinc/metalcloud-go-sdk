@@ -1,5 +1,7 @@
 package metalcloud
 
+import "fmt"
+
 //go:generate go run helper/gen_exports.go
 
 //ServerType struct defines a server type
@@ -60,10 +62,26 @@ func (c *Client) serverTypesMatches(infrastructureID id, hardwareConfiguration H
 	}
 	var createdObject map[string]ServerType
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
+	resp, err := c.rpcClient.Call(
 		"server_type_matches",
-		infrastructureID)
+		infrastructureID,
+	)
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[string]ServerType{}
+		return &m, nil
+	}
+
+	err = resp.GetObject(&createdObject)
 
 	if err != nil {
 		return nil, err
@@ -76,11 +94,27 @@ func (c *Client) serverTypesMatches(infrastructureID id, hardwareConfiguration H
 func (c *Client) ServerTypesMatchHardwareConfiguration(datacenterName string, hardwareConfiguration HardwareConfiguration) (*map[int]ServerType, error) {
 	var createdObject map[int]ServerType
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
+	resp, err := c.rpcClient.Call(
 		"server_types_match_hardware_configuration",
 		datacenterName,
-		hardwareConfiguration)
+		hardwareConfiguration,
+	)
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[int]ServerType{}
+		return &m, nil
+	}
+
+	err = resp.GetObject(&createdObject)
 
 	if err != nil {
 		return nil, err
@@ -109,12 +143,27 @@ func (c *Client) ServerTypeDatacenter(datacenterName string) (*[]int, error) {
 func (c *Client) ServerTypes(bOnlyAvailable bool) (*map[int]ServerType, error) {
 	var createdObject map[int]ServerType
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
+	resp, err := c.rpcClient.Call(
 		"server_types",
 		nil,
-		bOnlyAvailable)
+		bOnlyAvailable,
+	)
 
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[int]ServerType{}
+		return &m, nil
+	}
+
+	err = resp.GetObject(&createdObject)
 	if err != nil {
 		return nil, err
 	}
@@ -126,11 +175,26 @@ func (c *Client) ServerTypes(bOnlyAvailable bool) (*map[int]ServerType, error) {
 func (c *Client) ServerTypesForDatacenter(datacenterName string, bOnlyAvailable bool) (*map[int]ServerType, error) {
 	var createdObject map[int]ServerType
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
+	resp, err := c.rpcClient.Call(
 		"server_types_datacenter",
-		datacenterName)
+		datacenterName,
+	)
 
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[int]ServerType{}
+		return &m, nil
+	}
+
+	err = resp.GetObject(&createdObject)
 	if err != nil {
 		return nil, err
 	}

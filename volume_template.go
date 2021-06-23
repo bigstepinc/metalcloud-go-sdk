@@ -44,10 +44,26 @@ type VolumeTemplate struct {
 func (c *Client) VolumeTemplates() (*map[string]VolumeTemplate, error) {
 	var createdObject map[string]VolumeTemplate
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
+	resp, err := c.rpcClient.Call(
 		"volume_templates",
-		c.user)
+		c.user,
+	)
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[string]VolumeTemplate{}
+		return &m, nil
+	}
+
+	err = resp.GetObject(&createdObject)
 
 	if err != nil {
 		return nil, err

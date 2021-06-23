@@ -192,8 +192,7 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 	collapseType := "array_row_span"
 	var createdObject map[string]SearchResultForServers
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
+	resp, err := c.rpcClient.Call(
 		"search",
 		userID,
 		filter,
@@ -201,8 +200,23 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 		columns,
 		collapseType)
 
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
 	if err != nil {
 		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		createdObject = map[string]SearchResultForServers{}
+	} else {
+		err = resp.GetObject(&createdObject)
+
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	servers := []ServerSearchResult{}

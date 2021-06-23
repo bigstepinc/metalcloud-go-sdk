@@ -136,12 +136,29 @@ func (c *Client) instanceArrays(infrastructureID id) (*map[string]InstanceArray,
 	if err := checkID(infrastructureID); err != nil {
 		return nil, err
 	}
+
+	resp, err := c.rpcClient.Call(
+		"instance_arrays",
+		infrastructureID,
+	)
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[string]InstanceArray{}
+		return &m, nil
+	}
+
 	var createdObject map[string]InstanceArray
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
-		"instance_arrays",
-		infrastructureID)
+	err = resp.GetObject(&createdObject)
 
 	if err != nil {
 		return nil, err

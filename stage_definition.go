@@ -295,10 +295,26 @@ func (c *Client) StageDefinitions() (*map[string]StageDefinition, error) {
 	userID := c.GetUserID()
 	var createdObject map[string]StageDefinition
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
+	resp, err := c.rpcClient.Call(
 		"stage_definitions",
-		userID)
+		userID,
+	)
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[string]StageDefinition{}
+		return &m, nil
+	}
+
+	err = resp.GetObject(&createdObject)
 
 	if err != nil {
 		return nil, err

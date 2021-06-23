@@ -2,6 +2,8 @@ package metalcloud
 
 import (
 	"fmt"
+
+	"github.com/ybbus/jsonrpc"
 )
 
 //Workflow struct defines a server type
@@ -132,19 +134,36 @@ func (c *Client) WorkflowsWithUsage(usage string) (*map[string]Workflow, error) 
 
 	var err error
 	var createdObject map[string]Workflow
+	var resp *jsonrpc.RPCResponse
 
 	if usage != "" {
-		err = c.rpcClient.CallFor(
-			&createdObject,
+		resp, err = c.rpcClient.Call(
 			"workflows",
 			userID,
-			usage)
+			usage,
+		)
 	} else {
-		err = c.rpcClient.CallFor(
-			&createdObject,
+		resp, err = c.rpcClient.Call(
 			"workflows",
-			userID)
+			userID,
+		)
 	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[string]Workflow{}
+		return &m, nil
+	}
+
+	err = resp.GetObject(&createdObject)
 
 	if err != nil {
 		return nil, err

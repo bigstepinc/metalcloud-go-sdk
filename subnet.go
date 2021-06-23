@@ -200,8 +200,7 @@ func (c *Client) SubnetPoolSearch(filter string) (*[]SubnetPool, error) {
 	collapseType := "array_row_span"
 	var createdObject map[string]searchResultForSubnets
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
+	resp, err := c.rpcClient.Call(
 		"search",
 		userID,
 		filter,
@@ -209,8 +208,23 @@ func (c *Client) SubnetPoolSearch(filter string) (*[]SubnetPool, error) {
 		columns,
 		collapseType)
 
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
 	if err != nil {
 		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		createdObject = map[string]searchResultForSubnets{}
+	} else {
+		err = resp.GetObject(&createdObject)
+
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	list := []SubnetPool{}

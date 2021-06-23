@@ -87,12 +87,29 @@ func (c *Client) DriveSnapshotGet(driveSnapshotID int) (*Snapshot, error) {
 //DriveSnapshots retrieves a list of all the snapshot objects
 func (c *Client) DriveSnapshots(driveID int) (*map[string]Snapshot, error) {
 	var err error
+
+	resp, err := c.rpcClient.Call(
+		"drive_snapshots",
+		driveID,
+	)
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[string]Snapshot{}
+		return &m, nil
+	}
+
 	var createdObject map[string]Snapshot
 
-	err = c.rpcClient.CallFor(
-		&createdObject,
-		"drive_snapshots",
-		driveID)
+	err = resp.GetObject(&createdObject)
 
 	if err != nil {
 		return nil, err

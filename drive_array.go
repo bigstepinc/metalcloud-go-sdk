@@ -51,12 +51,29 @@ func (c *Client) driveArrays(infrastructureID id) (*map[string]DriveArray, error
 		return nil, err
 	}
 
+	resp, err := c.rpcClient.Call(
+		"drive_arrays",
+		infrastructureID,
+	)
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+
+	if ok {
+		var m = map[string]DriveArray{}
+		return &m, nil
+	}
+
 	var createdObject map[string]DriveArray
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
-		"drive_arrays",
-		infrastructureID)
+	err = resp.GetObject(&createdObject)
 
 	if err != nil {
 		return nil, err
@@ -169,12 +186,29 @@ func (c *Client) driveArrayDrives(driveArray id) (*map[string]Drive, error) {
 	if err := checkID(driveArray); err != nil {
 		return nil, err
 	}
+
+	resp, err := c.rpcClient.Call(
+		"drive_array_drives",
+		driveArray,
+	)
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[string]Drive{}
+		return &m, nil
+	}
+
 	var createdObject map[string]Drive
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
-		"drive_array_drives",
-		driveArray)
+	err = resp.GetObject(&createdObject)
 
 	if err != nil {
 		return nil, err

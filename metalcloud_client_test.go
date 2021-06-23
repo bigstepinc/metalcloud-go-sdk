@@ -80,7 +80,7 @@ func TestEmptyListReply(t *testing.T) {
 
 	RegisterTestingT(t)
 
-	responseBody = `{"result": {},"jsonrpc": "2.0","id": 0}`
+	responseBody = `{"result": [],"jsonrpc": "2.0","id": 0}`
 
 	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
 	Expect(err).To(BeNil())

@@ -55,12 +55,29 @@ func (c *Client) networks(infrastructureID id) (*map[string]Network, error) {
 	if err := checkID(infrastructureID); err != nil {
 		return nil, err
 	}
+
+	resp, err := c.rpcClient.Call(
+		"networks",
+		infrastructureID,
+	)
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[string]Network{}
+		return &m, nil
+	}
+
 	var createdObject map[string]Network
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
-		"networks",
-		infrastructureID)
+	err = resp.GetObject(&createdObject)
 
 	if err != nil {
 		return nil, err
