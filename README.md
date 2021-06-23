@@ -1,7 +1,7 @@
 # Metal Cloud Go SDK
 
 [![GoDoc](https://godoc.org/github.com/bigstepinc/metal-cloud-sdk-go?status.svg)](https://godoc.org/github.com/bigstepinc/metal-cloud-sdk-go) 
-[![Build Status](https://travis-ci.org/bigstepinc/metal-cloud-sdk-go.svg?branch=master)](https://travis-ci.org/bigstepinc/metal-cloud-sdk-go)
+[![Build Status](https://travis-ci.com/metalsoft-io/metal-cloud-sdk-go.svg?branch=master)](https://travis-ci.com/metalsoft-io/metal-cloud-sdk-go)
 
 This SDK allows control of the [Bigstep Metal Cloud](https://bigstep.com) from Go.
 
