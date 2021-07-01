@@ -47,7 +47,7 @@ type InstanceArrayOperation struct {
 	InstanceArrayInterfaces         []InstanceArrayInterfaceOperation `json:"instance_array_interfaces,omitempty" yaml:"interfaces,omitempty"`
 	ClusterID                       int                               `json:"cluster_id,omitempty" yaml:"clusterID,omitempty"`
 	ClusterRoleGroup                string                            `json:"cluster_role_group,omitempty" yaml:"clusterRoleGroup,omitempty"`
-	InstanceArrayFirewallManaged    bool                              `json:"instance_array_firewall_managed,omitempty" yaml:"firewallManaged,omitempty"`
+	InstanceArrayFirewallManaged    bool                              `json:"instance_array_firewall_managed" yaml:"firewallManaged,omitempty"`
 	InstanceArrayFirewallRules      []FirewallRule                    `json:"instance_array_firewall_rules,omitempty" yaml:"firewallRules,omitempty"`
 	VolumeTemplateID                int                               `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
 	InstanceArrayDeployType         string                            `json:"instance_array_deploy_type,omitempty" yaml:"deployType,omitempty"`
