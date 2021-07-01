@@ -131,8 +131,7 @@ func (c *Client) OSTemplateGet(osTemplateID int, decryptPasswd bool) (*OSTemplat
 		return nil, err
 	}
 
-	if decryptPasswd {
-
+	if decryptPasswd && createdObject.OSTemplateCredentials != nil {
 		passwdComponents := strings.Split(createdObject.OSTemplateCredentials.OSTemplateInitialPassword, ":")
 		if len(passwdComponents) != 2 {
 			return nil, fmt.Errorf("Password not returned with proper components")
