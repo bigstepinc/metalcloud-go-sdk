@@ -88,7 +88,7 @@ type SSHClientOptions struct {
 	ReadyTimeout int           `json:"readyTimeout,omitempty"`
 	StrictVendor bool          `json:"strictVendor,omitempty"`
 	Algorithms   SSHAlgorithms `json:"algorithms,omitempty"`
-	Compress     string        `json:"compress,omitempty"`
+	Compress     interface{}   `json:"compress,omitempty"`
 }
 
 //SSHAlgorithms defines algorithms that can be used during an ssh session

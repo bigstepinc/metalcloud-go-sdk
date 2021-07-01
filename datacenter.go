@@ -49,6 +49,7 @@ type DatacenterConfig struct {
 	ExtraInternalIPsPerSubnet                          int                    `json:"extraInternalIPsPerSubnet" yaml:"extraInternalIPsPerSubnet"`
 	ServerRAIDConfigurationEnabled                     bool                   `json:"serverRAIDConfigurationEnabled" yaml:"serverRAIDConfigurationEnabled"`
 	WebProxy                                           *WebProxy              `json:"webProxy" yaml:"webProxy"`
+	IsKubernetesDeployment                             bool                   `json:"isKubernetesDeployment" yaml:"isKubernetesDeployment"`
 }
 
 type WebProxy struct {
