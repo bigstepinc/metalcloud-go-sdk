@@ -12,7 +12,7 @@ import (
 type SwitchDevice struct {
 	NetworkEquipmentID                             int      `json:"network_equipment_id,omitempty" yaml:"id,omitempty"`
 	NetworkEquipmentIdentifierString               string   `json:"network_equipment_identifier_string,omitempty" yaml:"identifierString,omitempty"`
-	DatacenterName                                 string   `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+	DatacenterName                                 string   `json:"datacenter_name,omitempty" yaml:"datacenterName,omitempty"`
 	NetworkEquipmentProvisionerType                string   `json:"network_equipment_provisioner_type,omitempty" yaml:"provisionerType,omitempty"`
 	NetworkEquipmentProvisionerPosition            string   `json:"network_equipment_position,omitempty" yaml:"provisionerPosition,omitempty"`
 	NetworkEquipmentDriver                         string   `json:"network_equipment_driver,omitempty" yaml:"driver,omitempty"`
@@ -59,7 +59,7 @@ func (s *SwitchDevice) UnmarshalJSON(data []byte) error {
 	var v struct {
 		NetworkEquipmentID                             int      `json:"network_equipment_id,omitempty" yaml:"id,omitempty"`
 		NetworkEquipmentIdentifierString               string   `json:"network_equipment_identifier_string,omitempty" yaml:"identifierString,omitempty"`
-		DatacenterName                                 string   `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+		DatacenterName                                 string   `json:"datacenter_name,omitempty" yaml:"datacenterName,omitempty"`
 		NetworkEquipmentProvisionerType                string   `json:"network_equipment_provisioner_type,omitempty" yaml:"provisionerType,omitempty"`
 		NetworkEquipmentProvisionerPosition            string   `json:"network_equipment_position,omitempty" yaml:"provisionerPosition,omitempty"`
 		NetworkEquipmentDriver                         string   `json:"network_equipment_driver,omitempty" yaml:"driver,omitempty"`
