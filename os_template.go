@@ -26,8 +26,8 @@ type OSTemplate struct {
 	OSTemplateCredentials                 *OSTemplateCredentials  `json:"os_template_credentials,omitempty" yaml:"credentials,omitempty"`
 	VolumeTemplateTags                    []string                `json:"volume_template_tags,omitempty" yaml:"tags,omitempty"`
 	OSTemplatePreBootArchitecture         string                  `json:"os_template_pre_boot_architecture,omitempty" yaml:"preBootArchitecture,omitempty"`
-	OSAssetBootloaderLocalInstall         int                     `json:"os_asset_id_bootloader_local_install,omitempty" yaml:"OSAssetIDBootloaderLocalInstall,omitempty"`
-	OSAssetBootloaderOSBoot               int                     `json:"os_asset_id_bootloader_os_boot,omitempty" yaml:"OSAssetIDBootloaderOSBoot,omitempty"`
+	OSAssetBootloaderLocalInstall         int                     `json:"os_asset_id_bootloader_local_install" yaml:"OSAssetIDBootloaderLocalInstall"`
+	OSAssetBootloaderOSBoot               int                     `json:"os_asset_id_bootloader_os_boot" yaml:"OSAssetIDBootloaderOSBoot"`
 	VolumeTemplateVariablesJSON           string                  `json:"volume_template_variables_json,omitempty" yaml:"variablesJSON,omitempty"`
 	VolumeTemplateNetworkOperatingSystem  *NetworkOperatingSystem `json:"volume_template_network_operating_system,omitempty" yaml:"networkOS,omitempty"`
 	VolumeTemplateVersion                 string                  `json:"volume_template_version,omitempty"`
