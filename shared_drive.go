@@ -132,7 +132,7 @@ func (c *Client) sharedDriveDelete(sharedDriveID id) error {
 	return nil
 }
 
-func (c *Client) sharedDriveAttachInstanceArray(sharedDriveID int, instanceArrayID int) (*SharedDrive, error) {
+func (c *Client) SharedDriveAttachInstanceArray(sharedDriveID int, instanceArrayID int) (*SharedDrive, error) {
 	var updatedObject SharedDrive
 
 	if err := checkID(sharedDriveID); err != nil {
@@ -156,7 +156,7 @@ func (c *Client) sharedDriveAttachInstanceArray(sharedDriveID int, instanceArray
 	return &updatedObject, nil
 }
 
-func (c *Client) sharedDriveDetachInstanceArray(sharedDriveID int, instanceArrayID int) (*SharedDrive, error) {
+func (c *Client) SharedDriveDetachInstanceArray(sharedDriveID int, instanceArrayID int) (*SharedDrive, error) {
 	var updatedObject SharedDrive
 
 	if err := checkID(sharedDriveID); err != nil {
