@@ -180,6 +180,11 @@ func (c *Client) sharedDriveDetachInstanceArray(sharedDriveID int, instanceArray
 	return &updatedObject, nil
 }
 
+//SharedDrives retrieves the list of shared drives of an infrastructure
+func (c *Client) SharedDrives(infrastructureID int) (*map[string]SharedDrive, error) {
+	return c.sharedDrives(infrastructureID)
+}
+
 func (c *Client) sharedDrives(infrastructureID id) (*map[string]SharedDrive, error) {
 
 	if err := checkID(infrastructureID); err != nil {
