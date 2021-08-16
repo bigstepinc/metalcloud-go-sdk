@@ -132,6 +132,54 @@ func (c *Client) sharedDriveDelete(sharedDriveID id) error {
 	return nil
 }
 
+func (c *Client) sharedDriveAttachInstanceArray(sharedDriveID int, instanceArrayID int) (*SharedDrive, error) {
+	var updatedObject SharedDrive
+
+	if err := checkID(sharedDriveID); err != nil {
+		return nil, err
+	}
+
+	if err := checkID(instanceArrayID); err != nil {
+		return nil, err
+	}
+
+	err := c.rpcClient.CallFor(
+		&updatedObject,
+		"shared_drive_attach_instance_array",
+		sharedDriveID,
+		instanceArrayID,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &updatedObject, nil
+}
+
+func (c *Client) sharedDriveDetachInstanceArray(sharedDriveID int, instanceArrayID int) (*SharedDrive, error) {
+	var updatedObject SharedDrive
+
+	if err := checkID(sharedDriveID); err != nil {
+		return nil, err
+	}
+
+	if err := checkID(instanceArrayID); err != nil {
+		return nil, err
+	}
+
+	err := c.rpcClient.CallFor(
+		&updatedObject,
+		"shared_drive_detach_instance_array",
+		sharedDriveID,
+		instanceArrayID,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &updatedObject, nil
+}
+
 func (c *Client) sharedDrives(infrastructureID id) (*map[string]SharedDrive, error) {
 
 	if err := checkID(infrastructureID); err != nil {
