@@ -61,10 +61,12 @@ type DeployOptionsServerTypeMappingObject struct {
 func (c *Client) InfrastructureCreate(infrastructure Infrastructure) (*Infrastructure, error) {
 	var createdObject Infrastructure
 
+	userID := c.GetUserID()
+
 	err := c.rpcClient.CallFor(
 		&createdObject,
 		"infrastructure_create",
-		c.user,
+		userID,
 		infrastructure)
 
 	if err != nil {
@@ -171,9 +173,11 @@ func (c *Client) infrastructureDeployWithOptions(infrastructureID id, shutdownOp
 
 //Infrastructures returns a list of infrastructures
 func (c *Client) Infrastructures() (*map[string]Infrastructure, error) {
+	userID := c.GetUserID()
+
 	resp, err := c.rpcClient.Call(
 		"infrastructures",
-		c.user,
+		userID,
 	)
 
 	if resp.Error != nil {

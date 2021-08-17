@@ -43,10 +43,11 @@ type VolumeTemplate struct {
 //VolumeTemplates retrives the list of available templates
 func (c *Client) VolumeTemplates() (*map[string]VolumeTemplate, error) {
 	var createdObject map[string]VolumeTemplate
+	userID := c.GetUserID()
 
 	resp, err := c.rpcClient.Call(
 		"volume_templates",
-		c.user,
+		userID,
 	)
 
 	if resp.Error != nil {
