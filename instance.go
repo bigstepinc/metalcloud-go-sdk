@@ -49,7 +49,7 @@ type InstanceInterface struct {
 	InstanceInterfaceID            int                        `json:"instance_interface_id,omitempty"`
 	InstanceID                     int                        `json:"instance_id,omitempty"`
 	NetworkID                      int                        `json:"network_id,omitempty"`
-	InstanceInterfaceLaggIndexes   []int                      `json:"instance_interface_lagg_indexes,omitempty"`
+	InstanceInterfaceLaggIndexes   []string                   `json:"instance_interface_lagg_indexes,omitempty"`
 	InstanceInterfaceIndex         int                        `json:"instance_interface_index,omitempty"`
 	InstanceInterfaceCapacityMbps  int                        `json:"instance_interface_capacity_mbps,omitempty"`
 	InstanceInterfaceServiceStatus string                     `json:"instance_interface_service_status,omitempty"`
@@ -61,17 +61,17 @@ type InstanceInterface struct {
 
 //InstanceInterfaceOperation objects are created automatically when instances are created. Subnets are added on networks and then IP addresses are associated automatically or manually through the API to instance interfaces.
 type InstanceInterfaceOperation struct {
-	InstanceInterfaceLabel        string `json:"instance_interface_label,omitempty"`
-	InstanceInterfaceSubdomain    string `json:"instance_interface_subdomain,omitempty"`
-	InstanceInterfaceDeployStatus string `json:"instance_interface_deploy_status,omitempty"`
-	InstanceInterfaceDeployType   string `json:"instance_interface_deploy_type,omitempty"`
-	InstanceInterfaceID           int    `json:"instance_interface_id,omitempty"`
-	InstanceID                    int    `json:"instance_id,omitempty"`
-	NetworkID                     int    `json:"network_id,omitempty"`
-	InstanceInterfaceLaggIndexes  []int  `json:"instance_interface_lagg_indexes,omitempty"`
-	InstanceInterfaceIndex        int    `json:"instance_interface_index,omitempty"`
-	InstanceInterfaceCapacityMbps int    `json:"instance_interface_capacity_mbps,omitempty"`
-	InstanceInterfaceChangeID     int    `json:"instance_interface_change_id,omitempty"`
+	InstanceInterfaceLabel        string   `json:"instance_interface_label,omitempty"`
+	InstanceInterfaceSubdomain    string   `json:"instance_interface_subdomain,omitempty"`
+	InstanceInterfaceDeployStatus string   `json:"instance_interface_deploy_status,omitempty"`
+	InstanceInterfaceDeployType   string   `json:"instance_interface_deploy_type,omitempty"`
+	InstanceInterfaceID           int      `json:"instance_interface_id,omitempty"`
+	InstanceID                    int      `json:"instance_id,omitempty"`
+	NetworkID                     int      `json:"network_id,omitempty"`
+	InstanceInterfaceLaggIndexes  []string `json:"instance_interface_lagg_indexes,omitempty"`
+	InstanceInterfaceIndex        int      `json:"instance_interface_index,omitempty"`
+	InstanceInterfaceCapacityMbps int      `json:"instance_interface_capacity_mbps,omitempty"`
+	InstanceInterfaceChangeID     int      `json:"instance_interface_change_id,omitempty"`
 }
 
 //InstanceCredentials contains information needed to connect to the server via IPMI, iLO etc.
