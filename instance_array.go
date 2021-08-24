@@ -10,7 +10,7 @@ type InstanceArray struct {
 	InstanceArrayLabel                 string                   `json:"instance_array_label,omitempty" yaml:"label,omitempty"`
 	InstanceArraySubdomain             string                   `json:"instance_array_subdomain,omitempty" yaml:"subdomain,omitempty"`
 	InstanceArrayBootMethod            string                   `json:"instance_array_boot_method,omitempty" yaml:"bootMethod,omitempty"`
-	InstanceArrayInstanceCount         int                      `json:"instance_array_instance_count,omitempty" yaml:"instanceCount,omitempty"`
+	InstanceArrayInstanceCount         int                      `json:"instance_array_instance_count" yaml:"instanceCount"`
 	InstanceArrayRAMGbytes             int                      `json:"instance_array_ram_gbytes,omitempty" yaml:"ramGBytes,omitempty"`
 	InstanceArrayProcessorCount        int                      `json:"instance_array_processor_count,omitempty" yaml:"processorCount,omitempty"`
 	InstanceArrayProcessorCoreMHZ      int                      `json:"instance_array_processor_core_mhz,omitempty" yaml:"processorCoreMhz,omitempty"`
@@ -36,7 +36,7 @@ type InstanceArrayOperation struct {
 	InstanceArrayLabel                 string                            `json:"instance_array_label,omitempty" yaml:"label,omitempty"`
 	InstanceArraySubdomain             string                            `json:"instance_array_subdomain,omitempty" yaml:"subdomain,omitempty"`
 	InstanceArrayBootMethod            string                            `json:"instance_array_boot_method,omitempty" yaml:"bootMethod,omitempty"`
-	InstanceArrayInstanceCount         int                               `json:"instance_array_instance_count,omitempty" yaml:"instanceCount,omitempty"`
+	InstanceArrayInstanceCount         int                               `json:"instance_array_instance_count" yaml:"instanceCount"`
 	InstanceArrayRAMGbytes             int                               `json:"instance_array_ram_gbytes,omitempty" yaml:"ramGBytes,omitempty"`
 	InstanceArrayProcessorCount        int                               `json:"instance_array_processor_count,omitempty" yaml:"processorCount,omitempty"`
 	InstanceArrayProcessorCoreMHZ      int                               `json:"instance_array_processor_core_mhz,omitempty" yaml:"processorCoreMhz,omitempty"`
