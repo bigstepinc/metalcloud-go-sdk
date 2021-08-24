@@ -36,7 +36,7 @@ type SharedDriveOperation struct {
 	SharedDriveID                     int    `json:"shared_drive_id,omitempty" yaml:"id,omitempty"`
 	SharedDriveSizeMbytes             int    `json:"shared_drive_size_mbytes,omitempty" yaml:"sizeMBytes,omitempty"`
 	SharedDriveStorageType            string `json:"shared_drive_storage_type,omitempty" yaml:"storageType,omitempty"`
-	SharedDriveHasGFS                 bool   `json:"shared_drive_has_gfs,omitempty" yaml:"hasGFS,omitempty"`
+	SharedDriveHasGFS                 bool   `json:"shared_drive_has_gfs" yaml:"hasGFS"`
 	InfrastructureID                  int    `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
 	SharedDriveServiceStatus          string `json:"shared_drive_service_status,omitempty" yaml:"serviceStatus,omitempty"`
 	SharedDriveAttachedInstanceArrays []int  `json:"shared_drive_attached_instance_arrays,omitempty" yaml:"attachedInstanceArrays,omitempty"`

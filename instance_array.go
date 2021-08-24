@@ -10,7 +10,7 @@ type InstanceArray struct {
 	InstanceArrayLabel                 string                   `json:"instance_array_label,omitempty" yaml:"label,omitempty"`
 	InstanceArraySubdomain             string                   `json:"instance_array_subdomain,omitempty" yaml:"subdomain,omitempty"`
 	InstanceArrayBootMethod            string                   `json:"instance_array_boot_method,omitempty" yaml:"bootMethod,omitempty"`
-	InstanceArrayInstanceCount         int                      `json:"instance_array_instance_count" yaml:"instanceCount"`
+	InstanceArrayInstanceCount         int                      `json:"instance_array_instance_count,omitempty" yaml:"instanceCount,omitempty"`
 	InstanceArrayRAMGbytes             int                      `json:"instance_array_ram_gbytes,omitempty" yaml:"ramGBytes,omitempty"`
 	InstanceArrayProcessorCount        int                      `json:"instance_array_processor_count,omitempty" yaml:"processorCount,omitempty"`
 	InstanceArrayProcessorCoreMHZ      int                      `json:"instance_array_processor_core_mhz,omitempty" yaml:"processorCoreMhz,omitempty"`
@@ -38,10 +38,10 @@ type InstanceArrayOperation struct {
 	InstanceArrayBootMethod            string                            `json:"instance_array_boot_method,omitempty" yaml:"bootMethod,omitempty"`
 	InstanceArrayInstanceCount         int                               `json:"instance_array_instance_count" yaml:"instanceCount"`
 	InstanceArrayRAMGbytes             int                               `json:"instance_array_ram_gbytes,omitempty" yaml:"ramGBytes,omitempty"`
-	InstanceArrayProcessorCount        int                               `json:"instance_array_processor_count,omitempty" yaml:"processorCount,omitempty"`
+	InstanceArrayProcessorCount        int                               `json:"instance_array_processor_count" yaml:"processorCount"`
 	InstanceArrayProcessorCoreMHZ      int                               `json:"instance_array_processor_core_mhz,omitempty" yaml:"processorCoreMhz,omitempty"`
-	InstanceArrayProcessorCoreCount    int                               `json:"instance_array_processor_core_count,omitempty" yaml:"processorCoreCount,omitempty"`
-	InstanceArrayDiskCount             int                               `json:"instance_array_disk_count,omitempty" yaml:"diskCount,omitempty"`
+	InstanceArrayProcessorCoreCount    int                               `json:"instance_array_processor_core_count" yaml:"processorCoreCount"`
+	InstanceArrayDiskCount             int                               `json:"instance_array_disk_count" yaml:"diskCount"`
 	InstanceArrayDiskSizeMBytes        int                               `json:"instance_array_disk_size_mbytes,omitempty" yaml:"diskSizeMBytes,omitempty"`
 	InstanceArrayDiskTypes             []string                          `json:"instance_array_disk_types,omitempty" yaml:"diskTypes,omitempty"`
 	InstanceArrayServiceStatus         string                            `json:"instance_array_service_status,omitempty" yaml:"serviceStatus,omitempty"`
