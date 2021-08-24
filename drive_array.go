@@ -56,12 +56,12 @@ func (c *Client) driveArrays(infrastructureID id) (*map[string]DriveArray, error
 		infrastructureID,
 	)
 
-	if resp.Error != nil {
-		return nil, fmt.Errorf(resp.Error.Message)
-	}
-
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
 	}
 
 	_, ok := resp.Result.([]interface{})
@@ -169,7 +169,6 @@ func (c *Client) driveArrayDelete(driveArrayID id) error {
 		driveArrayID)
 
 	if err != nil {
-
 		return err
 	}
 
@@ -192,12 +191,12 @@ func (c *Client) driveArrayDrives(driveArray id) (*map[string]Drive, error) {
 		driveArray,
 	)
 
-	if resp.Error != nil {
-		return nil, fmt.Errorf(resp.Error.Message)
-	}
-
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
 	}
 
 	_, ok := resp.Result.([]interface{})

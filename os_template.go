@@ -162,12 +162,12 @@ func (c *Client) OSTemplates() (*map[string]OSTemplate, error) {
 		userID,
 	)
 
-	if resp.Error != nil {
-		return nil, fmt.Errorf(resp.Error.Message)
-	}
-
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
 	}
 
 	_, ok := resp.Result.([]interface{})
@@ -197,12 +197,12 @@ func (c *Client) OSTemplateOSAssets(osTemplateID int) (*map[string]OSTemplateOSA
 		osTemplateID,
 	)
 
-	if resp.Error != nil {
-		return nil, fmt.Errorf(resp.Error.Message)
-	}
-
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
 	}
 
 	_, ok := resp.Result.([]interface{})

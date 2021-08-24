@@ -67,12 +67,12 @@ func (c *Client) serverTypesMatches(infrastructureID id, hardwareConfiguration H
 		infrastructureID,
 	)
 
-	if resp.Error != nil {
-		return nil, fmt.Errorf(resp.Error.Message)
-	}
-
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
 	}
 
 	_, ok := resp.Result.([]interface{})
@@ -100,12 +100,12 @@ func (c *Client) ServerTypesMatchHardwareConfiguration(datacenterName string, ha
 		hardwareConfiguration,
 	)
 
-	if resp.Error != nil {
-		return nil, fmt.Errorf(resp.Error.Message)
-	}
-
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
 	}
 
 	_, ok := resp.Result.([]interface{})
@@ -149,12 +149,12 @@ func (c *Client) ServerTypes(bOnlyAvailable bool) (*map[int]ServerType, error) {
 		bOnlyAvailable,
 	)
 
-	if resp.Error != nil {
-		return nil, fmt.Errorf(resp.Error.Message)
-	}
-
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
 	}
 
 	_, ok := resp.Result.([]interface{})
@@ -180,12 +180,12 @@ func (c *Client) ServerTypesForDatacenter(datacenterName string, bOnlyAvailable 
 		datacenterName,
 	)
 
-	if resp.Error != nil {
-		return nil, fmt.Errorf(resp.Error.Message)
-	}
-
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
 	}
 
 	_, ok := resp.Result.([]interface{})

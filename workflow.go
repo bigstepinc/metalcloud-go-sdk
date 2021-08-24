@@ -149,12 +149,12 @@ func (c *Client) WorkflowsWithUsage(usage string) (*map[string]Workflow, error) 
 		)
 	}
 
-	if resp.Error != nil {
-		return nil, fmt.Errorf(resp.Error.Message)
-	}
-
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
 	}
 
 	_, ok := resp.Result.([]interface{})

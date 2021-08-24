@@ -144,12 +144,12 @@ func (c *Client) instanceArrays(infrastructureID id) (*map[string]InstanceArray,
 		infrastructureID,
 	)
 
-	if resp.Error != nil {
-		return nil, fmt.Errorf(resp.Error.Message)
-	}
-
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
 	}
 
 	_, ok := resp.Result.([]interface{})

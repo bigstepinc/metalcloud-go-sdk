@@ -93,12 +93,12 @@ func (c *Client) DriveSnapshots(driveID int) (*map[string]Snapshot, error) {
 		driveID,
 	)
 
-	if resp.Error != nil {
-		return nil, fmt.Errorf(resp.Error.Message)
-	}
-
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
 	}
 
 	_, ok := resp.Result.([]interface{})

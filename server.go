@@ -198,14 +198,15 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 		filter,
 		tables,
 		columns,
-		collapseType)
-
-	if resp.Error != nil {
-		return nil, fmt.Errorf(resp.Error.Message)
-	}
+		collapseType,
+	)
 
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
 	}
 
 	_, ok := resp.Result.([]interface{})

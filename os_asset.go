@@ -111,13 +111,12 @@ func (c *Client) OSAssets() (*map[string]OSAsset, error) {
 		"os_assets",
 		userID,
 	)
+	if err != nil {
+		return nil, err
+	}
 
 	if resp.Error != nil {
 		return nil, fmt.Errorf(resp.Error.Message)
-	}
-
-	if err != nil {
-		return nil, err
 	}
 
 	_, ok := resp.Result.([]interface{})
