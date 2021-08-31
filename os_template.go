@@ -26,8 +26,8 @@ type OSTemplate struct {
 	OSTemplateCredentials                 *OSTemplateCredentials  `json:"os_template_credentials,omitempty" yaml:"credentials,omitempty"`
 	VolumeTemplateTags                    []string                `json:"volume_template_tags,omitempty" yaml:"tags,omitempty"`
 	OSTemplatePreBootArchitecture         string                  `json:"os_template_pre_boot_architecture,omitempty" yaml:"preBootArchitecture,omitempty"`
-	OSAssetBootloaderLocalInstall         int                     `json:"os_asset_id_bootloader_local_install,omitempty" yaml:"OSAssetIDBootloaderLocalInstall,omitempty"`
-	OSAssetBootloaderOSBoot               int                     `json:"os_asset_id_bootloader_os_boot,omitempty" yaml:"OSAssetIDBootloaderOSBoot,omitempty"`
+	OSAssetBootloaderLocalInstall         int                     `json:"os_asset_id_bootloader_local_install" yaml:"OSAssetIDBootloaderLocalInstall"`
+	OSAssetBootloaderOSBoot               int                     `json:"os_asset_id_bootloader_os_boot" yaml:"OSAssetIDBootloaderOSBoot"`
 	VolumeTemplateVariablesJSON           string                  `json:"volume_template_variables_json,omitempty" yaml:"variablesJSON,omitempty"`
 	VolumeTemplateNetworkOperatingSystem  *NetworkOperatingSystem `json:"volume_template_network_operating_system,omitempty" yaml:"networkOS,omitempty"`
 	VolumeTemplateVersion                 string                  `json:"volume_template_version,omitempty"`
@@ -131,8 +131,7 @@ func (c *Client) OSTemplateGet(osTemplateID int, decryptPasswd bool) (*OSTemplat
 		return nil, err
 	}
 
-	if decryptPasswd {
-
+	if decryptPasswd && createdObject.OSTemplateCredentials != nil {
 		passwdComponents := strings.Split(createdObject.OSTemplateCredentials.OSTemplateInitialPassword, ":")
 		if len(passwdComponents) != 2 {
 			return nil, fmt.Errorf("Password not returned with proper components")
@@ -157,25 +156,31 @@ func (c *Client) OSTemplateGet(osTemplateID int, decryptPasswd bool) (*OSTemplat
 func (c *Client) OSTemplates() (*map[string]OSTemplate, error) {
 
 	userID := c.GetUserID()
-	res, err := c.rpcClient.Call(
+
+	resp, err := c.rpcClient.Call(
 		"os_templates",
-		userID)
+		userID,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
 	if ok {
 		var m = map[string]OSTemplate{}
 		return &m, nil
 	}
-
 	var createdObject map[string]OSTemplate
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	err = resp.GetObject(&createdObject)
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil
@@ -183,16 +188,24 @@ func (c *Client) OSTemplates() (*map[string]OSTemplate, error) {
 
 //OSTemplateOSAssets returns the OSAssets assigned to an OSTemplate.
 func (c *Client) OSTemplateOSAssets(osTemplateID int) (*map[string]OSTemplateOSAssetData, error) {
+	if err := checkID(osTemplateID); err != nil {
+		return nil, err
+	}
 
-	res, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"os_template_os_assets",
-		osTemplateID)
+		osTemplateID,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
 	if ok {
 		var m = map[string]OSTemplateOSAssetData{}
 		return &m, nil
@@ -200,9 +213,10 @@ func (c *Client) OSTemplateOSAssets(osTemplateID int) (*map[string]OSTemplateOSA
 
 	var createdObject map[string]OSTemplateOSAssetData
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	err = resp.GetObject(&createdObject)
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil
@@ -211,7 +225,8 @@ func (c *Client) OSTemplateOSAssets(osTemplateID int) (*map[string]OSTemplateOSA
 //OSTemplateAddOSAsset adds an asset to a template
 func (c *Client) OSTemplateAddOSAsset(osTemplateID int, osAssetID int, path string, variablesJSON string) error {
 
-	_, err := c.rpcClient.Call(
+	// var cond bool
+	resp, err := c.rpcClient.Call(
 		"os_template_add_os_asset",
 		osTemplateID,
 		osAssetID,
@@ -222,13 +237,17 @@ func (c *Client) OSTemplateAddOSAsset(osTemplateID int, osAssetID int, path stri
 		return err
 	}
 
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
 	return nil
 }
 
 //OSTemplateRemoveOSAsset removes an asset from a template
 func (c *Client) OSTemplateRemoveOSAsset(osTemplateID int, osAssetID int) error {
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"os_template_remove_os_asset",
 		osTemplateID,
 		osAssetID)
@@ -237,13 +256,17 @@ func (c *Client) OSTemplateRemoveOSAsset(osTemplateID int, osAssetID int) error 
 		return err
 	}
 
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
 	return nil
 }
 
 //OSTemplateUpdateOSAssetPath updates an asset mapping
 func (c *Client) OSTemplateUpdateOSAssetPath(osTemplateID int, osAssetID int, path string) error {
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"os_template_update_os_asset_path",
 		osTemplateID,
 		osAssetID,
@@ -253,13 +276,17 @@ func (c *Client) OSTemplateUpdateOSAssetPath(osTemplateID int, osAssetID int, pa
 		return err
 	}
 
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
 	return nil
 }
 
 //OSTemplateUpdateOSAssetVariables updates an asset variable
 func (c *Client) OSTemplateUpdateOSAssetVariables(osTemplateID int, osAssetID int, variablesJSON string) error {
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"os_template_update_os_asset_variables",
 		osTemplateID,
 		osAssetID,
@@ -269,12 +296,16 @@ func (c *Client) OSTemplateUpdateOSAssetVariables(osTemplateID int, osAssetID in
 		return err
 	}
 
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
 	return nil
 }
 
 //OSTemplateMakePublic makes a template public
 func (c *Client) OSTemplateMakePublic(osTemplateID int) error {
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"os_template_make_public",
 		osTemplateID,
 	)
@@ -283,12 +314,16 @@ func (c *Client) OSTemplateMakePublic(osTemplateID int) error {
 		return err
 	}
 
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
 	return nil
 }
 
 //OSTemplateMakePrivate makes a template private
 func (c *Client) OSTemplateMakePrivate(osTemplateID int, userID int) error {
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"os_template_make_private",
 		osTemplateID,
 		userID,
@@ -296,6 +331,10 @@ func (c *Client) OSTemplateMakePrivate(osTemplateID int, userID int) error {
 
 	if err != nil {
 		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
 	}
 
 	return nil
@@ -345,12 +384,31 @@ func (t OSTemplate) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (t OSTemplate) Delete(client MetalCloudClient) error {
+	var result *OSTemplate
+	var id int
 	err := t.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.OSTemplateDelete(t.VolumeTemplateID)
+
+	if t.VolumeTemplateID != 0 {
+		id = t.VolumeTemplateID
+	} else {
+		templates, err := client.OSTemplates()
+		if err != nil {
+			return err
+		}
+
+		for _, temp := range *templates {
+			if temp.VolumeTemplateLabel == t.VolumeTemplateLabel {
+				result = &temp
+			}
+		}
+
+		id = result.VolumeTemplateID
+	}
+	err = client.OSTemplateDelete(id)
 
 	if err != nil {
 		return err

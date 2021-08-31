@@ -36,7 +36,7 @@ type SharedDriveOperation struct {
 	SharedDriveID                     int    `json:"shared_drive_id,omitempty" yaml:"id,omitempty"`
 	SharedDriveSizeMbytes             int    `json:"shared_drive_size_mbytes,omitempty" yaml:"sizeMBytes,omitempty"`
 	SharedDriveStorageType            string `json:"shared_drive_storage_type,omitempty" yaml:"storageType,omitempty"`
-	SharedDriveHasGFS                 bool   `json:"shared_drive_has_gfs,omitempty" yaml:"hasGFS,omitempty"`
+	SharedDriveHasGFS                 bool   `json:"shared_drive_has_gfs" yaml:"hasGFS"`
 	InfrastructureID                  int    `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
 	SharedDriveServiceStatus          string `json:"shared_drive_service_status,omitempty" yaml:"serviceStatus,omitempty"`
 	SharedDriveAttachedInstanceArrays []int  `json:"shared_drive_attached_instance_arrays,omitempty" yaml:"attachedInstanceArrays,omitempty"`
@@ -132,31 +132,89 @@ func (c *Client) sharedDriveDelete(sharedDriveID id) error {
 	return nil
 }
 
+func (c *Client) SharedDriveAttachInstanceArray(sharedDriveID int, instanceArrayID int) (*SharedDrive, error) {
+	var updatedObject SharedDrive
+
+	if err := checkID(sharedDriveID); err != nil {
+		return nil, err
+	}
+
+	if err := checkID(instanceArrayID); err != nil {
+		return nil, err
+	}
+
+	err := c.rpcClient.CallFor(
+		&updatedObject,
+		"shared_drive_attach_instance_array",
+		sharedDriveID,
+		instanceArrayID,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &updatedObject, nil
+}
+
+func (c *Client) SharedDriveDetachInstanceArray(sharedDriveID int, instanceArrayID int) (*SharedDrive, error) {
+	var updatedObject SharedDrive
+
+	if err := checkID(sharedDriveID); err != nil {
+		return nil, err
+	}
+
+	if err := checkID(instanceArrayID); err != nil {
+		return nil, err
+	}
+
+	err := c.rpcClient.CallFor(
+		&updatedObject,
+		"shared_drive_detach_instance_array",
+		sharedDriveID,
+		instanceArrayID,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &updatedObject, nil
+}
+
+//SharedDrives retrieves the list of shared drives of an infrastructure
+func (c *Client) SharedDrives(infrastructureID int) (*map[string]SharedDrive, error) {
+	return c.sharedDrives(infrastructureID)
+}
+
 func (c *Client) sharedDrives(infrastructureID id) (*map[string]SharedDrive, error) {
 
 	if err := checkID(infrastructureID); err != nil {
 		return nil, err
 	}
+	var createdObject map[string]SharedDrive
 
-	res, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"shared_drives",
-		infrastructureID)
+		infrastructureID,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
 	if ok {
 		var m = map[string]SharedDrive{}
 		return &m, nil
 	}
 
-	var createdObject map[string]SharedDrive
+	err = resp.GetObject(&createdObject)
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil
@@ -211,12 +269,24 @@ func (sd SharedDrive) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (sd SharedDrive) Delete(client MetalCloudClient) error {
+	var result *SharedDrive
+	var id int
 	err := sd.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.SharedDriveDelete(sd.SharedDriveID)
+
+	if sd.SharedDriveLabel != "" {
+		result, err = client.SharedDriveGetByLabel(sd.SharedDriveLabel)
+		if err != nil {
+			return err
+		}
+		id = result.SharedDriveID
+	} else {
+		id = sd.SharedDriveID
+	}
+	err = client.SharedDriveDelete(id)
 
 	if err != nil {
 		return err

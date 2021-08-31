@@ -49,7 +49,7 @@ type InstanceInterface struct {
 	InstanceInterfaceID            int                        `json:"instance_interface_id,omitempty"`
 	InstanceID                     int                        `json:"instance_id,omitempty"`
 	NetworkID                      int                        `json:"network_id,omitempty"`
-	InstanceInterfaceLaggIndexes   []int                      `json:"instance_interface_lagg_indexes,omitempty"`
+	InstanceInterfaceLaggIndexes   []string                   `json:"instance_interface_lagg_indexes,omitempty"`
 	InstanceInterfaceIndex         int                        `json:"instance_interface_index,omitempty"`
 	InstanceInterfaceCapacityMbps  int                        `json:"instance_interface_capacity_mbps,omitempty"`
 	InstanceInterfaceServiceStatus string                     `json:"instance_interface_service_status,omitempty"`
@@ -61,17 +61,17 @@ type InstanceInterface struct {
 
 //InstanceInterfaceOperation objects are created automatically when instances are created. Subnets are added on networks and then IP addresses are associated automatically or manually through the API to instance interfaces.
 type InstanceInterfaceOperation struct {
-	InstanceInterfaceLabel        string `json:"instance_interface_label,omitempty"`
-	InstanceInterfaceSubdomain    string `json:"instance_interface_subdomain,omitempty"`
-	InstanceInterfaceDeployStatus string `json:"instance_interface_deploy_status,omitempty"`
-	InstanceInterfaceDeployType   string `json:"instance_interface_deploy_type,omitempty"`
-	InstanceInterfaceID           int    `json:"instance_interface_id,omitempty"`
-	InstanceID                    int    `json:"instance_id,omitempty"`
-	NetworkID                     int    `json:"network_id,omitempty"`
-	InstanceInterfaceLaggIndexes  []int  `json:"instance_interface_lagg_indexes,omitempty"`
-	InstanceInterfaceIndex        int    `json:"instance_interface_index,omitempty"`
-	InstanceInterfaceCapacityMbps int    `json:"instance_interface_capacity_mbps,omitempty"`
-	InstanceInterfaceChangeID     int    `json:"instance_interface_change_id,omitempty"`
+	InstanceInterfaceLabel        string   `json:"instance_interface_label,omitempty"`
+	InstanceInterfaceSubdomain    string   `json:"instance_interface_subdomain,omitempty"`
+	InstanceInterfaceDeployStatus string   `json:"instance_interface_deploy_status,omitempty"`
+	InstanceInterfaceDeployType   string   `json:"instance_interface_deploy_type,omitempty"`
+	InstanceInterfaceID           int      `json:"instance_interface_id,omitempty"`
+	InstanceID                    int      `json:"instance_id,omitempty"`
+	NetworkID                     int      `json:"network_id,omitempty"`
+	InstanceInterfaceLaggIndexes  []string `json:"instance_interface_lagg_indexes,omitempty"`
+	InstanceInterfaceIndex        int      `json:"instance_interface_index,omitempty"`
+	InstanceInterfaceCapacityMbps int      `json:"instance_interface_capacity_mbps,omitempty"`
+	InstanceInterfaceChangeID     int      `json:"instance_interface_change_id,omitempty"`
 }
 
 //InstanceCredentials contains information needed to connect to the server via IPMI, iLO etc.
@@ -252,16 +252,21 @@ func (c *Client) instanceArrayInstances(instanceArrayID id) (*map[string]Instanc
 		return nil, err
 	}
 
-	res, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"instance_array_instances",
 		instanceArrayID,
-		nil)
+		nil,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
 	if ok {
 		var m = map[string]Instance{}
 		return &m, nil
@@ -269,9 +274,9 @@ func (c *Client) instanceArrayInstances(instanceArrayID id) (*map[string]Instanc
 
 	var createdObject map[string]Instance
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	err = resp.GetObject(&createdObject)
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil
@@ -337,13 +342,21 @@ func (c *Client) instanceServerPowerGetBatch(infrastructureID id, instanceIDs []
 		return nil, err
 	}
 
-	res, err := c.rpcClient.Call("instance_server_power_get_batch", infrastructureID, instanceIDs)
+	resp, err := c.rpcClient.Call(
+		"instance_server_power_get_batch",
+		infrastructureID,
+		instanceIDs,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
 	if ok {
 		var m = map[string]string{}
 		return &m, nil
@@ -351,9 +364,10 @@ func (c *Client) instanceServerPowerGetBatch(infrastructureID id, instanceIDs []
 
 	var createdObject map[string]string
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	err = resp.GetObject(&createdObject)
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil

@@ -105,18 +105,22 @@ func (c *Client) OSAssetGet(osAssetID int) (*OSAsset, error) {
 
 //OSAssets retrieves a list of all the OSAsset objects which a specified User is allowed to see through ownership or delegation. The OSAsset objects never return the actual protected OSAsset value.
 func (c *Client) OSAssets() (*map[string]OSAsset, error) {
-
 	userID := c.GetUserID()
 
-	res, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"os_assets",
-		userID)
-
+		userID,
+	)
 	if err != nil {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
+
 	if ok {
 		var m = map[string]OSAsset{}
 		return &m, nil
@@ -124,9 +128,55 @@ func (c *Client) OSAssets() (*map[string]OSAsset, error) {
 
 	var createdObject map[string]OSAsset
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	err = resp.GetObject(&createdObject)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdObject, nil
+}
+
+//OSAssetMakePublic makes an OS Asset public
+func (c *Client) OSAssetMakePublic(osAssetID int) (*OSAsset, error) {
+	var createdObject OSAsset
+
+	if err := checkID(osAssetID); err != nil {
+		return nil, err
+	}
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"os_asset_make_public",
+		osAssetID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdObject, nil
+}
+
+//OSAssetMakePrivate makes an OS Asset private and owned by the current user
+func (c *Client) OSAssetMakePrivate(osAssetID int, userID int) (*OSAsset, error) {
+	var createdObject OSAsset
+
+	if err := checkID(osAssetID); err != nil {
+		return nil, err
+	}
+
+	if err := checkID(userID); err != nil {
+		return nil, err
+	}
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"os_asset_make_private",
+		osAssetID,
+		userID)
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil
@@ -176,12 +226,33 @@ func (asset OSAsset) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (asset OSAsset) Delete(client MetalCloudClient) error {
+	var result *OSAsset
+	var id int
+
 	err := asset.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.OSAssetDelete(asset.OSAssetID)
+
+	if asset.OSAssetID != 0 {
+		id = asset.OSAssetID
+	} else {
+		assets, err := client.OSAssets()
+		if err != nil {
+			return err
+		}
+
+		for _, a := range *assets {
+			if a.OSAssetFileName == asset.OSAssetFileName {
+				result = &a
+			}
+		}
+
+		id = result.OSAssetID
+	}
+
+	err = client.OSAssetDelete(id)
 
 	if err != nil {
 		return err

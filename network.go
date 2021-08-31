@@ -56,15 +56,20 @@ func (c *Client) networks(infrastructureID id) (*map[string]Network, error) {
 		return nil, err
 	}
 
-	res, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"networks",
-		infrastructureID)
+		infrastructureID,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
 	if ok {
 		var m = map[string]Network{}
 		return &m, nil
@@ -72,9 +77,10 @@ func (c *Client) networks(infrastructureID id) (*map[string]Network, error) {
 
 	var createdObject map[string]Network
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	err = resp.GetObject(&createdObject)
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil
@@ -129,12 +135,16 @@ func (c *Client) networkDelete(networkID id) error {
 		return err
 	}
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"network_delete",
 		networkID)
 
 	if err != nil {
 		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
 	}
 
 	return nil
@@ -151,13 +161,17 @@ func (c *Client) networkJoin(networkID id, networkToBeDeletedID id) error {
 		return err
 	}
 
-	_, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"network_join",
 		networkID,
 		networkToBeDeletedID)
 
 	if err != nil {
 		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
 	}
 
 	return nil
@@ -209,12 +223,24 @@ func (n Network) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (n Network) Delete(client MetalCloudClient) error {
+	var result *Network
+	var id int
 	err := n.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.NetworkDelete(n.NetworkID)
+
+	if n.NetworkLabel != "" {
+		result, err = client.NetworkGetByLabel(n.NetworkLabel)
+		if err != nil {
+			return err
+		}
+		id = result.NetworkID
+	} else {
+		id = n.NetworkID
+	}
+	err = client.NetworkDelete(id)
 
 	if err != nil {
 		return err

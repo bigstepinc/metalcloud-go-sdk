@@ -106,37 +106,40 @@ func (c *Client) Variables(usage string) (*map[string]Variable, error) {
 
 	userID := c.GetUserID()
 
-	var res *jsonrpc.RPCResponse
+	var createdObject map[string]Variable
+	var err error
+	var resp *jsonrpc.RPCResponse
+
 	if usage != "" {
-		v, err := c.rpcClient.Call(
+		resp, err = c.rpcClient.Call(
 			"variables",
 			userID,
 			usage)
-		if err != nil {
-			return nil, err
-		}
-		res = v
+
 	} else {
-		v, err := c.rpcClient.Call(
+		resp, err = c.rpcClient.Call(
 			"variables",
 			userID)
-		if err != nil {
-			return nil, err
-		}
-		res = v
 	}
 
-	_, ok := res.Result.([]interface{})
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
 	if ok {
 		var m = map[string]Variable{}
 		return &m, nil
 	}
 
-	var createdObject map[string]Variable
+	err = resp.GetObject(&createdObject)
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil
@@ -185,13 +188,32 @@ func (v Variable) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (v Variable) Delete(client MetalCloudClient) error {
+	var result *Variable
+	var id int
 	err := v.Validate()
 
 	if err != nil {
 		return err
 	}
 
-	err = client.VariableDelete(v.VariableID)
+	if v.VariableID != 0 {
+		id = v.VariableID
+	} else {
+		vars, err := client.Variables("")
+		if err != nil {
+			return err
+		}
+
+		for _, variable := range *vars {
+			if variable.VariableName == v.VariableName {
+				result = &variable
+			}
+		}
+
+		id = result.VariableID
+	}
+
+	err = client.VariableDelete(id)
 
 	if err != nil {
 		return err

@@ -45,10 +45,18 @@ type DatacenterConfig struct {
 	DatacenterNetworksLayer2Only                       bool                   `json:"datacenterNetworkIsLayer2Only" yaml:"datacenterNetworkIsLayer2Only"`
 	SwitchProvisioner                                  map[string]interface{} `json:"switchProvisioner,omitempty" yaml:"switchProvisioner,omitempty"`
 	EnableTenantAccessToIPMI                           bool                   `json:"enableTenantAccessToIPMI" yaml:"enableTenantAccessToIPMI"`
-	ProxyURL                                           string                 `json:"proxyURL" yaml:"proxyURL"`
-	ProxyUsername                                      string                 `json:"proxyUsername" yaml:"proxyUsername"`
-	ProxyPassword                                      string                 `json:"proxyPassword" yaml:"proxyPassword"`
-	EnableProxyURL                                     bool                   `json:"enableProxyURL" yaml:"enableProxyURL"`
+	AllowVLANOverrides                                 bool                   `json:"allowVLANOverrides" yaml:"allowVLANOverrides"`
+	ExtraInternalIPsPerSubnet                          int                    `json:"extraInternalIPsPerSubnet" yaml:"extraInternalIPsPerSubnet"`
+	ServerRAIDConfigurationEnabled                     bool                   `json:"serverRAIDConfigurationEnabled" yaml:"serverRAIDConfigurationEnabled"`
+	WebProxy                                           *WebProxy              `json:"webProxy" yaml:"webProxy"`
+	IsKubernetesDeployment                             bool                   `json:"isKubernetesDeployment" yaml:"isKubernetesDeployment"`
+}
+
+type WebProxy struct {
+	WebProxyServerIP   string `json:"web_proxy_server_ip,omitempty" yaml:"ip,omitempty"`
+	WebProxyServerPort int    `json:"web_proxy_server_port,omitempty" yaml:"port,omitempty"`
+	WebProxyUsername   string `json:"web_proxy_username,omitempty" yaml:"username,omitempty"`
+	WebProxyPassword   string `json:"web_proxy_password,omitempty" yaml:"password,omitempty"`
 }
 
 /*
@@ -158,18 +166,22 @@ func (c *Client) DatacentersByUserEmail(userEmail string, onlyActive bool) (*map
 
 //datacenters returns datacenters
 func (c *Client) datacenters(userID id, onlyActive bool) (*map[string]Datacenter, error) {
-
-	res, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"datacenters",
 		userID,
 		onlyActive,
-		false)
+		false,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
 	if ok {
 		var m = map[string]Datacenter{}
 		return &m, nil
@@ -177,9 +189,9 @@ func (c *Client) datacenters(userID id, onlyActive bool) (*map[string]Datacenter
 
 	var createdObject map[string]Datacenter
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	err = resp.GetObject(&createdObject)
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil

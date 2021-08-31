@@ -2,8 +2,6 @@ package metalcloud
 
 import (
 	"fmt"
-
-	"github.com/ybbus/jsonrpc"
 )
 
 //Snapshot A snapshot of a drive created at a specific time.
@@ -88,19 +86,22 @@ func (c *Client) DriveSnapshotGet(driveSnapshotID int) (*Snapshot, error) {
 
 //DriveSnapshots retrieves a list of all the snapshot objects
 func (c *Client) DriveSnapshots(driveID int) (*map[string]Snapshot, error) {
-
-	var res *jsonrpc.RPCResponse
 	var err error
 
-	res, err = c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"drive_snapshots",
-		driveID)
+		driveID,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
 	if ok {
 		var m = map[string]Snapshot{}
 		return &m, nil
@@ -108,9 +109,10 @@ func (c *Client) DriveSnapshots(driveID int) (*map[string]Snapshot, error) {
 
 	var createdObject map[string]Snapshot
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	err = resp.GetObject(&createdObject)
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil

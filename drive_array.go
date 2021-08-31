@@ -51,15 +51,21 @@ func (c *Client) driveArrays(infrastructureID id) (*map[string]DriveArray, error
 		return nil, err
 	}
 
-	res, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"drive_arrays",
-		infrastructureID)
+		infrastructureID,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
+
 	if ok {
 		var m = map[string]DriveArray{}
 		return &m, nil
@@ -67,9 +73,10 @@ func (c *Client) driveArrays(infrastructureID id) (*map[string]DriveArray, error
 
 	var createdObject map[string]DriveArray
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	err = resp.GetObject(&createdObject)
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil
@@ -162,7 +169,6 @@ func (c *Client) driveArrayDelete(driveArrayID id) error {
 		driveArrayID)
 
 	if err != nil {
-
 		return err
 	}
 
@@ -180,15 +186,20 @@ func (c *Client) driveArrayDrives(driveArray id) (*map[string]Drive, error) {
 		return nil, err
 	}
 
-	res, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"drive_array_drives",
-		driveArray)
+		driveArray,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
 	if ok {
 		var m = map[string]Drive{}
 		return &m, nil
@@ -196,9 +207,10 @@ func (c *Client) driveArrayDrives(driveArray id) (*map[string]Drive, error) {
 
 	var createdObject map[string]Drive
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	err = resp.GetObject(&createdObject)
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil
@@ -253,11 +265,24 @@ func (da DriveArray) CreateOrUpdate(client MetalCloudClient) error {
 //Delete implements interface Applier
 func (da DriveArray) Delete(client MetalCloudClient) error {
 	err := da.Validate()
+	var result *DriveArray
+	var id int
+
 	if err != nil {
 		return err
 	}
 
-	err = client.DriveArrayDelete(da.DriveArrayID)
+	if da.DriveArrayLabel != "" {
+		result, err = client.DriveArrayGetByLabel(da.DriveArrayLabel)
+		if err != nil {
+			return err
+		}
+		id = result.DriveArrayID
+	} else {
+		id = da.DriveArrayID
+	}
+
+	err = client.DriveArrayDelete(id)
 
 	if err != nil {
 		return err

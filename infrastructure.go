@@ -61,10 +61,12 @@ type DeployOptionsServerTypeMappingObject struct {
 func (c *Client) InfrastructureCreate(infrastructure Infrastructure) (*Infrastructure, error) {
 	var createdObject Infrastructure
 
+	userID := c.GetUserID()
+
 	err := c.rpcClient.CallFor(
 		&createdObject,
 		"infrastructure_create",
-		c.user,
+		userID,
 		infrastructure)
 
 	if err != nil {
@@ -171,16 +173,22 @@ func (c *Client) infrastructureDeployWithOptions(infrastructureID id, shutdownOp
 
 //Infrastructures returns a list of infrastructures
 func (c *Client) Infrastructures() (*map[string]Infrastructure, error) {
+	userID := c.GetUserID()
 
-	res, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"infrastructures",
-		c.user)
+		userID,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
 	if ok {
 		var m = map[string]Infrastructure{}
 		return &m, nil
@@ -188,9 +196,10 @@ func (c *Client) Infrastructures() (*map[string]Infrastructure, error) {
 
 	var createdObject map[string]Infrastructure
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	err = resp.GetObject(&createdObject)
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil
@@ -277,12 +286,24 @@ func (i Infrastructure) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (i Infrastructure) Delete(client MetalCloudClient) error {
+	var result *Infrastructure
+	var id int
 	err := i.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.InfrastructureDelete(i.InfrastructureID)
+
+	if i.InfrastructureLabel != "" {
+		result, err = client.InfrastructureGetByLabel(i.InfrastructureLabel)
+		if err != nil {
+			return err
+		}
+		id = result.InfrastructureID
+	} else {
+		id = i.InfrastructureID
+	}
+	err = client.InfrastructureDelete(id)
 
 	if err != nil {
 		return err

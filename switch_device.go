@@ -12,7 +12,7 @@ import (
 type SwitchDevice struct {
 	NetworkEquipmentID                             int      `json:"network_equipment_id,omitempty" yaml:"id,omitempty"`
 	NetworkEquipmentIdentifierString               string   `json:"network_equipment_identifier_string,omitempty" yaml:"identifierString,omitempty"`
-	DatacenterName                                 string   `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+	DatacenterName                                 string   `json:"datacenter_name,omitempty" yaml:"datacenterName,omitempty"`
 	NetworkEquipmentProvisionerType                string   `json:"network_equipment_provisioner_type,omitempty" yaml:"provisionerType,omitempty"`
 	NetworkEquipmentProvisionerPosition            string   `json:"network_equipment_position,omitempty" yaml:"provisionerPosition,omitempty"`
 	NetworkEquipmentDriver                         string   `json:"network_equipment_driver,omitempty" yaml:"driver,omitempty"`
@@ -59,7 +59,7 @@ func (s *SwitchDevice) UnmarshalJSON(data []byte) error {
 	var v struct {
 		NetworkEquipmentID                             int      `json:"network_equipment_id,omitempty" yaml:"id,omitempty"`
 		NetworkEquipmentIdentifierString               string   `json:"network_equipment_identifier_string,omitempty" yaml:"identifierString,omitempty"`
-		DatacenterName                                 string   `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+		DatacenterName                                 string   `json:"datacenter_name,omitempty" yaml:"datacenterName,omitempty"`
 		NetworkEquipmentProvisionerType                string   `json:"network_equipment_provisioner_type,omitempty" yaml:"provisionerType,omitempty"`
 		NetworkEquipmentProvisionerPosition            string   `json:"network_equipment_position,omitempty" yaml:"provisionerPosition,omitempty"`
 		NetworkEquipmentDriver                         string   `json:"network_equipment_driver,omitempty" yaml:"driver,omitempty"`
@@ -236,27 +236,32 @@ func (c *Client) SwitchDevices(datacenter string, switchType string) (*map[strin
 	if switchType != "" {
 		st = &switchType
 	}
+	var createdObject map[string]SwitchDevice
 
-	res, err := c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"switch_devices",
 		dc,
-		st)
+		st,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
 	if ok {
 		var m = map[string]SwitchDevice{}
 		return &m, nil
 	}
 
-	var createdObject map[string]SwitchDevice
+	err = resp.GetObject(&createdObject)
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil
@@ -307,6 +312,7 @@ func (s SwitchDevice) CreateOrUpdate(client MetalCloudClient) error {
 			return err
 		}
 	} else {
+		s.NetworkEquipmentID = switchDevice.NetworkEquipmentID
 		_, err := client.SwitchDeviceUpdate(switchDevice.NetworkEquipmentID, s, false)
 
 		if err != nil {
@@ -320,11 +326,25 @@ func (s SwitchDevice) CreateOrUpdate(client MetalCloudClient) error {
 //Delete implements interface Applier
 func (s SwitchDevice) Delete(client MetalCloudClient) error {
 	err := s.Validate()
+	var switchDevice *SwitchDevice
+	var id int
 
 	if err != nil {
 		return err
 	}
-	err = client.SwitchDeviceDelete(s.NetworkEquipmentID)
+
+	if s.NetworkEquipmentIdentifierString != "" {
+		switchDevice, err = client.SwitchDeviceGetByIdentifierString(s.NetworkEquipmentIdentifierString, false)
+		if err != nil {
+			return err
+		}
+
+		id = switchDevice.NetworkEquipmentID
+	} else {
+		id = s.NetworkEquipmentID
+	}
+
+	err = client.SwitchDeviceDelete(id)
 
 	if err != nil {
 		return err
@@ -335,7 +355,7 @@ func (s SwitchDevice) Delete(client MetalCloudClient) error {
 
 //Validate implements interface Applier
 func (s SwitchDevice) Validate() error {
-	if s.NetworkEquipmentID != 0 && s.NetworkEquipmentIdentifierString != "" {
+	if s.NetworkEquipmentID == 0 && s.NetworkEquipmentIdentifierString == "" {
 		return fmt.Errorf("id is required")
 	}
 	return nil

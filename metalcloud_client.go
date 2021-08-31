@@ -14,7 +14,6 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
-
 	"github.com/ybbus/jsonrpc"
 )
 
@@ -121,10 +120,15 @@ func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 
 	key := []byte(c.APIKey)
 
+	var err error
+
 	// Read the content
 	var message []byte
 	if req.Body != nil {
-		message, _ = ioutil.ReadAll(req.Body)
+		message, err = ioutil.ReadAll(req.Body)
+		if err!=nil{
+			return nil,err
+		}
 	}
 
 	if c.LoggingEnabled {
@@ -178,6 +182,6 @@ func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 		// Restore the io.ReadCloser to its original state
 		resp.Body = ioutil.NopCloser(bytes.NewBuffer(message))
 	}
-
+	
 	return resp, err
 }

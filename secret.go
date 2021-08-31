@@ -105,15 +105,17 @@ func (c *Client) Secrets(usage string) (*map[string]Secret, error) {
 
 	userID := c.GetUserID()
 
+	var createdObject map[string]Secret
+
 	var err error
-	var res *jsonrpc.RPCResponse
+	var resp *jsonrpc.RPCResponse
 	if usage != "" {
-		res, err = c.rpcClient.Call(
+		resp, err = c.rpcClient.Call(
 			"secrets",
 			userID,
 			usage)
 	} else {
-		res, err = c.rpcClient.Call(
+		resp, err = c.rpcClient.Call(
 			"secrets",
 			userID)
 	}
@@ -122,17 +124,20 @@ func (c *Client) Secrets(usage string) (*map[string]Secret, error) {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
 	if ok {
 		var m = map[string]Secret{}
 		return &m, nil
 	}
 
-	var createdObject map[string]Secret
+	err = resp.GetObject(&createdObject)
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil
@@ -182,12 +187,31 @@ func (s Secret) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (s Secret) Delete(client MetalCloudClient) error {
+	var result *Secret
+	var id int
 	err := s.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.SecretDelete(s.SecretID)
+
+	if s.SecretID != 0 {
+		id = s.SecretID
+	} else {
+		secrets, err := client.Secrets("")
+		if err != nil {
+			return err
+		}
+
+		for _, secret := range *secrets {
+			if secret.SecretName == s.SecretName {
+				result = &secret
+			}
+		}
+
+		id = result.SecretID
+	}
+	err = client.SecretDelete(id)
 
 	if err != nil {
 		return err

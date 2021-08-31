@@ -3,8 +3,6 @@ package metalcloud
 import (
 	"encoding/json"
 	"fmt"
-
-	"github.com/ybbus/jsonrpc"
 )
 
 //StageDefinition contains a JavaScript file, HTTP request url and options, an AnsibleBundle or an API call template.
@@ -90,7 +88,7 @@ type SSHClientOptions struct {
 	ReadyTimeout int           `json:"readyTimeout,omitempty"`
 	StrictVendor bool          `json:"strictVendor,omitempty"`
 	Algorithms   SSHAlgorithms `json:"algorithms,omitempty"`
-	Compress     string        `json:"compress,omitempty"`
+	Compress     interface{}   `json:"compress,omitempty"`
 }
 
 //SSHAlgorithms defines algorithms that can be used during an ssh session
@@ -295,29 +293,31 @@ func (c *Client) StageDefinitionGet(stageDefinitionID int) (*StageDefinition, er
 func (c *Client) StageDefinitions() (*map[string]StageDefinition, error) {
 
 	userID := c.GetUserID()
+	var createdObject map[string]StageDefinition
 
-	var res *jsonrpc.RPCResponse
-	var err error
-
-	res, err = c.rpcClient.Call(
+	resp, err := c.rpcClient.Call(
 		"stage_definitions",
-		userID)
+		userID,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, ok := res.Result.([]interface{})
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
 	if ok {
 		var m = map[string]StageDefinition{}
 		return &m, nil
 	}
 
-	var createdObject map[string]StageDefinition
+	err = resp.GetObject(&createdObject)
 
-	err2 := res.GetObject(&createdObject)
-	if err2 != nil {
-		return nil, err2
+	if err != nil {
+		return nil, err
 	}
 
 	return &createdObject, nil
@@ -367,12 +367,31 @@ func (s StageDefinition) CreateOrUpdate(client MetalCloudClient) error {
 
 //Delete implements interface Applier
 func (s StageDefinition) Delete(client MetalCloudClient) error {
+	var result *StageDefinition
+	var id int
 	err := s.Validate()
 
 	if err != nil {
 		return err
 	}
-	err = client.StageDefinitionDelete(s.StageDefinitionID)
+
+	if s.StageDefinitionID != 0 {
+		id = s.StageDefinitionID
+	} else {
+		definitions, err := client.StageDefinitions()
+		if err != nil {
+			return err
+		}
+
+		for _, def := range *definitions {
+			if def.StageDefinitionLabel == s.StageDefinitionLabel {
+				result = &def
+			}
+		}
+
+		id = result.StageDefinitionID
+	}
+	err = client.StageDefinitionDelete(id)
 
 	if err != nil {
 		return err
