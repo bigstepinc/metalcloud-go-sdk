@@ -51,40 +51,41 @@ type ServerSearchResult struct {
 
 //Server represents a server in a datacenter.
 type Server struct {
-	ServerID                       int               `json:"server_id,omitempty" yaml:"id,omitempty"`
-	ServerUUID                     string            `json:"server_uuid,omitempty" yaml:"UUID,omitempty"`
-	ServerStatus                   string            `json:"server_status,omitempty" yaml:"status,omitempty"`
-	ServerSerialNumber             string            `json:"server_serial_number,omitempty" yaml:"serialNumber,omitempty"`
-	ServerVendor                   string            `json:"server_vendor,omitempty" yaml:"vendor,omitempty"`
-	DatacenterName                 string            `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
-	ServerNetworkTotalCapacityMbps int               `json:"server_network_total_capacity_mbps,omitempty" yaml:"networkTotalCapacityMbps,omitempty"`
-	ServerBootType                 string            `json:"server_boot_type,omitempty" yaml:"bootType,omitempty"`
-	ServerPowerStatus              string            `json:"server_power_status,omitempty" yaml:"powerStatus,omitempty"`
-	ServerProcessorName            string            `json:"server_processor_name,omitempty" yaml:"processorName,omitempty"`
-	ServerProcessorCoreCount       int               `json:"server_processor_core_count,omitempty" yaml:"processorCoreCount,omitempty"`
-	ServerProcessorCoreMhz         int               `json:"server_processor_core_mhz,omitempty" yaml:"processorCoreMhz,omitempty"`
-	ServerProcessorCount           int               `json:"server_processor_count,omitempty" yaml:"processorCount,omitempty"`
-	ServerProcessorThreads         int               `json:"server_processor_threads,omitempty" yaml:"processorThreads,omitempty"`
-	ServerProcessorCPUMark         int               `json:"server_processor_cpu_mark" yaml:"processorCPUMark"`
-	ServerRAMGbytes                int               `json:"server_ram_gbytes,omitempty" yaml:"ramGbytes,omitempty"`
-	ServerDisks                    []ServerDisk      `json:"server_disks,omitempty" yaml:"disks,omitempty"`
-	ServerDiskCount                int               `json:"server_disk_count,omitempty" yaml:"diskCount,omitempty"`
-	ServerDiskSizeMbytes           int               `json:"server_disk_size_mbytes,omitempty" yaml:"diskSizeMbytes,omitempty"`
-	ServerDiskType                 string            `json:"server_disk_type,omitempty" yaml:"diskType,omitempty"`
-	ServerProductName              string            `json:"server_product_name,omitempty" yaml:"productName,omitempty"`
-	ServerClass                    string            `json:"server_class,omitempty" yaml:"serverClass,omitempty"`
-	ServerTypeID                   int               `json:"server_type_id,omitempty" yaml:"serverTypeID,omitempty"`
-	ServerInterfaces               []ServerInterface `json:"server_interfaces,omitempty" yaml:"interfaces,omitempty"`
-	ServerTags                     []string          `json:"server_tags,omitempty" yaml:"tags,omitempty"`
-	ServerIPMIChannel              int               `json:"server_ipmi_channel" yaml:"IPMIChannel"`
-	ServerIPMIHost                 string            `json:"server_ipmi_host,omitempty" yaml:"IPMIHostname,omitempty"`
-	ServerIPMInternalUsername      string            `json:"server_ipmi_internal_username,omitempty" yaml:"IPMIUsername,omitempty"`
-	ServerIPMInternalPassword      string            `json:"server_ipmi_internal_password,omitempty" yaml:"IPMIPassword,omitempty"`
-	ServerIPMCredentialsNeedUpdate bool              `json:"server_ipmi_credentials_need_update,omitempty" yaml:"IPMICredentialsNeedUpdate,omitempty"`
-	ServerVendorSKUID              string            `json:"server_vendor_sku_id,omitempty" yaml:"vendorSKU,omitempty"`
-	ServerComments                 string            `json:"server_comments,omitempty" yaml:"comments,omitempty"`
-	ServerBIOSInfoJSON             string            `json:"server_bios_info_json" yaml:"BIOSInfoJson"`
-	ServerCustomJSON               string            `json:"server_custom_json" yaml:"CustomJSON"`
+	ServerID                       int                         `json:"server_id,omitempty" yaml:"id,omitempty"`
+	ServerUUID                     string                      `json:"server_uuid,omitempty" yaml:"UUID,omitempty"`
+	ServerStatus                   string                      `json:"server_status,omitempty" yaml:"status,omitempty"`
+	ServerSerialNumber             string                      `json:"server_serial_number,omitempty" yaml:"serialNumber,omitempty"`
+	ServerVendor                   string                      `json:"server_vendor,omitempty" yaml:"vendor,omitempty"`
+	DatacenterName                 string                      `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+	ServerNetworkTotalCapacityMbps int                         `json:"server_network_total_capacity_mbps,omitempty" yaml:"networkTotalCapacityMbps,omitempty"`
+	ServerBootType                 string                      `json:"server_boot_type,omitempty" yaml:"bootType,omitempty"`
+	ServerPowerStatus              string                      `json:"server_power_status,omitempty" yaml:"powerStatus,omitempty"`
+	ServerProcessorName            string                      `json:"server_processor_name,omitempty" yaml:"processorName,omitempty"`
+	ServerProcessorCoreCount       int                         `json:"server_processor_core_count,omitempty" yaml:"processorCoreCount,omitempty"`
+	ServerProcessorCoreMhz         int                         `json:"server_processor_core_mhz,omitempty" yaml:"processorCoreMhz,omitempty"`
+	ServerProcessorCount           int                         `json:"server_processor_count,omitempty" yaml:"processorCount,omitempty"`
+	ServerProcessorThreads         int                         `json:"server_processor_threads,omitempty" yaml:"processorThreads,omitempty"`
+	ServerProcessorCPUMark         int                         `json:"server_processor_cpu_mark" yaml:"processorCPUMark"`
+	ServerRAMGbytes                int                         `json:"server_ram_gbytes,omitempty" yaml:"ramGbytes,omitempty"`
+	ServerDisks                    []ServerDisk                `json:"server_disks,omitempty" yaml:"disks,omitempty"`
+	ServerDiskCount                int                         `json:"server_disk_count,omitempty" yaml:"diskCount,omitempty"`
+	ServerDiskSizeMbytes           int                         `json:"server_disk_size_mbytes,omitempty" yaml:"diskSizeMbytes,omitempty"`
+	ServerDiskType                 string                      `json:"server_disk_type,omitempty" yaml:"diskType,omitempty"`
+	ServerProductName              string                      `json:"server_product_name,omitempty" yaml:"productName,omitempty"`
+	ServerClass                    string                      `json:"server_class,omitempty" yaml:"serverClass,omitempty"`
+	ServerTypeID                   int                         `json:"server_type_id,omitempty" yaml:"serverTypeID,omitempty"`
+	ServerInterfaces               []ServerInterface           `json:"server_interfaces,omitempty" yaml:"interfaces,omitempty"`
+	ServerTags                     []string                    `json:"server_tags,omitempty" yaml:"tags,omitempty"`
+	ServerIPMIChannel              int                         `json:"server_ipmi_channel" yaml:"IPMIChannel"`
+	ServerIPMIHost                 string                      `json:"server_ipmi_host,omitempty" yaml:"IPMIHostname,omitempty"`
+	ServerIPMInternalUsername      string                      `json:"server_ipmi_internal_username,omitempty" yaml:"IPMIUsername,omitempty"`
+	ServerIPMInternalPassword      string                      `json:"server_ipmi_internal_password,omitempty" yaml:"IPMIPassword,omitempty"`
+	ServerIPMCredentialsNeedUpdate bool                        `json:"server_ipmi_credentials_need_update,omitempty" yaml:"IPMICredentialsNeedUpdate,omitempty"`
+	ServerVendorSKUID              string                      `json:"server_vendor_sku_id,omitempty" yaml:"vendorSKU,omitempty"`
+	ServerComments                 string                      `json:"server_comments,omitempty" yaml:"comments,omitempty"`
+	ServerBIOSInfoJSON             string                      `json:"server_bios_info_json" yaml:"BIOSInfoJson"`
+	ServerCustomJSON               string                      `json:"server_custom_json" yaml:"CustomJSON"`
+	NICDetails                     map[string]ServerNICDetails `json:"NICDetails" yaml:"NICDetails"`
 }
 
 //ServerDisk describes a disk
@@ -133,6 +134,19 @@ type SearchResultForServerComponents struct {
 	Rows                 []ServerComponent `json:"rows,omitempty"`
 	RowsOrder            [][]string        `json:"rows_order,omitempty"`
 	RowsTotal            int               `json:"rows_total,omitempty"`
+}
+
+type ServerNICDetails struct {
+	NetworkEquipmentInterfaceLLDPInformation string `json:"network_equipment_interface_lldp_information,omitempty" yaml:"networkEquipmentInterfaceLLDPInformation,omitempty"`
+	NetworkEquipmentInterfaceMACAddress      string `json:"network_equipment_interface_mac_address,omitempty" yaml:"networkEquipmentInterfaceMACAddress,omitempty"`
+	SwitchPortID                             string `json:"switch_port_id,omitempty" yaml:"switchPortID,omitempty"`
+	SwitchPortDescription                    string `json:"switch_port_description,omitempty" yaml:"switchPortDescription,omitempty"`
+	SwitchHostname                           string `json:"switch_hostname,omitempty" yaml:"switchHostname,omitempty"`
+	NetworkEquipmentDescription              string `json:"network_equipment_description,omitempty" yaml:"networkEquipmentDescription,omitempty"`
+	SwitchVLANID                             string `json:"switch_vlan_id,omitempty" yaml:"switchVLANID,omitempty"`
+	SwitchInterfaceIndex                     int    `json:"server_interface_index,omitempty" yaml:"switchInterfaceIndex,omitempty"`
+	ServerInterfaceMACAddress                string `json:"server_interface_mac_address,omitempty" yaml:"serverInterfaceMACAddress,omitempty"`
+	ServerInterfaceCapacityMBPs              int    `json:"server_interface_capacity_mbps,omitempty" yaml:"serverInterfaceCapacityMBPs,omitempty"`
 }
 
 //ServersSearch searches for servers matching certain filter
