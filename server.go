@@ -67,7 +67,7 @@ type Server struct {
 	ServerProcessorThreads         int                         `json:"server_processor_threads,omitempty" yaml:"processorThreads,omitempty"`
 	ServerProcessorCPUMark         int                         `json:"server_processor_cpu_mark" yaml:"processorCPUMark"`
 	ServerRAMGbytes                int                         `json:"server_ram_gbytes,omitempty" yaml:"ramGbytes,omitempty"`
-	ServerDisks                    []ServerDisk                `json:"disk_collection,omitempty" yaml:"disks,omitempty"`
+	ServerDisks                    []ServerDisk                `json:"server_disks,omitempty" yaml:"disks,omitempty"`
 	ServerDiskCount                int                         `json:"server_disk_count,omitempty" yaml:"diskCount,omitempty"`
 	ServerDiskSizeMbytes           int                         `json:"server_disk_size_mbytes,omitempty" yaml:"diskSizeMbytes,omitempty"`
 	ServerDiskType                 string                      `json:"server_disk_type,omitempty" yaml:"diskType,omitempty"`
