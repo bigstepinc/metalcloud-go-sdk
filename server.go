@@ -423,10 +423,15 @@ func (c *Client) ServerFirmwareComponentUpgrade(serverID int, serverComponentID 
 		firmwareBinaryURL,
 	)
 
+	if err != nil {
+		return err
+	}
+
 	if resp.Error != nil {
 		return fmt.Errorf(resp.Error.Message)
 	}
-	return err
+
+	return nil
 }
 
 //ServerFirmwareUpgrade creates a firmware upgrading session that affects all components from the specified server that have a target version set and are updatable.
@@ -437,10 +442,15 @@ func (c *Client) ServerFirmwareUpgrade(serverID int) error {
 		serverID,
 	)
 
+	if err != nil {
+		return err
+	}
+
 	if resp.Error != nil {
 		return fmt.Errorf(resp.Error.Message)
 	}
-	return err
+
+	return nil
 }
 
 //ServerFirmwareComponentTargetVersionSet Sets a firmware target version for the upgrading process. The system will apply the upgrade at the next upgrading session.
@@ -452,10 +462,15 @@ func (c *Client) ServerFirmwareComponentTargetVersionSet(serverComponentID int, 
 		serverComponentFirmwareNewVersion,
 	)
 
+	if err != nil {
+		return err
+	}
+
 	if resp.Error != nil {
 		return fmt.Errorf(resp.Error.Message)
 	}
-	return err
+
+	return nil
 }
 
 //ServerFirmwareComponentTargetVersionUpdate Updates for every component of the specified server the available firmware versions that can be used as target by the firmware upgrading process. The available versions are extracted from a vendor specific catalog.
@@ -466,10 +481,14 @@ func (c *Client) ServerFirmwareComponentTargetVersionUpdate(serverComponentID in
 		serverComponentID,
 	)
 
+	if err != nil {
+		return err
+	}
+
 	if resp.Error != nil {
 		return fmt.Errorf(resp.Error.Message)
 	}
-	return err
+	return nil
 }
 
 //ServerFirmwareComponentTargetVersionAdd Adds a new available firmware version for a server component along with the url of the binary. If the version already exists the old url will be overwritten.
@@ -482,10 +501,14 @@ func (c *Client) ServerFirmwareComponentTargetVersionAdd(serverComponentID int, 
 		firmareBinaryURL,
 	)
 
+	if err != nil {
+		return err
+	}
+
 	if resp.Error != nil {
 		return fmt.Errorf(resp.Error.Message)
 	}
-	return err
+	return nil
 }
 
 //ServerComponentGet returns a server's component's details

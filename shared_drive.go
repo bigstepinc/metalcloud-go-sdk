@@ -121,7 +121,6 @@ func (c *Client) sharedDriveDelete(sharedDriveID id) error {
 		sharedDriveID)
 
 	if err != nil {
-
 		return err
 	}
 
