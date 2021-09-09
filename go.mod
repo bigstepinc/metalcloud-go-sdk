@@ -1,4 +1,4 @@
-module github.com/bigstepinc/metal-cloud-sdk-go/v2
+module github.com/metalsoft-io/metal-cloud-sdk-go/v2
 
 go 1.12
 

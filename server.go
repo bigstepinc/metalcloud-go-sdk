@@ -85,7 +85,7 @@ type Server struct {
 	ServerComments                 string                      `json:"server_comments,omitempty" yaml:"comments,omitempty"`
 	ServerBIOSInfoJSON             string                      `json:"server_bios_info_json" yaml:"BIOSInfoJson"`
 	ServerCustomJSON               string                      `json:"server_custom_json" yaml:"CustomJSON"`
-	NICDetails                     map[string]ServerNICDetails `json:"NICDetails" yaml:"NICDetails"`
+	NICDetails                     map[string]ServerNICDetails `json:"nic_details" yaml:"NICDetails"`
 }
 
 //ServerDisk describes a disk
