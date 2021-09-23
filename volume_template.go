@@ -38,6 +38,7 @@ type VolumeTemplate struct {
 	VolumeTemplateNetworkOperatingSystem  NetworkOperatingSystem `json:"volume_template_network_operating_system,omitempty"`
 	VolumeTemplateVersion                 string                 `json:"volume_template_version,omitempty"`
 	VolumeTemplateIsExperimental          bool                   `json:"volume_template_is_experimental,omitempty"`
+	VolumeTemplateOSReadyMethod           string                 `json:"volume_template_os_ready_method,omitempty"`
 }
 
 //VolumeTemplates retrives the list of available templates
