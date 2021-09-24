@@ -25,21 +25,23 @@ type Instance struct {
 	DriveIDBootable            int                 `json:"drive_id_bootable,omitempty"`
 	InstanceChangeID           int                 `json:"instance_change_id,omitempty"`
 	TemplateIDOrigin           int                 `json:"template_id_origin,omitempty"`
+	InstanceCustomVariables    interface{}         `json:"instance_custom_variables,omitempty" yaml:"customVariables,omitempty"`
 }
 
 //InstanceOperation contains information regarding the changes that are to be made to a product. Edit and deploy functions have to be called in order to apply the changes. The operation type and status are unique to each operation object.
 type InstanceOperation struct {
-	InstanceID                 int    `json:"instance_id,omitempty"`
-	InstanceDeployType         string `json:"instance_deploy_type,omitempty"`
-	InstanceDeployStatus       string `json:"instance_deploy_status,omitempty"`
-	InstanceLabel              string `json:"instance_label,omitempty"`
-	InstanceSubdomain          string `json:"instance_subdomain,omitempty"`
-	InstanceSubdomainPermanent string `json:"instance_subdomain_permanent,omitempty"`
-	InstanceArrayID            int    `json:"instance_array_id,omitempty"`
-	ServerID                   int    `json:"server_id,omitempty"`
-	ServerTypeID               int    `json:"server_type_id,omitempty"`
-	InstanceChangeID           int    `json:"instance_change_id,omitempty"`
-	TemplateIDOrigin           int    `json:"template_id_origin,omitempty"`
+	InstanceID                 int         `json:"instance_id,omitempty"`
+	InstanceDeployType         string      `json:"instance_deploy_type,omitempty"`
+	InstanceDeployStatus       string      `json:"instance_deploy_status,omitempty"`
+	InstanceLabel              string      `json:"instance_label,omitempty"`
+	InstanceSubdomain          string      `json:"instance_subdomain,omitempty"`
+	InstanceSubdomainPermanent string      `json:"instance_subdomain_permanent,omitempty"`
+	InstanceArrayID            int         `json:"instance_array_id,omitempty"`
+	ServerID                   int         `json:"server_id,omitempty"`
+	ServerTypeID               int         `json:"server_type_id,omitempty"`
+	InstanceChangeID           int         `json:"instance_change_id,omitempty"`
+	TemplateIDOrigin           int         `json:"template_id_origin,omitempty"`
+	InstanceCustomVariables    interface{} `json:"instance_custom_variables,omitempty" yaml:"customVariables,omitempty"`
 }
 
 //InstanceInterface objects are created automatically when instances are created. Subnets are added on networks and then IP addresses are associated automatically or manually through the API to instance interfaces.
@@ -264,6 +266,7 @@ func (c *Client) InstanceEdit(instanceID id, instanceOperation InstanceOperation
 
 	return &createdObject, nil
 }
+
 //instanceArrayInstances retrieves a list of all the Instance objects associated with a specified InstanceArray.
 func (c *Client) instanceArrayInstances(instanceArrayID id) (*map[string]Instance, error) {
 

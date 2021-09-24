@@ -23,20 +23,22 @@ type Infrastructure struct {
 	InfrastructureDesignIsLocked       bool                    `json:"infrastructure_design_is_locked,omitempty" yaml:"designIsLocked,omitempty"`
 	InfrastructureOperation            InfrastructureOperation `json:"infrastructure_operation,omitempty" yaml:"operation,omitempty"`
 	InfrastructureExperimentalPriority string                  `json:"infrastructure_experimental_priority,omitempty"`
+	InfrastructureCustomVariables      interface{}             `json:"infrastructure_custom_variables,omitempty" yaml:"customVariables,omitempty"`
 }
 
 //InfrastructureOperation - object with alternations to be applied
 type InfrastructureOperation struct {
-	InfrastructureID               int    `json:"infrastructure_id,omitempty" yaml:"id,omitempty"`
-	InfrastructureLabel            string `json:"infrastructure_label" yaml:"label"`
-	DatacenterName                 string `json:"datacenter_name" yaml:"datacenter"`
-	InfrastructureDeployStatus     string `json:"infrastructure_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
-	InfrastructureDeployType       string `json:"infrastructure_deploy_type,omitempty" yaml:"deployType,omitempty"`
-	InfrastructureSubdomain        string `json:"infrastructure_subdomain,omitempty" yaml:"subdomain,omitempty"`
-	UserIDOwner                    int    `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
-	InfrastructureUpdatedTimestamp string `json:"infrastructure_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
-	InfrastructureChangeID         int    `json:"infrastructure_change_id,omitempty" yaml:"changeID,omitempty"`
-	InfrastructureDeployID         int    `json:"infrastructure_deploy_id,omitempty" yaml:"deployID,omitempty"`
+	InfrastructureID               int         `json:"infrastructure_id,omitempty" yaml:"id,omitempty"`
+	InfrastructureLabel            string      `json:"infrastructure_label" yaml:"label"`
+	DatacenterName                 string      `json:"datacenter_name" yaml:"datacenter"`
+	InfrastructureDeployStatus     string      `json:"infrastructure_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
+	InfrastructureDeployType       string      `json:"infrastructure_deploy_type,omitempty" yaml:"deployType,omitempty"`
+	InfrastructureSubdomain        string      `json:"infrastructure_subdomain,omitempty" yaml:"subdomain,omitempty"`
+	UserIDOwner                    int         `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	InfrastructureUpdatedTimestamp string      `json:"infrastructure_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
+	InfrastructureChangeID         int         `json:"infrastructure_change_id,omitempty" yaml:"changeID,omitempty"`
+	InfrastructureDeployID         int         `json:"infrastructure_deploy_id,omitempty" yaml:"deployID,omitempty"`
+	InfrastructureCustomVariables  interface{} `json:"infrastructure_custom_variables,omitempty" yaml:"customVariables,omitempty"`
 }
 
 //ShutdownOptions controls how the deploy engine handles running instances
