@@ -245,6 +245,25 @@ type IPOperation struct {
 	IPChangeID          int    `json:"ip_change_id,omitempty"`
 }
 
+func (c *Client) InstanceEdit(instanceID id, instanceOperation InstanceOperation) (*Instance, error) {
+	var createdObject Instance
+
+	if err := checkID(instanceID); err != nil {
+		return nil, err
+	}
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"instance_edit",
+		instanceID,
+		instanceOperation)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdObject, nil
+}
 //instanceArrayInstances retrieves a list of all the Instance objects associated with a specified InstanceArray.
 func (c *Client) instanceArrayInstances(instanceArrayID id) (*map[string]Instance, error) {
 

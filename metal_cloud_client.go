@@ -92,6 +92,7 @@ type MetalCloudClient interface {
 	InfrastructureUserLimits(infrastructureID int) (*map[string]interface{}, error)
 	//InfrastructureUserLimitsByLabel returns user metadata
 	InfrastructureUserLimitsByLabel(infrastructureLabel string) (*map[string]interface{}, error)
+	InstanceEdit(instanceID id, instanceOperation InstanceOperation) (*Instance, error)
 	//InstanceArrayInterfaceAttachNetwork attaches an InstanceArrayInterface to a Network
 	InstanceArrayInterfaceAttachNetwork(instanceArrayID int, instanceArrayInterfaceIndex int, networkID int) (*InstanceArray, error)
 	//InstanceArrayInterfaceDetach detaches an InstanceArrayInterface from any Network element that is attached to.
@@ -275,6 +276,10 @@ type MetalCloudClient interface {
 	ServerTypesMatches(infrastructureID int, hardwareConfiguration HardwareConfiguration, instanceArrayID *int, bAllowServerSwap bool) (*map[string]ServerType, error)
 	//ServerTypesMatchesByLabel matches available servers with a certain Instance&#39;s configuration, using the properties specified in the objHardwareConfiguration object, and returns the number of compatible servers for each server_type_id.
 	ServerTypesMatchesByLabel(infrastructureLabel string, hardwareConfiguration HardwareConfiguration, instanceArrayID *int, bAllowServerSwap bool) (*map[string]ServerType, error)
+	SharedDriveAttachInstanceArray(sharedDriveID int, instanceArrayID int) (*SharedDrive, error)
+	SharedDriveDetachInstanceArray(sharedDriveID int, instanceArrayID int) (*SharedDrive, error)
+	//SharedDrives retrieves the list of shared drives of an infrastructure
+	SharedDrives(infrastructureID int) (*map[string]SharedDrive, error)
 	//SharedDriveCreate creates a shared drive array. Requires deploy.
 	SharedDriveCreate(infrastructureID int, sharedDrive SharedDrive) (*SharedDrive, error)
 	//SharedDriveCreateByLabel creates a shared drive array. Requires deploy.
