@@ -50,6 +50,7 @@ type DatacenterConfig struct {
 	ServerRAIDConfigurationEnabled                     bool                   `json:"serverRAIDConfigurationEnabled" yaml:"serverRAIDConfigurationEnabled"`
 	WebProxy                                           *WebProxy              `json:"webProxy" yaml:"webProxy"`
 	IsKubernetesDeployment                             bool                   `json:"isKubernetesDeployment" yaml:"isKubernetesDeployment"`
+	AllowInstanceArrayFirmwarePolicies                 bool                   `json:"allowInstanceArrayFirmwarePolicies" yaml:"allowInstanceArrayFirmwarePolicies"`
 }
 
 type WebProxy struct {
