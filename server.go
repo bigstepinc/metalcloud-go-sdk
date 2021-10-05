@@ -31,6 +31,10 @@ type ServerSearchResult struct {
 	ServerTypeName                 string            `json:"server_type_name,omitempty" yaml:"type,omitempty"`
 	ServerTypeBootType             string            `json:"server_type_boot_type,omitempty" yaml:"serverBootType,omitempty"`
 	ServerInterfaces               []ServerInterface `json:"server_interfaces,omitempty" yaml:"interfaces,omitempty"`
+	ServerRackName                 string            `json:"server_rack_name,omitempty" yaml:"rackName,omitempty"`
+	ServerRackPositionLowerUnit    string            `json:"server_rack_position_lower_unit,omitempty" yaml:"rackPositionLowerUnit,omitempty"`
+	ServerRackPositionUpperUnit    string            `json:"server_rack_position_upper_unit,omitempty" yaml:"rackPositionUpperUnit,omitempty"`
+	ServerInventoryId              string            `json:"server_inventory_id,omitempty" yaml:"inventoryId,omitempty"`
 	ServerDisks                    []ServerDisk      `json:"server_disks,omitempty" yaml:"disks,omitempty"`
 	ServerTags                     []string          `json:"server_tags,omitempty" yaml:"tags,omitempty"`
 	ServerIPMIChannel              int               `json:"server_ipmi_channel,omitempty" yaml:"IPMIChannel,omitempty"`
@@ -71,6 +75,10 @@ type Server struct {
 	ServerDiskCount                int                         `json:"server_disk_count,omitempty" yaml:"diskCount,omitempty"`
 	ServerDiskSizeMbytes           int                         `json:"server_disk_size_mbytes,omitempty" yaml:"diskSizeMbytes,omitempty"`
 	ServerDiskType                 string                      `json:"server_disk_type,omitempty" yaml:"diskType,omitempty"`
+	ServerRackName                 string                      `json:"server_rack_name,omitempty" yaml:"rackName,omitempty"`
+	ServerRackPositionLowerUnit    string                      `json:"server_rack_position_lower_unit,omitempty" yaml:"rackPositionLowerUnit,omitempty"`
+	ServerRackPositionUpperUnit    string                      `json:"server_rack_position_upper_unit,omitempty" yaml:"rackPositionUpperUnit,omitempty"`
+	ServerInventoryId              string                      `json:"server_inventory_id,omitempty" yaml:"inventoryId,omitempty"`
 	ServerProductName              string                      `json:"server_product_name,omitempty" yaml:"productName,omitempty"`
 	ServerClass                    string                      `json:"server_class,omitempty" yaml:"serverClass,omitempty"`
 	ServerTypeID                   int                         `json:"server_type_id,omitempty" yaml:"serverTypeID,omitempty"`
@@ -174,6 +182,10 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 			"instance_id",
 			"instance_array_id",
 			"infrastructure_id",
+			"server_inventory_id",
+			"server_rack_name",
+			"server_rack_position_lower_unit",
+			"server_rack_position_upper_unit",
 			"server_ipmi_host",
 			"server_custom_json",
 			"server_ipmi_internal_username",
