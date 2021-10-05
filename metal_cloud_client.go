@@ -92,7 +92,6 @@ type MetalCloudClient interface {
 	InfrastructureUserLimits(infrastructureID int) (*map[string]interface{}, error)
 	//InfrastructureUserLimitsByLabel returns user metadata
 	InfrastructureUserLimitsByLabel(infrastructureLabel string) (*map[string]interface{}, error)
-	InstanceEdit(instanceID id, instanceOperation InstanceOperation) (*Instance, error)
 	//InstanceArrayInterfaceAttachNetwork attaches an InstanceArrayInterface to a Network
 	InstanceArrayInterfaceAttachNetwork(instanceArrayID int, instanceArrayInterfaceIndex int, networkID int) (*InstanceArray, error)
 	//InstanceArrayInterfaceDetach detaches an InstanceArrayInterface from any Network element that is attached to.
@@ -125,6 +124,10 @@ type MetalCloudClient interface {
 	InstanceArrayStart(instanceArrayID int) (*InstanceArray, error)
 	//InstanceArrayStartByLabel starts a specified InstanceArray.
 	InstanceArrayStartByLabel(instanceArrayLabel string) (*InstanceArray, error)
+	//InstanceEdit edits an instance. Requires deploy
+	InstanceEdit(instanceID int, instanceOperation InstanceOperation) (*Instance, error)
+	//InstanceEditByLabel edits an instance. Requires deploy
+	InstanceEditByLabel(instanceLabel string, instanceOperation InstanceOperation) (*Instance, error)
 	//InstanceArrayInstances retrieves a list of all the Instance objects associated with a specified InstanceArray.
 	InstanceArrayInstances(instanceArrayID int) (*map[string]Instance, error)
 	//InstanceArrayInstancesByLabel retrieves a list of all the Instance objects associated with a specified InstanceArray.

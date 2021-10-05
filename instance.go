@@ -247,7 +247,8 @@ type IPOperation struct {
 	IPChangeID          int    `json:"ip_change_id,omitempty"`
 }
 
-func (c *Client) InstanceEdit(instanceID id, instanceOperation InstanceOperation) (*Instance, error) {
+//instanceEdit edits an instance. Requires deploy
+func (c *Client) instanceEdit(instanceID id, instanceOperation InstanceOperation) (*Instance, error) {
 	var createdObject Instance
 
 	if err := checkID(instanceID); err != nil {
