@@ -2,6 +2,16 @@
 
 package metalcloud
 
+//InstanceEdit edits an instance. Requires deploy
+func (c *Client) InstanceEdit(instanceID int, instanceOperation InstanceOperation) (*Instance, error) {
+	return c.instanceEdit(instanceID,instanceOperation)
+}
+
+//InstanceEditByLabel edits an instance. Requires deploy
+func (c *Client) InstanceEditByLabel(instanceLabel string, instanceOperation InstanceOperation) (*Instance, error) {
+	return c.instanceEdit(instanceLabel,instanceOperation)
+}
+
 //InstanceArrayInstances retrieves a list of all the Instance objects associated with a specified InstanceArray.
 func (c *Client) InstanceArrayInstances(instanceArrayID int) (*map[string]Instance, error) {
 	return c.instanceArrayInstances(instanceArrayID)

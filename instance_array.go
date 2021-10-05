@@ -29,6 +29,7 @@ type InstanceArray struct {
 	InstanceArrayOperation             *InstanceArrayOperation  `json:"instance_array_operation,omitempty" yaml:"operation,omitempty"`
 	InstanceArrayAdditionalWanIPv4JSON string                   `json:"instance_array_additional_wan_ipv4_json,omitempty" yaml:"additionalWanIPv4,omitempty"`
 	InstanceArrayCustomVariables       interface{}              `json:"instance_array_custom_variables,omitempty" yaml:"customVariables,omitempty"`
+	InstanceArrayFirmwarePolicies      []int                    `json:"instance_array_firmware_policies,omitempty" yaml:"firmwarePolicies,omitempty"`
 }
 
 //InstanceArrayOperation object describes the changes that will be applied to an instance array
@@ -57,6 +58,7 @@ type InstanceArrayOperation struct {
 	InstanceArrayChangeID              int                               `json:"instance_array_change_id,omitempty" yaml:"changeID,omitempty"`
 	InstanceArrayAdditionalWanIPv4JSON string                            `json:"instance_array_additional_wan_ipv4_json,omitempty" yaml:"additionalWanIPv4,omitempty"`
 	InstanceArrayCustomVariables       interface{}                       `json:"instance_array_custom_variables,omitempty" yaml:"customVariables,omitempty"`
+	InstanceArrayFirmwarePolicies      []int                             `json:"instance_array_firmware_policies,omitempty" yaml:"firmwarePolicies,omitempty"`
 }
 
 //FirewallRule describes a firewall rule that is to be applied on all instances of an array

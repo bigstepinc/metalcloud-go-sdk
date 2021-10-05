@@ -263,6 +263,14 @@ type MetalCloudClient interface {
 	ServerComponents(serverID int, filter string) (*[]ServerComponent, error)
 	//ServerPowerSet reboots or powers on a server
 	ServerPowerSet(serverID int, operation string) error
+	//ServerFirmwarePolicyGet returns a server policy's details
+	ServerFirmwarePolicyGet(serverFirmwarePolicyID int) (*ServerFirmwareUpgradePolicy, error)
+	//ServerFirmwareUpgradePolicyCreate creates a server firmware policy.
+	ServerFirmwareUpgradePolicyCreate(serverFirmwarePolicy *ServerFirmwareUpgradePolicy) (*ServerFirmwareUpgradePolicy, error)
+	//ServerFirmwarePolicyAddRule add a new rule for a policy.
+	ServerFirmwarePolicyAddRule(serverFirmwarePolicyID int, serverRule *ServerFirmwareUpgradePolicyRule) (*ServerFirmwareUpgradePolicy, error)
+	//ServerFirmwareUpgradePolicyDelete deletes all the information about a specified ServerFirmwareUpgradePolicy.
+	ServerFirmwareUpgradePolicyDelete(serverFirmwarePolicyID int) error
 	//ServerTypesMatchHardwareConfiguration Retrieves a list of server types that match the provided hardware configuration. The function does not check for availability, only compatibility, so physical servers associated with the returned server types might be unavailable.
 	ServerTypesMatchHardwareConfiguration(datacenterName string, hardwareConfiguration HardwareConfiguration) (*map[int]ServerType, error)
 	//ServerTypeDatacenter retrieves all the server type IDs for servers found in a specified Datacenter
