@@ -29,8 +29,8 @@ func TestDatacenterConfiglUnmarshalTest(t *testing.T) {
 
 }
 
-const _DCConfigFixture = "{\"SANRoutedSubnet\":\"100.64.0.0/21\",\"BSIVRRPListenIPv4\":\"172.16.10.6\",\"BSIMachineListenIPv4List\":[\"172.16.10.6\"],\"BSIMachinesSubnetIPv4CIDR\":\"10.255.226.0/24\",\"BSIExternallyVisibleIPv4\":\"89.36.24.2\",\"repoURLRoot\":\"https://repointegrationpublic.bigstepcloud.com\",\"repoURLRootQuarantineNetwork\":\"https://repointegrationpublic.bigstepcloud.com\",\"DNSServers\":[\"84.40.63.27\"],\"NTPServers\":[\"84.40.58.44\",\"84.40.58.45\"],\"KMS\":\"\",\"TFTPServerWANVRRPListenIPv4\":\"172.16.10.6\",\"dataLakeEnabled\":false,\"monitoringGraphitePlainTextSocketHost\":\"\",\"monitoringGraphiteRenderURLHost\":\"\",\"latitude\":0,\"longitude\":0,\"address\":\"\",\"switchProvisioner\":{\"type\":\"VPLSProvisioner\",\"ACLSAN\":3999,\"ACLWAN\":3399,\"SANACLRange\":\"3700-3998\",\"ToRLANVLANRange\":\"400-699\",\"ToRSANVLANRange\":\"700-999\",\"ToRWANVLANRange\":\"100-300\",\"quarantineVLANID\":5,\"NorthWANVLANRange\":\"1001-2000\"},\"childDatacentersConfigDefault\":[]}"
-const _DCFixture = "{\"user_id\": 1, \"datacenter_name\": \"test\",\"datacenter_config_json\": {\"SANRoutedSubnet\":\"100.64.0.0/21\",\"BSIVRRPListenIPv4\":\"172.16.10.6\",\"BSIMachineListenIPv4List\":[\"172.16.10.6\"],\"BSIMachinesSubnetIPv4CIDR\":\"10.255.226.0/24\",\"BSIExternallyVisibleIPv4\":\"89.36.24.2\",\"repoURLRoot\":\"https://repointegrationpublic.bigstepcloud.com\",\"repoURLRootQuarantineNetwork\":\"https://repointegrationpublic.bigstepcloud.com\",\"DNSServers\":[\"84.40.63.27\"],\"NTPServers\":[\"84.40.58.44\",\"84.40.58.45\"],\"KMS\":\"\",\"TFTPServerWANVRRPListenIPv4\":\"172.16.10.6\",\"dataLakeEnabled\":false,\"monitoringGraphitePlainTextSocketHost\":\"\",\"monitoringGraphiteRenderURLHost\":\"\",\"latitude\":0,\"longitude\":0,\"address\":\"\",\"switchProvisioner\":{\"type\":\"VPLSProvisioner\",\"ACLSAN\":3999,\"ACLWAN\":3399,\"SANACLRange\":\"3700-3998\",\"ToRLANVLANRange\":\"400-699\",\"ToRSANVLANRange\":\"700-999\",\"ToRWANVLANRange\":\"100-300\",\"quarantineVLANID\":5,\"NorthWANVLANRange\":\"1001-2000\"},\"childDatacentersConfigDefault\":[]}"
+const _DCFixture = "{\"datacenter_id\":4,\"datacenter_name\":\"slavedatacenter-140\",\"datacenter_name_parent\":null,\"user_id\":null,\"datacenter_is_master\":false,\"datacenter_is_maintenance\":false,\"datacenter_type\":\"metal_cloud\",\"datacenter_display_name\":\"Slave, Datacenter 140\",\"datacenter_hidden\":false,\"datacenter_created_timestamp\":\"2021-04-27T17:16:20Z\",\"datacenter_updated_timestamp\":\"2021-04-27T17:16:20Z\",\"type\":\"Datacenter\",\"datacenter_tags\":[]}"
+const _DCConfigFixture = "{\"SANRoutedSubnet\":\"100.64.0.0/21\",\"BSIVRRPListenIPv4\":\"172.16.10.6\",\"BSIMachineListenIPv4List\":[\"172.16.10.6\"],\"BSIMachinesSubnetIPv4CIDR\":\"10.255.226.0/24\",\"BSIExternallyVisibleIPv4\":\"89.36.24.2\",\"repoURLRoot\":\"https://repointegrationpublic.bigstepcloud.com\",\"repoURLRootQuarantineNetwork\":\"https://repointegrationpublic.bigstepcloud.com\",\"DNSServers\":[\"84.40.63.27\"],\"NTPServers\":[\"84.40.58.44\",\"84.40.58.45\"],\"KMS\":\"\",\"TFTPServerWANVRRPListenIPv4\":\"172.16.10.6\",\"dataLakeEnabled\":false,\"monitoringGraphitePlainTextSocketHost\":\"\",\"monitoringGraphiteRenderURLHost\":\"\",\"latitude\":0,\"longitude\":0,\"address\":\"\",\"switchProvisioner\":{\"type\":\"VPLSProvisioner\",\"ACLSAN\":3999,\"ACLWAN\":3399,\"SANACLRange\":\"3700-3998\",\"ToRLANVLANRange\":\"400-699\",\"ToRSANVLANRange\":\"700-999\",\"ToRWANVLANRange\":\"100-300\",\"quarantineVLANID\":5,\"NorthWANVLANRange\":\"1001-2000\"},\"childDatacentersConfigDefault\":[],\"provisionUsingTheQuarantineNetwork\":true,\"enableDHCPRelaySecurityForQuarantineNetwork\":true,\"enableDHCPRelaySecurityForClientNetworks\":true}"
 
 func TestDatacenterConfigMarshalTest(t *testing.T) {
 
@@ -52,11 +52,11 @@ func TestDatacenterConfigMarshalTest(t *testing.T) {
 	Expect(err).To(BeNil())
 
 	Expect(dc2.SANRoutedSubnet).To(Equal("100.64.0.0/21"))
-	//Expect(dc2.SwitchProvisioner.Type).To(Equal("VPLSProvisioner"))
 	Expect(dc2.SwitchProvisioner["type"]).To(Equal("VPLSProvisioner"))
 	Expect(dc2.SwitchProvisioner["ACLSAN"]).To(Equal(3999.0))
-	//Expect(dc2.SwitchProvisioner.Provisioner.(VPLSProvisioner).ACLSAN).To(Equal(3999))
-
+	Expect(dc2.ProvisionUsingTheQuarantineNetwork).To(Equal(true))
+	Expect(dc2.EnableDHCPRelaySecurityForQuarantineNetwork).To(Equal(true))
+	Expect(dc2.EnableDHCPRelaySecurityForClientNetworks).To(Equal(true))
 }
 
 func TestDatacenterCreateOrUpdate(t *testing.T) {
@@ -203,18 +203,13 @@ func TestDatacenterDeleteForApply(t *testing.T) {
 	Expect(err).To(BeNil())
 }
 
-
-
-
-const _DCFixture2 = "{\"datacenter_id\":4,\"datacenter_name\":\"slavedatacenter-140\",\"datacenter_name_parent\":null,\"user_id\":null,\"datacenter_is_master\":false,\"datacenter_is_maintenance\":false,\"datacenter_type\":\"metal_cloud\",\"datacenter_display_name\":\"Slave, Datacenter 140\",\"datacenter_hidden\":false,\"datacenter_created_timestamp\":\"2021-04-27T17:16:20Z\",\"datacenter_updated_timestamp\":\"2021-04-27T17:16:20Z\",\"type\":\"Datacenter\",\"datacenter_tags\":[]}"
-
 func TestDatacenterUnmarshalTest(t *testing.T) {
 
 	RegisterTestingT(t)
 
 	var dc Datacenter
 
-	err := json.Unmarshal([]byte(_DCFixture2), &dc)
+	err := json.Unmarshal([]byte(_DCFixture), &dc)
 
 	Expect(err).To(BeNil())
 	Expect(dc).NotTo(BeNil())
