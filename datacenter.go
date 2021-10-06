@@ -51,6 +51,9 @@ type DatacenterConfig struct {
 	WebProxy                                           *WebProxy              `json:"webProxy" yaml:"webProxy"`
 	IsKubernetesDeployment                             bool                   `json:"isKubernetesDeployment" yaml:"isKubernetesDeployment"`
 	AllowInstanceArrayFirmwarePolicies                 bool                   `json:"allowInstanceArrayFirmwarePolicies" yaml:"allowInstanceArrayFirmwarePolicies"`
+	ProvisionUsingTheQuarantineNetwork                 bool                   `json:"provisionUsingTheQuarantineNetwork" yaml:"provisionUsingTheQuarantineNetwork"`
+	EnableDHCPRelaySecurityForQuarantineNetwork        bool                   `json:"enableDHCPRelaySecurityForQuarantineNetwork" yaml:"enableDHCPRelaySecurityForQuarantineNetwork"`
+	EnableDHCPRelaySecurityForClientNetworks           bool                   `json:"enableDHCPRelaySecurityForClientNetworks" yaml:"enableDHCPRelaySecurityForClientNetworks"`
 }
 
 type WebProxy struct {
