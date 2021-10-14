@@ -45,7 +45,7 @@ func TestMain(m *testing.M) {
 func TestClientUserID(t *testing.T) {
 	RegisterTestingT(t)
 	apiKey := "101:sdjasdkajkdnajsdnasd"
-	client, err := GetMetalcloudClient("u", apiKey, "http://host/api", false)
+	client, err := GetMetalcloudClient("u", apiKey, "http://host/api", false, "", "", "")
 	Expect(err).To(BeNil())
 	Expect(client.GetUserID()).To(Equal(101))
 }
@@ -82,7 +82,7 @@ func TestEmptyListReply(t *testing.T) {
 
 	responseBody = `{"result": [],"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	ret1, err1 := mc.InstanceArrays(100)
@@ -103,7 +103,7 @@ func TestInstanceArrayCreateOmitEmpty(t *testing.T) {
 
 	responseBody = `{"result":{"instance_array_label":"test"},"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 	Expect(mc).NotTo(BeNil())
 

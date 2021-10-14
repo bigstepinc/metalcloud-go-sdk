@@ -52,7 +52,7 @@ func TestInstanceArrayInstances(t *testing.T) {
 
 	responseBody = `{"result": {"test":` + _instanceFixture1 + `},"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	ret, err := mc.instanceArrayInstances("test")
@@ -82,7 +82,7 @@ func TestInstancePowerGet(t *testing.T) {
 
 	responseBody = `{"result": "on","jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	ret, err := mc.InstanceServerPowerGet(1)

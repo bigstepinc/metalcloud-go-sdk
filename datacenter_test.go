@@ -65,7 +65,7 @@ func TestDatacenterCreateOrUpdate(t *testing.T) {
 
 	responseBody = `{"result": ` + _driveArrayFixture1 + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := Datacenter{
@@ -162,7 +162,7 @@ func TestDatacenterDeleteForApply(t *testing.T) {
 
 	responseBody = `{"result": [] ,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := Datacenter{
@@ -202,6 +202,8 @@ func TestDatacenterDeleteForApply(t *testing.T) {
 
 	Expect(err).To(BeNil())
 }
+
+const _DCFixture2 = "{\"datacenter_id\":4,\"datacenter_name\":\"slavedatacenter-140\",\"datacenter_name_parent\":null,\"user_id\":null,\"datacenter_is_master\":false,\"datacenter_is_maintenance\":false,\"datacenter_type\":\"metal_cloud\",\"datacenter_display_name\":\"Slave, Datacenter 140\",\"datacenter_hidden\":false,\"datacenter_created_timestamp\":\"2021-04-27T17:16:20Z\",\"datacenter_updated_timestamp\":\"2021-04-27T17:16:20Z\",\"type\":\"Datacenter\",\"datacenter_tags\":[]}"
 
 func TestDatacenterUnmarshalTest(t *testing.T) {
 

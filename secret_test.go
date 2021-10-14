@@ -13,7 +13,7 @@ func TestSecretCreateOrUpdate(t *testing.T) {
 
 	responseBody = `{"result": ` + _secretFixture + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := Secret{
@@ -83,7 +83,7 @@ func TestSecretDeleteForApply(t *testing.T) {
 
 	responseBody = `{"result": [] ,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := Secret{

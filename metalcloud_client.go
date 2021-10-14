@@ -14,7 +14,10 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+
 	"github.com/ybbus/jsonrpc"
+	"golang.org/x/net/context"
+	"golang.org/x/oauth2/clientcredentials"
 )
 
 //DefaultEndpoint returns the default Bigstep Metalcloud endpoint
@@ -32,18 +35,50 @@ type Client struct {
 }
 
 //GetMetalcloudClient returns a metal cloud client
-func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEnabled bool) (*Client, error) {
+func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEnabled bool, clientId string, clientSecret string, tokenURL string) (*Client, error) {
 
 	if user == "" {
 		return nil, errors.New("user cannot be an empty string! It is typically in the form of user's email address")
 	}
 
-	if apiKey == "" {
-		return nil, errors.New("apiKey cannot be empty string")
-	}
-
 	if endpoint == "" {
 		return nil, errors.New("endpoint cannot be an empty string! It is typically in the form of user's email address")
+	}
+
+	if apiKey == "" && (clientId == "" || clientSecret == "" || tokenURL == "") {
+		return nil, errors.New("no authorization method was set(OAuth or API key)")
+	}
+
+	userID := 0
+	oAuthToken := ""
+
+	if clientId != "" && clientSecret != "" && tokenURL != "" {
+
+		config := clientcredentials.Config{
+			ClientID:     clientId,
+			ClientSecret: clientSecret,
+			TokenURL:     tokenURL,
+		}
+
+		oAuthTokenResp, errOauth := config.Token(context.Background())
+		if errOauth != nil {
+			panic(errOauth)
+		}
+		oAuthToken = (*oAuthTokenResp).AccessToken
+		n, err := strconv.Atoi(clientId)
+		if err != nil {
+			return nil, err
+		}
+		userID = n
+	} else {
+		components := strings.Split(apiKey, ":")
+		if len(components) > 1 {
+			n, err := strconv.Atoi(components[0])
+			if err != nil {
+				return nil, err
+			}
+			userID = n
+		}
 	}
 
 	_, err := url.ParseRequestURI(endpoint)
@@ -54,6 +89,7 @@ func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEna
 	transport := &signatureAdderRoundTripper{
 		APIKey:         apiKey,
 		LoggingEnabled: loggingEnabled,
+		OAuthToken:     oAuthToken,
 	}
 
 	httpClient := &http.Client{
@@ -63,16 +99,6 @@ func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEna
 	rpcClient := jsonrpc.NewClientWithOpts(endpoint, &jsonrpc.RPCClientOpts{
 		HTTPClient: httpClient,
 	})
-
-	components := strings.Split(apiKey, ":")
-	userID := 0
-	if len(components) > 1 {
-		n, err := strconv.Atoi(components[0])
-		if err != nil {
-			return nil, err
-		}
-		userID = n
-	}
 
 	return &Client{
 		rpcClient: rpcClient,
@@ -104,6 +130,7 @@ type signatureAdderRoundTripper struct {
 	http.RoundTripper
 	LoggingEnabled bool
 	DryRun         bool
+	OAuthToken     string
 }
 
 func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
@@ -126,8 +153,8 @@ func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 	var message []byte
 	if req.Body != nil {
 		message, err = ioutil.ReadAll(req.Body)
-		if err!=nil{
-			return nil,err
+		if err != nil {
+			return nil, err
 		}
 	}
 
@@ -142,33 +169,34 @@ func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 	// Restore the io.ReadCloser to its original state
 	req.Body = ioutil.NopCloser(bytes.NewBuffer(message))
 
-	hmac := hmac.New(md5.New, key)
-	hmac.Write(message)
+	if c.OAuthToken != "" {
+		req.Header.Set("Authorization", "Bearer "+c.OAuthToken)
+	} else {
+		hmac := hmac.New(md5.New, key)
+		hmac.Write(message)
 
-	var signature = hex.EncodeToString(hmac.Sum(nil))
+		var signature = hex.EncodeToString(hmac.Sum(nil))
 
-	values, err := url.ParseQuery(req.URL.RawQuery)
-	if err != nil {
-		log.Fatal(err)
+		values, err := url.ParseQuery(req.URL.RawQuery)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if strKeyMetaData != nil {
+			signature = *strKeyMetaData + ":" + signature
+		}
+
+		values.Add("verify", signature)
+
+		url := req.URL
+		url.RawQuery = values.Encode()
+		req.URL = url
 	}
-
-	if strKeyMetaData != nil {
-		signature = *strKeyMetaData + ":" + signature
-	}
-
-	values.Add("verify", signature)
-
-	url := req.URL
-
-	url.RawQuery = values.Encode()
-
-	req.URL = url
 
 	var resp *http.Response
 
 	if !c.DryRun {
 		resp, err = http.DefaultTransport.RoundTrip(req)
-
 	}
 
 	if c.LoggingEnabled {
@@ -182,6 +210,6 @@ func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 		// Restore the io.ReadCloser to its original state
 		resp.Body = ioutil.NopCloser(bytes.NewBuffer(message))
 	}
-	
+
 	return resp, err
 }

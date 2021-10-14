@@ -12,7 +12,7 @@ func TestInfrastructures(t *testing.T) {
 
 	responseBody = `{"result": {"test":` + _infrastructureFixture + `},"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	ret, err := mc.Infrastructures()
@@ -34,7 +34,7 @@ func TestInfrastructureGet(t *testing.T) {
 
 	responseBody = `{"result": ` + _infrastructureFixture + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	ret, err := mc.InfrastructureGet(100)
@@ -59,7 +59,7 @@ func TestInfrastructureGetWithLabel(t *testing.T) {
 
 	responseBody = `{"result": ` + _infrastructureFixture + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	ret, err := mc.InfrastructureGetByLabel("my-test")
@@ -84,7 +84,7 @@ func TestInfrastructureGetWithWrongLabel(t *testing.T) {
 
 	responseBody = `{"result": ` + _infrastructureFixture + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	ret, err := mc.InfrastructureGetByLabel("my_test")
@@ -101,7 +101,7 @@ func TestInfrastructureDeploy(t *testing.T) {
 
 	responseBody = `{"result": [],"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	opts := ShutdownOptions{
@@ -139,7 +139,7 @@ func TestInfrastructureDeployWithOptions(t *testing.T) {
 
 	responseBody = `{"result": [],"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	shOpts := ShutdownOptions{
@@ -204,7 +204,7 @@ func TestInfrastructureDelete(t *testing.T) {
 
 	responseBody = `{"result": [],"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	err = mc.InfrastructureDelete(100)
@@ -230,7 +230,7 @@ func TestInfrastructureRevert(t *testing.T) {
 
 	responseBody = `{"result": [],"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	err = mc.InfrastructureOperationCancelByLabel("test-asdasd")
@@ -257,7 +257,7 @@ func TestInfrastructureCreateOrUpdate(t *testing.T) {
 
 	responseBody = `{"result": ` + _infrastructureFixture + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := Infrastructure{
@@ -347,7 +347,7 @@ func TestInfrastructureDeleteForApply(t *testing.T) {
 
 	responseBody = `{"result": ` + _infrastructureFixture + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := Infrastructure{
