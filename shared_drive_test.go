@@ -39,7 +39,7 @@ func TestSharedDriveCreateOrUpdate(t *testing.T) {
 
 	responseBody = `{"result": ` + _sharedDriveFixture3 + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := SharedDrive{
@@ -123,7 +123,7 @@ func TestSharedDriveDeleteForApply(t *testing.T) {
 
 	responseBody = `{"result": ` + _sharedDriveFixture3 + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := SharedDrive{

@@ -47,7 +47,7 @@ func TestServerCreateOrUpdate(t *testing.T) {
 
 	responseBody = `{"result": ` + _serverFixture3 + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := Server{
@@ -116,7 +116,7 @@ func TestServerDeleteForApply(t *testing.T) {
 
 	responseBody = `{"result": [] ,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := Server{

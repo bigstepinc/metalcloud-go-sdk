@@ -13,7 +13,7 @@ func TestInstanceArrayCreateOrUpdate(t *testing.T) {
 
 	responseBody = `{"result": ` + _instanceArrayFixture + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := InstanceArray{
@@ -89,7 +89,7 @@ func TestInstanceArrayDeleteForApply(t *testing.T) {
 
 	responseBody = `{"result": ` + _instanceArrayFixture + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := InstanceArray{

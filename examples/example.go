@@ -14,12 +14,19 @@ func main() {
 	user := os.Getenv("METALCLOUD_USER_EMAIL")
 	apiKey := os.Getenv("METALCLOUD_API_KEY")
 	endpoint := os.Getenv("METALCLOUD_ENDPOINT")
+	clientId := os.Getenv("METALCLOUD_CLIENT_ID")
+	clientSecret := os.Getenv("METALCLOUD_CLIENT_SECRET")
+	oAuthTokenUrl := os.Getenv("OAUTH_TOKEN_URL")
 
-	if user == "" || apiKey == "" || endpoint == "" {
-		log.Fatal("METALCLOUD_USER, METALCLOUD_API_KEY, METALCLOUD_ENDPOINT environment variables must be set")
+	if user == "" || endpoint == "" {
+		log.Fatal("METALCLOUD_USER, METALCLOUD_ENDPOINT environment variables must be set")
 	}
 
-	client, err := metalcloud.GetMetalcloudClient(user, apiKey, endpoint, false)
+	if apiKey == "" && (clientId == "" || clientSecret == "" || oAuthTokenUrl == "") {
+		log.Fatal("Must set either METALCLOUD_API_KEY or (METALCLOUD_CLIENT_ID, METALCLOUD_CLIENT_SECRET, OAUTH_TOKEN_URL)")
+	}
+
+	client, err := metalcloud.GetMetalcloudClient(user, apiKey, endpoint, false, clientId, clientSecret, oAuthTokenUrl)
 	if err != nil {
 		log.Fatal("Error initiating client: ", err)
 	}
