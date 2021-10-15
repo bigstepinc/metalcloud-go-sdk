@@ -13,7 +13,7 @@ func TestNetworkCreateOrUpdate(t *testing.T) {
 
 	responseBody = `{"result": ` + _networkFixture + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := Network{
@@ -93,7 +93,7 @@ func TestNetworkDeleteForApply(t *testing.T) {
 
 	responseBody = `{"result": ` + _networkFixture + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := Network{

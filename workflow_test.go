@@ -27,7 +27,7 @@ func TestWorkflowStages(t *testing.T) {
 
 	responseBody = `{"result":` + _workflowStagesFixture1 + `},"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	ret, err := mc.WorkflowStages(10)
@@ -45,7 +45,7 @@ func TestWorkflowCreateOrUpdate(t *testing.T) {
 
 	responseBody = `{"result": ` + _workflowFixture1 + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := Workflow{
@@ -115,7 +115,7 @@ func TestWorkflowDeleteForApply(t *testing.T) {
 
 	responseBody = `{"result": [] ,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := Workflow{

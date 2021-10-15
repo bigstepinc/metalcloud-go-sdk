@@ -12,7 +12,7 @@ func TestDriveArrays(t *testing.T) {
 
 	responseBody = `{"result": {"test":` + _driveArrayFixture + `},"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	ret, err := mc.DriveArrays(100)
@@ -52,7 +52,7 @@ func TestDriveArrayGet(t *testing.T) {
 
 	responseBody = `{"result": ` + _driveArrayFixture + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	ret, err := mc.DriveArrayGet(100)
@@ -85,7 +85,7 @@ func TestDriveArrayEdit(t *testing.T) {
 
 	responseBody = `{"result": ` + _driveArrayFixture + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := DriveArrayOperation{
@@ -123,7 +123,7 @@ func TestDriveArrayDelete(t *testing.T) {
 
 	responseBody = `{"result": [] ,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	err = mc.DriveArrayDelete(100)
@@ -152,7 +152,7 @@ func TestDriveArrayCreateOrUpdate(t *testing.T) {
 
 	responseBody = `{"result": ` + _driveArrayFixture1 + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := DriveArray{
@@ -237,7 +237,7 @@ func TestDriveArrayDeleteForApply(t *testing.T) {
 	// responseBody = `{"result": [] ,"jsonrpc": "2.0","id": 0}`
 	responseBody = `{"result": ` + _driveArrayFixture1 + `,"jsonrpc": "2.0","id": 0}`
 
-	mc, err := GetMetalcloudClient("user", "APIKey", httpServer.URL, false)
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
 	obj := DriveArray{
