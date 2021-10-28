@@ -2,6 +2,7 @@ package metalcloud
 
 import (
 	"fmt"
+	"log"
 )
 
 //ServerFirmwareUpgradePolicy represents a server firmware policy.
@@ -10,7 +11,7 @@ type ServerFirmwareUpgradePolicy struct {
 	ServerFirmwareUpgradePolicyLabel  string                            `json:"server_firmware_upgrade_policy_label,omitempty" yaml:"label,omitempty"`
 	ServerFirmwareUpgradePolicyRules  []ServerFirmwareUpgradePolicyRule `json:"server_firmware_upgrade_policy_rules,omitempty" yaml:"rules,omitempty"`
 	ServerFirmwareUpgradePolicyAction string                            `json:"server_firmware_upgrade_policy_action,omitempty" yaml:"action,omitempty"`
-	InstanceArrayID                   int                               `json:"instance_array_id,omitempty" yaml:"instanceArrayID,omitempty"`
+	InstanceArrayIDList               []int                             `json:"instance_array_ids,omitempty" yaml:"instanceArrayList,omitempty"`
 }
 
 //ServerFirmwareUpgradePolicyRule describes a policy rule.
@@ -43,20 +44,23 @@ func (c *Client) ServerFirmwareUpgradePolicyCreate(serverFirmwarePolicy *ServerF
 	var createdObject *ServerFirmwareUpgradePolicy
 	var policyID int
 
+	log.Printf("DEBUG SDK create policy %+v", serverFirmwarePolicy)
 	err := c.rpcClient.CallFor(
 		&policyID,
 		"server_firmware_policy_create",
 		serverFirmwarePolicy.ServerFirmwareUpgradePolicyLabel,
 		serverFirmwarePolicy.ServerFirmwareUpgradePolicyAction,
 		serverFirmwarePolicy.ServerFirmwareUpgradePolicyRules,
-		serverFirmwarePolicy.InstanceArrayID,
 	)
 
 	if err != nil {
 		return nil, err
 	}
-
+	log.Printf("DEBUG SDK client %+v", c)
+	log.Printf("DEBUG SDK policy id %+v", policyID)
 	createdObject, err = c.ServerFirmwarePolicyGet(policyID)
+	log.Printf("DEBUG SDK policy created %+v", createdObject)
+
 	if err != nil {
 		return nil, err
 	}
