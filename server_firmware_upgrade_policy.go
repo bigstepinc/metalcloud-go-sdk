@@ -124,3 +124,17 @@ func (c *Client) ServerFirmwareUpgradePolicyDelete(serverFirmwarePolicyID int) e
 
 	return nil
 }
+
+func (c *Client) ServerFirmwareUgradePolicyInstanceArraySet(serverFirmwarePolicyID int, instanceArrayList []int) error {
+	resp, err := c.rpcClient.Call("server_firmware_policy_instance_arrays_set", serverFirmwarePolicyID, instanceArrayList)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
+	return nil
+}
