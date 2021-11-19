@@ -194,6 +194,11 @@ type MetalCloudClient interface {
 	NetworkJoin(networkID int, networkToBeDeletedID int) error
 	//NetworkJoinByLabel merges two specified Network objects.
 	NetworkJoinByLabel(networkLabel string, networkToBeDeletedID int) error
+	//NetworkProfiles returns a list of network profiles for the specified datacenter
+	NetworkProfiles(datacenterName string) (*map[int]NetworkProfile, error)
+	//NetworkProfileCreate creates a network profile.
+	NetworkProfileCreate(datacenterName string, networkProfile NetworkProfile) (*NetworkProfile, error)
+	NetworkProfileListByInstanceArray(instanceArrayID id) (*map[int]int, error)
 	//NetworkProfileGet returns a NetworkProfile with specified id
 	NetworkProfileGet(networkProfileID int) (*NetworkProfile, error)
 	//NetworkProfileGetByLabel returns a NetworkProfile with specified id
