@@ -179,17 +179,17 @@ type MetalCloudClient interface {
 	//NetworkJoinByLabel merges two specified Network objects.
 	NetworkJoinByLabel(networkLabel string, networkToBeDeletedID int) error
 	//NetworkProfileGet returns a NetworkProfile with specified id
-	NetworkProfileGet(networkProfileID id) (*NetworkProfile, error)
-	//NetworkProfiles returns a list of network profiles for the specified datacenter
-	NetworkProfiles(datacenterName string) (*map[int]NetworkProfile, error)
-	//NetworkProfileCreate creates a network profile.
-	NetworkProfileCreate(datacenterName string, networkProfile NetworkProfile) (*NetworkProfile, error)
+	NetworkProfileGet(networkProfileID int) (*NetworkProfile, error)
+	//NetworkProfileGetByLabel returns a NetworkProfile with specified id
+	NetworkProfileGetByLabel(networkProfileLabel string) (*NetworkProfile, error)
 	//NetworkProfileUpdate updates a network profile.
-	NetworkProfileUpdate(networkProfileID id, networkProfile NetworkProfile) (*NetworkProfile, error)
+	NetworkProfileUpdate(networkProfileID int, networkProfile NetworkProfile) (*NetworkProfile, error)
+	//NetworkProfileUpdateByLabel updates a network profile.
+	NetworkProfileUpdateByLabel(networkProfileLabel string, networkProfile NetworkProfile) (*NetworkProfile, error)
 	//NetworkProfileDelete deletes a network profile.
-	NetworkProfileDelete(networkProfileID id) error
-	NetworkProfileSet(instanceArrayID int, networkID int, networkProfileID int) (*map[int]NetworkProfile, error)
-	NetworkProfileListByInstanceArray(instanceArrayID int) (*map[int]NetworkProfile, error)
+	NetworkProfileDelete(networkProfileID int) error
+	//NetworkProfileDeleteByLabel deletes a network profile.
+	NetworkProfileDeleteByLabel(networkProfileLabel string) error
 	//OSAssetCreate creates a osAsset object
 	OSAssetCreate(osAsset OSAsset) (*OSAsset, error)
 	//OSAssetDelete permanently destroys a OSAsset.

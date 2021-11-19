@@ -24,7 +24,7 @@ type NetworkProfileVLAN struct {
 }
 
 //NetworkProfileGet returns a NetworkProfile with specified id
-func (c *Client) NetworkProfileGet(networkProfileID id) (*NetworkProfile, error) {
+func (c *Client) networkProfileGet(networkProfileID id) (*NetworkProfile, error) {
 	var createdObject NetworkProfile
 
 	if err := checkID(networkProfileID); err != nil {
@@ -44,7 +44,7 @@ func (c *Client) NetworkProfileGet(networkProfileID id) (*NetworkProfile, error)
 }
 
 //NetworkProfiles returns a list of network profiles for the specified datacenter
-func (c *Client) NetworkProfiles(datacenterName string) (*map[int]NetworkProfile, error) {
+func (c *Client) networkProfiles(datacenterName string) (*map[int]NetworkProfile, error) {
 
 	resp, err := c.rpcClient.Call(
 		"network_profiles",
@@ -77,7 +77,7 @@ func (c *Client) NetworkProfiles(datacenterName string) (*map[int]NetworkProfile
 }
 
 //NetworkProfileCreate creates a network profile.
-func (c *Client) NetworkProfileCreate(datacenterName string, networkProfile NetworkProfile) (*NetworkProfile, error) {
+func (c *Client) networkProfileCreate(datacenterName string, networkProfile NetworkProfile) (*NetworkProfile, error) {
 	var createdObject NetworkProfile
 
 	err := c.rpcClient.CallFor(
@@ -94,7 +94,7 @@ func (c *Client) NetworkProfileCreate(datacenterName string, networkProfile Netw
 }
 
 //NetworkProfileUpdate updates a network profile.
-func (c *Client) NetworkProfileUpdate(networkProfileID id, networkProfile NetworkProfile) (*NetworkProfile, error) {
+func (c *Client) networkProfileUpdate(networkProfileID id, networkProfile NetworkProfile) (*NetworkProfile, error) {
 	var createdObject NetworkProfile
 
 	if err := checkID(networkProfileID); err != nil {
@@ -115,7 +115,7 @@ func (c *Client) NetworkProfileUpdate(networkProfileID id, networkProfile Networ
 }
 
 //NetworkProfileDelete deletes a network profile.
-func (c *Client) NetworkProfileDelete(networkProfileID id) error {
+func (c *Client) networkProfileDelete(networkProfileID id) error {
 
 	if err := checkID(networkProfileID); err != nil {
 		return err
@@ -136,7 +136,7 @@ func (c *Client) NetworkProfileDelete(networkProfileID id) error {
 	return nil
 }
 
-func (c *Client) NetworkProfileSet(instanceArrayID int, networkID int, networkProfileID int) (*map[int]NetworkProfile, error) {
+func (c *Client) networkProfileSet(instanceArrayID id, networkID id, networkProfileID id) (*map[int]NetworkProfile, error) {
 	resp, err := c.rpcClient.Call(
 		"instance_array_network_profile_set",
 		instanceArrayID,
@@ -169,7 +169,7 @@ func (c *Client) NetworkProfileSet(instanceArrayID int, networkID int, networkPr
 	return &createdObject, nil
 }
 
-func (c *Client) NetworkProfileListByInstanceArray(instanceArrayID int) (*map[int]NetworkProfile, error) {
+func (c *Client) networkProfileListByInstanceArray(instanceArrayID id) (*map[int]NetworkProfile, error) {
 	resp, err := c.rpcClient.Call(
 		"instance_array_network_profiles",
 		instanceArrayID,
