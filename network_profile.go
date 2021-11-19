@@ -19,8 +19,8 @@ type NetworkProfile struct {
 type NetworkProfileVLAN struct {
 	VlanID                  int    `json:"vlan_id,omitempty" yaml:"vlanID,omitempty"`
 	PortMode                string `json:"port_mode,omitempty" yaml:"portMode,omitempty"`
-	ProvisionSubnetGateways bool   `json:"provision_subnet_gateways" yaml:"provisionSubnetGateways,omitempty"`
-	ExternalConnectionIDs   []int  `json:"external_connection_ids,omitempty" yaml:"extConnectionIDs,omitempty"`
+	ProvisionSubnetGateways bool   `json:"provision_subnet_gateways" yaml:"provisionSubnetGateways"`
+	ExternalConnectionIDs   []int  `json:"external_connection_ids" yaml:"extConnectionIDs"`
 }
 
 //NetworkProfileGet returns a NetworkProfile with specified id
@@ -44,7 +44,7 @@ func (c *Client) networkProfileGet(networkProfileID id) (*NetworkProfile, error)
 }
 
 //NetworkProfiles returns a list of network profiles for the specified datacenter
-func (c *Client) networkProfiles(datacenterName string) (*map[int]NetworkProfile, error) {
+func (c *Client) NetworkProfiles(datacenterName string) (*map[int]NetworkProfile, error) {
 
 	resp, err := c.rpcClient.Call(
 		"network_profiles",
@@ -77,7 +77,7 @@ func (c *Client) networkProfiles(datacenterName string) (*map[int]NetworkProfile
 }
 
 //NetworkProfileCreate creates a network profile.
-func (c *Client) networkProfileCreate(datacenterName string, networkProfile NetworkProfile) (*NetworkProfile, error) {
+func (c *Client) NetworkProfileCreate(datacenterName string, networkProfile NetworkProfile) (*NetworkProfile, error) {
 	var createdObject NetworkProfile
 
 	err := c.rpcClient.CallFor(
@@ -136,7 +136,7 @@ func (c *Client) networkProfileDelete(networkProfileID id) error {
 	return nil
 }
 
-func (c *Client) networkProfileSet(instanceArrayID id, networkID id, networkProfileID id) (*map[int]NetworkProfile, error) {
+func (c *Client) NetworkProfileSet(instanceArrayID id, networkID id, networkProfileID id) (*map[int]int, error) {
 	resp, err := c.rpcClient.Call(
 		"instance_array_network_profile_set",
 		instanceArrayID,
@@ -154,11 +154,11 @@ func (c *Client) networkProfileSet(instanceArrayID id, networkID id, networkProf
 
 	_, ok := resp.Result.([]interface{})
 	if ok {
-		var m = map[int]NetworkProfile{}
+		var m = make(map[int]int)
 		return &m, nil
 	}
 
-	var createdObject map[int]NetworkProfile
+	var createdObject map[int]int
 
 	err = resp.GetObject(&createdObject)
 
@@ -169,7 +169,7 @@ func (c *Client) networkProfileSet(instanceArrayID id, networkID id, networkProf
 	return &createdObject, nil
 }
 
-func (c *Client) networkProfileListByInstanceArray(instanceArrayID id) (*map[int]NetworkProfile, error) {
+func (c *Client) NetworkProfileListByInstanceArray(instanceArrayID id) (*map[int]int, error) {
 	resp, err := c.rpcClient.Call(
 		"instance_array_network_profiles",
 		instanceArrayID,
@@ -185,11 +185,11 @@ func (c *Client) networkProfileListByInstanceArray(instanceArrayID id) (*map[int
 
 	_, ok := resp.Result.([]interface{})
 	if ok {
-		var m = map[int]NetworkProfile{}
+		var m = make(map[int]int)
 		return &m, nil
 	}
 
-	var createdObject map[int]NetworkProfile
+	var createdObject map[int]int
 
 	err = resp.GetObject(&createdObject)
 
