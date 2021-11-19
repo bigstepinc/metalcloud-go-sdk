@@ -178,6 +178,18 @@ type MetalCloudClient interface {
 	NetworkJoin(networkID int, networkToBeDeletedID int) error
 	//NetworkJoinByLabel merges two specified Network objects.
 	NetworkJoinByLabel(networkLabel string, networkToBeDeletedID int) error
+	//NetworkProfileGet returns a NetworkProfile with specified id
+	NetworkProfileGet(networkProfileID id) (*NetworkProfile, error)
+	//NetworkProfiles returns a list of network profiles for the specified datacenter
+	NetworkProfiles(datacenterName string) (*map[int]NetworkProfile, error)
+	//NetworkProfileCreate creates a network profile.
+	NetworkProfileCreate(datacenterName string, networkProfile NetworkProfile) (*NetworkProfile, error)
+	//NetworkProfileUpdate updates a network profile.
+	NetworkProfileUpdate(networkProfileID id, networkProfile NetworkProfile) (*NetworkProfile, error)
+	//NetworkProfileDelete deletes a network profile.
+	NetworkProfileDelete(networkProfileID id) error
+	NetworkProfileSet(instanceArrayID int, networkID int, networkProfileID int) (*map[int]NetworkProfile, error)
+	NetworkProfileListByInstanceArray(instanceArrayID int) (*map[int]NetworkProfile, error)
 	//OSAssetCreate creates a osAsset object
 	OSAssetCreate(osAsset OSAsset) (*OSAsset, error)
 	//OSAssetDelete permanently destroys a OSAsset.
@@ -269,8 +281,11 @@ type MetalCloudClient interface {
 	ServerFirmwareUpgradePolicyCreate(serverFirmwarePolicy *ServerFirmwareUpgradePolicy) (*ServerFirmwareUpgradePolicy, error)
 	//ServerFirmwarePolicyAddRule add a new rule for a policy.
 	ServerFirmwarePolicyAddRule(serverFirmwarePolicyID int, serverRule *ServerFirmwareUpgradePolicyRule) (*ServerFirmwareUpgradePolicy, error)
+	//ServerFirmwarePolicyDeleteRule deletes a rule from a policy.
+	ServerFirmwarePolicyDeleteRule(serverFirmwarePolicyID int, serverRule *ServerFirmwareUpgradePolicyRule) error
 	//ServerFirmwareUpgradePolicyDelete deletes all the information about a specified ServerFirmwareUpgradePolicy.
 	ServerFirmwareUpgradePolicyDelete(serverFirmwarePolicyID int) error
+	ServerFirmwareUgradePolicyInstanceArraySet(serverFirmwarePolicyID int, instanceArrayList []int) error
 	//ServerTypesMatchHardwareConfiguration Retrieves a list of server types that match the provided hardware configuration. The function does not check for availability, only compatibility, so physical servers associated with the returned server types might be unavailable.
 	ServerTypesMatchHardwareConfiguration(datacenterName string, hardwareConfiguration HardwareConfiguration) (*map[int]ServerType, error)
 	//ServerTypeDatacenter retrieves all the server type IDs for servers found in a specified Datacenter
