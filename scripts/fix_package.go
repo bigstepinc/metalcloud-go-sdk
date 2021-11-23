@@ -74,7 +74,7 @@ func main() {
 	// packageAndImport := fmt.Sprintf("package %s\n\n\nimport %s \"%s\"\n", currentPackageName, packageName, sdkPackage)
 	// s = r.ReplaceAll(s, []byte(packageAndImport))
 
-	// for _, v := range types {
+	//     for _, v := range types {
 
 	// 	r := regexp.MustCompile(fmt.Sprintf("\\b%s\\b", v))
 
