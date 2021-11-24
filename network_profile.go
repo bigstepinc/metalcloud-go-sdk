@@ -136,7 +136,7 @@ func (c *Client) networkProfileDelete(networkProfileID id) error {
 	return nil
 }
 
-func (c *Client) NetworkProfileSet(instanceArrayID id, networkID id, networkProfileID id) (*map[int]int, error) {
+func (c *Client) NetworkProfileSet(instanceArrayID int, networkID int, networkProfileID int) (*map[int]int, error) {
 	resp, err := c.rpcClient.Call(
 		"instance_array_network_profile_set",
 		instanceArrayID,
@@ -169,7 +169,7 @@ func (c *Client) NetworkProfileSet(instanceArrayID id, networkID id, networkProf
 	return &createdObject, nil
 }
 
-func (c *Client) NetworkProfileListByInstanceArray(instanceArrayID id) (*map[int]int, error) {
+func (c *Client) NetworkProfileListByInstanceArray(instanceArrayID int) (*map[int]int, error) {
 	resp, err := c.rpcClient.Call(
 		"instance_array_network_profiles",
 		instanceArrayID,
