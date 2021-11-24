@@ -46,6 +46,7 @@ type DatacenterConfig struct {
 	EnableTenantAccessToIPMI                           bool                   `json:"enableTenantAccessToIPMI" yaml:"enableTenantAccessToIPMI"`
 	AllowVLANOverrides                                 bool                   `json:"allowVLANOverrides" yaml:"allowVLANOverrides"`
 	ExtraInternalIPsPerSubnet                          int                    `json:"extraInternalIPsPerSubnet" yaml:"extraInternalIPsPerSubnet"`
+	ExtraInternalIPsPerSANSubnet                       int                    `json:"extraInternalIPsPerSANSubnet" yaml:"extraInternalIPsPerSANSubnet"`
 	ServerRAIDConfigurationEnabled                     bool                   `json:"serverRAIDConfigurationEnabled" yaml:"serverRAIDConfigurationEnabled"`
 	WebProxy                                           *WebProxy              `json:"webProxy" yaml:"webProxy"`
 	IsKubernetesDeployment                             bool                   `json:"isKubernetesDeployment" yaml:"isKubernetesDeployment"`
@@ -88,6 +89,19 @@ type VPLSProvisioner struct {
 	QuarantineVLANID  int    `json:"quarantineVLANID,omitempty"`
 	NorthWANVLANRange string `json:"NorthWANVLANRange,omitempty"`
 	Type              string `json:"type,omitempty"`
+}
+
+//EVPNVXLANL2Provisioner - defines settings for the networking provisioning architecture that uses evpnvxlanl2
+type EVPNVXLANL2Provisioner struct {
+	allocateDefaultWANVLAN bool `json:"allocateDefaultWANVLAN,omitempty"`
+	allocateDefaultSANVLAN bool `json:"allocateDefaultSANVLAN,omitempty"`
+	allocateDefaultLANVLAN bool `json:"allocateDefaultLANVLAN,omitempty"`
+	preventCleanupForVLANs []int `json:"preventCleanupForVLANs,omitempty"`
+	LANVLANRange     	string `json:"LANVLANRange,omitempty"`
+	SANVLANRange     	string `json:"SANVLANRange,omitempty"`
+	WANVLANRange     	string `json:"WANVLANRange,omitempty"`
+	QuarantineVLANID 	int    `json:"quarantineVLANID,omitempty"`
+	Type             	string `json:"type,omitempty"`
 }
 
 //UnmarshalJSON custom unmarshaling
