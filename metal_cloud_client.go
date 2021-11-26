@@ -198,7 +198,8 @@ type MetalCloudClient interface {
 	NetworkProfiles(datacenterName string) (*map[int]NetworkProfile, error)
 	//NetworkProfileCreate creates a network profile.
 	NetworkProfileCreate(datacenterName string, networkProfile NetworkProfile) (*NetworkProfile, error)
-	NetworkProfileSet(instanceArrayID int, networkID int, networkProfileID int) (*map[int]int, error)
+	InstanceArrayNetworkProfileSet(instanceArrayID int, networkID int, networkProfileID int) (*map[int]int, error)
+	InstanceArrayNetworkProfileClear(instanceArrayID int, networkID int) (*map[int]int, error)
 	NetworkProfileListByInstanceArray(instanceArrayID int) (*map[int]int, error)
 	//NetworkProfileGet returns a NetworkProfile with specified id
 	NetworkProfileGet(networkProfileID int) (*NetworkProfile, error)
