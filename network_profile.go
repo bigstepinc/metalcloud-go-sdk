@@ -137,6 +137,18 @@ func (c *Client) networkProfileDelete(networkProfileID id) error {
 }
 
 func (c *Client) InstanceArrayNetworkProfileSet(instanceArrayID int, networkID int, networkProfileID int) (*map[int]int, error) {
+	if err := checkID(networkProfileID); err != nil {
+		return nil, err
+	}
+
+	if err := checkID(instanceArrayID); err != nil {
+		return nil, err
+	}
+
+	if err := checkID(networkID); err != nil {
+		return nil, err
+	}
+
 	resp, err := c.rpcClient.Call(
 		"instance_array_network_profile_set",
 		instanceArrayID,
@@ -169,7 +181,15 @@ func (c *Client) InstanceArrayNetworkProfileSet(instanceArrayID int, networkID i
 	return &createdObject, nil
 }
 
-func (c *Client) InstanceArrayNetworkProfileClear(instanceArrayID int, networkID int) (*map[int]int, error) {
+func (c *Client) InstanceArrayNetworkProfileClear(instanceArrayID int, networkID int) error {
+	if err := checkID(instanceArrayID); err != nil {
+		return err
+	}
+
+	if err := checkID(networkID); err != nil {
+		return err
+	}
+
 	resp, err := c.rpcClient.Call(
 		"instance_array_network_profile_clear",
 		instanceArrayID,
@@ -177,28 +197,14 @@ func (c *Client) InstanceArrayNetworkProfileClear(instanceArrayID int, networkID
 	)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if resp.Error != nil {
-		return nil, fmt.Errorf(resp.Error.Message)
+		return fmt.Errorf(resp.Error.Message)
 	}
 
-	_, ok := resp.Result.([]interface{})
-	if ok {
-		var m = make(map[int]int)
-		return &m, nil
-	}
-
-	var createdObject map[int]int
-
-	err = resp.GetObject(&createdObject)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &createdObject, nil
+	return nil
 }
 
 func (c *Client) NetworkProfileListByInstanceArray(instanceArrayID int) (*map[int]int, error) {
