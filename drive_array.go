@@ -21,18 +21,18 @@ type DriveArray struct {
 
 //DriveArrayOperation defines changes to be applied to a DriveArray
 type DriveArrayOperation struct {
-	DriveArrayID                      int    `json:"drive_array_id,omitempty" yaml:"id,omitempty"`
-	DriveArrayLabel                   string `json:"drive_array_label,omitempty" yaml:"label,omitempty"`
-	VolumeTemplateID                  int    `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
-	DriveArrayStorageType             string `json:"drive_array_storage_type,omitempty" yaml:"storageType,omitempty"`
-	DriveSizeMBytesDefault            int    `json:"drive_size_mbytes_default,omitempty" yaml:"sizeMBytes,omitempty"`
-	InstanceArrayID                   int    `json:"instance_array_id,omitempty" yaml:"instanceArrayID,omitempty"`
-	InfrastructureID                  int    `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
-	DriveArrayCount                   int    `json:"drive_array_count,omitempty" yaml:"count,omitempty"`
-	DriveArrayExpandWithInstanceArray bool   `json:"drive_array_expand_with_instance_array,omitempty" yaml:"expandWithInstanceArray,omitempty"`
-	DriveArrayDeployType              string `json:"drive_array_deploy_type,omitempty" yaml:"deployType,omitempty"`
-	DriveArrayDeployStatus            string `json:"drive_array_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
-	DriveArrayChangeID                int    `json:"drive_array_change_id,omitempty" yaml:"changeID,omitempty"`
+	DriveArrayID                      int         `json:"drive_array_id,omitempty" yaml:"id,omitempty"`
+	DriveArrayLabel                   string      `json:"drive_array_label,omitempty" yaml:"label,omitempty"`
+	VolumeTemplateID                  int         `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
+	DriveArrayStorageType             string      `json:"drive_array_storage_type,omitempty" yaml:"storageType,omitempty"`
+	DriveSizeMBytesDefault            int         `json:"drive_size_mbytes_default,omitempty" yaml:"sizeMBytes,omitempty"`
+	InstanceArrayID                   interface{} `json:"instance_array_id" yaml:"instanceArrayID"`
+	InfrastructureID                  int         `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
+	DriveArrayCount                   int         `json:"drive_array_count,omitempty" yaml:"count,omitempty"`
+	DriveArrayExpandWithInstanceArray bool        `json:"drive_array_expand_with_instance_array,omitempty" yaml:"expandWithInstanceArray,omitempty"`
+	DriveArrayDeployType              string      `json:"drive_array_deploy_type,omitempty" yaml:"deployType,omitempty"`
+	DriveArrayDeployStatus            string      `json:"drive_array_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
+	DriveArrayChangeID                int         `json:"drive_array_change_id,omitempty" yaml:"changeID,omitempty"`
 }
 
 //DriveArrays retrieves the list of drives arrays of an infrastructure
