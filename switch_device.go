@@ -49,6 +49,9 @@ type SwitchDevice struct {
 	NetworkEquipmentTORLinkedID                    int      `json:"network_equipment_tor_linked_id,omitempty"  yaml:"TORLinkedID,omitempty"`
 	NetworkEquipmentTags                           []string `json:"network_equipment_tags,omitempty" yaml:"tags,omitempty"`
 	NetworkEquipmentRequiresOSInstall              bool     `json:"network_equipment_requires_os_install" yaml:"requiresOSInstall"`
+	NetworkEquipmentIsBorderDevice                 bool     `json:"network_equipment_requires_os_install" yaml:"isBorderDevice"`
+	NetworkEquipmentIsStorageSwitch                bool     `json:"network_equipment_is_storage_switch" yaml:"isStorageSwitch"`
+	NetworkEquipmentNetworkTypesAllowed            []string `json:"network_equipment_network_types_allowed" yaml:"networkTypesAllowed"`
 	VolumeTemplateID                               int      `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
 }
 
@@ -95,8 +98,11 @@ func (s *SwitchDevice) UnmarshalJSON(data []byte) error {
 		ChassisRackID                                  int      `json:"chassis_rack_id,omitempty" yaml:"chassisRackID,omitempty"`
 		NetworkEquipmentTORLinkedID                    int      `json:"network_equipment_tor_linked_id,omitempty"  yaml:"TORLinkedID,omitempty"`
 		NetworkEquipmentTags                           []string `json:"network_equipment_tags,omitempty" yaml:"tags,omitempty"`
+		NetworkEquipmentNetworkTypesAllowed            []string `json:"network_equipment_network_types_allowed" yaml:"networkTypesAllowed"`
 		//this is the culprit.
 		NetworkEquipmentRequiresOSInstall interface{} `json:"network_equipment_requires_os_install" yaml:"requiresOSInstall"`
+		NetworkEquipmentIsBorderDevice    interface{} `json:"network_equipment_is_border_device" yaml:"isBorderDevice"`
+		NetworkEquipmentIsStorageSwitch   interface{} `json:"network_equipment_is_storage_switch" yaml:"isStorageSwitch"`
 		VolumeTemplateID                  int         `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
 	}
 
@@ -111,6 +117,22 @@ func (s *SwitchDevice) UnmarshalJSON(data []byte) error {
 			v.NetworkEquipmentRequiresOSInstall = false
 		} else {
 			v.NetworkEquipmentRequiresOSInstall = true
+		}
+	}
+	switch v.NetworkEquipmentIsBorderDevice.(type) {
+	case float64:
+		if v.NetworkEquipmentIsBorderDevice.(float64) == 0.0 {
+			v.NetworkEquipmentIsBorderDevice = false
+		} else {
+			v.NetworkEquipmentIsBorderDevice = true
+		}
+	}
+	switch v.NetworkEquipmentIsStorageSwitch.(type) {
+	case float64:
+		if v.NetworkEquipmentIsStorageSwitch.(float64) == 0.0 {
+			v.NetworkEquipmentIsStorageSwitch = false
+		} else {
+			v.NetworkEquipmentIsStorageSwitch = true
 		}
 	}
 	copier.Copy(&s, &v)
