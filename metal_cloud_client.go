@@ -60,6 +60,22 @@ type MetalCloudClient interface {
 	DriveSnapshotGet(driveSnapshotID int) (*Snapshot, error)
 	//DriveSnapshots retrieves a list of all the snapshot objects
 	DriveSnapshots(driveID int) (*map[string]Snapshot, error)
+	//ExternalConnections returns a list of external connections for the specified datacenter
+	ExternalConnections(datacenterName string) (*[]ExternalConnection, error)
+	//ExternalConnectionCreate creates an external connection.
+	ExternalConnectionCreate(externalConnection ExternalConnection) (*ExternalConnection, error)
+	//ExternalConnectionGet returns an external connection with specified id
+	ExternalConnectionGet(externalConnectionID int) (*ExternalConnection, error)
+	//ExternalConnectionGetByLabel returns an external connection with specified id
+	ExternalConnectionGetByLabel(externalConnectionLabel string) (*ExternalConnection, error)
+	//ExternalConnectionEdit updates an external connection.
+	ExternalConnectionEdit(externalConnectionID int, externalConnection ExternalConnection) (*ExternalConnection, error)
+	//ExternalConnectionEditByLabel updates an external connection.
+	ExternalConnectionEditByLabel(externalConnectionLabel string, externalConnection ExternalConnection) (*ExternalConnection, error)
+	//ExternalConnectionDelete deletes an external connection.
+	ExternalConnectionDelete(externalConnectionID int) error
+	//ExternalConnectionDeleteByLabel deletes an external connection.
+	ExternalConnectionDeleteByLabel(externalConnectionLabel string) error
 	//InfrastructureCreate creates an infrastructure
 	InfrastructureCreate(infrastructure Infrastructure) (*Infrastructure, error)
 	//Infrastructures returns a list of infrastructures
@@ -178,6 +194,25 @@ type MetalCloudClient interface {
 	NetworkJoin(networkID int, networkToBeDeletedID int) error
 	//NetworkJoinByLabel merges two specified Network objects.
 	NetworkJoinByLabel(networkLabel string, networkToBeDeletedID int) error
+	//NetworkProfiles returns a list of network profiles for the specified datacenter
+	NetworkProfiles(datacenterName string) (*map[int]NetworkProfile, error)
+	//NetworkProfileCreate creates a network profile.
+	NetworkProfileCreate(datacenterName string, networkProfile NetworkProfile) (*NetworkProfile, error)
+	InstanceArrayNetworkProfileSet(instanceArrayID int, networkID int, networkProfileID int) (*map[int]int, error)
+	InstanceArrayNetworkProfileClear(instanceArrayID int, networkID int) error
+	NetworkProfileListByInstanceArray(instanceArrayID int) (*map[int]int, error)
+	//NetworkProfileGet returns a NetworkProfile with specified id
+	NetworkProfileGet(networkProfileID int) (*NetworkProfile, error)
+	//NetworkProfileGetByLabel returns a NetworkProfile with specified id
+	NetworkProfileGetByLabel(networkProfileLabel string) (*NetworkProfile, error)
+	//NetworkProfileUpdate updates a network profile.
+	NetworkProfileUpdate(networkProfileID int, networkProfile NetworkProfile) (*NetworkProfile, error)
+	//NetworkProfileUpdateByLabel updates a network profile.
+	NetworkProfileUpdateByLabel(networkProfileLabel string, networkProfile NetworkProfile) (*NetworkProfile, error)
+	//NetworkProfileDelete deletes a network profile.
+	NetworkProfileDelete(networkProfileID int) error
+	//NetworkProfileDeleteByLabel deletes a network profile.
+	NetworkProfileDeleteByLabel(networkProfileLabel string) error
 	//OSAssetCreate creates a osAsset object
 	OSAssetCreate(osAsset OSAsset) (*OSAsset, error)
 	//OSAssetDelete permanently destroys a OSAsset.
@@ -273,6 +308,7 @@ type MetalCloudClient interface {
 	ServerFirmwarePolicyDeleteRule(serverFirmwarePolicyID int, serverRule *ServerFirmwareUpgradePolicyRule) error
 	//ServerFirmwareUpgradePolicyDelete deletes all the information about a specified ServerFirmwareUpgradePolicy.
 	ServerFirmwareUpgradePolicyDelete(serverFirmwarePolicyID int) error
+	ServerFirmwareUgradePolicyInstanceArraySet(serverFirmwarePolicyID int, instanceArrayList []int) error
 	//ServerTypesMatchHardwareConfiguration Retrieves a list of server types that match the provided hardware configuration. The function does not check for availability, only compatibility, so physical servers associated with the returned server types might be unavailable.
 	ServerTypesMatchHardwareConfiguration(datacenterName string, hardwareConfiguration HardwareConfiguration) (*map[int]ServerType, error)
 	//ServerTypeDatacenter retrieves all the server type IDs for servers found in a specified Datacenter
