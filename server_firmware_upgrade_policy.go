@@ -2,7 +2,6 @@ package metalcloud
 
 import (
 	"fmt"
-	"log"
 )
 
 //ServerFirmwareUpgradePolicy represents a server firmware policy.
@@ -43,23 +42,27 @@ func (c *Client) ServerFirmwareUpgradePolicyCreate(serverFirmwarePolicy *ServerF
 
 	var createdObject *ServerFirmwareUpgradePolicy
 	var policyID int
+	var action interface{}
 
-	log.Printf("DEBUG SDK create policy %+v", serverFirmwarePolicy)
+	if serverFirmwarePolicy.ServerFirmwareUpgradePolicyAction == "" {
+		action = nil
+	} else {
+		action = serverFirmwarePolicy.ServerFirmwareUpgradePolicyAction
+	}
+
 	err := c.rpcClient.CallFor(
 		&policyID,
 		"server_firmware_policy_create",
 		serverFirmwarePolicy.ServerFirmwareUpgradePolicyLabel,
-		serverFirmwarePolicy.ServerFirmwareUpgradePolicyAction,
+		action,
 		serverFirmwarePolicy.ServerFirmwareUpgradePolicyRules,
 	)
 
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("DEBUG SDK client %+v", c)
-	log.Printf("DEBUG SDK policy id %+v", policyID)
+
 	createdObject, err = c.ServerFirmwarePolicyGet(policyID)
-	log.Printf("DEBUG SDK policy created %+v", createdObject)
 
 	if err != nil {
 		return nil, err

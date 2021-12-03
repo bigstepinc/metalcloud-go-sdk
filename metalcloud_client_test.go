@@ -148,8 +148,8 @@ func TestResourcesOmitEmptyMarshaling(t *testing.T) {
 	obj4 := DriveArray{}
 	testEmptyObjMarshalingToBeEmpty(obj4)
 
-	obj5 := DriveArrayOperation{}
-	testEmptyObjMarshalingToBeEmpty(obj5)
+	// obj5 := DriveArrayOperation{}
+	// testEmptyObjMarshalingToBeEmpty(obj5)
 
 	obj6 := ServerType{}
 	testEmptyObjMarshalingToBeEmpty(obj6)
