@@ -2,7 +2,9 @@ package metalcloud
 
 //go:generate go run helper/gen_exports.go
 
-import "fmt"
+import (
+	"fmt"
+)
 
 //ExternalConnection object describes an external connection
 type ExternalConnection struct {
@@ -64,10 +66,13 @@ func (c *Client) ExternalConnections(datacenterName string) (*[]ExternalConnecti
 func (c *Client) ExternalConnectionCreate(externalConnection ExternalConnection) (*ExternalConnection, error) {
 	var createdObject ExternalConnection
 
+	arrExt := []ExternalConnection{}
+
+	arrExt = append(arrExt, externalConnection)
 	err := c.rpcClient.CallFor(
 		&createdObject,
 		"external_connection_create",
-		externalConnection,
+		arrExt,
 	)
 
 	if err != nil {
