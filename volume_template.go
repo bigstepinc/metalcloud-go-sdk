@@ -116,10 +116,11 @@ func (c *Client) volumeTemplateCreateFromDrive(driveID id, objVolumeTemplate Vol
 }
 
 //VolumeTemplateMakePublic makes a template public
-func (c *Client) VolumeTemplateMakePublic(volumeTemplateID int) error {
+func (c *Client) VolumeTemplateMakePublic(volumeTemplateID int, bootstrapFunctionName string) error {
 	resp, err := c.rpcClient.Call(
 		"volume_template_make_public",
 		volumeTemplateID,
+		bootstrapFunctionName,
 	)
 
 	if err != nil {
