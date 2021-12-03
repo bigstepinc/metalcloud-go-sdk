@@ -400,7 +400,7 @@ type MetalCloudClient interface {
 	//VolumeTemplates retrives the list of available templates
 	VolumeTemplates() (*map[string]VolumeTemplate, error)
 	//VolumeTemplateMakePublic makes a template public
-	VolumeTemplateMakePublic(volumeTemplateID int) error
+	VolumeTemplateMakePublic(volumeTemplateID int, bootstrapFunctionName string) error
 	//VolumeTemplateMakePrivate makes a template private
 	VolumeTemplateMakePrivate(volumeTemplateID int, userID int) error
 	//VolumeTemplateGet returns the specified volume template
