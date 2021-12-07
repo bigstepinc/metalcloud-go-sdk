@@ -141,3 +141,43 @@ func (c *Client) ServerFirmwareUgradePolicyInstanceArraySet(serverFirmwarePolicy
 
 	return nil
 }
+
+//ServerFirmwareUpgradePolicyActionSet sets the upgrade action for a specified ServerFirmwareUpgradePolicy.
+func (c *Client) ServerFirmwareUpgradePolicyActionSet(serverFirmwarePolicyID int, serverFirmwarePolicyAction string) error {
+
+	resp, err := c.rpcClient.Call(
+		"server_firmware_policy_action_set",
+		serverFirmwarePolicyID,
+		serverFirmwarePolicyAction,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
+	return nil
+}
+
+//ServerFirmwareUpgradePolicyLabelSet sets the label for a specified ServerFirmwareUpgradePolicy.
+func (c *Client) ServerFirmwareUpgradePolicyLabelSet(serverFirmwarePolicyID int, serverFirmwarePolicyLabel string) error {
+
+	resp, err := c.rpcClient.Call(
+		"server_firmware_policy_label_set",
+		serverFirmwarePolicyID,
+		serverFirmwarePolicyLabel,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
+	return nil
+}

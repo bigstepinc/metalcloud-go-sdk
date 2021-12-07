@@ -309,6 +309,10 @@ type MetalCloudClient interface {
 	//ServerFirmwareUpgradePolicyDelete deletes all the information about a specified ServerFirmwareUpgradePolicy.
 	ServerFirmwareUpgradePolicyDelete(serverFirmwarePolicyID int) error
 	ServerFirmwareUgradePolicyInstanceArraySet(serverFirmwarePolicyID int, instanceArrayList []int) error
+	//ServerFirmwareUpgradePolicyActionSet sets the upgrade action for a specified ServerFirmwareUpgradePolicy.
+	ServerFirmwareUpgradePolicyActionSet(serverFirmwarePolicyID int, serverFirmwarePolicyAction string) error
+	//ServerFirmwareUpgradePolicyLabelSet sets the label for a specified ServerFirmwareUpgradePolicy.
+	ServerFirmwareUpgradePolicyLabelSet(serverFirmwarePolicyID int, serverFirmwarePolicyLabel string) error
 	//ServerTypesMatchHardwareConfiguration Retrieves a list of server types that match the provided hardware configuration. The function does not check for availability, only compatibility, so physical servers associated with the returned server types might be unavailable.
 	ServerTypesMatchHardwareConfiguration(datacenterName string, hardwareConfiguration HardwareConfiguration) (*map[int]ServerType, error)
 	//ServerTypeDatacenter retrieves all the server type IDs for servers found in a specified Datacenter
