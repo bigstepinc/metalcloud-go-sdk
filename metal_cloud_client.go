@@ -61,7 +61,7 @@ type MetalCloudClient interface {
 	//DriveSnapshots retrieves a list of all the snapshot objects
 	DriveSnapshots(driveID int) (*map[string]Snapshot, error)
 	//ExternalConnections returns a list of external connections for the specified datacenter
-	ExternalConnections(datacenterName string) (*[]ExternalConnection, error)
+	ExternalConnections(datacenterName string) (*map[int]ExternalConnection, error)
 	//ExternalConnectionCreate creates an external connection.
 	ExternalConnectionCreate(externalConnection ExternalConnection) (*ExternalConnection, error)
 	//ExternalConnectionGet returns an external connection with specified id

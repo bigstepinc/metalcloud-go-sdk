@@ -36,7 +36,7 @@ func (c *Client) externalConnectionGet(externalConnectionID id) (*ExternalConnec
 }
 
 //ExternalConnections returns a list of external connections for the specified datacenter
-func (c *Client) ExternalConnections(datacenterName string) (*[]ExternalConnection, error) {
+func (c *Client) ExternalConnections(datacenterName string) (*map[int]ExternalConnection, error) {
 
 	resp, err := c.rpcClient.Call(
 		"external_connections",
@@ -51,7 +51,13 @@ func (c *Client) ExternalConnections(datacenterName string) (*[]ExternalConnecti
 		return nil, fmt.Errorf(resp.Error.Message)
 	}
 
-	var createdObject []ExternalConnection
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[int]ExternalConnection{}
+		return &m, nil
+	}
+
+	var createdObject map[int]ExternalConnection
 
 	err = resp.GetObject(&createdObject)
 
@@ -60,6 +66,7 @@ func (c *Client) ExternalConnections(datacenterName string) (*[]ExternalConnecti
 	}
 
 	return &createdObject, nil
+
 }
 
 //ExternalConnectionCreate creates an external connection.
