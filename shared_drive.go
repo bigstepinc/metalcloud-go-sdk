@@ -20,6 +20,7 @@ type SharedDrive struct {
 	SharedDriveOperation              SharedDriveOperation   `json:"shared_drive_operation,omitempty" yaml:"operation,omitempty"`
 	SharedDriveCredentials            SharedDriveCredentials `json:"shared_drive_credentials,omitempty" yaml:"credentials,omitempty"`
 	SharedDriveChangeID               int                    `json:"shared_drive_change_id,omitempty" yaml:"changeID,omitempty"`
+	SharedDriveTargetsJSON            string                 `json:"shared_drive_targets_json,omitempty" yaml:"targetsJSON,omitempty"`
 }
 
 //SharedDriveCredentials iscsi or other forms of connection details
