@@ -321,41 +321,51 @@ func (c *Client) instanceGet(instanceID id) (*Instance, error) {
 	}
 
 	if instance.InstanceCredentials.SSH.InitialPassword != "" {
-
 		passwdComponents := strings.Split(instance.InstanceCredentials.SSH.InitialPassword, ":")
-		if len(passwdComponents) != 2 {
-			return nil, fmt.Errorf("Password not returned with proper components")
-		}
-		var passwd string
-		err = c.rpcClient.CallFor(
-			&passwd,
-			"password_decrypt",
-			passwdComponents[1],
-		)
-		if err != nil {
-			return nil, err
-		}
 
-		instance.InstanceCredentials.SSH.InitialPassword = passwd
+		if len(passwdComponents) == 2 {
+			if strings.Contains(passwdComponents[0], "Not authorized") {
+				return nil, fmt.Errorf("Permission missing. %s", passwdComponents[1])
+			} else {
+				var passwd string
+
+				err = c.rpcClient.CallFor(
+					&passwd,
+					"password_decrypt",
+					passwdComponents[1],
+				)
+				if err != nil {
+					return nil, err
+				}
+
+				instance.InstanceCredentials.SSH.InitialPassword = passwd
+			}
+		}
 	}
 
 	if instance.InstanceCredentials.ISCSI.Password != "" {
 
 		passwdComponents := strings.Split(instance.InstanceCredentials.ISCSI.Password, ":")
-		if len(passwdComponents) != 2 {
-			return nil, fmt.Errorf("Password not returned with proper components")
-		}
-		var passwd string
-		err = c.rpcClient.CallFor(
-			&passwd,
-			"password_decrypt",
-			passwdComponents[1],
-		)
-		if err != nil {
-			return nil, err
+
+		if len(passwdComponents) == 2 {
+			if strings.Contains(passwdComponents[0], "Not authorized") {
+				return nil, fmt.Errorf("Permission missing. %s", passwdComponents[1])
+			} else {
+				var passwd string
+
+				err = c.rpcClient.CallFor(
+					&passwd,
+					"password_decrypt",
+					passwdComponents[1],
+				)
+				if err != nil {
+					return nil, err
+				}
+
+				instance.InstanceCredentials.ISCSI.Password = passwd
+			}
 		}
 
-		instance.InstanceCredentials.ISCSI.Password = passwd
 	}
 
 	return &instance, nil
