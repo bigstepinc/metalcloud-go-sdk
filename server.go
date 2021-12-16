@@ -270,19 +270,25 @@ func (c *Client) ServerGetByUUID(serverUUID string, decryptPasswd bool) (*Server
 
 	if decryptPasswd {
 		passwdComponents := strings.Split(createdObject.ServerIPMInternalPassword, ":")
-		if len(passwdComponents) != 2 {
-			return nil, fmt.Errorf("Password not returned with proper components")
+
+		if len(passwdComponents) == 2 {
+			if strings.Contains(passwdComponents[0], "Not authorized") {
+				return nil, fmt.Errorf("Permission missing. %s", passwdComponents[1])
+			} else {
+				var passwd string
+
+				err = c.rpcClient.CallFor(
+					&passwd,
+					"password_decrypt",
+					passwdComponents[1],
+				)
+				if err != nil {
+					return nil, err
+				}
+
+				createdObject.ServerIPMInternalPassword = passwd
+			}
 		}
-		var passwd string
-		err = c.rpcClient.CallFor(
-			&passwd,
-			"password_decrypt",
-			passwdComponents[1],
-		)
-		if err != nil {
-			return nil, err
-		}
-		createdObject.ServerIPMInternalPassword = passwd
 	} else {
 		createdObject.ServerIPMInternalPassword = ""
 	}
@@ -317,19 +323,25 @@ func (c *Client) ServerGet(serverID int, decryptPasswd bool) (*Server, error) {
 		}
 
 		passwdComponents := strings.Split(internalSrvObject.ServerIPMInternalPassword, ":")
-		if len(passwdComponents) != 2 {
-			return nil, fmt.Errorf("Password not returned with proper components")
+
+		if len(passwdComponents) == 2 {
+			if strings.Contains(passwdComponents[0], "Not authorized") {
+				return nil, fmt.Errorf("Permission missing. %s", passwdComponents[1])
+			} else {
+				var passwd string
+
+				err = c.rpcClient.CallFor(
+					&passwd,
+					"password_decrypt",
+					passwdComponents[1],
+				)
+				if err != nil {
+					return nil, err
+				}
+
+				createdObject.ServerIPMInternalPassword = passwd
+			}
 		}
-		var passwd string
-		err = c.rpcClient.CallFor(
-			&passwd,
-			"password_decrypt",
-			passwdComponents[1],
-		)
-		if err != nil {
-			return nil, err
-		}
-		createdObject.ServerIPMInternalPassword = passwd
 	} else {
 		createdObject.ServerIPMInternalPassword = ""
 	}

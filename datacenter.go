@@ -323,19 +323,25 @@ func (c *Client) DatacenterAgentsConfigJSONDownloadURL(datacenterName string, de
 
 	if decrypt {
 		passwdComponents := strings.Split(createdObj.URL, ":")
-		if len(passwdComponents) != 2 {
-			return "", fmt.Errorf("Password not returned with proper components")
+
+		if len(passwdComponents) == 2 {
+			if strings.Contains(passwdComponents[0], "Not authorized") {
+				return "", fmt.Errorf("Permission missing. %s", passwdComponents[1])
+			} else {
+				var decryptedURL string
+
+				err = c.rpcClient.CallFor(
+					&decryptedURL,
+					"password_decrypt",
+					passwdComponents[1],
+				)
+				if err != nil {
+					return "", err
+				}
+
+				agentConfigURL = decryptedURL
+			}
 		}
-		var decryptedURL string
-		err = c.rpcClient.CallFor(
-			&decryptedURL,
-			"password_decrypt",
-			passwdComponents[1],
-		)
-		if err != nil {
-			return "", err
-		}
-		agentConfigURL = decryptedURL
 	}
 
 	return agentConfigURL, nil

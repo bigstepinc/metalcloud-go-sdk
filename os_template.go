@@ -134,20 +134,24 @@ func (c *Client) OSTemplateGet(osTemplateID int, decryptPasswd bool) (*OSTemplat
 
 	if decryptPasswd && createdObject.OSTemplateCredentials != nil {
 		passwdComponents := strings.Split(createdObject.OSTemplateCredentials.OSTemplateInitialPassword, ":")
-		if len(passwdComponents) != 2 {
-			return nil, fmt.Errorf("Password not returned with proper components")
-		}
+		if len(passwdComponents) == 2 {
+			if strings.Contains(passwdComponents[0], "Not authorized") {
+				return nil, fmt.Errorf("Permission missing. %s", passwdComponents[1])
+			} else {
+				var passwd string
 
-		var passwd string
-		err = c.rpcClient.CallFor(
-			&passwd,
-			"password_decrypt",
-			passwdComponents[1],
-		)
-		if err != nil {
-			return nil, err
+				err = c.rpcClient.CallFor(
+					&passwd,
+					"password_decrypt",
+					passwdComponents[1],
+				)
+				if err != nil {
+					return nil, err
+				}
+
+				createdObject.OSTemplateCredentials.OSTemplateInitialPassword = passwd
+			}
 		}
-		createdObject.OSTemplateCredentials.OSTemplateInitialPassword = passwd
 	}
 
 	return &createdObject, nil
