@@ -17,7 +17,7 @@ type SubnetPool struct {
 	SubnetPoolNetmaskHex                        string `json:"subnet_pool_netmask_hex,omitempty" yaml:"netmaskHex,omitempty"`
 	SubnetPoolPrefixSize                        int    `json:"subnet_pool_prefix_size,omitempty" yaml:"size,omitempty"`
 	SubnetPoolType                              string `json:"subnet_pool_type,omitempty" yaml:"type,omitempty"`
-	SubnetPoolRoutable                          bool   `json:"subnet_pool_routable,omitempty" yaml:"routable,omitempty"`
+	SubnetPoolRoutable                          bool   `json:"subnet_pool_routable" yaml:"routable"`
 	SubnetPoolDestination                       string `json:"subnet_pool_destination,omitempty" yaml:"destination,omitempty"`
 	SubnetPoolUtilizationCachedJSON             string `json:"subnet_pool_utilization_cached_json,omitempty" yaml:"currentUtilizationJSON,omitempty"`
 	SubnetPoolUtilizationCachedUpdatedTimestamp string `json:"subnet_pool_cached_updated_timestamp,omitempty" yaml:"currentUtilizationLastUpdated,omitempty"`

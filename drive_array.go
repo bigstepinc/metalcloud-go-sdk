@@ -15,7 +15,7 @@ type DriveArray struct {
 	InfrastructureID                  int                  `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
 	DriveArrayServiceStatus           string               `json:"drive_array_service_status,omitempty" yaml:"serviceStatus,omitempty"`
 	DriveArrayCount                   int                  `json:"drive_array_count,omitempty" yaml:"count,omitempty"`
-	DriveArrayExpandWithInstanceArray bool                 `json:"drive_array_expand_with_instance_array,omitempty" yaml:"expandWithInstanceArray,omitempty"`
+	DriveArrayExpandWithInstanceArray bool                 `json:"drive_array_expand_with_instance_array" yaml:"expandWithInstanceArray"`
 	DriveArrayOperation               *DriveArrayOperation `json:"drive_array_operation,omitempty" yaml:"operation,omitempty"`
 }
 
@@ -29,7 +29,7 @@ type DriveArrayOperation struct {
 	InstanceArrayID                   interface{} `json:"instance_array_id" yaml:"instanceArrayID"`
 	InfrastructureID                  int         `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
 	DriveArrayCount                   int         `json:"drive_array_count,omitempty" yaml:"count,omitempty"`
-	DriveArrayExpandWithInstanceArray bool        `json:"drive_array_expand_with_instance_array,omitempty" yaml:"expandWithInstanceArray,omitempty"`
+	DriveArrayExpandWithInstanceArray bool        `json:"drive_array_expand_with_instance_array" yaml:"expandWithInstanceArray"`
 	DriveArrayDeployType              string      `json:"drive_array_deploy_type,omitempty" yaml:"deployType,omitempty"`
 	DriveArrayDeployStatus            string      `json:"drive_array_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
 	DriveArrayChangeID                int         `json:"drive_array_change_id,omitempty" yaml:"changeID,omitempty"`

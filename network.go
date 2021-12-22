@@ -24,7 +24,7 @@ type NetworkOperation struct {
 	NetworkSubdomain          string `json:"network_subdomain,omitempty" yaml:"subdomain,omitempty"`
 	NetworkType               string `json:"network_type,omitempty" yaml:"type,omitempty"`
 	InfrastructureID          int    `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
-	NetworkLANAutoAllocateIPs bool   `json:"network_lan_autoallocate_ips,omitempty" yaml:"LANAutoAllocateIPs,omitempty"`
+	NetworkLANAutoAllocateIPs bool   `json:"network_lan_autoallocate_ips" yaml:"LANAutoAllocateIPs"`
 	NetworkDeployType         string `json:"network_deploy_type,omitempty" yaml:"deployType,omitempty"`
 	NetworkChangeID           int    `json:"network_change_id,omitempty" yaml:"changeID,omitempty"`
 }
