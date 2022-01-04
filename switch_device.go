@@ -49,7 +49,7 @@ type SwitchDevice struct {
 	NetworkEquipmentTORLinkedID                    int      `json:"network_equipment_tor_linked_id,omitempty"  yaml:"TORLinkedID,omitempty"`
 	NetworkEquipmentTags                           []string `json:"network_equipment_tags,omitempty" yaml:"tags,omitempty"`
 	NetworkEquipmentRequiresOSInstall              bool     `json:"network_equipment_requires_os_install" yaml:"requiresOSInstall"`
-	NetworkEquipmentIsBorderDevice                 bool     `json:"network_equipment_requires_os_install" yaml:"isBorderDevice"`
+	NetworkEquipmentIsBorderDevice                 bool     `json:"network_equipment_is_border_device" yaml:"isBorderDevice"`
 	NetworkEquipmentIsStorageSwitch                bool     `json:"network_equipment_is_storage_switch" yaml:"isStorageSwitch"`
 	NetworkEquipmentNetworkTypesAllowed            []string `json:"network_equipment_network_types_allowed,omitempty" yaml:"networkTypesAllowed,omitempty"`
 	VolumeTemplateID                               int      `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
