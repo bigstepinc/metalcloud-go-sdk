@@ -51,7 +51,7 @@ type SwitchDevice struct {
 	NetworkEquipmentRequiresOSInstall              bool     `json:"network_equipment_requires_os_install" yaml:"requiresOSInstall"`
 	NetworkEquipmentIsBorderDevice                 bool     `json:"network_equipment_requires_os_install" yaml:"isBorderDevice"`
 	NetworkEquipmentIsStorageSwitch                bool     `json:"network_equipment_is_storage_switch" yaml:"isStorageSwitch"`
-	NetworkEquipmentNetworkTypesAllowed            []string `json:"network_equipment_network_types_allowed" yaml:"networkTypesAllowed"`
+	NetworkEquipmentNetworkTypesAllowed            []string `json:"network_equipment_network_types_allowed,omitempty" yaml:"networkTypesAllowed,omitempty"`
 	VolumeTemplateID                               int      `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
 }
 
