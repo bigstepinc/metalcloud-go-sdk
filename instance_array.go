@@ -72,7 +72,7 @@ type FirewallRule struct {
 	FirewallRuleDestinationIPAddressRangeEnd   string `json:"firewall_rule_destination_ip_address_range_end,omitempty" yaml:"destinationIPAddressRangeEnd,omitempty"`
 	FirewallRuleProtocol                       string `json:"firewall_rule_protocol,omitempty" yaml:"protocol,omitempty"`
 	FirewallRuleIPAddressType                  string `json:"firewall_rule_ip_address_type,omitempty" yaml:"IPAddressType,omitempty"`
-	FirewallRuleEnabled                        bool   `json:"firewall_rule_enabled,omitempty" yaml:"enabled,omitempty"`
+	FirewallRuleEnabled                        bool   `json:"firewall_rule_enabled" yaml:"enabled"`
 }
 
 //InstanceArrayInterface describes a network interface of the array.

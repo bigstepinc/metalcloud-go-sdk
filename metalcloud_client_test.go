@@ -142,8 +142,8 @@ func testEmptyObjMarshalingToBeEmpty(obj interface{}) {
 func TestResourcesOmitEmptyMarshaling(t *testing.T) {
 	RegisterTestingT(t)
 
-	obj := FirewallRule{}
-	testEmptyObjMarshalingToBeEmpty(obj)
+	// obj := FirewallRule{}
+	// testEmptyObjMarshalingToBeEmpty(obj)
 
 	// obj4 := DriveArray{}
 	// testEmptyObjMarshalingToBeEmpty(obj4)
