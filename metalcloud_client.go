@@ -20,12 +20,7 @@ import (
 	"golang.org/x/oauth2/clientcredentials"
 )
 
-//DefaultEndpoint returns the default Bigstep Metalcloud endpoint
-func DefaultEndpoint() string {
-	return "https://api.bigstep.com/metal-cloud"
-}
-
-//Client sruct defines a metalcloud client
+//Client struct defines a metalcloud client
 type Client struct {
 	rpcClient jsonrpc.RPCClient
 	user      string
@@ -199,7 +194,7 @@ func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 		resp, err = http.DefaultTransport.RoundTrip(req)
 	}
 
-	if c.LoggingEnabled {
+	if c.LoggingEnabled && resp != nil {
 		//log the reply
 		if resp.Body != nil {
 			message, _ = ioutil.ReadAll(resp.Body)

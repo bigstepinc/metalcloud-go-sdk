@@ -385,6 +385,14 @@ type MetalCloudClient interface {
 	SwitchDevicesInDatacenter(datacenter string) (*map[string]SwitchDevice, error)
 	//SwitchDeviceUpdate updates an existing switch configuration
 	SwitchDeviceUpdate(networkEquipmentID int, switchDevice SwitchDevice, bOverwriteWithHostnameFromFetchedSwitch bool) (*SwitchDevice, error)
+	//SwitchDeviceLinks Returns all the switch device links found in the database.
+	SwitchDeviceLinks() (*map[int]SwitchDeviceLink, error)
+	//SwitchDeviceLinkCreate Creates a record for a new SwitchDevice.
+	SwitchDeviceLinkCreate(networkEquipmentID1 int, networkEquipmentID2 int, networkEquipmentLinkType string) (*SwitchDeviceLink, error)
+	//SwitchDeviceLinkGet Retrieves information regarding a specified switch device link
+	SwitchDeviceLinkGet(networkEquipmentID1 int, networkEquipmentID2 int, linkType string) (*SwitchDeviceLink, error)
+	//SwitchDeviceLinkDelete deletes a specified switch device and its registered interfaces.
+	SwitchDeviceLinkDelete(networkEquipmentID1 int, networkEquipmentID2 int, linkType string) error
 	//UserGet describes returns user account specifications.
 	UserGet(userID int) (*User, error)
 	//UserGetByEmail describes returns user account specifications.

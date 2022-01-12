@@ -1,3 +1,4 @@
+//go:build ignore
 // +build ignore
 
 package main
@@ -47,6 +48,7 @@ var types = [...]string{
 	"OSTemplateOSAssetData",
 	"SharedDriveOperation",
 	"SwitchDevice",
+	"SwitchDeviceLink",
 	"SubnetPool",
 	"SubnetPoolUtilization",
 }
