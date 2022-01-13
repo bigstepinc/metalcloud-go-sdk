@@ -50,14 +50,14 @@ func (c *Client) SwitchDeviceLinks() (*map[int]SwitchDeviceLink, error) {
 //SwitchDeviceLinkCreate Creates a record for a new SwitchDevice.
 func (c *Client) SwitchDeviceLinkCreate(networkEquipmentID1 int, networkEquipmentID2 int, networkEquipmentLinkType string) (*SwitchDeviceLink, error) {
 	var createdObject SwitchDeviceLink
-
+	emptyObj := map[string]string{}
 	err := c.rpcClient.CallFor(
 		&createdObject,
 		"switch_device_link_create",
 		networkEquipmentID1,
 		networkEquipmentID2,
 		networkEquipmentLinkType,
-		nil,
+		emptyObj,
 	)
 
 	if err != nil {
