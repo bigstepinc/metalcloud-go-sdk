@@ -17,6 +17,7 @@ type DriveArray struct {
 	DriveArrayCount                   int                  `json:"drive_array_count,omitempty" yaml:"count,omitempty"`
 	DriveArrayExpandWithInstanceArray bool                 `json:"drive_array_expand_with_instance_array" yaml:"expandWithInstanceArray"`
 	DriveArrayOperation               *DriveArrayOperation `json:"drive_array_operation,omitempty" yaml:"operation,omitempty"`
+	DriveArrayIOLimitPolicy           string               `json:"drive_array_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
 }
 
 //DriveArrayOperation defines changes to be applied to a DriveArray
