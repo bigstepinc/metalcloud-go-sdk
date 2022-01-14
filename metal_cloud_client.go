@@ -393,6 +393,8 @@ type MetalCloudClient interface {
 	SwitchDeviceLinkGet(networkEquipmentID1 int, networkEquipmentID2 int, linkType string) (*SwitchDeviceLink, error)
 	//SwitchDeviceLinkDelete deletes a specified switch device and its registered interfaces.
 	SwitchDeviceLinkDelete(networkEquipmentID1 int, networkEquipmentID2 int, linkType string) error
+	//SwitchInterfaceSearch searches for server interfaces filtering on various elements such as switch id or server id
+	SwitchInterfaceSearch(filter string) (*[]SwitchInterfaceSearchResult, error)
 	//UserGet describes returns user account specifications.
 	UserGet(userID int) (*User, error)
 	//UserGetByEmail describes returns user account specifications.

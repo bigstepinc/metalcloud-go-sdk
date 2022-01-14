@@ -51,6 +51,8 @@ var types = [...]string{
 	"SwitchDeviceLink",
 	"SubnetPool",
 	"SubnetPoolUtilization",
+	"SwitchInterfaceSearchResult",
+	"searchResultResponseWrapperForSwitchInterfaces",
 }
 
 const packageName = "metalcloud"
