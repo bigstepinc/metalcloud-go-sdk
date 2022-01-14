@@ -17,6 +17,7 @@ type Drive struct {
 	DriveUpdatedTimestamp string            `json:"drive_updated_timestamp,omitempty"`
 	DriveOperatingSystem  *OperatingSystem  `json:"drive_operating_system,omitempty"`
 	DriveFileSystem       *DriveFileSystem  `json:"drive_filesystem,omitempty"`
+	DriveWWN              string            `json:"drive_wwn,omitempty"`
 }
 
 //DriveCredentials credentials to connect to the drive
