@@ -22,6 +22,7 @@ type SharedDrive struct {
 	SharedDriveChangeID               int                    `json:"shared_drive_change_id,omitempty" yaml:"changeID,omitempty"`
 	SharedDriveTargetsJSON            string                 `json:"shared_drive_targets_json,omitempty" yaml:"targetsJSON,omitempty"`
 	SharedDriveIOLimitPolicy          string                 `json:"shared_drive_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
+	SharedDriveWWN                    string                 `json:"shared_drive_wwn,omitempty" yaml:"wwn,omitempty"`
 }
 
 //SharedDriveCredentials iscsi or other forms of connection details
