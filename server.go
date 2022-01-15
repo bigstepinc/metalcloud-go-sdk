@@ -624,6 +624,28 @@ func (c *Client) ServerPowerSet(serverID int, operation string) error {
 	return nil
 }
 
+//ServerStatusUpdate alters the status of a server
+func (c *Client) ServerStatusUpdate(serverID int, status string) error {
+	if err := checkID(serverID); err != nil {
+		return err
+	}
+
+	resp, err := c.rpcClient.Call(
+		"server_status_update",
+		serverID,
+		status)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
+	return nil
+}
+
 //CreateOrUpdate implements interface Applier
 func (s Server) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
