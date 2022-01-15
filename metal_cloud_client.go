@@ -2,8 +2,6 @@
 
 package metalcloud
 
-
-
 // MetalCloudClient interface used for mocking and abstracting the backend
 type MetalCloudClient interface {
 	//Datacenters returns datacenters for all users
@@ -298,6 +296,8 @@ type MetalCloudClient interface {
 	ServerComponents(serverID int, filter string) (*[]ServerComponent, error)
 	//ServerPowerSet reboots or powers on a server
 	ServerPowerSet(serverID int, operation string) error
+	//ServerStatusUpdate alters the status of a server
+	ServerStatusUpdate(serverID int, status string) error
 	//ServerFirmwarePolicyGet returns a server policy's details
 	ServerFirmwarePolicyGet(serverFirmwarePolicyID int) (*ServerFirmwareUpgradePolicy, error)
 	//ServerFirmwareUpgradePolicyCreate creates a server firmware policy.
