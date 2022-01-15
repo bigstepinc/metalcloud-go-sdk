@@ -624,6 +624,29 @@ func (c *Client) ServerPowerSet(serverID int, operation string) error {
 	return nil
 }
 
+//ServerReregister triggers a re-register of a server
+func (c *Client) ServerReregister(serverID int, bSkipIPMI bool, bUseBDKAgent bool) error {
+	if err := checkID(serverID); err != nil {
+		return err
+	}
+
+	resp, err := c.rpcClient.Call(
+		"server_reregister",
+		serverID,
+		bSkipIPMI,
+		bUseBDKAgent)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
+	return nil
+}
+
 //ServerStatusUpdate alters the status of a server
 func (c *Client) ServerStatusUpdate(serverID int, status string) error {
 	if err := checkID(serverID); err != nil {
