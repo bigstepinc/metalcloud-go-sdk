@@ -221,6 +221,8 @@ type MetalCloudClient interface {
 	OSAssetUpdate(osAssetID int, osAsset OSAsset) (*OSAsset, error)
 	//OSAssetGet returns a OSAsset specified by nOSAssetID. The OSAsset's protected value is never returned.
 	OSAssetGet(osAssetID int) (*OSAsset, error)
+	//OSAssetGetStoredContent returns the content of an OSAsset specified by nOSAssetID.
+	OSAssetGetStoredContent(osAssetID int) (string, error)
 	//OSAssets retrieves a list of all the OSAsset objects which a specified User is allowed to see through ownership or delegation. The OSAsset objects never return the actual protected OSAsset value.
 	OSAssets() (*map[string]OSAsset, error)
 	//OSAssetMakePublic makes an OS Asset public

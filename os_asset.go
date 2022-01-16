@@ -103,6 +103,28 @@ func (c *Client) OSAssetGet(osAssetID int) (*OSAsset, error) {
 	return &createdObject, nil
 }
 
+//OSAssetGetStoredContent returns the content of an OSAsset specified by nOSAssetID.
+func (c *Client) OSAssetGetStoredContent(osAssetID int) (string, error) {
+
+	var createdObject string
+
+	if err := checkID(osAssetID); err != nil {
+		return "", err
+	}
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"os_asset_get_stored_content",
+		osAssetID)
+
+	if err != nil {
+
+		return "", err
+	}
+
+	return createdObject, nil
+}
+
 //OSAssets retrieves a list of all the OSAsset objects which a specified User is allowed to see through ownership or delegation. The OSAsset objects never return the actual protected OSAsset value.
 func (c *Client) OSAssets() (*map[string]OSAsset, error) {
 	userID := c.GetUserID()
