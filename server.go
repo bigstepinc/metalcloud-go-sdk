@@ -392,8 +392,8 @@ func (c *Client) ServerEdit(serverID int, serverEditType string, server Server) 
 		&createdObject,
 		"server_edit",
 		serverID,
-		serverEditType,
 		server,
+		serverEditType,
 	)
 
 	if err != nil {
