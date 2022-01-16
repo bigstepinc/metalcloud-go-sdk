@@ -20,6 +20,7 @@ type SwitchInterfaceSearchResult struct {
 	ServerTypeID                              int        `json:"server_type_id,omitempty" yaml:"ServerTypeID,omitempty"`
 	NetworkEquipmentID                        int        `json:"network_equipment_id,omitempty" yaml:"networkEquipmentID,omitempty"`
 	NetworkEquipmentIdentifierString          string     `json:"network_equipment_identifier_string,omitempty" yaml:"networkEquipmentIdentifierString,omitempty"`
+	NetworkEquipmentManagementAddress         string     `json:"network_equipment_management_address,omitempty" yaml:"subnetPoolID,omitempty"`
 	NetworkEquipmentInterfaceID               int        `json:"network_equipment_interface_id,omitempty" yaml:"networkEquipmentInterfaceID,omitempty"`
 	NetworkEquipmentInterfaceMACAddress       string     `json:"network_equipment_interface_mac_address,omitempty" yaml:"networkEquipmentInterfaceMACAddress,omitempty"`
 	NetworkEquipmentInterfaceIdentifierString string     `json:"network_equipment_interface_identifier_string,omitempty" yaml:"networkEquipmentInterfaceIdentifierString,omitempty"`
@@ -46,6 +47,7 @@ func (c *Client) SwitchInterfaceSearch(filter string) (*[]SwitchInterfaceSearchR
 			"server_type_id",
 			"network_equipment_interface_id",
 			"network_equipment_identifier_string",
+			"network_equipment_management_address",
 			"network_equipment_id",
 			"network_equipment_interface_identifier_string",
 			"network_equipment_interface_mac_address",
