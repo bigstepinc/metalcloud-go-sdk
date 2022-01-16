@@ -6,6 +6,18 @@ package metalcloud
 
 // MetalCloudClient interface used for mocking and abstracting the backend
 type MetalCloudClient interface {
+	//AFCSearch searches for AFCs
+	AFCSearch(filter string, page_start int, page_end int) (*[]AFCSearchResult, error)
+	//AFCGet Returns an AFC
+	AFCGet(afcID int) (*AFC, error)
+	//AFCRetryCall Retries an AFC
+	AFCRetryCall(afcID int) error
+	//AFCRetryCall Skips an AFC
+	AFCSkip(afcID int) error
+	//AFCDelete Skips an AFC
+	AFCDelete(afcID int) error
+	//AFCMarkForDeath Tries to kill an AFC
+	AFCMarkForDeath(afcID int, typeOfMark string) error
 	//Datacenters returns datacenters for all users
 	Datacenters(onlyActive bool) (*map[string]Datacenter, error)
 	//DatacentersByUserID returns datacenters for specific user
