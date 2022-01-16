@@ -46,7 +46,7 @@ type AFC struct {
 	AFCType                   string `json:"afc_type,omitempty" yaml:"afcType,omitempty"`
 	AFCResponseJSON           string `json:"afc_response_json,omitempty" yaml:"AFCResponseJSON,omitempty"`
 	AFCExceptionJSON          string `json:"afc_exception_json,omitempty" yaml:"AFCExceptionJSON,omitempty"`
-	AFCInfrastructureID       int    `json:"infrastructure_id,omitempty" yaml:"AFCInfrastructureID,omitempty"`
+	InfrastructureID          int    `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
 	AFCIPAddressHumanReadable string `json:"afc_ip_address_human_readable,omitempty" yaml:"AFCIPAddressHumanReadable,omitempty"`
 	AFCIsBlocked              int    `json:"afc_id_blocked,omitempty" yaml:"AFCIsBlocked,omitempty"`
 	AFCIsBlockedBy            int    `json:"afc_id_blocked_by,omitempty" yaml:"AFCIsBlockedBy,omitempty"`
