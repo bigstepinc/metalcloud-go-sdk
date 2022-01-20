@@ -42,11 +42,12 @@ type DatacenterConfig struct {
 	Longitude                                          float64                `json:"longitude,omitempty" yaml:"longitude,omitempty"`
 	Address                                            string                 `json:"address,omitempty" yaml:"address,omitempty"`
 	ServerRegisterUsingGeneratedIPMICredentialsEnabled bool                   `json:"serverRegisterUsingGeneratedIPMICredentialsEnabled" yaml:"serverRegisterUsingGeneratedIPMICredentialsEnabled"`
+	ServerRegisterUsingProvidedIPMICredentialsEnabled  bool                   `json:"serverRegisterUsingProvidedIPMICredentialsEnabled,omitempty" yaml:"serverRegisterUsingProvidedIPMICredentialsEnabled,omitempty"`
 	SwitchProvisioner                                  map[string]interface{} `json:"switchProvisioner,omitempty" yaml:"switchProvisioner,omitempty"`
 	EnableTenantAccessToIPMI                           bool                   `json:"enableTenantAccessToIPMI" yaml:"enableTenantAccessToIPMI"`
 	AllowVLANOverrides                                 bool                   `json:"allowVLANOverrides" yaml:"allowVLANOverrides"`
 	AllowNetworkProfiles                               bool                   `json:"allowNetworkProfiles" yaml:"allowNetworkProfiles"`
-	UseSecondarySANVLAN                               bool                    `json:"useSecondarySANVLAN,omitempty" yaml:"useSecondarySANVLAN,omitempty"`
+	UseSecondarySANVLAN                                bool                   `json:"useSecondarySANVLAN,omitempty" yaml:"useSecondarySANVLAN,omitempty"`
 	ExtraInternalIPsPerSubnet                          int                    `json:"extraInternalIPsPerSubnet" yaml:"extraInternalIPsPerSubnet"`
 	ExtraInternalIPsPerSANSubnet                       int                    `json:"extraInternalIPsPerSANSubnet" yaml:"extraInternalIPsPerSANSubnet"`
 	ServerRAIDConfigurationEnabled                     bool                   `json:"serverRAIDConfigurationEnabled" yaml:"serverRAIDConfigurationEnabled"`
@@ -56,6 +57,8 @@ type DatacenterConfig struct {
 	ProvisionUsingTheQuarantineNetwork                 bool                   `json:"provisionUsingTheQuarantineNetwork" yaml:"provisionUsingTheQuarantineNetwork"`
 	EnableDHCPRelaySecurityForQuarantineNetwork        bool                   `json:"enableDHCPRelaySecurityForQuarantineNetwork" yaml:"enableDHCPRelaySecurityForQuarantineNetwork"`
 	EnableDHCPRelaySecurityForClientNetworks           bool                   `json:"enableDHCPRelaySecurityForClientNetworks" yaml:"enableDHCPRelaySecurityForClientNetworks"`
+	EnableDHCPBMCMACAddressWhitelist                   bool                   `json:"enableDHCPBMCMACAddressWhitelist,omitempty" yaml:"enableDHCPBMCMACAddressWhitelist"`
+	DHCPBMCMACAddressWhitelist                         []string               `json:"dhcpBMCMACAddressWhitelist,omitempty" yaml:"dhcpBMCMACAddressWhitelist"`
 }
 
 type WebProxy struct {
