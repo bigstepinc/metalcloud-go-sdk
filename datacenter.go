@@ -46,7 +46,7 @@ type DatacenterConfig struct {
 	EnableTenantAccessToIPMI                           bool                   `json:"enableTenantAccessToIPMI" yaml:"enableTenantAccessToIPMI"`
 	AllowVLANOverrides                                 bool                   `json:"allowVLANOverrides" yaml:"allowVLANOverrides"`
 	AllowNetworkProfiles                               bool                   `json:"allowNetworkProfiles" yaml:"allowNetworkProfiles"`
-	UseSecondarySANVLAN                               bool                    `json:"useSecondarySANVLAN" yaml:"useSecondarySANVLAN"`
+	UseSecondarySANVLAN                               bool                    `json:"useSecondarySANVLAN,omitempty" yaml:"useSecondarySANVLAN,omitempty"`
 	ExtraInternalIPsPerSubnet                          int                    `json:"extraInternalIPsPerSubnet" yaml:"extraInternalIPsPerSubnet"`
 	ExtraInternalIPsPerSANSubnet                       int                    `json:"extraInternalIPsPerSANSubnet" yaml:"extraInternalIPsPerSANSubnet"`
 	ServerRAIDConfigurationEnabled                     bool                   `json:"serverRAIDConfigurationEnabled" yaml:"serverRAIDConfigurationEnabled"`
