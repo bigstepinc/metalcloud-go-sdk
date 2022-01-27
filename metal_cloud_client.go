@@ -377,6 +377,10 @@ type MetalCloudClient interface {
 	StageDefinitionGet(stageDefinitionID int) (*StageDefinition, error)
 	//StageDefinitions retrieves a list of all the StageDefinition objects which a specified User is allowed to see through ownership or delegation. The stageDefinition objects never return the actual protected stageDefinition value.
 	StageDefinitions() (*map[string]StageDefinition, error)
+	//StoragePoolSearch searches for storage pools matching certain filter
+	StoragePoolSearch(filter string) (*[]StoragePoolSearchResult, error)
+	//StoragePoolGet returns a storage pool's details
+	StoragePoolGet(serverID int, decryptPasswd bool) (*StoragePool, error)
 	//SubnetPoolCreate creates a new SubnetPool.
 	SubnetPoolCreate(subnetPool SubnetPool) (*SubnetPool, error)
 	//SubnetPoolGet retrieves information regarding a specified SubnetPool.

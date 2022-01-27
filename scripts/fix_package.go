@@ -1,3 +1,4 @@
+// go:build ignore
 //go:build ignore
 // +build ignore
 
@@ -52,7 +53,7 @@ var types = [...]string{
 	"SubnetPool",
 	"SubnetPoolUtilization",
 	"SwitchInterfaceSearchResult",
-	"searchResultResponseWrapperForSwitchInterfaces",
+	"StoragePoolSearchResult",
 }
 
 const packageName = "metalcloud"
