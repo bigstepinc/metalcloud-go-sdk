@@ -57,8 +57,8 @@ type DatacenterConfig struct {
 	ProvisionUsingTheQuarantineNetwork                 bool                   `json:"provisionUsingTheQuarantineNetwork" yaml:"provisionUsingTheQuarantineNetwork"`
 	EnableDHCPRelaySecurityForQuarantineNetwork        bool                   `json:"enableDHCPRelaySecurityForQuarantineNetwork" yaml:"enableDHCPRelaySecurityForQuarantineNetwork"`
 	EnableDHCPRelaySecurityForClientNetworks           bool                   `json:"enableDHCPRelaySecurityForClientNetworks" yaml:"enableDHCPRelaySecurityForClientNetworks"`
-	EnableDHCPBMCMACAddressWhitelist                   bool                   `json:"enableDHCPBMCMACAddressWhitelist,omitempty" yaml:"enableDHCPBMCMACAddressWhitelist"`
-	DHCPBMCMACAddressWhitelist                         []string               `json:"dhcpBMCMACAddressWhitelist,omitempty" yaml:"dhcpBMCMACAddressWhitelist"`
+	EnableDHCPBMCMACAddressWhitelist                   bool                   `json:"enableDHCPBMCMACAddressWhitelist" yaml:"enableDHCPBMCMACAddressWhitelist"`
+	DHCPBMCMACAddressWhitelist                         []string               `json:"dhcpBMCMACAddressWhitelist" yaml:"dhcpBMCMACAddressWhitelist"`
 }
 
 type WebProxy struct {
