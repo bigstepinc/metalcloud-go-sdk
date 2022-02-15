@@ -30,6 +30,7 @@ type InstanceArray struct {
 	InstanceArrayAdditionalWanIPv4JSON string                   `json:"instance_array_additional_wan_ipv4_json,omitempty" yaml:"additionalWanIPv4,omitempty"`
 	InstanceArrayCustomVariables       interface{}              `json:"instance_array_custom_variables,omitempty" yaml:"customVariables,omitempty"`
 	InstanceArrayFirmwarePolicies      []int                    `json:"instance_array_firmware_policies,omitempty" yaml:"firmwarePolicies,omitempty"`
+	DriveArrayIDBoot                   int                      `json:"drive_array_id_boot,omitempty" yaml:"drive_array_id_boot,omitempty"`
 }
 
 //InstanceArrayOperation object describes the changes that will be applied to an instance array
@@ -59,6 +60,7 @@ type InstanceArrayOperation struct {
 	InstanceArrayAdditionalWanIPv4JSON string                            `json:"instance_array_additional_wan_ipv4_json,omitempty" yaml:"additionalWanIPv4,omitempty"`
 	InstanceArrayCustomVariables       interface{}                       `json:"instance_array_custom_variables,omitempty" yaml:"customVariables,omitempty"`
 	InstanceArrayFirmwarePolicies      []int                             `json:"instance_array_firmware_policies" yaml:"firmwarePolicies"`
+	DriveArrayIDBoot                   int                               `json:"drive_array_id_boot,omitempty" yaml:"drive_array_id_boot,omitempty"`
 }
 
 //FirewallRule describes a firewall rule that is to be applied on all instances of an array
@@ -89,6 +91,7 @@ type InstanceArrayInterface struct {
 	InstanceArrayInterfaceCreatedTimestamp string                           `json:"instance_array_interface_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
 	InstanceArrayInterfaceUpdatedTimestamp string                           `json:"instance_array_interface_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
 	InstanceArrayInterfaceOperation        *InstanceArrayInterfaceOperation `json:"instance_array_interface_operation,omitempty" yaml:"operation,omitempty"`
+	InstanceArrayInterfaceChangeID         int                              `json:"instance_array_interface_change_id,omitempty" yaml:"instance_array_interface_change_id,omitempty"`
 }
 
 //InstanceArrayInterfaceOperation describes changes to a network array interface
