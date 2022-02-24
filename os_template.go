@@ -13,6 +13,8 @@ type OSTemplate struct {
 	VolumeTemplateSizeMBytes              int                     `json:"volume_template_size_mbytes,omitempty" yaml:"sizeMBytes,omitempty"`
 	VolumeTemplateLocalDiskSupported      bool                    `json:"volume_template_local_disk_supported,omitempty" yaml:"localDisk,omitempty"`
 	VolumeTemplateIsOSTemplate            bool                    `json:"volume_template_is_os_template,omitempty" yaml:"isOsTemplate,omitempty"`
+	VolumeTemplateImageBuildRequired      bool                    `json:"volume_template_image_build_required,omitempty" yaml:"isImageBuildRequired,omitempty"`
+	VolumeTemplateProvisionViaOOB         bool                    `json:"volume_template_provision_via_oob,omitempty" yaml:"provisionViaOOB,omitempty"`
 	VolumeTemplateBootMethodsSupported    string                  `json:"volume_template_boot_methods_supported,omitempty" yaml:"bootMethods,omitempty"`
 	VolumeTemplateOsBootstrapFunctionName string                  `json:"volume_template_os_bootstrap_function_name,omitempty"`
 	VolumeTemplateBootType                string                  `json:"volume_template_boot_type,omitempty" yaml:"bootType,omitempty"`

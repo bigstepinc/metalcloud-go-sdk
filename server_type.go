@@ -6,23 +6,24 @@ import "fmt"
 
 //ServerType struct defines a server type
 type ServerType struct {
-	ServerTypeID                   int    `json:"server_type_id,omitempty"`
-	ServerNetworkTotalCapacityMBps int    `json:"server_network_total_capacity_mbps,omitempty"`
-	ServerTypeName                 string `json:"server_type_name,omitempty"`
-	ServerTypeDisplayName          string `json:"server_type_display_name,omitempty"`
-	ServerTypeLabel                string `json:"server_type_label,omitempty"`
-	ServerProcessorCoreCount       int    `json:"server_processor_core_count,omitempty"`
-	ServerProcessorCoreMHz         int    `json:"server_processor_core_mhz,omitempty"`
-	ServerProcessorCount           int    `json:"server_processor_count,omitempty"`
-	ServerRAMGbytes                int    `json:"server_ram_gbytes,omitempty"`
-	ServerDiskCount                int    `json:"server_disk_count,omitempty"`
-	ServerDiskType                 string `json:"server_disk_type,omitempty"`
-	ServerDiskSizeMBytes           int    `json:"server_disk_size_mbytes,omitempty"`
-	ServerProcessorNamesJSON       string `json:"server_processor_names_json,omitempty"`
-	ServerProcessorName            string `json:"server_processor_name,omitempty"`
-	ServerClass                    string `json:"server_class,omitempty"`
-	ServerTypeIsExperimental       bool   `json:"server_type_is_experimental,omitempty"`
-	ServerCount                    int    `json:"server_count,omitempty"`
+	ServerTypeID                      int    `json:"server_type_id,omitempty"`
+	ServerNetworkTotalCapacityMBps    int    `json:"server_network_total_capacity_mbps,omitempty"`
+	ServerTypeName                    string `json:"server_type_name,omitempty"`
+	ServerTypeDisplayName             string `json:"server_type_display_name,omitempty"`
+	ServerTypeLabel                   string `json:"server_type_label,omitempty"`
+	ServerProcessorCoreCount          int    `json:"server_processor_core_count,omitempty"`
+	ServerProcessorCoreMHz            int    `json:"server_processor_core_mhz,omitempty"`
+	ServerProcessorCount              int    `json:"server_processor_count,omitempty"`
+	ServerRAMGbytes                   int    `json:"server_ram_gbytes,omitempty"`
+	ServerDiskCount                   int    `json:"server_disk_count,omitempty"`
+	ServerDiskType                    string `json:"server_disk_type,omitempty"`
+	ServerDiskSizeMBytes              int    `json:"server_disk_size_mbytes,omitempty"`
+	ServerProcessorNamesJSON          string `json:"server_processor_names_json,omitempty"`
+	ServerProcessorName               string `json:"server_processor_name,omitempty"`
+	ServerClass                       string `json:"server_class,omitempty"`
+	ServerTypeSupportsOOBProvisioning bool   `json:server_type_supports_oob_provisioning,omitempty`
+	ServerTypeIsExperimental          bool   `json:"server_type_is_experimental,omitempty"`
+	ServerCount                       int    `json:"server_count,omitempty"`
 }
 
 //HardwareConfiguration holds the desired hardware configuration when trying to find available servers for provisioning.

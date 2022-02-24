@@ -36,6 +36,7 @@ type ServerSearchResult struct {
 	ServerRackPositionUpperUnit    string            `json:"server_rack_position_upper_unit,omitempty" yaml:"rackPositionUpperUnit,omitempty"`
 	ServerInventoryId              string            `json:"server_inventory_id,omitempty" yaml:"inventoryId,omitempty"`
 	ServerDisks                    []ServerDisk      `json:"server_disks,omitempty" yaml:"disks,omitempty"`
+	ServerSupportsOOBProvisioning  bool              `json:"server_supports_oob_provisioning,omitempty" yaml:"supportsOOBProvisioning,omitempty"`
 	ServerTags                     []string          `json:"server_tags,omitempty" yaml:"tags,omitempty"`
 	ServerIPMIChannel              int               `json:"server_ipmi_channel,omitempty" yaml:"IPMIChannel,omitempty"`
 	ServerIPMIHost                 string            `json:"server_ipmi_host,omitempty" yaml:"IPMIHostname,omitempty"`
@@ -83,6 +84,7 @@ type Server struct {
 	ServerClass                    string                      `json:"server_class,omitempty" yaml:"serverClass,omitempty"`
 	ServerTypeID                   int                         `json:"server_type_id,omitempty" yaml:"serverTypeID,omitempty"`
 	ServerInterfaces               []ServerInterface           `json:"server_interfaces,omitempty" yaml:"interfaces,omitempty"`
+	ServerSupportsOOBProvisioning  bool                        `json:"server_supports_oob_provisioning,omitempty" yaml:"supportsOOBProvisioning,omitempty"`
 	ServerTags                     []string                    `json:"server_tags,omitempty" yaml:"tags,omitempty"`
 	ServerIPMIChannel              int                         `json:"server_ipmi_channel" yaml:"IPMIChannel"`
 	ServerIPMIHost                 string                      `json:"server_ipmi_host,omitempty" yaml:"IPMIHostname,omitempty"`
@@ -196,6 +198,7 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 			"server_processor_core_mhz",
 			"server_processor_threads",
 			"server_processor_cpu_mark",
+			"server_supports_oob_provisioning",
 			"server_disk_type",
 			"server_disk_count",
 			"server_disk_size_mbytes",
