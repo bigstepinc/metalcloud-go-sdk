@@ -21,7 +21,7 @@ type ServerType struct {
 	ServerProcessorNamesJSON          string `json:"server_processor_names_json,omitempty"`
 	ServerProcessorName               string `json:"server_processor_name,omitempty"`
 	ServerClass                       string `json:"server_class,omitempty"`
-	ServerTypeSupportsOOBProvisioning bool   `json:server_type_supports_oob_provisioning,omitempty`
+	ServerTypeSupportsOOBProvisioning bool   `json:"server_type_supports_oob_provisioning,omitempty"`
 	ServerTypeIsExperimental          bool   `json:"server_type_is_experimental,omitempty"`
 	ServerCount                       int    `json:"server_count,omitempty"`
 }
