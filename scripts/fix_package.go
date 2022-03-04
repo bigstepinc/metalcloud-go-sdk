@@ -54,6 +54,7 @@ var types = [...]string{
 	"SubnetPoolUtilization",
 	"SwitchInterfaceSearchResult",
 	"StoragePoolSearchResult",
+	"InfrastructuresSearchResult",
 }
 
 const packageName = "metalcloud"

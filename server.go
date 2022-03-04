@@ -31,12 +31,12 @@ type ServerSearchResult struct {
 	ServerTypeName                 string            `json:"server_type_name,omitempty" yaml:"type,omitempty"`
 	ServerTypeBootType             string            `json:"server_type_boot_type,omitempty" yaml:"serverBootType,omitempty"`
 	ServerInterfaces               []ServerInterface `json:"server_interfaces,omitempty" yaml:"interfaces,omitempty"`
-	ServerRackName                 string            `json:"server_rack_name,omitempty" yaml:"rackName,omitempty"`
+	ServerRackName                 string            `json:"server_rack_name" yaml:"rackName"`
 	ServerRackPositionLowerUnit    string            `json:"server_rack_position_lower_unit,omitempty" yaml:"rackPositionLowerUnit,omitempty"`
 	ServerRackPositionUpperUnit    string            `json:"server_rack_position_upper_unit,omitempty" yaml:"rackPositionUpperUnit,omitempty"`
 	ServerInventoryId              string            `json:"server_inventory_id,omitempty" yaml:"inventoryId,omitempty"`
 	ServerDisks                    []ServerDisk      `json:"server_disks,omitempty" yaml:"disks,omitempty"`
-	ServerSupportsOOBProvisioning  bool              `json:"server_supports_oob_provisioning,omitempty" yaml:"supportsOOBProvisioning,omitempty"`
+	ServerSupportsOOBProvisioning  bool              `json:"server_supports_oob_provisioning" yaml:"supportsOOBProvisioning"`
 	ServerTags                     []string          `json:"server_tags,omitempty" yaml:"tags,omitempty"`
 	ServerIPMIChannel              int               `json:"server_ipmi_channel,omitempty" yaml:"IPMIChannel,omitempty"`
 	ServerIPMIHost                 string            `json:"server_ipmi_host,omitempty" yaml:"IPMIHostname,omitempty"`
@@ -56,46 +56,82 @@ type ServerSearchResult struct {
 
 //Server represents a server in a datacenter.
 type Server struct {
-	ServerID                       int                         `json:"server_id,omitempty" yaml:"id,omitempty"`
-	ServerUUID                     string                      `json:"server_uuid,omitempty" yaml:"UUID,omitempty"`
-	ServerStatus                   string                      `json:"server_status,omitempty" yaml:"status,omitempty"`
-	ServerSerialNumber             string                      `json:"server_serial_number,omitempty" yaml:"serialNumber,omitempty"`
-	ServerVendor                   string                      `json:"server_vendor,omitempty" yaml:"vendor,omitempty"`
-	DatacenterName                 string                      `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
-	ServerNetworkTotalCapacityMbps int                         `json:"server_network_total_capacity_mbps,omitempty" yaml:"networkTotalCapacityMbps,omitempty"`
-	ServerBootType                 string                      `json:"server_boot_type,omitempty" yaml:"bootType,omitempty"`
-	ServerPowerStatus              string                      `json:"server_power_status,omitempty" yaml:"powerStatus,omitempty"`
-	ServerProcessorName            string                      `json:"server_processor_name,omitempty" yaml:"processorName,omitempty"`
-	ServerProcessorCoreCount       int                         `json:"server_processor_core_count,omitempty" yaml:"processorCoreCount,omitempty"`
-	ServerProcessorCoreMhz         int                         `json:"server_processor_core_mhz,omitempty" yaml:"processorCoreMhz,omitempty"`
-	ServerProcessorCount           int                         `json:"server_processor_count,omitempty" yaml:"processorCount,omitempty"`
-	ServerProcessorThreads         int                         `json:"server_processor_threads,omitempty" yaml:"processorThreads,omitempty"`
-	ServerProcessorCPUMark         int                         `json:"server_processor_cpu_mark" yaml:"processorCPUMark"`
-	ServerRAMGbytes                int                         `json:"server_ram_gbytes,omitempty" yaml:"ramGbytes,omitempty"`
-	ServerDisks                    []ServerDisk                `json:"server_disks,omitempty" yaml:"disks,omitempty"`
-	ServerDiskCount                int                         `json:"server_disk_count,omitempty" yaml:"diskCount,omitempty"`
-	ServerDiskSizeMbytes           int                         `json:"server_disk_size_mbytes,omitempty" yaml:"diskSizeMbytes,omitempty"`
-	ServerDiskType                 string                      `json:"server_disk_type,omitempty" yaml:"diskType,omitempty"`
-	ServerRackName                 string                      `json:"server_rack_name,omitempty" yaml:"rackName,omitempty"`
-	ServerRackPositionLowerUnit    string                      `json:"server_rack_position_lower_unit,omitempty" yaml:"rackPositionLowerUnit,omitempty"`
-	ServerRackPositionUpperUnit    string                      `json:"server_rack_position_upper_unit,omitempty" yaml:"rackPositionUpperUnit,omitempty"`
-	ServerInventoryId              string                      `json:"server_inventory_id,omitempty" yaml:"inventoryId,omitempty"`
-	ServerProductName              string                      `json:"server_product_name,omitempty" yaml:"productName,omitempty"`
-	ServerClass                    string                      `json:"server_class,omitempty" yaml:"serverClass,omitempty"`
-	ServerTypeID                   int                         `json:"server_type_id,omitempty" yaml:"serverTypeID,omitempty"`
-	ServerInterfaces               []ServerInterface           `json:"server_interfaces,omitempty" yaml:"interfaces,omitempty"`
-	ServerSupportsOOBProvisioning  bool                        `json:"server_supports_oob_provisioning,omitempty" yaml:"supportsOOBProvisioning,omitempty"`
-	ServerTags                     []string                    `json:"server_tags,omitempty" yaml:"tags,omitempty"`
-	ServerIPMIChannel              int                         `json:"server_ipmi_channel" yaml:"IPMIChannel"`
-	ServerIPMIHost                 string                      `json:"server_ipmi_host,omitempty" yaml:"IPMIHostname,omitempty"`
-	ServerIPMInternalUsername      string                      `json:"server_ipmi_internal_username,omitempty" yaml:"IPMIUsername,omitempty"`
-	ServerIPMInternalPassword      string                      `json:"server_ipmi_internal_password,omitempty" yaml:"IPMIPassword,omitempty"`
-	ServerIPMCredentialsNeedUpdate bool                        `json:"server_ipmi_credentials_need_update,omitempty" yaml:"IPMICredentialsNeedUpdate,omitempty"`
-	ServerVendorSKUID              string                      `json:"server_vendor_sku_id,omitempty" yaml:"vendorSKU,omitempty"`
-	ServerComments                 string                      `json:"server_comments,omitempty" yaml:"comments,omitempty"`
-	ServerBIOSInfoJSON             string                      `json:"server_bios_info_json" yaml:"BIOSInfoJson"`
-	ServerCustomJSON               string                      `json:"server_custom_json" yaml:"CustomJSON"`
-	NICDetails                     map[string]ServerNICDetails `json:"nic_details" yaml:"NICDetails"`
+	ServerID                                   int                         `json:"server_id,omitempty" yaml:"id,omitempty"`
+	ServerUUID                                 string                      `json:"server_uuid,omitempty" yaml:"UUID,omitempty"`
+	ServerStatus                               string                      `json:"server_status,omitempty" yaml:"status,omitempty"`
+	ServerSerialNumber                         string                      `json:"server_serial_number,omitempty" yaml:"serialNumber,omitempty"`
+	ServerVendor                               string                      `json:"server_vendor,omitempty" yaml:"vendor,omitempty"`
+	DatacenterName                             string                      `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+	ServerNetworkTotalCapacityMbps             int                         `json:"server_network_total_capacity_mbps,omitempty" yaml:"networkTotalCapacityMbps,omitempty"`
+	ServerBootType                             string                      `json:"server_boot_type,omitempty" yaml:"bootType,omitempty"`
+	ServerPowerStatus                          string                      `json:"server_power_status,omitempty" yaml:"powerStatus,omitempty"`
+	ServerProcessorName                        string                      `json:"server_processor_name,omitempty" yaml:"processorName,omitempty"`
+	ServerProcessorCoreCount                   int                         `json:"server_processor_core_count,omitempty" yaml:"processorCoreCount,omitempty"`
+	ServerProcessorCoreMhz                     int                         `json:"server_processor_core_mhz,omitempty" yaml:"processorCoreMhz,omitempty"`
+	ServerProcessorCount                       int                         `json:"server_processor_count,omitempty" yaml:"processorCount,omitempty"`
+	ServerProcessorThreads                     int                         `json:"server_processor_threads,omitempty" yaml:"processorThreads,omitempty"`
+	ServerProcessorCPUMark                     int                         `json:"server_processor_cpu_mark" yaml:"processorCPUMark"`
+	ServerRAMGbytes                            int                         `json:"server_ram_gbytes,omitempty" yaml:"ramGbytes,omitempty"`
+	ServerDisks                                []ServerDisk                `json:"server_disks,omitempty" yaml:"disks,omitempty"`
+	ServerDiskCount                            int                         `json:"server_disk_count,omitempty" yaml:"diskCount,omitempty"`
+	ServerDiskSizeMbytes                       int                         `json:"server_disk_size_mbytes,omitempty" yaml:"diskSizeMbytes,omitempty"`
+	ServerDiskType                             string                      `json:"server_disk_type,omitempty" yaml:"diskType,omitempty"`
+	ServerRackName                             string                      `json:"server_rack_name,omitempty" yaml:"rackName,omitempty"`
+	ServerRackPositionLowerUnit                string                      `json:"server_rack_position_lower_unit" yaml:"rackPositionLowerUnit"`
+	ServerRackPositionUpperUnit                string                      `json:"server_rack_position_upper_unit" yaml:"rackPositionUpperUnit"`
+	ServerRackId                               string                      `json:"server_rack_id,omitempty" yaml:"rackID,omitempty"`
+	ServerInventoryId                          string                      `json:"server_inventory_id" yaml:"inventoryId"`
+	ServerProductName                          string                      `json:"server_product_name,omitempty" yaml:"productName,omitempty"`
+	ServerClass                                string                      `json:"server_class,omitempty" yaml:"serverClass,omitempty"`
+	ServerTypeID                               int                         `json:"server_type_id,omitempty" yaml:"serverTypeID,omitempty"`
+	ServerInterfaces                           []ServerInterface           `json:"server_interfaces,omitempty" yaml:"interfaces,omitempty"`
+	ServerSupportsOOBProvisioning              bool                        `json:"server_supports_oob_provisioning" yaml:"supportsOOBProvisioning"`
+	ServerTags                                 []string                    `json:"server_tags" yaml:"tags"`
+	ServerIPMIChannel                          int                         `json:"server_ipmi_channel" yaml:"IPMIChannel"`
+	ServerIPMIHost                             string                      `json:"server_ipmi_host,omitempty" yaml:"IPMIHostname,omitempty"`
+	ServerIPMInternalUsername                  string                      `json:"server_ipmi_internal_username,omitempty" yaml:"IPMIUsername,omitempty"`
+	ServerIPMInternalPassword                  string                      `json:"server_ipmi_internal_password,omitempty" yaml:"IPMIPassword,omitempty"`
+	ServerIPMInternalPasswordEncrypted         string                      `json:"server_ipmi_internal_password_encrypted,omitempty" yaml:"IPMIPasswordEncrypted,omitempty"`
+	ServerIPMCredentialsNeedUpdate             bool                        `json:"server_ipmi_credentials_need_update,omitempty" yaml:"IPMICredentialsNeedUpdate,omitempty"`
+	ServerVendorSKUID                          string                      `json:"server_vendor_sku_id,omitempty" yaml:"vendorSKU,omitempty"`
+	ServerComments                             string                      `json:"server_comments,omitempty" yaml:"comments,omitempty"`
+	ServerBIOSInfoJSON                         string                      `json:"server_bios_info_json" yaml:"BIOSInfoJson"`
+	ServerCustomJSON                           string                      `json:"server_custom_json" yaml:"CustomJSON"`
+	ServerSupportsSOL                          bool                        `json:"server_supports_sol" yaml:"supportsSOL"`
+	ServerILOResetTimestamp                    string                      `json:"server_ilo_reset_timestamp" yaml:"ILOResetTimestamp"`
+	ServerBootLastUpdateTimestamp              string                      `json:"server_boot_last_update_timestamp" yaml:"BootLastUpdateTimestamp"`
+	ServerPowerStatusUpdateTimestamp           string                      `json:"server_power_status_last_update_timestamp" yaml:"PowerStatusUpdateTimestamp"`
+	SubnetOOBID                                int                         `json:"subnet_oob_id" yaml:"subnetOOBID"`
+	ServerDHCPStatus                           string                      `json:"server_dhcp_status" yaml:"subnetDHCPStatus"`
+	ServerBMCMACAddress                        string                      `json:"server_bmc_mac_address" yaml:"BMCMACAddress"`
+	ServerCommunityPasswordDCEncrypted         string                      `json:"snmp_community_password_dcencrypted" yaml:"SNMPCommunityPaswordDCencrypted"`
+	ServerMgmtSNMPCommunityPasswordDCEncrypted string                      `json:"server_mgmt_snmp_community_password_dcencrypted" yaml:"MGMTNMPCommunityPasswordDCEncrypted"`
+	ServerMgmtSNMPVersion                      int                         `json:"server_mgmt_snmp_version" yaml:"MGMTSNMPVersion"`
+	ServerMgmtSNMPPort                         int                         `json:"server_mgmt_snmp_port" yaml:"MGMTSNMPPort"`
+	ServerSecureBootIsEnabled                  bool                        `json:"server_secure_boot_is_enabled" yaml:"secureBootIsEnabled"`
+	ServerOOBIndex                             int                         `json:"subnet_oob_index" yaml:"subnetOOBIndex"`
+	ServerIPMIVersion                          string                      `json:"server_ipmi_version" yaml:"subnetIPMIVersion"`
+	ServerCreatedTimestamp                     string                      `json:"server_created_timestamp" yaml:"createdTimestamp"`
+	ServerLastCleanupStart                     string                      `json:"server_last_cleanup_start" yaml:"lastCleanupStart"`
+	ServerVersionInfoJSON                      string                      `json:"server_vendor_info_json" yaml:"vendorInfoJSON"`
+	ServerChipsetName                          string                      `json:"server_chipset_name" yaml:"chipsetName"`
+	ServerRequiresReregister                   bool                        `json:"server_requires_reregister" yaml:"requiresReregiter"`
+	ServerGPUCount                             int                         `json:"server_gpu_count" yaml:"GPUCount"`
+	ServerGPUModel                             string                      `json:"server_gpu_model" yaml:"GPUModel"`
+	ServerGPUVendor                            string                      `json:"server_gpu_vendor" yaml:"GPUVendor"`
+	ServerAllocationTimestamp                  string                      `json:"server_allocation_timestamp" yaml:"allocationTimestamp"`
+	ServerDHCPRelaySecurityIsEnabled           bool                        `json:"server_dhcp_relay_security_is_enabled" yaml:"DHCPRelaySecurityIsEnabled"`
+	ServerRequiresManualCleaning               bool                        `json:"server_requires_manual_cleaning" yaml:"requiresManualCleaning"`
+	ServerCleanupInProgress                    bool                        `json:"server_cleanup_in_progress" yaml:"cleanupInProgress"`
+	ServerSupportsVirtualMedia                 bool                        `json:"server_supports_virtual_media" yaml:"serverSupportsVirtualMedia"`
+	ServerIsInDiagnostics                      bool                        `json:"server_is_in_diagnostics" yaml:"serverIsInDiagnostics"`
+	ServerDiskWipe                             bool                        `json:"server_disk_wipe" yaml:"diskWipe"`
+	ServerMetricsMetadataJSON                  string                      `json:"server_metrics_metadata_json" yaml:"metricsMetadataJSON"`
+	AgentID                                    int                         `json:"agent_id" yaml:"agentID"`
+	ServerDHCPPacketSniffingIsEnabled          bool                        `json:"server_dhcp_packet_sniffing_is_enabled" yaml:"DHCPPacketSniffingIsEnabled"`
+	ServerBDKDEbug                             bool                        `json:"server_bdk_debug" yaml:"BDKDebug"`
+	ServerKeysJSON                             string                      `json:"server_keys_json" yaml:"keysJSON"`
+	NICDetails                                 map[string]ServerNICDetails `json:"nic_details,omitempty" yaml:"NICDetails,omitempty"`
 }
 
 //ServerDisk describes a disk

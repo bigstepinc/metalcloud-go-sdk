@@ -59,6 +59,32 @@ type DeployOptionsServerTypeMappingObject struct {
 	ServerIDs   []int `json:"server_ids"`
 }
 
+type searchResultWrapperForInfrastructures struct {
+	DurationMilliseconds int                           `json:"duration_millisecnds,omitempty"`
+	Rows                 []InfrastructuresSearchResult `json:"rows,omitempty"`
+	RowsOrder            [][]string                    `json:"rows_order,omitempty"`
+	RowsTotal            int                           `json:"rows_total,omitempty"`
+}
+
+type InfrastructuresSearchResult struct {
+	InfrastructureID               int      `json:"infrastructure_id,omitempty" yaml:"id,omitempty"`
+	InfrastructureLabel            string   `json:"infrastructure_label" yaml:"label"`
+	InfrastructureSubdomain        string   `json:"infrastructure_subdomain" yaml:"label"`
+	InfrastructureServiceStatus    string   `json:"infrastructure_service_status" yaml:"label"`
+	InfrastructureDeployStatus     string   `json:"infrastructure_deploy_status" yaml:"label"`
+	DatacenterName                 string   `json:"datacenter_name" yaml:"datacenter"`
+	InfrastructureCreatedTimestamp string   `json:"infrastructure_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	InfrastructureUpdatedTimestamp string   `json:"infrastructure_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
+	UserIDOwner                    int      `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	UserEmail                      []string `json:"user_email,omitempty" yaml:"userEmail,omitempty"`
+	InfrastructureDeployID         int      `json:"infrastructure_deploy_id,omitempty" yaml:"deployID,omitempty"`
+	AFCGroupCreatedTimestamp       string   `json:"afc_group_created_timestamp,omitempty" yaml:"afcGroupCreatedTimestamp,omitempty"`
+	AFCGroupFinishedTimestamp      string   `json:"afc_group_finished_timestamp,omitempty" yaml:"afcGroupFinishedTimestamp,omitempty"`
+	AFCThrownError                 int      `json:"thrownError,omitempty" yaml:"thrownError,omitempty"`
+	AFCExecutedSuccess             int      `json:"executedSuccess,omitempty" yaml:"executedSuccess,omitempty"`
+	AFCTotal                       int      `json:"total,omitempty" yaml:"total,omitempty"`
+}
+
 //InfrastructureCreate creates an infrastructure
 func (c *Client) InfrastructureCreate(infrastructure Infrastructure) (*Infrastructure, error) {
 	var createdObject Infrastructure
@@ -320,4 +346,91 @@ func (i Infrastructure) Validate() error {
 		return fmt.Errorf("id is required")
 	}
 	return nil
+}
+
+//InfrastructureSearch searches for infrastructures with filtering support
+func (c *Client) InfrastructureSearch(filter string) (*[]InfrastructuresSearchResult, error) {
+
+	tables := []string{"_user_infrastructures_extended"}
+	columns := map[string][]string{
+
+		"_user_infrastructures_extended": {
+			"infrastructure_id",
+			"infrastructure_subdomain",
+			"infrastructure_label",
+			"infrastructure_service_status",
+			"infrastructure_deploy_status",
+			"datacenter_name",
+			"infrastructure_created_timestamp",
+			"infrastructure_updated_timestamp",
+			"user_email",
+			"user_id_owner",
+			"infrastructure_deploy_id",
+			"afc_group_created_timestamp",
+			"afc_group_finished_timestamp",
+			"thrownError",
+			"executedSuccess",
+			"total",
+		},
+	}
+
+	userID := c.GetUserID()
+
+	collapseType := "array_row_span"
+	sortBy := [][]string{
+		{
+			"thrownError",
+			"DESC",
+		},
+		{
+			"infrastructure_service_status",
+			"ASC",
+		},
+		{
+			"infrastructure_deploy_status",
+			"DESC",
+		},
+		{
+			"infrastructure_updated_timestamp",
+			"DESC",
+		},
+	}
+
+	var createdObject map[string]searchResultWrapperForInfrastructures
+
+	resp, err := c.rpcClient.Call(
+		"search",
+		userID,
+		filter,
+		tables,
+		columns,
+		collapseType,
+		sortBy,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		createdObject = map[string]searchResultWrapperForInfrastructures{}
+	} else {
+		err = resp.GetObject(&createdObject)
+
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	list := []InfrastructuresSearchResult{}
+	for _, s := range createdObject[tables[0]].Rows {
+		list = append(list, s)
+	}
+
+	return &list, nil
 }

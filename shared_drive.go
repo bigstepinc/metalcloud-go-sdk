@@ -33,7 +33,7 @@ type SharedDriveCredentials struct {
 //SharedDriveOperation represents an ongoing or new operation on a shared drive
 type SharedDriveOperation struct {
 	SharedDriveDeployStatus           string `json:"shared_drive_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
-	SharedDriveDepoloyType            string `json:"shared_drive_deploy_type,omitempty" yaml:"deployType,omitempty"`
+	SharedDriveDeployType             string `json:"shared_drive_deploy_type,omitempty" yaml:"deployType,omitempty"`
 	SharedDriveLabel                  string `json:"shared_drive_label,omitempty" yaml:"label,omitempty"`
 	SharedDriveSubdomain              string `json:"shared_drive_subdomain,omitempty" yaml:"subdomain,omitempty"`
 	SharedDriveID                     int    `json:"shared_drive_id,omitempty" yaml:"id,omitempty"`
