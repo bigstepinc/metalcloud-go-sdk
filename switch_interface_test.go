@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"testing"
 
+	"gopkg.in/yaml.v3"
+
 	. "github.com/onsi/gomega"
 )
 
@@ -31,6 +33,22 @@ func TestSwitchInterfaceUnmarshalTest(t *testing.T) {
 	r := obj["_switch_interfaces"].Rows[2]
 	Expect(r.NetworkEquipmentID).To(Equal(2))
 	Expect(r.IP[0][1]).To(Equal("192.168.78.4"))
+
+}
+
+func TestSwitchInterfaceMarshalAsYamlTest(t *testing.T) {
+	RegisterTestingT(t)
+
+	obj := SwitchInterfaceSearchResult{
+		ServerID:           100,
+		NetworkEquipmentID: 100,
+		NetworkType:        []string{"WAN"},
+	}
+
+	dcBytes, err := yaml.Marshal(obj)
+
+	Expect(dcBytes).NotTo(BeNil())
+	Expect(err).To(BeNil())
 
 }
 
