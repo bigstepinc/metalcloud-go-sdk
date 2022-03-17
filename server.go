@@ -76,11 +76,11 @@ type Server struct {
 	ServerDiskCount                            int                         `json:"server_disk_count" yaml:"diskCount,omitempty"`
 	ServerDiskSizeMbytes                       int                         `json:"server_disk_size_mbytes" yaml:"diskSizeMbytes"`
 	ServerDiskType                             string                      `json:"server_disk_type,omitempty" yaml:"diskType,omitempty"`
-	ServerRackName                             string                      `json:"server_rack_name,omitempty" yaml:"rackName,omitempty"`
+	ServerRackName                             *string                     `json:"server_rack_name" yaml:"rackName"`
 	ServerRackPositionLowerUnit                *string                     `json:"server_rack_position_lower_unit" yaml:"rackPositionLowerUnit"`
 	ServerRackPositionUpperUnit                *string                     `json:"server_rack_position_upper_unit" yaml:"rackPositionUpperUnit"`
-	ServerRackId                               string                      `json:"server_rack_id,omitempty" yaml:"rackID,omitempty"`
-	ChassisRackId                              *int                        `json:"chassis_rack_id" yaml:"chassisRackID,omitempty"`
+	ServerRackId                               *string                     `json:"server_rack_id" yaml:"rackID"`
+	ChassisRackId                              *int                        `json:"chassis_rack_id" yaml:"chassisRackID"`
 	ServerInventoryId                          *string                     `json:"server_inventory_id" yaml:"inventoryId"`
 	ServerProductName                          string                      `json:"server_product_name,omitempty" yaml:"productName,omitempty"`
 	ServerClass                                string                      `json:"server_class,omitempty" yaml:"serverClass,omitempty"`
