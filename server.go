@@ -23,7 +23,7 @@ type ServerSearchResult struct {
 	ServerProcessorCPUMark         int               `json:"server_processor_cpu_mark" yaml:"processorCPUMark"`
 	ServerRAMGbytes                int               `json:"server_ram_gbytes,omitempty" yaml:"ramGbytes,omitempty"`
 	ServerDiskCount                int               `json:"server_disk_count,omitempty" yaml:"diskCount,omitempty"`
-	ServerDiskSizeMbytes           int               `json:"server_disk_size_mbytes,omitempty" yaml:"diskSizeMbytes,omitempty"`
+	ServerDiskSizeMbytes           int               `json:"server_disk_size_mbytes" yaml:"diskSizeMbytes,omitempty"`
 	ServerDiskType                 string            `json:"server_disk_type,omitempty" yaml:"diskType,omitempty"`
 	ServerProductName              string            `json:"server_product_name,omitempty" yaml:"productName,omitempty"`
 	ServerClass                    string            `json:"server_class,omitempty" yaml:"class,omitempty"`
@@ -72,15 +72,16 @@ type Server struct {
 	ServerProcessorThreads                     int                         `json:"server_processor_threads,omitempty" yaml:"processorThreads,omitempty"`
 	ServerProcessorCPUMark                     int                         `json:"server_processor_cpu_mark" yaml:"processorCPUMark"`
 	ServerRAMGbytes                            int                         `json:"server_ram_gbytes,omitempty" yaml:"ramGbytes,omitempty"`
-	ServerDisks                                []ServerDisk                `json:"server_disks,omitempty" yaml:"disks,omitempty"`
-	ServerDiskCount                            int                         `json:"server_disk_count,omitempty" yaml:"diskCount,omitempty"`
-	ServerDiskSizeMbytes                       int                         `json:"server_disk_size_mbytes,omitempty" yaml:"diskSizeMbytes,omitempty"`
+	ServerDisks                                []ServerDisk                `json:"server_disks" yaml:"disks,omitempty"`
+	ServerDiskCount                            int                         `json:"server_disk_count" yaml:"diskCount,omitempty"`
+	ServerDiskSizeMbytes                       int                         `json:"server_disk_size_mbytes" yaml:"diskSizeMbytes"`
 	ServerDiskType                             string                      `json:"server_disk_type,omitempty" yaml:"diskType,omitempty"`
 	ServerRackName                             string                      `json:"server_rack_name,omitempty" yaml:"rackName,omitempty"`
-	ServerRackPositionLowerUnit                string                      `json:"server_rack_position_lower_unit" yaml:"rackPositionLowerUnit"`
-	ServerRackPositionUpperUnit                string                      `json:"server_rack_position_upper_unit" yaml:"rackPositionUpperUnit"`
+	ServerRackPositionLowerUnit                *string                     `json:"server_rack_position_lower_unit" yaml:"rackPositionLowerUnit"`
+	ServerRackPositionUpperUnit                *string                     `json:"server_rack_position_upper_unit" yaml:"rackPositionUpperUnit"`
 	ServerRackId                               string                      `json:"server_rack_id,omitempty" yaml:"rackID,omitempty"`
-	ServerInventoryId                          string                      `json:"server_inventory_id" yaml:"inventoryId"`
+	ChassisRackId                              *int                        `json:"chassis_rack_id" yaml:"chassisRackID,omitempty"`
+	ServerInventoryId                          *string                     `json:"server_inventory_id" yaml:"inventoryId"`
 	ServerProductName                          string                      `json:"server_product_name,omitempty" yaml:"productName,omitempty"`
 	ServerClass                                string                      `json:"server_class,omitempty" yaml:"serverClass,omitempty"`
 	ServerTypeID                               int                         `json:"server_type_id,omitempty" yaml:"serverTypeID,omitempty"`
@@ -92,11 +93,14 @@ type Server struct {
 	ServerIPMInternalUsername                  string                      `json:"server_ipmi_internal_username,omitempty" yaml:"IPMIUsername,omitempty"`
 	ServerIPMInternalPassword                  string                      `json:"server_ipmi_internal_password,omitempty" yaml:"IPMIPassword,omitempty"`
 	ServerIPMInternalPasswordEncrypted         string                      `json:"server_ipmi_internal_password_encrypted,omitempty" yaml:"IPMIPasswordEncrypted,omitempty"`
-	ServerIPMCredentialsNeedUpdate             bool                        `json:"server_ipmi_credentials_need_update,omitempty" yaml:"IPMICredentialsNeedUpdate,omitempty"`
+	ServerIPMCredentialsNeedUpdate             bool                        `json:"server_ipmi_credentials_need_update" yaml:"IPMICredentialsNeedUpdate"`
 	ServerVendorSKUID                          string                      `json:"server_vendor_sku_id,omitempty" yaml:"vendorSKU,omitempty"`
-	ServerComments                             string                      `json:"server_comments,omitempty" yaml:"comments,omitempty"`
+	ServerComments                             string                      `json:"server_comments" yaml:"comments,omitempty"`
 	ServerBIOSInfoJSON                         string                      `json:"server_bios_info_json" yaml:"BIOSInfoJson"`
-	ServerCustomJSON                           string                      `json:"server_custom_json" yaml:"CustomJSON"`
+	ServerCustomJSON                           *string                     `json:"server_custom_json" yaml:"CustomJSON"`
+	ServerInfoJSON                             *string                     `json:"server_info_json" yaml:"infoJSON"`
+	ServerDetailXML                            string                      `json:"server_details_xml" yaml:"serverDetailsXML"`
+	ServerInstanceCustomJSON                   *string                     `json:"server_instance_custom_json" yaml:"instanceCustomJSON"`
 	ServerSupportsSOL                          bool                        `json:"server_supports_sol" yaml:"supportsSOL"`
 	ServerILOResetTimestamp                    string                      `json:"server_ilo_reset_timestamp" yaml:"ILOResetTimestamp"`
 	ServerBootLastUpdateTimestamp              string                      `json:"server_boot_last_update_timestamp" yaml:"BootLastUpdateTimestamp"`
@@ -126,7 +130,7 @@ type Server struct {
 	ServerSupportsVirtualMedia                 bool                        `json:"server_supports_virtual_media" yaml:"serverSupportsVirtualMedia"`
 	ServerIsInDiagnostics                      bool                        `json:"server_is_in_diagnostics" yaml:"serverIsInDiagnostics"`
 	ServerDiskWipe                             bool                        `json:"server_disk_wipe" yaml:"diskWipe"`
-	ServerMetricsMetadataJSON                  string                      `json:"server_metrics_metadata_json" yaml:"metricsMetadataJSON"`
+	ServerMetricsMetadataJSON                  *string                     `json:"server_metrics_metadata_json" yaml:"metricsMetadataJSON"`
 	AgentID                                    int                         `json:"agent_id" yaml:"agentID"`
 	ServerDHCPPacketSniffingIsEnabled          bool                        `json:"server_dhcp_packet_sniffing_is_enabled" yaml:"DHCPPacketSniffingIsEnabled"`
 	ServerBDKDEbug                             bool                        `json:"server_bdk_debug" yaml:"BDKDebug"`
@@ -440,6 +444,39 @@ func (c *Client) ServerEdit(serverID int, serverEditType string, server Server) 
 	}
 
 	return &createdObject, nil
+}
+
+//ServerEditProperty edits a specific property from the server record
+//this is used instead of the server edit function as it does not require a marshal-unmarshal to and form the server object
+//which sometimes is broken due to frequent changes on the server side
+func (c *Client) ServerEditProperty(serverID int, serverPropertyToEdit string, serverPropertyValue interface{}) error {
+
+	var createdObject map[string]interface{}
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_get",
+		serverID)
+
+	if err != nil {
+		return err
+	}
+
+	createdObject[serverPropertyToEdit] = serverPropertyValue
+
+	err = c.rpcClient.CallFor(
+		&createdObject,
+		"server_edit",
+		serverID,
+		createdObject,
+		"complete",
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 //ServerDelete deletes all the information about a specified Server.

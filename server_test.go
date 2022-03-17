@@ -25,8 +25,8 @@ func TestServerUnmarshalTest(t *testing.T) {
 	Expect(obj.ServerDisks[0].ServerDiskSizeGB).To(Equal(279))
 
 	Expect(obj.ServerRackName).To(Equal("Rack Name"))
-	Expect(obj.ServerRackPositionLowerUnit).To(Equal("L-2004"))
-	Expect(obj.ServerRackPositionUpperUnit).To(Equal("U-2404"))
+	Expect(*obj.ServerRackPositionLowerUnit).To(Equal("L-2004"))
+	Expect(*obj.ServerRackPositionUpperUnit).To(Equal("U-2404"))
 	Expect(obj.ServerInventoryId).To(Equal("id-20040424"))
 }
 

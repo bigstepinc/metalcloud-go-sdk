@@ -293,6 +293,10 @@ type MetalCloudClient interface {
 	ServerEditAvailability(serverID int, server Server) (*Server, error)
 	//ServerEdit edits a server record
 	ServerEdit(serverID int, serverEditType string, server Server) (*Server, error)
+	//ServerEditProperty edits a specific property from the server record
+	//this is used instead of the server edit function as it does not require a marshal-unmarshal to and form the server object
+	//which sometimes is broken due to frequent changes on the server side
+	ServerEditProperty(serverID int, serverPropertyToEdit string, serverPropertyValue interface{}) error
 	//ServerDelete deletes all the information about a specified Server.
 	ServerDelete(serverID int, skipIPMI bool) error
 	//ServerDecomission decomissions the server row and deletes all child rows.
