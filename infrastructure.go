@@ -267,6 +267,31 @@ func (c *Client) infrastructureUserLimits(infrastructureID id) (*map[string]inte
 	return &userLimits, nil
 }
 
+func (c *Client) InfrastructureInstances(infrastructureID id) (*map[string]interface{}, error) {
+	var instances interface{}
+
+	if err := checkID(infrastructureID); err != nil {
+		return nil, err
+	}
+
+	err := c.rpcClient.CallFor(&instances, "infrastructure_instances_info", infrastructureID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, ok := instances.([]interface{})
+
+	if ok {
+		var m = make(map[string]interface{})
+		return &m, nil
+	}
+
+	instancesIntf := instances.(map[string]interface{})
+
+	return &instancesIntf, nil
+}
+
 func (i *Infrastructure) instanceToOperation(op *InfrastructureOperation) {
 	operation := &i.InfrastructureOperation
 	operation.InfrastructureID = i.InfrastructureID
