@@ -24,7 +24,7 @@ func TestServerUnmarshalTest(t *testing.T) {
 	Expect(obj.ServerID).To(Equal(685))
 	Expect(obj.ServerDisks[0].ServerDiskSizeGB).To(Equal(279))
 
-	Expect(obj.ServerRackName).To(Equal("Rack Name"))
+	Expect(*obj.ServerRackName).To(Equal("Rack Name"))
 	Expect(*obj.ServerRackPositionLowerUnit).To(Equal("L-2004"))
 	Expect(*obj.ServerRackPositionUpperUnit).To(Equal("U-2404"))
 	Expect(*obj.ServerInventoryId).To(Equal("id-20040424"))
@@ -190,6 +190,7 @@ func TestServerCheckForMissingProperties(t *testing.T) {
 			case
 				"server_interfaces",
 				"server_disks":
+
 				//Expect(reflect.DeepEqual(mapFromServerObj[k], v)).To(BeTrue(), fmt.Sprintf("%s is not equal in both sides", k))
 				continue
 			default:
@@ -202,6 +203,9 @@ func TestServerCheckForMissingProperties(t *testing.T) {
 	//we take each property from the server object
 	//to see if we have extra properties
 	for k, _ := range mapFromServerObj {
+		if k == "server_rack_id" {
+			continue
+		}
 		Expect(mapFromOriginalJSON).To(HaveKey(k))
 	}
 

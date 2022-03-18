@@ -92,6 +92,7 @@ type MetalCloudClient interface {
 	InfrastructureCreate(infrastructure Infrastructure) (*Infrastructure, error)
 	//Infrastructures returns a list of infrastructures
 	Infrastructures() (*map[string]Infrastructure, error)
+	InfrastructureInstances(infrastructureID id) (*map[string]interface{}, error)
 	//InfrastructureSearch searches for infrastructures with filtering support
 	InfrastructureSearch(filter string) (*[]InfrastructuresSearchResult, error)
 	//InfrastructureEdit alters an infrastructure
@@ -322,6 +323,10 @@ type MetalCloudClient interface {
 	ServerReregister(serverID int, bSkipIPMI bool, bUseBDKAgent bool) error
 	//ServerStatusUpdate alters the status of a server
 	ServerStatusUpdate(serverID int, status string) error
+	//ServerEditRack returns a server's rack info details
+	ServerEditRack(serverID int, serverEditRack ServerEditRack) (*Server, error)
+	//ServerEditInventory returns a server's inventory details
+	ServerEditInventory(serverID int, serverEditInventory ServerEditInventory) (*Server, error)
 	//ServerFirmwarePolicyGet returns a server policy's details
 	ServerFirmwarePolicyGet(serverFirmwarePolicyID int) (*ServerFirmwareUpgradePolicy, error)
 	//ServerFirmwareUpgradePolicyCreate creates a server firmware policy.

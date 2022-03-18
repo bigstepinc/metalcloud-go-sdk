@@ -55,6 +55,8 @@ var types = [...]string{
 	"SwitchInterfaceSearchResult",
 	"StoragePoolSearchResult",
 	"InfrastructuresSearchResult",
+	"ServerEditInventory",
+	"ServerEditRack",
 }
 
 const packageName = "metalcloud"
