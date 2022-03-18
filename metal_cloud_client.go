@@ -92,7 +92,6 @@ type MetalCloudClient interface {
 	InfrastructureCreate(infrastructure Infrastructure) (*Infrastructure, error)
 	//Infrastructures returns a list of infrastructures
 	Infrastructures() (*map[string]Infrastructure, error)
-	InfrastructureInstances(infrastructureID id) (*map[string]interface{}, error)
 	//InfrastructureSearch searches for infrastructures with filtering support
 	InfrastructureSearch(filter string) (*[]InfrastructuresSearchResult, error)
 	//InfrastructureEdit alters an infrastructure
