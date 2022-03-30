@@ -267,7 +267,7 @@ func (c *Client) infrastructureUserLimits(infrastructureID id) (*map[string]inte
 	return &userLimits, nil
 }
 
-func (c *Client) InfrastructureInstances(infrastructureID id) (*map[string]interface{}, error) {
+func (c *Client) infrastructureInstances(infrastructureID id) (*map[string]interface{}, error) {
 	var instances interface{}
 
 	if err := checkID(infrastructureID); err != nil {
