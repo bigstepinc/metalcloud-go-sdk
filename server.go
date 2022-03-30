@@ -199,6 +199,16 @@ type ServerNICDetails struct {
 	ServerInterfaceCapacityMBPs              int    `json:"server_interface_capacity_mbps,omitempty" yaml:"serverInterfaceCapacityMBPs,omitempty"`
 }
 
+type ServerEditRack struct {
+	ServerRackName              *string `json:"server_rack_name" yaml:"rackName"`
+	ServerRackPositionLowerUnit *string `json:"server_rack_position_lower_unit" yaml:"rackPositionLowerUnit"`
+	ServerRackPositionUpperUnit *string `json:"server_rack_position_upper_unit" yaml:"rackPositionUpperUnit"`
+}
+
+type ServerEditInventory struct {
+	ServerInventoryId *string `json:"server_inventory_id" yaml:"inventoryId"`
+}
+
 //ServersSearch searches for servers matching certain filter
 func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 
@@ -813,4 +823,42 @@ func (s Server) Validate() error {
 		return fmt.Errorf("id is required")
 	}
 	return nil
+}
+
+//ServerEditRack returns a server's rack info details
+func (c *Client) ServerEditRack(serverID int, serverEditRack ServerEditRack) (*Server, error) {
+
+	var createdObject Server
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_edit_rack",
+		serverID,
+		serverEditRack,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdObject, nil
+}
+
+//ServerEditInventory returns a server's inventory details
+func (c *Client) ServerEditInventory(serverID int, serverEditInventory ServerEditInventory) (*Server, error) {
+
+	var createdObject Server
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_edit_inventory",
+		serverID,
+		serverEditInventory,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdObject, nil
 }
