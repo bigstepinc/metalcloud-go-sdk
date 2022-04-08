@@ -46,6 +46,7 @@ type SharedDriveOperation struct {
 	SharedDriveAttachedInstanceArrays []int  `json:"shared_drive_attached_instance_arrays,omitempty" yaml:"attachedInstanceArrays,omitempty"`
 	SharedDriveChangeID               int    `json:"shared_drive_change_id,omitempty" yaml:"changeID,omitempty"`
 	SharedDriveIOLimitPolicy          string `json:"shared_drive_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
+	SharedDriveAllocationAffinity     string `json:"shared_drive_allocation_affinity,omitempty" yaml:"affinity,omitempty"`
 }
 
 //sharedDriveCreate creates a shared drive array. Requires deploy.

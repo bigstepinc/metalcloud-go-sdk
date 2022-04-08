@@ -36,6 +36,7 @@ type DriveArrayOperation struct {
 	DriveArrayDeployStatus            string      `json:"drive_array_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
 	DriveArrayChangeID                int         `json:"drive_array_change_id,omitempty" yaml:"changeID,omitempty"`
 	DriveArrayIOLimitPolicy           string      `json:"drive_array_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
+	DriveArrayAllocationAffinity      string      `json:"drive_array_allocation_affinity,omitempty" yaml:"affinity,omitempty"`
 }
 
 //DriveArrays retrieves the list of drives arrays of an infrastructure
