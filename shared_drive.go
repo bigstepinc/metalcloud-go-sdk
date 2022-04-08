@@ -24,6 +24,7 @@ type SharedDrive struct {
 	SharedDriveIOLimitPolicy          string                 `json:"shared_drive_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
 	SharedDriveWWN                    string                 `json:"shared_drive_wwn,omitempty" yaml:"wwn,omitempty"`
 	StoragePoolID                     int                    `json:"storage_pool_id,omitempty" yaml:"storagePoolID,omitempty"`
+	SharedDriveAllocationAffinity     string                 `json:"shared_drive_allocation_affinity,omitempty" yaml:"affinity,omitempty"`
 }
 
 //SharedDriveCredentials iscsi or other forms of connection details
@@ -46,7 +47,6 @@ type SharedDriveOperation struct {
 	SharedDriveAttachedInstanceArrays []int  `json:"shared_drive_attached_instance_arrays,omitempty" yaml:"attachedInstanceArrays,omitempty"`
 	SharedDriveChangeID               int    `json:"shared_drive_change_id,omitempty" yaml:"changeID,omitempty"`
 	SharedDriveIOLimitPolicy          string `json:"shared_drive_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
-	SharedDriveAllocationAffinity     string `json:"shared_drive_allocation_affinity,omitempty" yaml:"affinity,omitempty"`
 }
 
 //sharedDriveCreate creates a shared drive array. Requires deploy.

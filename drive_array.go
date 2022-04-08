@@ -19,6 +19,7 @@ type DriveArray struct {
 	DriveArrayOperation               *DriveArrayOperation `json:"drive_array_operation,omitempty" yaml:"operation,omitempty"`
 	DriveArrayIOLimitPolicy           string               `json:"drive_array_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
 	StoragePoolID                     int                  `json:"storage_pool_id,omitempty" yaml:"storagePoolID,omitempty"`
+	DriveArrayAllocationAffinity      string               `json:"drive_array_allocation_affinity,omitempty" yaml:"affinity,omitempty"`
 }
 
 //DriveArrayOperation defines changes to be applied to a DriveArray
@@ -36,7 +37,6 @@ type DriveArrayOperation struct {
 	DriveArrayDeployStatus            string      `json:"drive_array_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
 	DriveArrayChangeID                int         `json:"drive_array_change_id,omitempty" yaml:"changeID,omitempty"`
 	DriveArrayIOLimitPolicy           string      `json:"drive_array_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
-	DriveArrayAllocationAffinity      string      `json:"drive_array_allocation_affinity,omitempty" yaml:"affinity,omitempty"`
 }
 
 //DriveArrays retrieves the list of drives arrays of an infrastructure
