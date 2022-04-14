@@ -433,6 +433,8 @@ type MetalCloudClient interface {
 	UserGetByEmail(userLabel string) (*User, error)
 	//UserEmailToUserID returns the user id of an user given an email
 	UserEmailToUserID(userEmail string) (*int, error)
+	//UserSearch searches for users with filtering support
+	UserSearch(filter string) (*[]UsersSearchResult, error)
 	//VariableCreate creates a variable object
 	VariableCreate(variable Variable) (*Variable, error)
 	//VariableDelete permanently destroys a Variable.
