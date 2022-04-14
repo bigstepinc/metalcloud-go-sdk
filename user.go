@@ -187,9 +187,7 @@ func (c *Client) UserSearch(filter string) (*[]UsersSearchResult, error) {
 	}
 
 	list := []UsersSearchResult{}
-	for _, s := range createdObject[tables[0]].Rows {
-		list = append(list, s)
-	}
+	list = append(list, createdObject[tables[0]].Rows...)
 
 	return &list, nil
 }
