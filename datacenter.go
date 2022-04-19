@@ -12,12 +12,12 @@ type Datacenter struct {
 	DatacenterNameParent       string            `json:"datacenter_name_parent,omitempty" yaml:"parentName,omitempty"`
 	UserID                     int               `json:"user_id,omitempty" yaml:"userid,omitempty"`
 	DatacenterDisplayName      string            `json:"datacenter_display_name,omitempty" yaml:"displayname,omitempty"`
-	DatacenterIsMaster         bool              `json:"datacenter_is_master,omitempty" yaml:"ismaster,omitempty"`
-	DatacenterIsMaintenance    bool              `json:"datacenter_is_maintenance,omitempty" yaml:"ismaintenance,omitempty"`
+	DatacenterIsMaster         bool              `json:"datacenter_is_master" yaml:"ismaster"`
+	DatacenterIsMaintenance    bool              `json:"datacenter_is_maintenance" yaml:"ismaintenance"`
 	DatacenterType             string            `json:"datacenter_type,omitempty" yaml:"type,omitempty"`
 	DatacenterCreatedTimestamp string            `json:"datacenter_created_timestamp,omitempty" yaml:"createdtimestamp,omitempty"`
 	DatacenterUpdatedTimestamp string            `json:"datacenter_updated_timestamp,omitempty" yaml:"updatedtimestamp,omitempty"`
-	DatacenterHidden           bool              `json:"datacenter_hidden,omitempty" yaml:"ishidden,omitempty"`
+	DatacenterHidden           bool              `json:"datacenter_hidden" yaml:"ishidden"`
 	DatacenterTags             []string          `json:"datacenter_tags,omitempty" yaml:"tags,omitempty"`
 	DatacenterConfig           *DatacenterConfig `json:"datacenter_config_json,omitempty" yaml:"config,omitempty"`
 }

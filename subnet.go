@@ -21,7 +21,7 @@ type SubnetPool struct {
 	SubnetPoolDestination                       string `json:"subnet_pool_destination,omitempty" yaml:"destination,omitempty"`
 	SubnetPoolUtilizationCachedJSON             string `json:"subnet_pool_utilization_cached_json,omitempty" yaml:"currentUtilizationJSON,omitempty"`
 	SubnetPoolUtilizationCachedUpdatedTimestamp string `json:"subnet_pool_cached_updated_timestamp,omitempty" yaml:"currentUtilizationLastUpdated,omitempty"`
-	SubnetPoolIsOnlyForManualAllocation         bool   `json:"subnet_pool_is_only_for_manual_allocation,omitempty" yaml:"manualAllocationOnly,omitempty"`
+	SubnetPoolIsOnlyForManualAllocation         bool   `json:"subnet_pool_is_only_for_manual_allocation" yaml:"manualAllocationOnly"`
 }
 
 //SubnetPoolUtilization describes the current utilization of the subnet

@@ -10,7 +10,7 @@ type StoragePoolSearchResult struct {
 	StoragePoolID                              int    `json:"storage_pool_id,omitempty" yaml:"id,omitempty"`
 	StoragePoolName                            string `json:"storage_pool_name,omitempty" yaml:"name,omitempty"`
 	StoragePoolStatus                          string `json:"storage_pool_status,omitempty" yaml:"status,omitempty"`
-	StoragePoolInMaintenance                   bool   `json:"storage_pool_in_maintenance,omitempty" yaml:"maintenance,omitempty"`
+	StoragePoolInMaintenance                   bool   `json:"storage_pool_in_maintenance" yaml:"maintenance"`
 	DatacenterName                             string `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
 	StorageType                                string `json:"storage_type,omitempty" yaml:"type,omitempty"`
 	UserID                                     int    `json:"user_id,omitempty" yaml:"user,omitempty"`
@@ -36,8 +36,8 @@ type StoragePool struct {
 	StoragePoolID                              int      `json:"storage_pool_id,omitempty" yaml:"id,omitempty"`
 	StoragePoolName                            string   `json:"storage_pool_name,omitempty" yaml:"name,omitempty"`
 	StoragePoolStatus                          string   `json:"storage_pool_status,omitempty" yaml:"status,omitempty"`
-	StoragePoolInMaintenance                   bool     `json:"storage_pool_in_maintenance,omitempty" yaml:"maintenance,omitempty"`
-	StoragePoolIsExperimental                  bool     `json:"storage_pool_is_experimental,omitempty" yaml:"experimental,omitempty"`
+	StoragePoolInMaintenance                   bool     `json:"storage_pool_in_maintenance" yaml:"maintenance"`
+	StoragePoolIsExperimental                  bool     `json:"storage_pool_is_experimental" yaml:"experimental"`
 	DatacenterName                             string   `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
 	StorageType                                string   `json:"storage_type,omitempty" yaml:"type,omitempty"`
 	UserID                                     int      `json:"user_id,omitempty" yaml:"user,omitempty"`
