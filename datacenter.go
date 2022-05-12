@@ -59,7 +59,6 @@ type DatacenterConfig struct {
 	EnableDHCPRelaySecurityForClientNetworks           bool                   `json:"enableDHCPRelaySecurityForClientNetworks" yaml:"enableDHCPRelaySecurityForClientNetworks"`
 	EnableDHCPBMCMACAddressWhitelist                   bool                   `json:"enableDHCPBMCMACAddressWhitelist" yaml:"enableDHCPBMCMACAddressWhitelist"`
 	DHCPBMCMACAddressWhitelist                         []string               `json:"dhcpBMCMACAddressWhitelist" yaml:"dhcpBMCMACAddressWhitelist"`
-	BMCSNMPCommunityStringCleanupPolicy                string                 `json:"bmcSNMPCommunityStringCleanupPolicy" yaml:"bmcSNMPCommunityStringCleanupPolicy"`
 }
 
 type WebProxy struct {
