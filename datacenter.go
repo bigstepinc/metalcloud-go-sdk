@@ -47,6 +47,7 @@ type DatacenterConfig struct {
 	EnableTenantAccessToIPMI                           bool                   `json:"enableTenantAccessToIPMI" yaml:"enableTenantAccessToIPMI"`
 	AllowVLANOverrides                                 bool                   `json:"allowVLANOverrides" yaml:"allowVLANOverrides"`
 	AllowNetworkProfiles                               bool                   `json:"allowNetworkProfiles" yaml:"allowNetworkProfiles"`
+	EnableServerRegistrationStartedByInBandDHCP        bool                   `json:"enableServerRegistrationStartedByInBandDHCP" yaml:"enableServerRegistrationStartedByInBandDHCP"`
 	ExtraInternalIPsPerSubnet                          int                    `json:"extraInternalIPsPerSubnet" yaml:"extraInternalIPsPerSubnet"`
 	ExtraInternalIPsPerSANSubnet                       int                    `json:"extraInternalIPsPerSANSubnet" yaml:"extraInternalIPsPerSANSubnet"`
 	ServerRAIDConfigurationEnabled                     bool                   `json:"serverRAIDConfigurationEnabled" yaml:"serverRAIDConfigurationEnabled"`
@@ -106,6 +107,7 @@ type EVPNVXLANL2Provisioner struct {
 	SANVLANRange     	string `json:"SANVLANRange,omitempty"`
 	WANVLANRange     	string `json:"WANVLANRange,omitempty"`
 	QuarantineVLANID 	int    `json:"quarantineVLANID,omitempty"`
+	StorageHasSeparateFabric bool `json:"storageHasSeparateFabric,omitempty"`
 	Type             	string `json:"type,omitempty"`
 }
 
