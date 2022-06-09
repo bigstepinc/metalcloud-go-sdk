@@ -24,6 +24,7 @@ type SharedDrive struct {
 	SharedDriveIOLimitPolicy          string                 `json:"shared_drive_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
 	SharedDriveWWN                    string                 `json:"shared_drive_wwn,omitempty" yaml:"wwn,omitempty"`
 	StoragePoolID                     int                    `json:"storage_pool_id,omitempty" yaml:"storagePoolID,omitempty"`
+	SharedDriveAllocationAffinity     string                 `json:"shared_drive_allocation_affinity,omitempty" yaml:"affinity,omitempty"`
 }
 
 //SharedDriveCredentials iscsi or other forms of connection details

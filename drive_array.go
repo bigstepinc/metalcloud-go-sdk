@@ -19,6 +19,7 @@ type DriveArray struct {
 	DriveArrayOperation               *DriveArrayOperation `json:"drive_array_operation,omitempty" yaml:"operation,omitempty"`
 	DriveArrayIOLimitPolicy           string               `json:"drive_array_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
 	StoragePoolID                     int                  `json:"storage_pool_id,omitempty" yaml:"storagePoolID,omitempty"`
+	DriveArrayAllocationAffinity      string               `json:"drive_array_allocation_affinity,omitempty" yaml:"affinity,omitempty"`
 }
 
 //DriveArrayOperation defines changes to be applied to a DriveArray

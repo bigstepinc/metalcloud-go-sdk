@@ -33,7 +33,7 @@ type WebFetchAAPIOptions struct {
 	Method           string                    `json:"method,omitempty"`
 	Redirect         string                    `json:"redirect,omitempty"`
 	Follow           int                       `json:"follow,omitempty"`
-	Compress         bool                      `json:"compress,omitempty"`
+	Compress         bool                      `json:"compress"`
 	Timeout          int                       `json:"timeout,omitempty"`
 	Size             int                       `json:"size,omitempty"`
 	Headers          WebFetchAPIRequestHeaders `json:"headers,omitempty"`

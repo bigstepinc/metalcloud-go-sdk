@@ -17,7 +17,7 @@ type NetworkProfile struct {
 
 //NetworkProfileVLAN object describes a VLAN
 type NetworkProfileVLAN struct {
-	VlanID                  int    `json:"vlan_id,omitempty" yaml:"vlanID,omitempty"`
+	VlanID                  *int   `json:"vlan_id" yaml:"vlanID"`
 	PortMode                string `json:"port_mode,omitempty" yaml:"portMode,omitempty"`
 	ProvisionSubnetGateways bool   `json:"provision_subnet_gateways" yaml:"provisionSubnetGateways"`
 	ExternalConnectionIDs   []int  `json:"external_connection_ids" yaml:"extConnectionIDs"`
