@@ -140,7 +140,44 @@ func TestServerDeleteForApply(t *testing.T) {
 
 	//make sure we ask for the proper ID
 	Expect(params[0].(float64)).To(Equal(100.0))
+}
 
+func TestServerRegister(t *testing.T) {
+
+	RegisterTestingT(t)
+
+	responseBody = `{"result": ` + _serverFixture3 + `,"jsonrpc": "2.0","id": 0}`
+
+	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
+	Expect(err).To(BeNil())
+
+	serverCreateAndRegister := ServerCreateAndRegister{
+		DatacenterName: "datacenter",
+		ServerVendor: "hp",
+		ServerManagementAddress: "127.0.0.1",
+		ServerManagementUser: "root",
+		ServerManagementPassword: "calvin",
+	}
+
+	_, err = mc.ServerCreateAndRegister(serverCreateAndRegister)
+	Expect(err).To(BeNil())
+
+	body := (<-requestChan).body
+
+	var m map[string]interface{}
+	err = json.Unmarshal([]byte(body), &m)
+	Expect(err).To(BeNil())
+	Expect(m).NotTo(BeNil())
+
+	Expect(m["method"].(string)).To(Equal("server_create_and_register"))
+
+	params := (m["params"].([]interface{}))
+	param := (params[0].(map[string]interface{}))
+	Expect(param["datacenter_name"].(string)).To(Equal(serverCreateAndRegister.DatacenterName))
+	Expect(param["server_vendor"].(string)).To(Equal(serverCreateAndRegister.ServerVendor))
+	Expect(param["server_ipmi_host"].(string)).To(Equal(serverCreateAndRegister.ServerManagementAddress))
+	Expect(param["server_ipmi_user"].(string)).To(Equal(serverCreateAndRegister.ServerManagementUser))
+	Expect(param["server_ipmi_password"].(string)).To(Equal(serverCreateAndRegister.ServerManagementPassword))
 }
 
 func TestServerCheckForMissingProperties(t *testing.T) {
