@@ -862,3 +862,22 @@ func (c *Client) ServerEditInventory(serverID int, serverEditInventory ServerEdi
 
 	return &createdObject, nil
 }
+
+//InstanceServerReplace replaces a server associated to an instance. Returns an AFC Group ID to be used in the AFC Deploy Viewer.
+func (c *Client) InstanceServerReplace(instanceID int, serverID int) (int, error) {
+
+	var createdObject int
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"instance_server_replace",
+		instanceID,
+		serverID,
+	)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return createdObject, nil
+}
