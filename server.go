@@ -209,6 +209,14 @@ type ServerEditInventory struct {
 	ServerInventoryId *string `json:"server_inventory_id" yaml:"inventoryId"`
 }
 
+type ServerCreateAndRegister struct {
+	DatacenterName           string `json:"datacenter_name" yaml:"datacenter"`
+	ServerVendor             string `json:"server_vendor" yaml:"vendor"`
+	ServerManagementAddress  string `json:"server_ipmi_host" yaml:"address"`
+	ServerManagementUser     string `json:"server_ipmi_user" yaml:"user"`
+	ServerManagementPassword string `json:"server_ipmi_password" yaml:"pass"`
+}
+
 //ServersSearch searches for servers matching certain filter
 func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 
@@ -419,6 +427,25 @@ func (c *Client) ServerCreate(server Server, autoGenerate bool) (int, error) {
 	}
 
 	return createdObject, nil
+}
+
+//ServerCreateAndRegister manually creates and registers a server
+func (c *Client) ServerCreateAndRegister(serverCreateAndRegister ServerCreateAndRegister) (int, error) {
+
+	var createdObject Server
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_create_and_register",
+		serverCreateAndRegister,
+		"server",
+	)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return createdObject.ServerID, nil
 }
 
 //ServerEditComplete - perform a complete edit
@@ -861,4 +888,23 @@ func (c *Client) ServerEditInventory(serverID int, serverEditInventory ServerEdi
 	}
 
 	return &createdObject, nil
+}
+
+//InstanceServerReplace replaces a server associated to an instance. Returns an AFC Group ID to be used in the AFC Deploy Viewer.
+func (c *Client) InstanceServerReplace(instanceID int, serverID int) (int, error) {
+
+	var createdObject int
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"instance_server_replace",
+		instanceID,
+		serverID,
+	)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return createdObject, nil
 }

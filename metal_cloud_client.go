@@ -285,6 +285,8 @@ type MetalCloudClient interface {
 	ServerGet(serverID int, decryptPasswd bool) (*Server, error)
 	//ServerCreate manually creates a server record
 	ServerCreate(server Server, autoGenerate bool) (int, error)
+	//ServerCreateAndRegister manually creates and registers a server
+	ServerCreateAndRegister(serverCreateAndRegister ServerCreateAndRegister) (int, error)
 	//ServerEditComplete - perform a complete edit
 	ServerEditComplete(serverID int, server Server) (*Server, error)
 	//ServerEditIPMI - edit only IPMI settings
@@ -326,6 +328,8 @@ type MetalCloudClient interface {
 	ServerEditRack(serverID int, serverEditRack ServerEditRack) (*Server, error)
 	//ServerEditInventory returns a server's inventory details
 	ServerEditInventory(serverID int, serverEditInventory ServerEditInventory) (*Server, error)
+	//InstanceServerReplace replaces a server associated to an instance. Returns an AFC Group ID to be used in the AFC Deploy Viewer.
+	InstanceServerReplace(instanceID int, serverID int) (int, error)
 	//ServerFirmwarePolicyGet returns a server policy's details
 	ServerFirmwarePolicyGet(serverFirmwarePolicyID int) (*ServerFirmwareUpgradePolicy, error)
 	//ServerFirmwareUpgradePolicyCreate creates a server firmware policy.

@@ -41,8 +41,8 @@ type DatacenterConfig struct {
 	Latitude                                           float64                `json:"latitude,omitempty" yaml:"latitude,omitempty"`
 	Longitude                                          float64                `json:"longitude,omitempty" yaml:"longitude,omitempty"`
 	Address                                            string                 `json:"address,omitempty" yaml:"address,omitempty"`
-	ServerRegisterUsingGeneratedIPMICredentialsEnabled bool                   `json:"serverRegisterUsingGeneratedIPMICredentialsEnabled,omitempty" yaml:"serverRegisterUsingGeneratedIPMICredentialsEnabled,omitempty"`
-	ServerRegisterUsingProvidedIPMICredentialsEnabled  bool                   `json:"serverRegisterUsingProvidedIPMICredentialsEnabled,omitempty" yaml:"serverRegisterUsingProvidedIPMICredentialsEnabled,omitempty"`
+	ServerRegisterUsingGeneratedIPMICredentialsEnabled bool                   `json:"serverRegisterUsingGeneratedIPMICredentialsEnabled" yaml:"serverRegisterUsingGeneratedIPMICredentialsEnabled"`
+	ServerRegisterUsingProvidedIPMICredentialsEnabled  bool                   `json:"serverRegisterUsingProvidedIPMICredentialsEnabled" yaml:"serverRegisterUsingProvidedIPMICredentialsEnabled"`
 	SwitchProvisioner                                  map[string]interface{} `json:"switchProvisioner,omitempty" yaml:"switchProvisioner,omitempty"`
 	EnableTenantAccessToIPMI                           bool                   `json:"enableTenantAccessToIPMI" yaml:"enableTenantAccessToIPMI"`
 	AllowVLANOverrides                                 bool                   `json:"allowVLANOverrides" yaml:"allowVLANOverrides"`
