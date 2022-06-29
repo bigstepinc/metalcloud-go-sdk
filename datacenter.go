@@ -31,7 +31,7 @@ type DatacenterConfig struct {
 	RepoURLRoot                                        string                 `json:"repoURLRoot,omitempty" yaml:"repoURLRoot,omitempty"`
 	RepoURLRootQuarantineNetwork                       string                 `json:"repoURLRootQuarantineNetwork,omitempty" yaml:"repoURLRootQuarantineNetwork,omitempty"`
 	SANRoutedSubnet                                    string                 `json:"SANRoutedSubnet,omitempty" yaml:"SANRoutedSubnet,omitempty"`
-	NTPServers                                         []string               `json:"NTPServers,omitempty" yaml:"NTPServers,omitempty"`
+	NTPServers                                         []string               `json:"NTPServers" yaml:"NTPServers"`
 	DNSServers                                         []string               `json:"DNSServers,omitempty" yaml:"DNSServers,omitempty"`
 	KMS                                                string                 `json:"KMS,omitempty" yaml:"KMS,omitempty"`
 	TFTPServerWANVRRPListenIPv4                        string                 `json:"TFTPServerWANVRRPListenIPv4,omitempty" yaml:"TFTPServerWANVRRPListenIPv4,omitempty"`
