@@ -47,7 +47,6 @@ type DatacenterConfig struct {
 	EnableTenantAccessToIPMI                           bool                   `json:"enableTenantAccessToIPMI" yaml:"enableTenantAccessToIPMI"`
 	AllowVLANOverrides                                 bool                   `json:"allowVLANOverrides" yaml:"allowVLANOverrides"`
 	AllowNetworkProfiles                               bool                   `json:"allowNetworkProfiles" yaml:"allowNetworkProfiles"`
-	UseSecondarySANVLAN                                bool                   `json:"useSecondarySANVLAN" yaml:"useSecondarySANVLAN"`
 	ExtraInternalIPsPerSubnet                          int                    `json:"extraInternalIPsPerSubnet" yaml:"extraInternalIPsPerSubnet"`
 	ExtraInternalIPsPerSANSubnet                       int                    `json:"extraInternalIPsPerSANSubnet" yaml:"extraInternalIPsPerSANSubnet"`
 	ServerRAIDConfigurationEnabled                     bool                   `json:"serverRAIDConfigurationEnabled" yaml:"serverRAIDConfigurationEnabled"`
@@ -59,7 +58,10 @@ type DatacenterConfig struct {
 	EnableDHCPRelaySecurityForClientNetworks           bool                   `json:"enableDHCPRelaySecurityForClientNetworks" yaml:"enableDHCPRelaySecurityForClientNetworks"`
 	EnableDHCPBMCMACAddressWhitelist                   bool                   `json:"enableDHCPBMCMACAddressWhitelist" yaml:"enableDHCPBMCMACAddressWhitelist"`
 	DHCPBMCMACAddressWhitelist                         []string               `json:"dhcpBMCMACAddressWhitelist" yaml:"dhcpBMCMACAddressWhitelist"`
-	BMCSNMPCommunityStringCleanupPolicy                string                 `json:"bmcSNMPCommunityStringCleanupPolicy" yaml:"bmcSNMPCommunityStringCleanupPolicy"`
+	EnableServerRegistrationStartedByInBandDHCP        bool                   `json:"enableServerRegistrationStartedByInBandDHCP" yaml:"enableServerRegistrationStartedByInBandDHCP"`
+	DefaultDeploymentMechanism                         string                 `json:"defaultDeploymentMechanism" yaml:"defaultDeploymentMechanism"`
+	DefaultCleanupAndRegistrationMechanism             string                 `json:"defaultCleanupAndRegistrationMechanism" yaml:"defaultCleanupAndRegistrationMechanism"`
+	DefaultServerCleanupPolicyID                       int                    `json:"defaultServerCleanupPolicyID" yaml:"defaultServerCleanupPolicyID"`
 }
 
 type WebProxy struct {
