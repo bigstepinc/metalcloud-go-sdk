@@ -454,7 +454,7 @@ func (c *Client) ServerEditComplete(serverID int, server Server) (*Server, error
 }
 
 //ServerEditIPMI - edit only IPMI settings
-func (c *Client) ServerEditIPMI(serverID int, server Server) (*Server, error) {
+func (c *Client) ServerEditIPMI(serverID int, server Server, serverUpdateInBMC bool) (*Server, error) {
 	var createdObject Server
 
 	err := c.rpcClient.CallFor(
@@ -464,6 +464,7 @@ func (c *Client) ServerEditIPMI(serverID int, server Server) (*Server, error) {
 		server.ServerIPMIHost,
 		server.ServerIPMInternalUsername,
 		server.ServerIPMInternalPassword,
+		serverUpdateInBMC,
 	)
 
 	if err != nil {

@@ -290,7 +290,7 @@ type MetalCloudClient interface {
 	//ServerEditComplete - perform a complete edit
 	ServerEditComplete(serverID int, server Server) (*Server, error)
 	//ServerEditIPMI - edit only IPMI settings
-	ServerEditIPMI(serverID int, server Server) (*Server, error)
+	ServerEditIPMI(serverID int, server Server, serverUpdateInBMC bool) (*Server, error)
 	//ServerEditAvailability - edit only server availability settings
 	ServerEditAvailability(serverID int, server Server) (*Server, error)
 	//ServerEdit edits a server record
