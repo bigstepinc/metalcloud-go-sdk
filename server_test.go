@@ -159,7 +159,9 @@ func TestServerRegister(t *testing.T) {
 		ServerManagementPassword: "calvin",
 	}
 
-	_, err = mc.ServerCreateAndRegister(serverCreateAndRegister)
+	deviceType := "server"
+
+	_, err = mc.ServerCreateAndRegister(serverCreateAndRegister, deviceType)
 	Expect(err).To(BeNil())
 
 	body := (<-requestChan).body
@@ -178,6 +180,7 @@ func TestServerRegister(t *testing.T) {
 	Expect(param["server_ipmi_host"].(string)).To(Equal(serverCreateAndRegister.ServerManagementAddress))
 	Expect(param["server_ipmi_user"].(string)).To(Equal(serverCreateAndRegister.ServerManagementUser))
 	Expect(param["server_ipmi_password"].(string)).To(Equal(serverCreateAndRegister.ServerManagementPassword))
+	Expect(params[1].(string)).To(Equal(deviceType))
 }
 
 func TestServerCheckForMissingProperties(t *testing.T) {
