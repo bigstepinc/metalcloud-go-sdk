@@ -454,8 +454,24 @@ func (c *Client) ServerEditComplete(serverID int, server Server) (*Server, error
 }
 
 //ServerEditIPMI - edit only IPMI settings
-func (c *Client) ServerEditIPMI(serverID int, server Server) (*Server, error) {
-	return c.ServerEdit(serverID, "ipmi", server)
+func (c *Client) ServerEditIPMI(serverID int, server Server, serverUpdateInBMC bool) (*Server, error) {
+	var createdObject Server
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_update_ipmi_credentials",
+		serverID,
+		server.ServerIPMIHost,
+		server.ServerIPMInternalUsername,
+		server.ServerIPMInternalPassword,
+		serverUpdateInBMC,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdObject, nil
 }
 
 //ServerEditAvailability - edit only server availability settings
