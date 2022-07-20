@@ -17,10 +17,17 @@ type NetworkProfile struct {
 
 //NetworkProfileVLAN object describes a VLAN
 type NetworkProfileVLAN struct {
-	VlanID                  *int   `json:"vlan_id" yaml:"vlanID"`
-	PortMode                string `json:"port_mode,omitempty" yaml:"portMode,omitempty"`
-	ProvisionSubnetGateways bool   `json:"provision_subnet_gateways" yaml:"provisionSubnetGateways"`
-	ExternalConnectionIDs   []int  `json:"external_connection_ids" yaml:"extConnectionIDs"`
+	VlanID                  *int                       `json:"vlan_id" yaml:"vlanID"`
+	PortMode                string                     `json:"port_mode,omitempty" yaml:"portMode,omitempty"`
+	ProvisionSubnetGateways bool                       `json:"provision_subnet_gateways" yaml:"provisionSubnetGateways"`
+	ProvisionVXLAN          bool                       `json:"provision_vxlan" yaml:"provisionVXLAN"`
+	ExternalConnectionIDs   []int                      `json:"external_connection_ids" yaml:"extConnectionIDs"`
+	SubnetPools             []NetworkProfileSubnetPool `json:"subnet_pools" yaml:"subnetPools"`
+}
+
+type NetworkProfileSubnetPool struct {
+	SubnetPoolID   *int   `json:"subnet_pool_id" yaml:"subnetPoolID"`
+	SubnetPoolType string `json:"subnet_pool_type" yaml:"subnetPoolType"`
 }
 
 //NetworkProfileGet returns a NetworkProfile with specified id
