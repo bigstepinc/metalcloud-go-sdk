@@ -33,7 +33,7 @@ type WorkflowStageDefinitionReference struct {
 //WorkflowStageAssociation associations
 type WorkflowStageAssociation struct {
 	InfrastructureDeployCustomStageID             int    `json:"infrastructure_deploy_custom_stage_id,omitempty"`
-	InfrastructureID                              int    `json:"infrastructure_id,omitempty"`
+	InfrastructureID                              int    `json:"infrastructure_id"`
 	StageDefinitionID                             int    `json:"stage_definition_id,omitempty"`
 	InfrastructureDeployCustomStageType           string `json:"infrastructure_deploy_custom_stage_type,omitempty"`
 	InfrastructureDeployCustomStageRunLevel       int    `json:"infrastructure_deploy_custom_stage_run_level,omitempty"`
