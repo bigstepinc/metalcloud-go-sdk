@@ -9,6 +9,7 @@ type NetworkProfile struct {
 	NetworkProfileID               int                  `json:"network_profile_id,omitempty" yaml:"id,omitempty"`
 	NetworkProfileLabel            string               `json:"network_profile_label,omitempty" yaml:"label,omitempty"`
 	DatacenterName                 string               `json:"datacenter_name,omitempty" yaml:"dc,omitempty"`
+	NetworkProfileIsPublic         bool                 `json:"network_profile_is_public,omitempty" yaml:"networkProfileIsPublic,omitempty"`
 	NetworkType                    string               `json:"network_type,omitempty" yaml:"networkType,omitempty"`
 	NetworkProfileVLANs            []NetworkProfileVLAN `json:"network_profile_vlans" yaml:"vlans"`
 	NetworkProfileCreatedTimestamp string               `json:"nework_profile_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
