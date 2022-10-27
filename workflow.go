@@ -6,7 +6,7 @@ import (
 	"github.com/ybbus/jsonrpc"
 )
 
-//Workflow struct defines a server type
+// Workflow struct defines a server type
 type Workflow struct {
 	WorkflowID               int    `json:"workflow_id,omitempty" yaml:"id,omitempty"`
 	UserIDOwner              int    `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
@@ -21,16 +21,15 @@ type Workflow struct {
 	WorkflowUpdatedTimestamp string `json:"workflow_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
 }
 
-//WorkflowStageDefinitionReference defines where in a workflow a stage definition resides
+// WorkflowStageDefinitionReference defines where in a workflow a stage definition resides
 type WorkflowStageDefinitionReference struct {
-	WorkflowStageID             int `json:"workflow_stage_id,omitempty"`
-	WorkflowID                  int `json:"workflow_id,omitempty"`
-	StageDefinitionID           int `json:"stage_definition_id,omitempty"`
-	WorkflowStageRunLevel       int `json:"workflow_stage_run_level,omitempty"`
-	WorkflowStageExecOutputJSON int `json:"workflow_stage_exec_output_json,omitempty"`
+	WorkflowStageID       int `json:"workflow_stage_id,omitempty"`
+	WorkflowID            int `json:"workflow_id,omitempty"`
+	StageDefinitionID     int `json:"stage_definition_id,omitempty"`
+	WorkflowStageRunLevel int `json:"workflow_stage_run_level,omitempty"`
 }
 
-//WorkflowStageAssociation associations
+// WorkflowStageAssociation associations
 type WorkflowStageAssociation struct {
 	InfrastructureDeployCustomStageID             int    `json:"infrastructure_deploy_custom_stage_id,omitempty"`
 	InfrastructureID                              int    `json:"infrastructure_id"`
@@ -40,7 +39,7 @@ type WorkflowStageAssociation struct {
 	InfrastructureDeployCustomStageExecOutputJSON string `json:"infrastructure_deploy_custom_stage_exec_output_json,omitempty"`
 }
 
-//WorkflowCreate creates a workflow
+// WorkflowCreate creates a workflow
 func (c *Client) WorkflowCreate(workflow Workflow) (*Workflow, error) {
 	var createdObject Workflow
 
@@ -59,7 +58,7 @@ func (c *Client) WorkflowCreate(workflow Workflow) (*Workflow, error) {
 	return &createdObject, nil
 }
 
-//WorkflowDelete Permanently destroys a Workflow.
+// WorkflowDelete Permanently destroys a Workflow.
 func (c *Client) WorkflowDelete(workflowID int) error {
 
 	if err := checkID(workflowID); err != nil {
@@ -79,7 +78,7 @@ func (c *Client) WorkflowDelete(workflowID int) error {
 	return nil
 }
 
-//WorkflowUpdate This function allows updating the workflow_usage, workflow_label and workflow_base64 of a Workflow
+// WorkflowUpdate This function allows updating the workflow_usage, workflow_label and workflow_base64 of a Workflow
 func (c *Client) WorkflowUpdate(workflowID int, workflow Workflow) (*Workflow, error) {
 	var createdObject Workflow
 
@@ -100,7 +99,7 @@ func (c *Client) WorkflowUpdate(workflowID int, workflow Workflow) (*Workflow, e
 	return &createdObject, nil
 }
 
-//WorkflowGet returns a Workflow specified by nWorkflowID. The workflow's protected value is never returned.
+// WorkflowGet returns a Workflow specified by nWorkflowID. The workflow's protected value is never returned.
 func (c *Client) WorkflowGet(workflowID int) (*Workflow, error) {
 
 	var createdObject Workflow
@@ -122,12 +121,12 @@ func (c *Client) WorkflowGet(workflowID int) (*Workflow, error) {
 	return &createdObject, nil
 }
 
-//Workflows retrieves a list of all the Workflow objects which a specified User is allowed to see through ownership or delegation.
+// Workflows retrieves a list of all the Workflow objects which a specified User is allowed to see through ownership or delegation.
 func (c *Client) Workflows() (*map[string]Workflow, error) {
 	return c.WorkflowsWithUsage("")
 }
 
-//WorkflowsWithUsage retrieves a list of all the Workflow objects which the current User is allowed to see through ownership or delegation with a specific usage.
+// WorkflowsWithUsage retrieves a list of all the Workflow objects which the current User is allowed to see through ownership or delegation with a specific usage.
 func (c *Client) WorkflowsWithUsage(usage string) (*map[string]Workflow, error) {
 
 	userID := c.GetUserID()
@@ -172,7 +171,7 @@ func (c *Client) WorkflowsWithUsage(usage string) (*map[string]Workflow, error) 
 	return &createdObject, nil
 }
 
-//WorkflowStages retrieves a list of all the StageDefinitions objects in this workflow
+// WorkflowStages retrieves a list of all the StageDefinitions objects in this workflow
 func (c *Client) WorkflowStages(workflowID int) (*[]WorkflowStageDefinitionReference, error) {
 	var createdObject []WorkflowStageDefinitionReference
 
@@ -188,7 +187,7 @@ func (c *Client) WorkflowStages(workflowID int) (*[]WorkflowStageDefinitionRefer
 	return &createdObject, nil
 }
 
-//WorkflowStageGet returns a StageDefinition specified by workflowStageID.
+// WorkflowStageGet returns a StageDefinition specified by workflowStageID.
 func (c *Client) WorkflowStageGet(workflowStageID int) (*WorkflowStageDefinitionReference, error) {
 
 	var createdObject WorkflowStageDefinitionReference
@@ -210,7 +209,7 @@ func (c *Client) WorkflowStageGet(workflowStageID int) (*WorkflowStageDefinition
 	return &createdObject, nil
 }
 
-//WorkflowStageAddAsNewRunLevel adds a new stage in this workflow
+// WorkflowStageAddAsNewRunLevel adds a new stage in this workflow
 func (c *Client) WorkflowStageAddAsNewRunLevel(workflowID int, stageDefinitionID int, destinationRunLevel int) error {
 
 	if err := checkID(workflowID); err != nil {
@@ -230,7 +229,7 @@ func (c *Client) WorkflowStageAddAsNewRunLevel(workflowID int, stageDefinitionID
 	return nil
 }
 
-//WorkflowStageAddIntoRunLevel adds a new stage in this workflow
+// WorkflowStageAddIntoRunLevel adds a new stage in this workflow
 func (c *Client) WorkflowStageAddIntoRunLevel(workflowID int, stageDefinitionID int, destinationRunLevel int) error {
 
 	if err := checkID(workflowID); err != nil {
@@ -250,7 +249,7 @@ func (c *Client) WorkflowStageAddIntoRunLevel(workflowID int, stageDefinitionID 
 	return nil
 }
 
-//WorkflowMoveAsNewRunLevel moves a stage in this workflow from a runlevel to another
+// WorkflowMoveAsNewRunLevel moves a stage in this workflow from a runlevel to another
 func (c *Client) WorkflowMoveAsNewRunLevel(workflowID int, stageDefinitionID int, sourceRunLevel int, destinationRunLevel int) error {
 
 	if err := checkID(workflowID); err != nil {
@@ -270,7 +269,7 @@ func (c *Client) WorkflowMoveAsNewRunLevel(workflowID int, stageDefinitionID int
 	return nil
 }
 
-//WorkflowMoveIntoRunLevel moves a stage in this workflow from a runlevel to another
+// WorkflowMoveIntoRunLevel moves a stage in this workflow from a runlevel to another
 func (c *Client) WorkflowMoveIntoRunLevel(workflowID int, stageDefinitionID int, sourceRunLevel int, destinationRunLevel int) error {
 
 	if err := checkID(workflowID); err != nil {
@@ -290,7 +289,7 @@ func (c *Client) WorkflowMoveIntoRunLevel(workflowID int, stageDefinitionID int,
 	return nil
 }
 
-//WorkflowStageDelete deletes a stage from a workflow entirelly
+// WorkflowStageDelete deletes a stage from a workflow entirelly
 func (c *Client) WorkflowStageDelete(workflowStageID int) error {
 
 	if err := checkID(workflowStageID); err != nil {
@@ -310,7 +309,7 @@ func (c *Client) WorkflowStageDelete(workflowStageID int) error {
 	return nil
 }
 
-//InfrastructureDeployCustomStageAddIntoRunlevel adds a stage into a runlevel
+// InfrastructureDeployCustomStageAddIntoRunlevel adds a stage into a runlevel
 func (c *Client) InfrastructureDeployCustomStageAddIntoRunlevel(infraID int, stageID int, runLevel int, stageRunMoment string) error {
 
 	resp, err := c.rpcClient.Call("infrastructure_deploy_custom_stage_add_into_runlevel", infraID, stageID, runLevel, stageRunMoment)
@@ -325,7 +324,7 @@ func (c *Client) InfrastructureDeployCustomStageAddIntoRunlevel(infraID int, sta
 	return nil
 }
 
-//InfrastructureDeployCustomStageDeleteIntoRunlevel delete a stage into a runlevel
+// InfrastructureDeployCustomStageDeleteIntoRunlevel delete a stage into a runlevel
 func (c *Client) InfrastructureDeployCustomStageDeleteIntoRunlevel(infraID int, stageID int, runLevel int, stageRunMoment string) error {
 
 	resp, err := c.rpcClient.Call("infrastructure_deploy_custom_stage_delete_into_runlevel", infraID, stageID, runLevel, stageRunMoment)
@@ -340,7 +339,7 @@ func (c *Client) InfrastructureDeployCustomStageDeleteIntoRunlevel(infraID int, 
 	return nil
 }
 
-//InfrastructureDeployCustomStages retrieves a list of all the StageDefinition objects which a specified User is allowed to see through ownership or delegation. The stageDefinition objects never return the actual protected stageDefinition value.
+// InfrastructureDeployCustomStages retrieves a list of all the StageDefinition objects which a specified User is allowed to see through ownership or delegation. The stageDefinition objects never return the actual protected stageDefinition value.
 func (c *Client) InfrastructureDeployCustomStages(infraID int, stageDefinitionType string) (*[]WorkflowStageAssociation, error) {
 	var createdObject []WorkflowStageAssociation
 
@@ -357,7 +356,7 @@ func (c *Client) InfrastructureDeployCustomStages(infraID int, stageDefinitionTy
 	return &createdObject, nil
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (w Workflow) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var result *Workflow
@@ -397,7 +396,7 @@ func (w Workflow) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (w Workflow) Delete(client MetalCloudClient) error {
 	var result *Workflow
 	var id int
@@ -432,7 +431,7 @@ func (w Workflow) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (w Workflow) Validate() error {
 	if w.WorkflowID == 0 && w.WorkflowLabel == "" {
 		return fmt.Errorf("id is required")
