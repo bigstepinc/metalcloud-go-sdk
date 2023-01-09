@@ -64,6 +64,7 @@ type DatacenterConfig struct {
 	DefaultDeploymentMechanism                         string                 `json:"defaultDeploymentMechanism" yaml:"defaultDeploymentMechanism"`
 	DefaultCleanupAndRegistrationMechanism             string                 `json:"defaultCleanupAndRegistrationMechanism" yaml:"defaultCleanupAndRegistrationMechanism"`
 	NFSServer                                          string                 `json:"NFSServer" yaml:"NFSServer"`
+	Option82ToIPMapping                                string                 `json:"Option82ToIPMapping" yaml:"Option82ToIPMapping"`
 }
 
 type WebProxy struct {
