@@ -99,6 +99,8 @@ func TestDatacenterCreateOrUpdate(t *testing.T) {
 				"NorthWANVLANRange":             "1001-2000",
 				"childDatacentersConfigDefault": []string{},
 			},
+			NFSServer: "172.16.10.6",
+			Option82ToIPMapping: []string{"172.16.10.6"},
 		},
 	}
 
