@@ -10,6 +10,7 @@ type OSAsset struct {
 	OSAssetFileName              string   `json:"os_asset_filename,omitempty" yaml:"fileName,omitempty"`
 	OSAssetFileSizeBytes         int      `json:"os_asset_file_size_bytes,omitempty" yaml:"fileSizeBytes,omitempty"`
 	OSAssetFileMime              string   `json:"os_asset_file_mime,omitempty" yaml:"fileMime,omitempty"`
+	OSAssetTemplateType          string   `json:"os_asset_template_type,omitempty" yaml:"templateType,omitempty"`
 	OSAssetContentsBase64        string   `json:"os_asset_contents_base64,omitempty" yaml:"contentBase64,omitempty"`
 	OSAssetContentsSHA256Hex     string   `json:"os_asset_contents_sha256_hex,omitempty" yaml:"contentSHA256Hex,omitempty"`
 	OSAssetUsage                 string   `json:"os_asset_usage,omitempty" yaml:"usage,omitempty"`
