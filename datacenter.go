@@ -1,6 +1,7 @@
 package metalcloud
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -64,7 +65,7 @@ type DatacenterConfig struct {
 	DefaultDeploymentMechanism                         string                 `json:"defaultDeploymentMechanism" yaml:"defaultDeploymentMechanism"`
 	DefaultCleanupAndRegistrationMechanism             string                 `json:"defaultCleanupAndRegistrationMechanism" yaml:"defaultCleanupAndRegistrationMechanism"`
 	NFSServer                                          string                 `json:"NFSServer" yaml:"NFSServer"`
-	Option82ToIPMapping                                map[string]string      `json:"Option82ToIPMapping" yaml:"Option82ToIPMapping"`
+	Option82ToIPMapping                                Option82ToIPMapping    `json:"Option82ToIPMapping" yaml:"Option82ToIPMapping"`
 }
 
 type WebProxy struct {
@@ -72,6 +73,15 @@ type WebProxy struct {
 	WebProxyServerPort int    `json:"web_proxy_server_port,omitempty" yaml:"port,omitempty"`
 	WebProxyUsername   string `json:"web_proxy_username,omitempty" yaml:"username,omitempty"`
 	WebProxyPassword   string `json:"web_proxy_password,omitempty" yaml:"password,omitempty"`
+}
+
+type Option82ToIPMapping map[string]string
+func (m *Option82ToIPMapping) UnmarshalJSON(data []byte) error {
+    if len(data) == 2 && string(data) == "[]" {
+        *m = make(Option82ToIPMapping)
+        return nil
+    }
+    return json.Unmarshal(data, (*map[string]string)(m))
 }
 
 /*
