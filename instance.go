@@ -27,7 +27,7 @@ type Instance struct {
 	InstanceChangeID           int                 `json:"instance_change_id,omitempty"`
 	TemplateIDOrigin           int                 `json:"template_id_origin,omitempty"`
 	InstanceCustomVariables    interface{}         `json:"instance_custom_variables,omitempty" yaml:"customVariables,omitempty"`
-	PreferredServerIDsJSON     string              `json:"preffered_server_ids_json,omitempty" yaml:"preferredServerIDs,omitempty"`
+	PreferredServerIDsJSON     string              `json:"preferred_server_ids_json,omitempty" yaml:"preferredServerIDs,omitempty"`
 }
 
 // InstanceOperation contains information regarding the changes that are to be made to a product. Edit and deploy functions have to be called in order to apply the changes. The operation type and status are unique to each operation object.
@@ -44,7 +44,7 @@ type InstanceOperation struct {
 	InstanceChangeID           int         `json:"instance_change_id,omitempty"`
 	TemplateIDOrigin           int         `json:"template_id_origin,omitempty"`
 	InstanceCustomVariables    interface{} `json:"instance_custom_variables,omitempty" yaml:"customVariables,omitempty"`
-	PreferredServerIDsJSON     string      `json:"preffered_server_ids_json,omitempty" yaml:"preferredServerIDs,omitempty"`
+	PreferredServerIDsJSON     string      `json:"preferred_server_ids_json,omitempty" yaml:"preferredServerIDs,omitempty"`
 }
 
 // InstanceInterface objects are created automatically when instances are created. Subnets are added on networks and then IP addresses are associated automatically or manually through the API to instance interfaces.
