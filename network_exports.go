@@ -2,62 +2,62 @@
 
 package metalcloud
 
-//NetworkGet retrieves a network object
+//NetworkGet object
 func (c *Client) NetworkGet(networkID int) (*Network, error) {
 	return c.networkGet(networkID)
 }
 
-//NetworkGetByLabel retrieves a network object
+//NetworkGetByLabel object
 func (c *Client) NetworkGetByLabel(networkLabel string) (*Network, error) {
 	return c.networkGet(networkLabel)
 }
 
-//Networks returns a list of all network objects of an infrastructure
+//Networks infrastructure
 func (c *Client) Networks(infrastructureID int) (*map[string]Network, error) {
 	return c.networks(infrastructureID)
 }
 
-//NetworksByLabel returns a list of all network objects of an infrastructure
+//NetworksByLabel infrastructure
 func (c *Client) NetworksByLabel(infrastructureLabel string) (*map[string]Network, error) {
 	return c.networks(infrastructureLabel)
 }
 
-//NetworkCreate creates a network
+//NetworkCreate network
 func (c *Client) NetworkCreate(infrastructureID int, network Network) (*Network, error) {
 	return c.networkCreate(infrastructureID,network)
 }
 
-//NetworkCreateByLabel creates a network
+//NetworkCreateByLabel network
 func (c *Client) NetworkCreateByLabel(infrastructureLabel string, network Network) (*Network, error) {
 	return c.networkCreate(infrastructureLabel,network)
 }
 
-//NetworkEdit applies a change to an existing network
+//NetworkEdit network
 func (c *Client) NetworkEdit(networkID int, networkOperation NetworkOperation) (*Network, error) {
 	return c.networkEdit(networkID,networkOperation)
 }
 
-//NetworkEditByLabel applies a change to an existing network
+//NetworkEditByLabel network
 func (c *Client) NetworkEditByLabel(networkLabel string, networkOperation NetworkOperation) (*Network, error) {
 	return c.networkEdit(networkLabel,networkOperation)
 }
 
-//NetworkDelete deletes a network.
+//NetworkDelete network.
 func (c *Client) NetworkDelete(networkID int) error {
 	return c.networkDelete(networkID)
 }
 
-//NetworkDeleteByLabel deletes a network.
+//NetworkDeleteByLabel network.
 func (c *Client) NetworkDeleteByLabel(networkLabel string) error {
 	return c.networkDelete(networkLabel)
 }
 
-//NetworkJoin merges two specified Network objects.
+//NetworkJoin objects.
 func (c *Client) NetworkJoin(networkID int, networkToBeDeletedID int) error {
 	return c.networkJoin(networkID,networkToBeDeletedID)
 }
 
-//NetworkJoinByLabel merges two specified Network objects.
+//NetworkJoinByLabel objects.
 func (c *Client) NetworkJoinByLabel(networkLabel string, networkToBeDeletedID int) error {
 	return c.networkJoin(networkLabel,networkToBeDeletedID)
 }

@@ -2,6 +2,7 @@
 //generates two functions: a normal function that gets an int as first param  and a byLabel that gets a label
 //if there is any reference to an id in the rest of the params, int will be used
 
+//go:build ignore
 // +build ignore
 
 package main
@@ -37,7 +38,7 @@ func (c *Client) {{capitalize .FunctionName}}ByLabel({{removeIDSuffix .FirstPara
 	return c.{{.FunctionName}}({{removeIDSuffix .FirstParamName}}Label{{extractParamNames .RestParams}})
 }
 `
-const funcRegex = `\/\/[a-zA-Z0-9_]+\s(.*)\nfunc\s\(c\s\*Client\)\s([a-zA-Z0-9_]+)\(([a-zA-Z0-9_]+)\sid([a-zA-Z0-9,\s_\*\[\]]*)\)\s*(.*)\s*{`
+const funcRegex = `\/\/[a-zA-Z0-9_\s]+\s(.*)\nfunc\s\(c\s\*Client\)\s([a-zA-Z0-9_]+)\(([a-zA-Z0-9_]+)\sid([a-zA-Z0-9,\s_\*\[\]]*)\)\s*(.*)\s*{`
 
 func extractParamNames(s string) string {
 	paramNames := []string{}
@@ -80,7 +81,7 @@ func genFuncDefFromTemplate(f funcDef) (string, error) {
 	return buf.String(), nil
 }
 
-//returns the function with an int as an ID instead of id param
+// returns the function with an int as an ID instead of id param
 func generateFuncDef(s string) (string, error) {
 
 	r := regexp.MustCompile(funcRegex)
