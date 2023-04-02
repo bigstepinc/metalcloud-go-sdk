@@ -122,9 +122,9 @@ type MetalCloudClient interface {
 	InfrastructureUserLimits(infrastructureID int) (*map[string]interface{}, error)
 	//InfrastructureUserLimitsByLabel metadata
 	InfrastructureUserLimitsByLabel(infrastructureLabel string) (*map[string]interface{}, error)
-	// InstanceArrayInterfaceAttachNetwork attaches an InstanceArrayInterface to a Network
+	//InstanceArrayInterfaceAttachNetwork attaches an InstanceArrayInterface to a Network
 	InstanceArrayInterfaceAttachNetwork(instanceArrayID int, instanceArrayInterfaceIndex int, networkID int) (*InstanceArray, error)
-	// InstanceArrayInterfaceDetach detaches an InstanceArrayInterface from any Network element that is attached to.
+	//InstanceArrayInterfaceDetach detaches an InstanceArrayInterface from any Network element that is attached to.
 	InstanceArrayInterfaceDetach(instanceArrayID int, instanceArrayInterfaceIndex int) (*InstanceArray, error)
 	//InstanceArrayGet id
 	InstanceArrayGet(instanceArrayID int) (*InstanceArray, error)
@@ -288,7 +288,7 @@ type MetalCloudClient interface {
 	// ServerUnmanagedImport creates an unmanaged server
 	ServerUnmanagedImport(server ServerCreateUnmanaged) (*Server, error)
 	// ServerUnmanagedImportBatch Imports multiple unmanaged servers
-	ServerUnmanagedImportBatch(servers []ServerCreateUnmanaged) (*[]Server, error)
+	ServerUnmanagedImportBatch(servers []ServerCreateUnmanaged) (*map[string]Server, error)
 	// ServerCreateAndRegister manually creates and registers a server
 	ServerCreateAndRegister(serverCreateAndRegister ServerCreateAndRegister) (int, error)
 	// ServerEditComplete - perform a complete edit
@@ -411,19 +411,19 @@ type MetalCloudClient interface {
 	SubnetPools() (*[]SubnetPool, error)
 	//SubnetPoolSearch retrieves all switch devices registered in the database with the specified filter
 	SubnetPoolSearch(filter string) (*[]SubnetPool, error)
-	//SwitchDeviceGet Retrieves information regarding a specified SwitchDevice.
+	// SwitchDeviceGet Retrieves information regarding a specified SwitchDevice.
 	SwitchDeviceGet(networkEquipmentID int, decryptPasswd bool) (*SwitchDevice, error)
-	//SwitchDeviceGetByIdentifierString Retrieves information regarding a specified SwitchDevice by identifier string.
+	// SwitchDeviceGetByIdentifierString Retrieves information regarding a specified SwitchDevice by identifier string.
 	SwitchDeviceGetByIdentifierString(networkEquipmentIdentifierString string, decryptPasswd bool) (*SwitchDevice, error)
-	//SwitchDeviceCreate Creates a record for a new SwitchDevice.
+	// SwitchDeviceCreate Creates a record for a new SwitchDevice.
 	SwitchDeviceCreate(switchDevice SwitchDevice, bOverwriteWithHostnameFromFetchedSwitch bool) (*SwitchDevice, error)
-	//SwitchDeviceDelete deletes a specified switch device and its registered interfaces.
+	// SwitchDeviceDelete deletes a specified switch device and its registered interfaces.
 	SwitchDeviceDelete(networkEquipmentID int) error
-	//SwitchDevices retrieves all switch devices registered in the database.
+	// SwitchDevices retrieves all switch devices registered in the database.
 	SwitchDevices(datacenter string, switchType string) (*map[string]SwitchDevice, error)
-	//SwitchDevicesInDatacenter retrieves all switch devices in a datacenter
+	// SwitchDevicesInDatacenter retrieves all switch devices in a datacenter
 	SwitchDevicesInDatacenter(datacenter string) (*map[string]SwitchDevice, error)
-	//SwitchDeviceUpdate updates an existing switch configuration
+	// SwitchDeviceUpdate updates an existing switch configuration
 	SwitchDeviceUpdate(networkEquipmentID int, switchDevice SwitchDevice, bOverwriteWithHostnameFromFetchedSwitch bool) (*SwitchDevice, error)
 	//SwitchDeviceLinks Returns all the switch device links found in the database.
 	SwitchDeviceLinks() (*map[int]SwitchDeviceLink, error)

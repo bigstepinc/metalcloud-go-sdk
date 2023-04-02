@@ -464,18 +464,32 @@ func (c *Client) ServerUnmanagedImport(server ServerCreateUnmanaged) (*Server, e
 }
 
 // ServerUnmanagedImportBatch Imports multiple unmanaged servers
-func (c *Client) ServerUnmanagedImportBatch(servers []ServerCreateUnmanaged) (*[]Server, error) {
+func (c *Client) ServerUnmanagedImportBatch(servers []ServerCreateUnmanaged) (*map[string]Server, error) {
 
-	var createdObject []Server
+	var createdObject map[string]Server
 
-	err := c.rpcClient.CallFor(
-		&createdObject,
+	resp, err := c.rpcClient.Call(
 		"server_unmanaged_import_batch",
 		[][]ServerCreateUnmanaged{servers},
 	)
 
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		createdObject = map[string]Server{}
+	} else {
+		err = resp.GetObject(&createdObject)
+
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return &createdObject, nil

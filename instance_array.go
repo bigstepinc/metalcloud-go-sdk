@@ -4,7 +4,7 @@ package metalcloud
 
 import "fmt"
 
-// InstanceArray object describes a collection of identical instances
+//InstanceArray object describes a collection of identical instances
 type InstanceArray struct {
 	InstanceArrayID                    int                      `json:"instance_array_id,omitempty" yaml:"instanceID,omitempty"`
 	InstanceArrayLabel                 string                   `json:"instance_array_label,omitempty" yaml:"label,omitempty"`
@@ -33,7 +33,7 @@ type InstanceArray struct {
 	DriveArrayIDBoot                   int                      `json:"drive_array_id_boot,omitempty" yaml:"drive_array_id_boot,omitempty"`
 }
 
-// InstanceArrayOperation object describes the changes that will be applied to an instance array
+//InstanceArrayOperation object describes the changes that will be applied to an instance array
 type InstanceArrayOperation struct {
 	InstanceArrayID                    int                               `json:"instance_array_id,omitempty" yaml:"id,omitempty"`
 	InstanceArrayLabel                 string                            `json:"instance_array_label,omitempty" yaml:"label,omitempty"`
@@ -63,7 +63,7 @@ type InstanceArrayOperation struct {
 	DriveArrayIDBoot                   int                               `json:"drive_array_id_boot,omitempty" yaml:"drive_array_id_boot,omitempty"`
 }
 
-// FirewallRule describes a firewall rule that is to be applied on all instances of an array
+//FirewallRule describes a firewall rule that is to be applied on all instances of an array
 type FirewallRule struct {
 	FirewallRuleDescription                    string `json:"firewall_rule_description,omitempty" yaml:"description,omitempty"`
 	FirewallRulePortRangeStart                 int    `json:"firewall_rule_port_range_start,omitempty" yaml:"portRangeStart,omitempty"`
@@ -77,8 +77,8 @@ type FirewallRule struct {
 	FirewallRuleEnabled                        bool   `json:"firewall_rule_enabled" yaml:"enabled"`
 }
 
-// InstanceArrayInterface describes a network interface of the array.
-// It's properties will be applied to all InstanceInterfaces of the array's instances.
+//InstanceArrayInterface describes a network interface of the array.
+//It's properties will be applied to all InstanceInterfaces of the array's instances.
 type InstanceArrayInterface struct {
 	InstanceArrayInterfaceLabel            string                           `json:"instance_array_interface_label,omitempty" yaml:"label,omitempty"`
 	InstanceArrayInterfaceSubdomain        string                           `json:"instance_array_interface_subdomain,omitempty" yaml:"subdomain,omitempty"`
@@ -94,7 +94,7 @@ type InstanceArrayInterface struct {
 	InstanceArrayInterfaceChangeID         int                              `json:"instance_array_interface_change_id,omitempty" yaml:"instance_array_interface_change_id,omitempty"`
 }
 
-// InstanceArrayInterfaceOperation describes changes to a network array interface
+//InstanceArrayInterfaceOperation describes changes to a network array interface
 type InstanceArrayInterfaceOperation struct {
 	InstanceArrayInterfaceLabel            string        `json:"instance_array_interface_label,omitempty" yaml:"label,omitempty"`
 	InstanceArrayInterfaceSubdomain        string        `json:"instance_array_interface_subdomain,omitempty" yaml:"subdomain,omitempty"`
@@ -109,17 +109,17 @@ type InstanceArrayInterfaceOperation struct {
 	InstanceArrayInterfaceChangeID         int           `json:"instance_array_interface_change_id,omitempty" yaml:"changeID,omitempty"`
 }
 
-// ServerTypeMatches used in InstanceArrayEdit operations to specify which server types to use
+//ServerTypeMatches used in InstanceArrayEdit operations to specify which server types to use
 type ServerTypeMatches struct {
 	ServerTypes map[int]ServerTypeMatch `json:"server_types,omitempty"`
 }
 
-// ServerTypeMatch what exact server types to use
+//ServerTypeMatch what exact server types to use
 type ServerTypeMatch struct {
 	ServerCount int `json:"server_count,omitempty"`
 }
 
-// instanceArrayGet returns an InstanceArray with specified id
+//instanceArrayGet returns an InstanceArray with specified id
 func (c *Client) instanceArrayGet(instanceArrayID id) (*InstanceArray, error) {
 	var createdObject InstanceArray
 
@@ -139,7 +139,7 @@ func (c *Client) instanceArrayGet(instanceArrayID id) (*InstanceArray, error) {
 	return &createdObject, nil
 }
 
-// instanceArrays returns list of instance arrays of specified infrastructure
+//instanceArrays returns list of instance arrays of specified infrastructure
 func (c *Client) instanceArrays(infrastructureID id) (*map[string]InstanceArray, error) {
 
 	if err := checkID(infrastructureID); err != nil {
@@ -176,7 +176,7 @@ func (c *Client) instanceArrays(infrastructureID id) (*map[string]InstanceArray,
 	return &createdObject, nil
 }
 
-// instanceArrayCreate creates an instance array (colletion of identical instances). Requires Deploy.
+//instanceArrayCreate creates an instance array (colletion of identical instances). Requires Deploy.
 func (c *Client) instanceArrayCreate(infrastructureID id, instanceArray InstanceArray) (*InstanceArray, error) {
 	var createdObject InstanceArray
 
@@ -197,7 +197,7 @@ func (c *Client) instanceArrayCreate(infrastructureID id, instanceArray Instance
 	return &createdObject, nil
 }
 
-// instanceArrayEdit alterns a deployed instance array. Requires deploy.
+//instanceArrayEdit alterns a deployed instance array. Requires deploy.
 func (c *Client) instanceArrayEdit(instanceArrayID id, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *ServerTypeMatches, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
 	var createdObject InstanceArray
 
@@ -222,7 +222,7 @@ func (c *Client) instanceArrayEdit(instanceArrayID id, instanceArrayOperation In
 	return &createdObject, nil
 }
 
-// instanceArrayDelete deletes an instance array. Requires deploy.
+//instanceArrayDelete deletes an instance array. Requires deploy.
 func (c *Client) instanceArrayDelete(instanceArrayID id) error {
 
 	if err := checkID(instanceArrayID); err != nil {
@@ -244,7 +244,7 @@ func (c *Client) instanceArrayDelete(instanceArrayID id) error {
 	return nil
 }
 
-// InstanceArrayInterfaceAttachNetwork attaches an InstanceArrayInterface to a Network
+//InstanceArrayInterfaceAttachNetwork attaches an InstanceArrayInterface to a Network
 func (c *Client) InstanceArrayInterfaceAttachNetwork(instanceArrayID int, instanceArrayInterfaceIndex int, networkID int) (*InstanceArray, error) {
 	var createdObject InstanceArray
 
@@ -262,7 +262,7 @@ func (c *Client) InstanceArrayInterfaceAttachNetwork(instanceArrayID int, instan
 	return &createdObject, nil
 }
 
-// InstanceArrayInterfaceDetach detaches an InstanceArrayInterface from any Network element that is attached to.
+//InstanceArrayInterfaceDetach detaches an InstanceArrayInterface from any Network element that is attached to.
 func (c *Client) InstanceArrayInterfaceDetach(instanceArrayID int, instanceArrayInterfaceIndex int) (*InstanceArray, error) {
 	var createdObject InstanceArray
 
@@ -279,7 +279,7 @@ func (c *Client) InstanceArrayInterfaceDetach(instanceArrayID int, instanceArray
 	return &createdObject, nil
 }
 
-// instanceArrayStop stops a specified InstanceArray.
+//instanceArrayStop stops a specified InstanceArray.
 func (c *Client) instanceArrayStop(instanceArrayID id) (*InstanceArray, error) {
 
 	var createdObject InstanceArray
@@ -296,7 +296,7 @@ func (c *Client) instanceArrayStop(instanceArrayID id) (*InstanceArray, error) {
 	return &createdObject, nil
 }
 
-// instanceArrayStart starts a specified InstanceArray.
+//instanceArrayStart starts a specified InstanceArray.
 func (c *Client) instanceArrayStart(instanceArrayID id) (*InstanceArray, error) {
 
 	var createdObject InstanceArray
@@ -331,7 +331,7 @@ func (ia *InstanceArray) instanceToOperation(op *InstanceArrayOperation) {
 	operation.InstanceArrayChangeID = op.InstanceArrayChangeID
 }
 
-// CreateOrUpdate implements interface Applier
+//CreateOrUpdate implements interface Applier
 func (ia InstanceArray) CreateOrUpdate(client MetalCloudClient) error {
 	var result *InstanceArray
 	var err error
@@ -362,7 +362,7 @@ func (ia InstanceArray) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-// Delete implements interface Applier
+//Delete implements interface Applier
 func (ia InstanceArray) Delete(client MetalCloudClient) error {
 	err := ia.Validate()
 	var result *InstanceArray
@@ -392,7 +392,7 @@ func (ia InstanceArray) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-// Validate implements interface Applier
+//Validate implements interface Applier
 func (ia InstanceArray) Validate() error {
 	if ia.InstanceArrayID == 0 && ia.InstanceArrayLabel == "" {
 		return fmt.Errorf("id is required")

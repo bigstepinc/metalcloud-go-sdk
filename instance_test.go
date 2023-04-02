@@ -85,7 +85,7 @@ func TestInstancePowerGet(t *testing.T) {
 	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
-	ret, err := mc.instanceServerPowerGet(1)
+	ret, err := mc.InstanceServerPowerGet(1)
 	Expect(err).To(BeNil())
 	Expect(*ret).To(Equal("on"))
 
