@@ -8,7 +8,7 @@ import (
 	"github.com/jinzhu/copier"
 )
 
-//SwitchDevice Represents a switch installed in a datacenter.
+// SwitchDevice Represents a switch installed in a datacenter.
 type SwitchDevice struct {
 	NetworkEquipmentID                             int      `json:"network_equipment_id,omitempty" yaml:"id,omitempty"`
 	NetworkEquipmentIdentifierString               string   `json:"network_equipment_identifier_string,omitempty" yaml:"identifierString,omitempty"`
@@ -53,9 +53,12 @@ type SwitchDevice struct {
 	NetworkEquipmentIsStorageSwitch                bool     `json:"network_equipment_is_storage_switch" yaml:"isStorageSwitch"`
 	NetworkEquipmentNetworkTypesAllowed            []string `json:"network_equipment_network_types_allowed,omitempty" yaml:"networkTypesAllowed,omitempty"`
 	VolumeTemplateID                               int      `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
+	NetworkEquipmentLoopbackAddress                string   `json:"network_equipment_loopback_address,omitempty" yaml:"LoopbackAddress,omitempty"`
+	NetworkEquipmentVTEPAddress                    string   `json:"network_equipment_vtep_address,omitempty" yaml:"VTEPAddress,omitempty"`
+	NetworkEquipmentASN                            int      `json:"network_equipment_asn,omitempty" yaml:"ASN,omitempty"`
 }
 
-//UnmarshalJSON to handle the shitty boolean being returned as 0 and 1 and true and false in different environments
+// UnmarshalJSON to handle the shitty boolean being returned as 0 and 1 and true and false in different environments
 func (s *SwitchDevice) UnmarshalJSON(data []byte) error {
 
 	//SwitchDevice Represents a switch installed in a datacenter.
@@ -104,6 +107,9 @@ func (s *SwitchDevice) UnmarshalJSON(data []byte) error {
 		NetworkEquipmentIsBorderDevice    interface{} `json:"network_equipment_is_border_device" yaml:"isBorderDevice"`
 		NetworkEquipmentIsStorageSwitch   interface{} `json:"network_equipment_is_storage_switch" yaml:"isStorageSwitch"`
 		VolumeTemplateID                  int         `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
+		NetworkEquipmentLoopbackAddress   string      `json:"network_equipment_loopback_address,omitempty" yaml:"LoopbackAddress,omitempty"`
+		NetworkEquipmentVTEPAddress       string      `json:"network_equipment_vtep_address,omitempty" yaml:"VTEPAddress,omitempty"`
+		NetworkEquipmentASN               int         `json:"network_equipment_asn,omitempty" yaml:"ASN,omitempty"`
 	}
 
 	err := json.Unmarshal(data, &v)
@@ -140,7 +146,7 @@ func (s *SwitchDevice) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-//SwitchDeviceGet Retrieves information regarding a specified SwitchDevice.
+// SwitchDeviceGet Retrieves information regarding a specified SwitchDevice.
 func (c *Client) SwitchDeviceGet(networkEquipmentID int, decryptPasswd bool) (*SwitchDevice, error) {
 
 	var createdObject SwitchDevice
@@ -183,7 +189,7 @@ func (c *Client) SwitchDeviceGet(networkEquipmentID int, decryptPasswd bool) (*S
 	return &createdObject, nil
 }
 
-//SwitchDeviceGetByIdentifierString Retrieves information regarding a specified SwitchDevice by identifier string.
+// SwitchDeviceGetByIdentifierString Retrieves information regarding a specified SwitchDevice by identifier string.
 func (c *Client) SwitchDeviceGetByIdentifierString(networkEquipmentIdentifierString string, decryptPasswd bool) (*SwitchDevice, error) {
 
 	var createdObject SwitchDevice
@@ -226,7 +232,7 @@ func (c *Client) SwitchDeviceGetByIdentifierString(networkEquipmentIdentifierStr
 	return &createdObject, nil
 }
 
-//SwitchDeviceCreate Creates a record for a new SwitchDevice.
+// SwitchDeviceCreate Creates a record for a new SwitchDevice.
 func (c *Client) SwitchDeviceCreate(switchDevice SwitchDevice, bOverwriteWithHostnameFromFetchedSwitch bool) (*SwitchDevice, error) {
 	var createdObject SwitchDevice
 
@@ -243,7 +249,7 @@ func (c *Client) SwitchDeviceCreate(switchDevice SwitchDevice, bOverwriteWithHos
 	return &createdObject, nil
 }
 
-//SwitchDeviceDelete deletes a specified switch device and its registered interfaces.
+// SwitchDeviceDelete deletes a specified switch device and its registered interfaces.
 func (c *Client) SwitchDeviceDelete(networkEquipmentID int) error {
 
 	resp, err := c.rpcClient.Call("switch_device_delete", networkEquipmentID)
@@ -259,7 +265,7 @@ func (c *Client) SwitchDeviceDelete(networkEquipmentID int) error {
 	return nil
 }
 
-//SwitchDevices retrieves all switch devices registered in the database.
+// SwitchDevices retrieves all switch devices registered in the database.
 func (c *Client) SwitchDevices(datacenter string, switchType string) (*map[string]SwitchDevice, error) {
 
 	var dc *string
@@ -301,12 +307,12 @@ func (c *Client) SwitchDevices(datacenter string, switchType string) (*map[strin
 	return &createdObject, nil
 }
 
-//SwitchDevicesInDatacenter retrieves all switch devices in a datacenter
+// SwitchDevicesInDatacenter retrieves all switch devices in a datacenter
 func (c *Client) SwitchDevicesInDatacenter(datacenter string) (*map[string]SwitchDevice, error) {
 	return c.SwitchDevices(datacenter, "")
 }
 
-//SwitchDeviceUpdate updates an existing switch configuration
+// SwitchDeviceUpdate updates an existing switch configuration
 func (c *Client) SwitchDeviceUpdate(networkEquipmentID int, switchDevice SwitchDevice, bOverwriteWithHostnameFromFetchedSwitch bool) (*SwitchDevice, error) {
 	var createdObject SwitchDevice
 
@@ -324,7 +330,7 @@ func (c *Client) SwitchDeviceUpdate(networkEquipmentID int, switchDevice SwitchD
 	return &createdObject, nil
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (s SwitchDevice) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var switchDevice *SwitchDevice
@@ -357,7 +363,7 @@ func (s SwitchDevice) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (s SwitchDevice) Delete(client MetalCloudClient) error {
 	err := s.Validate()
 	var switchDevice *SwitchDevice
@@ -387,7 +393,7 @@ func (s SwitchDevice) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (s SwitchDevice) Validate() error {
 	if s.NetworkEquipmentID == 0 && s.NetworkEquipmentIdentifierString == "" {
 		return fmt.Errorf("id is required")

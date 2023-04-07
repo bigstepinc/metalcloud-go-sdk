@@ -2,72 +2,72 @@
 
 package metalcloud
 
-//InstanceArrayGet returns an InstanceArray with specified id
+//InstanceArrayGet id
 func (c *Client) InstanceArrayGet(instanceArrayID int) (*InstanceArray, error) {
 	return c.instanceArrayGet(instanceArrayID)
 }
 
-//InstanceArrayGetByLabel returns an InstanceArray with specified id
+//InstanceArrayGetByLabel id
 func (c *Client) InstanceArrayGetByLabel(instanceArrayLabel string) (*InstanceArray, error) {
 	return c.instanceArrayGet(instanceArrayLabel)
 }
 
-//InstanceArrays returns list of instance arrays of specified infrastructure
+//InstanceArrays infrastructure
 func (c *Client) InstanceArrays(infrastructureID int) (*map[string]InstanceArray, error) {
 	return c.instanceArrays(infrastructureID)
 }
 
-//InstanceArraysByLabel returns list of instance arrays of specified infrastructure
+//InstanceArraysByLabel infrastructure
 func (c *Client) InstanceArraysByLabel(infrastructureLabel string) (*map[string]InstanceArray, error) {
 	return c.instanceArrays(infrastructureLabel)
 }
 
-//InstanceArrayCreate creates an instance array (colletion of identical instances). Requires Deploy.
+//InstanceArrayCreate (colletion of identical instances). Requires Deploy.
 func (c *Client) InstanceArrayCreate(infrastructureID int, instanceArray InstanceArray) (*InstanceArray, error) {
 	return c.instanceArrayCreate(infrastructureID,instanceArray)
 }
 
-//InstanceArrayCreateByLabel creates an instance array (colletion of identical instances). Requires Deploy.
+//InstanceArrayCreateByLabel (colletion of identical instances). Requires Deploy.
 func (c *Client) InstanceArrayCreateByLabel(infrastructureLabel string, instanceArray InstanceArray) (*InstanceArray, error) {
 	return c.instanceArrayCreate(infrastructureLabel,instanceArray)
 }
 
-//InstanceArrayEdit alterns a deployed instance array. Requires deploy.
+//InstanceArrayEdit array. Requires deploy.
 func (c *Client) InstanceArrayEdit(instanceArrayID int, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *ServerTypeMatches, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
 	return c.instanceArrayEdit(instanceArrayID,instanceArrayOperation,bSwapExistingInstancesHardware,bKeepDetachingDrives,objServerTypeMatches,arrInstancesToBeDeleted)
 }
 
-//InstanceArrayEditByLabel alterns a deployed instance array. Requires deploy.
+//InstanceArrayEditByLabel array. Requires deploy.
 func (c *Client) InstanceArrayEditByLabel(instanceArrayLabel string, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *ServerTypeMatches, arrInstancesToBeDeleted *[]int) (*InstanceArray, error) {
 	return c.instanceArrayEdit(instanceArrayLabel,instanceArrayOperation,bSwapExistingInstancesHardware,bKeepDetachingDrives,objServerTypeMatches,arrInstancesToBeDeleted)
 }
 
-//InstanceArrayDelete deletes an instance array. Requires deploy.
+//InstanceArrayDelete array. Requires deploy.
 func (c *Client) InstanceArrayDelete(instanceArrayID int) error {
 	return c.instanceArrayDelete(instanceArrayID)
 }
 
-//InstanceArrayDeleteByLabel deletes an instance array. Requires deploy.
+//InstanceArrayDeleteByLabel array. Requires deploy.
 func (c *Client) InstanceArrayDeleteByLabel(instanceArrayLabel string) error {
 	return c.instanceArrayDelete(instanceArrayLabel)
 }
 
-//InstanceArrayStop stops a specified InstanceArray.
+//InstanceArrayStop InstanceArray.
 func (c *Client) InstanceArrayStop(instanceArrayID int) (*InstanceArray, error) {
 	return c.instanceArrayStop(instanceArrayID)
 }
 
-//InstanceArrayStopByLabel stops a specified InstanceArray.
+//InstanceArrayStopByLabel InstanceArray.
 func (c *Client) InstanceArrayStopByLabel(instanceArrayLabel string) (*InstanceArray, error) {
 	return c.instanceArrayStop(instanceArrayLabel)
 }
 
-//InstanceArrayStart starts a specified InstanceArray.
+//InstanceArrayStart InstanceArray.
 func (c *Client) InstanceArrayStart(instanceArrayID int) (*InstanceArray, error) {
 	return c.instanceArrayStart(instanceArrayID)
 }
 
-//InstanceArrayStartByLabel starts a specified InstanceArray.
+//InstanceArrayStartByLabel InstanceArray.
 func (c *Client) InstanceArrayStartByLabel(instanceArrayLabel string) (*InstanceArray, error) {
 	return c.instanceArrayStart(instanceArrayLabel)
 }
