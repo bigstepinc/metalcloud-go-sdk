@@ -1,14 +1,14 @@
 package metalcloud
 
+//go:generate go run helper/gen_exports.go
+
 import (
 	"encoding/json"
 	"fmt"
 	"strings"
 )
 
-//go:generate go run helper/gen_exports.go
-
-//Instance object describes an instance
+// Instance object describes an instance
 type Instance struct {
 	InstanceID                 int                 `json:"instance_id,omitempty"`
 	InstanceLabel              string              `json:"instance_label,omitempty"`
@@ -27,9 +27,10 @@ type Instance struct {
 	InstanceChangeID           int                 `json:"instance_change_id,omitempty"`
 	TemplateIDOrigin           int                 `json:"template_id_origin,omitempty"`
 	InstanceCustomVariables    interface{}         `json:"instance_custom_variables,omitempty" yaml:"customVariables,omitempty"`
+	PreferredServerIDsJSON     string              `json:"preferred_server_ids_json,omitempty" yaml:"preferredServerIDs,omitempty"`
 }
 
-//InstanceOperation contains information regarding the changes that are to be made to a product. Edit and deploy functions have to be called in order to apply the changes. The operation type and status are unique to each operation object.
+// InstanceOperation contains information regarding the changes that are to be made to a product. Edit and deploy functions have to be called in order to apply the changes. The operation type and status are unique to each operation object.
 type InstanceOperation struct {
 	InstanceID                 int         `json:"instance_id,omitempty"`
 	InstanceDeployType         string      `json:"instance_deploy_type,omitempty"`
@@ -43,9 +44,10 @@ type InstanceOperation struct {
 	InstanceChangeID           int         `json:"instance_change_id,omitempty"`
 	TemplateIDOrigin           int         `json:"template_id_origin,omitempty"`
 	InstanceCustomVariables    interface{} `json:"instance_custom_variables,omitempty" yaml:"customVariables,omitempty"`
+	PreferredServerIDsJSON     string      `json:"preferred_server_ids_json,omitempty" yaml:"preferredServerIDs,omitempty"`
 }
 
-//InstanceInterface objects are created automatically when instances are created. Subnets are added on networks and then IP addresses are associated automatically or manually through the API to instance interfaces.
+// InstanceInterface objects are created automatically when instances are created. Subnets are added on networks and then IP addresses are associated automatically or manually through the API to instance interfaces.
 type InstanceInterface struct {
 	InstanceInterfaceLabel         string                     `json:"instance_interface_label,omitempty"`
 	InstanceInterfaceSubdomain     string                     `json:"instance_interface_subdomain,omitempty"`
@@ -62,7 +64,7 @@ type InstanceInterface struct {
 	InstanceInterfaceChangeID      int                        `json:"instance_interface_change_id,omitempty"`
 }
 
-//InstanceInterfaceOperation objects are created automatically when instances are created. Subnets are added on networks and then IP addresses are associated automatically or manually through the API to instance interfaces.
+// InstanceInterfaceOperation objects are created automatically when instances are created. Subnets are added on networks and then IP addresses are associated automatically or manually through the API to instance interfaces.
 type InstanceInterfaceOperation struct {
 	InstanceInterfaceLabel        string   `json:"instance_interface_label,omitempty"`
 	InstanceInterfaceSubdomain    string   `json:"instance_interface_subdomain,omitempty"`
@@ -77,7 +79,7 @@ type InstanceInterfaceOperation struct {
 	InstanceInterfaceChangeID     int      `json:"instance_interface_change_id,omitempty"`
 }
 
-//InstanceCredentials contains information needed to connect to the server via IPMI, iLO etc.
+// InstanceCredentials contains information needed to connect to the server via IPMI, iLO etc.
 type InstanceCredentials struct {
 	SSH                *SSH            `json:"ssh,omitempty"`
 	RDP                *RDP            `json:"rdp,omitempty"`
@@ -91,7 +93,7 @@ type InstanceCredentials struct {
 	SharedDrives       map[string]ISCSI
 }
 
-//UnmarshalJSON custom InstanceCredentials unmarshaling
+// UnmarshalJSON custom InstanceCredentials unmarshaling
 func (b *InstanceCredentials) UnmarshalJSON(data []byte) error {
 
 	var objmap map[string]*json.RawMessage
@@ -145,14 +147,14 @@ func (b *InstanceCredentials) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-//SSH credentials for the installed OS.
+// SSH credentials for the installed OS.
 type SSH struct {
 	Port            int    `json:"port,omitempty"`
 	Username        string `json:"username,omitempty"`
 	InitialPassword string `json:"initial_password,omitempty"`
 }
 
-//SSHKey represents an SSH keys added by a user
+// SSHKey represents an SSH keys added by a user
 type SSHKey struct {
 	UserSSHKeyID               int    `json:"user_ssh_key_id,omitempty"`
 	UserID                     int    `json:"user_id,omitempty"`
@@ -161,14 +163,14 @@ type SSHKey struct {
 	UserSSHKeyStatus           string `json:"user_ssh_key_status,omitempty"`
 }
 
-//RDP credentials for the installed OS.
+// RDP credentials for the installed OS.
 type RDP struct {
 	Port            int    `json:"port,omitempty"`
 	Username        string `json:"username,omitempty"`
 	InitialPassword string `json:"initial_password,omitempty"`
 }
 
-//IPMI credentials.
+// IPMI credentials.
 type IPMI struct {
 	IPAddress       string `json:"ip_address,omitempty"`
 	Version         string `json:"version,omitempty"`
@@ -176,21 +178,21 @@ type IPMI struct {
 	InitialPassword string `json:"initial_password,omitempty"`
 }
 
-//ILO control panel credentials
+// ILO control panel credentials
 type ILO struct {
 	ControlPanelURL string `json:"control_panel_url,omitempty"`
 	Username        string `json:"username,omitempty"`
 	InitialPassword string `json:"initial_password,omitempty"`
 }
 
-//IDRAC control panel credentials.
+// IDRAC control panel credentials.
 type IDRAC struct {
 	ControlPanelURL string `json:"control_panel_url,omitempty"`
 	Username        string `json:"username,omitempty"`
 	InitialPassword string `json:"initial_password,omitempty"`
 }
 
-//ISCSIInitiator provides initiator IQN, username and password and other iSCSI connection details.
+// ISCSIInitiator provides initiator IQN, username and password and other iSCSI connection details.
 type ISCSIInitiator struct {
 	Username           string `json:"username,omitempty"`
 	Password           string `json:"password,omitempty"`
@@ -200,14 +202,14 @@ type ISCSIInitiator struct {
 	InitiatorIPAddress string `json:"initiator_ip_address,omitempty"`
 }
 
-//RemoteConsole provides credentials needed to connect to the server via the HTML interface
+// RemoteConsole provides credentials needed to connect to the server via the HTML interface
 type RemoteConsole struct {
 	RemoteProtocol        string `json:"remote_protocol,omitempty"`
 	TunnelPathURL         string `json:"tunnel_path_url,omitempty"`
 	RemoteControlPanelURL string `json:"remote_control_panel_url,omitempty"`
 }
 
-//ISCSI provides target IQN, IP address, port number and the LUN ID.
+// ISCSI provides target IQN, IP address, port number and the LUN ID.
 type ISCSI struct {
 	TargetIQN        string `json:"target_iqn,omitempty" yaml:"targetIQN,omitempty"`
 	StorageIPAddress string `json:"storage_ip_address,omitempty" yaml:"storageIPAddress,omitempty"`
@@ -215,7 +217,7 @@ type ISCSI struct {
 	LunID            int    `json:"lun_id,omitempty" yaml:"LunID,omitempty"`
 }
 
-//IP object contains information regarding an IP address.
+// IP object contains information regarding an IP address.
 type IP struct {
 	IPID                       int         `json:"ip_id,omitempty"`
 	IPType                     string      `json:"ip_type,omitempty"`
@@ -231,7 +233,7 @@ type IP struct {
 	IPChangeID                 int         `json:"ip_change_id,omitempty"`
 }
 
-//IPOperation contains information regarding the changes that are to be made to a product. Edit and deploy functions have to be called in order to apply the changes. The operation type and status are unique to each operation object.
+// IPOperation contains information regarding the changes that are to be made to a product. Edit and deploy functions have to be called in order to apply the changes. The operation type and status are unique to each operation object.
 type IPOperation struct {
 	InstanceInterfaceID int    `json:"instance_interface_id,omitempty"`
 	IPDeployStatus      string `json:"ip_deploy_status,omitempty"`
@@ -248,7 +250,7 @@ type IPOperation struct {
 	IPChangeID          int    `json:"ip_change_id,omitempty"`
 }
 
-//instanceEdit edits an instance. Requires deploy
+// instanceEdit edits an instance. Requires deploy
 func (c *Client) instanceEdit(instanceID id, instanceOperation InstanceOperation) (*Instance, error) {
 	var createdObject Instance
 
@@ -269,7 +271,7 @@ func (c *Client) instanceEdit(instanceID id, instanceOperation InstanceOperation
 	return &createdObject, nil
 }
 
-//instanceArrayInstances retrieves a list of all the Instance objects associated with a specified InstanceArray.
+// instanceArrayInstances retrieves a list of all the Instance objects associated with a specified InstanceArray.
 func (c *Client) instanceArrayInstances(instanceArrayID id) (*map[string]Instance, error) {
 
 	if err := checkID(instanceArrayID); err != nil {
@@ -306,7 +308,7 @@ func (c *Client) instanceArrayInstances(instanceArrayID id) (*map[string]Instanc
 	return &createdObject, nil
 }
 
-//instanceGet returns a specific instance by id
+// instanceGet returns a specific instance by id
 func (c *Client) instanceGet(instanceID id) (*Instance, error) {
 	var instance Instance
 
@@ -371,7 +373,7 @@ func (c *Client) instanceGet(instanceID id) (*Instance, error) {
 	return &instance, nil
 }
 
-//instanceServerPowerSet reboots or powers on an instance
+// instanceServerPowerSet reboots or powers on an instance
 func (c *Client) instanceServerPowerSet(instanceID id, operation string) error {
 	if err := checkID(instanceID); err != nil {
 		return err
@@ -390,7 +392,7 @@ func (c *Client) instanceServerPowerSet(instanceID id, operation string) error {
 	return nil
 }
 
-//instanceServerPowerGet returns the power status of an instance
+// instanceServerPowerGet returns the power status of an instance
 func (c *Client) instanceServerPowerGet(instanceID id) (*string, error) {
 	var power string
 
@@ -407,7 +409,7 @@ func (c *Client) instanceServerPowerGet(instanceID id) (*string, error) {
 	return &power, nil
 }
 
-//instanceServerPowerGetBatch returns the power status of multiple instances
+// instanceServerPowerGetBatch returns the power status of multiple instances
 func (c *Client) instanceServerPowerGetBatch(infrastructureID id, instanceIDs []int) (*map[string]string, error) {
 
 	if err := checkID(infrastructureID); err != nil {

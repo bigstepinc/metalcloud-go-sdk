@@ -9,6 +9,7 @@ type NetworkProfile struct {
 	NetworkProfileID               int                  `json:"network_profile_id,omitempty" yaml:"id,omitempty"`
 	NetworkProfileLabel            string               `json:"network_profile_label,omitempty" yaml:"label,omitempty"`
 	DatacenterName                 string               `json:"datacenter_name,omitempty" yaml:"dc,omitempty"`
+	NetworkProfileIsPublic         bool                 `json:"network_profile_is_public,omitempty" yaml:"networkProfileIsPublic,omitempty"`
 	NetworkType                    string               `json:"network_type,omitempty" yaml:"networkType,omitempty"`
 	NetworkProfileVLANs            []NetworkProfileVLAN `json:"network_profile_vlans" yaml:"vlans"`
 	NetworkProfileCreatedTimestamp string               `json:"nework_profile_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
@@ -17,10 +18,17 @@ type NetworkProfile struct {
 
 //NetworkProfileVLAN object describes a VLAN
 type NetworkProfileVLAN struct {
-	VlanID                  *int   `json:"vlan_id" yaml:"vlanID"`
-	PortMode                string `json:"port_mode,omitempty" yaml:"portMode,omitempty"`
-	ProvisionSubnetGateways bool   `json:"provision_subnet_gateways" yaml:"provisionSubnetGateways"`
-	ExternalConnectionIDs   []int  `json:"external_connection_ids" yaml:"extConnectionIDs"`
+	VlanID                  *int                       `json:"vlan_id" yaml:"vlanID"`
+	PortMode                string                     `json:"port_mode,omitempty" yaml:"portMode,omitempty"`
+	ProvisionSubnetGateways bool                       `json:"provision_subnet_gateways" yaml:"provisionSubnetGateways"`
+	ProvisionVXLAN          bool                       `json:"provision_vxlan" yaml:"provisionVXLAN"`
+	ExternalConnectionIDs   []int                      `json:"external_connection_ids" yaml:"extConnectionIDs"`
+	SubnetPools             []NetworkProfileSubnetPool `json:"subnet_pools" yaml:"subnetPools"`
+}
+
+type NetworkProfileSubnetPool struct {
+	SubnetPoolID   *int   `json:"subnet_pool_id" yaml:"subnetPoolID"`
+	SubnetPoolType string `json:"subnet_pool_type" yaml:"subnetPoolType"`
 }
 
 //NetworkProfileGet returns a NetworkProfile with specified id
