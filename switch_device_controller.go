@@ -105,13 +105,12 @@ func (c *Client) SwitchDeviceControllerGetByIdentifierString(networkEquipmentIde
 
 // SwitchDeviceControllerCreate creates a record for a new SwitchDeviceController and for the switches that were detected and created.
 // The return value is a map of switch devices belonging to the newly created SwitchDeviceController.
-func (c *Client) SwitchDeviceControllerCreate(switchDevice SwitchDevice, bOverwriteWithHostnameFromFetchedSwitch bool) (*map[int]SwitchDevice, error) {
+func (c *Client) SwitchDeviceControllerCreate(switchDevice SwitchDevice) (*map[int]SwitchDevice, error) {
 	var createdObject map[int]SwitchDevice
 
 	resp, err := c.rpcClient.Call(
 		"switch_device_create_from_cisco_aci",
 		switchDevice,
-		bOverwriteWithHostnameFromFetchedSwitch,
 	)
 
 	if err != nil {
@@ -201,7 +200,7 @@ func (c *Client) SwitchDeviceControllerSwitches(networkEquipmentIdentifierString
 }
 
 // SwitchDeviceUpdate updates an existing switch configuration
-func (c *Client) SwitchDeviceControllerUpdate(networkEquipmentControllerID int, networkEquipmentControllerData map[int]string) (*SwitchDeviceController, error) {
+func (c *Client) SwitchDeviceControllerUpdate(networkEquipmentControllerID int, networkEquipmentControllerData interface{}) (*SwitchDeviceController, error) {
 	var createdObject SwitchDeviceController
 
 	err := c.rpcClient.CallFor(
