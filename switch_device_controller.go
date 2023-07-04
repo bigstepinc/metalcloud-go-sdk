@@ -17,6 +17,7 @@ type SwitchDeviceController struct {
 	NetworkEquipmentControllerManagementPort     int         `json:"network_equipment_controller_management_port,omitempty" yaml:"managementPort,omitempty"`
 	NetworkEquipmentControllerManagementUsername string      `json:"network_equipment_controller_management_username,omitempty" yaml:"managementUsername,omitempty"`
 	NetworkEquipmentControllerOptions            interface{} `json:"network_equipment_controller_options,omitempty" yaml:"options,omitempty"`
+	NetworkEquipmentControllerOptionsJSON        string      `json:"network_equipment_controller_options_json,omitempty" yaml:"optionsJSON,omitempty"`
 	NetworkEquipmentControllerProvisionerType    string      `json:"network_equipment_controller_provisioner_type,omitempty" yaml:"provisionerType,omitempty"`
 }
 
@@ -108,16 +109,26 @@ func (c *Client) SwitchDeviceControllerCreate(switchDevice SwitchDevice) (*map[i
 	var createdObject map[int]SwitchDevice
 
 	// When making a call with a single object parameter, we have to put it into an array.
-	err := c.rpcClient.CallFor(
-		&createdObject,
+	resp, err := c.rpcClient.Call(
 		"switch_device_create_from_cisco_aci",
 		[]SwitchDevice{switchDevice},
 	)
 
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[int]SwitchDevice{}
+		return &m, nil
+	}
+
+	err = resp.GetObject(&createdObject)
+
 	if err != nil {
 		return nil, err
 	}
-
 	return &createdObject, nil
 }
 
