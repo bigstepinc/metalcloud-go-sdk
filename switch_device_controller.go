@@ -17,7 +17,6 @@ type SwitchDeviceController struct {
 	NetworkEquipmentControllerManagementPort     int         `json:"network_equipment_controller_management_port,omitempty" yaml:"managementPort,omitempty"`
 	NetworkEquipmentControllerManagementUsername string      `json:"network_equipment_controller_management_username,omitempty" yaml:"managementUsername,omitempty"`
 	NetworkEquipmentControllerOptions            interface{} `json:"network_equipment_controller_options,omitempty" yaml:"options,omitempty"`
-	NetworkEquipmentControllerOptionsJson        string      `json:"network_equipment_controller_options_json,omitempty" yaml:"optionsJson,omitempty"`
 	NetworkEquipmentControllerProvisionerType    string      `json:"network_equipment_controller_provisioner_type,omitempty" yaml:"provisionerType,omitempty"`
 }
 
