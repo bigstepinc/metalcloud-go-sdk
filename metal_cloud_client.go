@@ -427,6 +427,20 @@ type MetalCloudClient interface {
 	SwitchDevicesInDatacenter(datacenter string) (*map[string]SwitchDevice, error)
 	// SwitchDeviceUpdate updates an existing switch configuration
 	SwitchDeviceUpdate(networkEquipmentID int, switchDevice SwitchDevice, bOverwriteWithHostnameFromFetchedSwitch bool) (*SwitchDevice, error)
+	// SwitchDeviceControllerGet retrieves information regarding a specified SwitchDeviceController.
+	SwitchDeviceControllerGet(networkEquipmentControllerID int, decryptPasswd bool) (*SwitchDeviceController, error)
+	// SwitchDeviceControllerGetByIdentifierString retrieves information regarding a specified SwitchDeviceController by identifier string.
+	SwitchDeviceControllerGetByIdentifierString(networkEquipmentIdentifierString string, decryptPasswd bool) (*SwitchDeviceController, error)
+	// SwitchDeviceControllerCreate creates a record for a new SwitchDeviceController and for the switches that were detected and created.
+	// The return value is a map of switch devices belonging to the newly created SwitchDeviceController.
+	SwitchDeviceControllerCreate(switchDevice SwitchDevice) (*map[int]SwitchDevice, error)
+	// SwitchDeviceControllers retrieves all switch controller devices registered in the database.
+	// If a datacenter is specified, only the switch device controllers for that datacenter are returned.
+	SwitchDeviceControllers(datacenter string) (*map[int]SwitchDeviceController, error)
+	// SwitchDeviceControllers retrieves all switch devices registered in the database.
+	SwitchDeviceControllerSwitches(networkEquipmentIdentifierString string) (map[int]SwitchDevice, error)
+	// SwitchDeviceUpdate updates an existing switch configuration
+	SwitchDeviceControllerUpdate(networkEquipmentControllerID int, networkEquipmentControllerData interface{}) (*SwitchDeviceController, error)
 	// SwitchDeviceLinks Returns all the switch device links found in the database.
 	SwitchDeviceLinks() (*map[int]SwitchDeviceLink, error)
 	// SwitchDeviceLinkCreate Creates a record for a new SwitchDevice.

@@ -56,6 +56,7 @@ type SwitchDevice struct {
 	NetworkEquipmentLoopbackAddress                string   `json:"network_equipment_loopback_address,omitempty" yaml:"LoopbackAddress,omitempty"`
 	NetworkEquipmentVTEPAddress                    string   `json:"network_equipment_vtep_address,omitempty" yaml:"VTEPAddress,omitempty"`
 	NetworkEquipmentASN                            int      `json:"network_equipment_asn,omitempty" yaml:"ASN,omitempty"`
+	NetworkEquipmentControllerID                   int      `json:"network_equipment_controller_id,omitempty" yaml:"controllerID,omitempty"`
 }
 
 // UnmarshalJSON to handle the shitty boolean being returned as 0 and 1 and true and false in different environments
@@ -110,6 +111,7 @@ func (s *SwitchDevice) UnmarshalJSON(data []byte) error {
 		NetworkEquipmentLoopbackAddress   string      `json:"network_equipment_loopback_address,omitempty" yaml:"LoopbackAddress,omitempty"`
 		NetworkEquipmentVTEPAddress       string      `json:"network_equipment_vtep_address,omitempty" yaml:"VTEPAddress,omitempty"`
 		NetworkEquipmentASN               int         `json:"network_equipment_asn,omitempty" yaml:"ASN,omitempty"`
+		NetworkEquipmentControllerID      int         `json:"network_equipment_controller_id,omitempty" yaml:"controllerID,omitempty"`
 	}
 
 	err := json.Unmarshal(data, &v)
