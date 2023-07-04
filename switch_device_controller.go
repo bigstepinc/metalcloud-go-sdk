@@ -108,26 +108,12 @@ func (c *Client) SwitchDeviceControllerGetByIdentifierString(networkEquipmentIde
 func (c *Client) SwitchDeviceControllerCreate(switchDevice SwitchDevice) (*map[int]SwitchDevice, error) {
 	var createdObject map[int]SwitchDevice
 
-	resp, err := c.rpcClient.Call(
+	// When making a call with a single object parameter, we have to put it into an array.
+	err := c.rpcClient.CallFor(
+		&createdObject,
 		"switch_device_create_from_cisco_aci",
-		switchDevice,
+		[]SwitchDevice{switchDevice},
 	)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if resp.Error != nil {
-		return nil, fmt.Errorf(resp.Error.Message)
-	}
-
-	_, ok := resp.Result.([]interface{})
-	if ok {
-		var m = map[int]SwitchDevice{}
-		return &m, nil
-	}
-
-	err = resp.GetObject(&createdObject)
 
 	if err != nil {
 		return nil, err
