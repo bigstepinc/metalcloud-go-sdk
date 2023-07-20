@@ -233,6 +233,14 @@ type ServerInterfaceCreate struct {
 	NetworkEquipmentInterfaceIdentifierString string `json:"network_equipment_interface_identifier_string,omitempty" yaml:"switchInterface,omitempty"`
 }
 
+type ServerDefaultCredentials struct {
+	DatacenterName                   string `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+	ServerSerialNumber               string `json:"server_serial_number,omitempty" yaml:"serialNumber,omitempty"`
+	ServerBMCMACAddress              string `json:"server_bmc_mac_address" yaml:"BMCMACAddress"`
+	ServerDefaultCredentialsUsername string `json:"server_default_credentials_username" yaml:"username"`
+	ServerDefaultCredentialsPassword string `json:"server_default_credentials_password" yaml:"password"`
+}
+
 // ServersSearch searches for servers matching certain filter
 func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 
@@ -989,4 +997,25 @@ func (c *Client) InstanceServerReplace(instanceID int, serverID int) (int, error
 	}
 
 	return createdObject, nil
+}
+
+// ServerDefaultCredentialsAdd Adds BMC credentials to the default credentials list for the ZTP process
+func (c *Client) ServerDefaultCredentialsAdd(credentials []ServerDefaultCredentials) error {
+
+	var createdObject int
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_default_credentials_add",
+		[][]ServerDefaultCredentials{credentials},
+	)
+
+	if err != nil {
+		return err
+	}
+	/*
+		if resp.Error != nil {
+			return fmt.Errorf(resp.Error.Message)
+		}
+	*/
+	return nil
 }
