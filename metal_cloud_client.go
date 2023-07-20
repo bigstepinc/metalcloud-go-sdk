@@ -338,6 +338,10 @@ type MetalCloudClient interface {
 	InstanceServerReplace(instanceID int, serverID int) (int, error)
 	// ServerDefaultCredentialsAdd Adds BMC credentials to the default credentials list for the ZTP process
 	ServerDefaultCredentialsAdd(credentials []ServerDefaultCredentials) error
+	// ServerDefaultCredentials retrieves the default credentials for server BMCs for the ZTP process for a given datacenter
+	ServerDefaultCredentials(datacenter_name string, decryptPasswd bool) (*[]ServerDefaultCredentials, error)
+	// ServerDefaultCredentialsRemove Removes BMC credentials to the default credentials list for the ZTP process
+	ServerDefaultCredentialsRemove(default_credentials_id []int) error
 	//ServerFirmwarePolicyGet returns a server policy's details
 	ServerFirmwarePolicyGet(serverFirmwarePolicyID int) (*ServerFirmwareUpgradePolicy, error)
 	//ServerFirmwareUpgradePolicyCreate creates a server firmware policy.
