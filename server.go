@@ -289,6 +289,7 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 			"user_id",
 			"user_id_owner",
 			"user_email",
+			"server_submodel",
 		},
 	}
 
