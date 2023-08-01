@@ -336,6 +336,12 @@ type MetalCloudClient interface {
 	ServerEditInventory(serverID int, serverEditInventory ServerEditInventory) (*Server, error)
 	// InstanceServerReplace replaces a server associated to an instance. Returns an AFC Group ID to be used in the AFC Deploy Viewer.
 	InstanceServerReplace(instanceID int, serverID int) (int, error)
+	// ServerDefaultCredentialsAdd Adds BMC credentials to the default credentials list for the ZTP process
+	ServerDefaultCredentialsAdd(credentials []ServerDefaultCredentials) error
+	// ServerDefaultCredentials retrieves the default credentials for server BMCs for the ZTP process for a given datacenter
+	ServerDefaultCredentials(datacenter_name string, decryptPasswd bool) (*[]ServerDefaultCredentials, error)
+	// ServerDefaultCredentialsRemove Removes BMC credentials to the default credentials list for the ZTP process
+	ServerDefaultCredentialsRemove(default_credentials_id []int) error
 	// ServerFirmwarePolicyGet returns a server policy's details
 	ServerFirmwarePolicyGet(serverFirmwarePolicyID int) (*ServerFirmwareUpgradePolicy, error)
 	// ServerFirmwareUpgradePolicyCreate creates a server firmware policy.
@@ -432,8 +438,7 @@ type MetalCloudClient interface {
 	// SwitchDeviceControllerGetByIdentifierString retrieves information regarding a specified SwitchDeviceController by identifier string.
 	SwitchDeviceControllerGetByIdentifierString(networkEquipmentIdentifierString string, decryptPasswd bool) (*SwitchDeviceController, error)
 	// SwitchDeviceControllerCreate creates a record for a new SwitchDeviceController and for the switches that were detected and created.
-	// The return value is a map of switch devices belonging to the newly created SwitchDeviceController.
-	SwitchDeviceControllerCreate(switchDevice SwitchDevice) (*map[int]SwitchDevice, error)
+	SwitchDeviceControllerCreate(switchDeviceController SwitchDeviceController) (*SwitchDeviceController, error)
 	// SwitchDeviceControllers retrieves all switch controller devices registered in the database.
 	// If a datacenter is specified, only the switch device controllers for that datacenter are returned.
 	SwitchDeviceControllers(datacenter string) (*map[int]SwitchDeviceController, error)

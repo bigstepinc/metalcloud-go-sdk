@@ -8,17 +8,18 @@ import (
 // SwitchDeviceController represents a switch controller installed in a datacenter.
 type SwitchDeviceController struct {
 	DatacenterName                               string      `json:"datacenter_name,omitempty" yaml:"datacenterName,omitempty"`
-	NetworkEquipmentControllerDescription        string      `json:"network_equipment_controller_description,omitempty" yaml:"description,omitempty"`
+	NetworkEquipmentControllerProvisionerType    string      `json:"network_equipment_controller_provisioner_type,omitempty" yaml:"provisionerType,omitempty"`
 	NetworkEquipmentControllerDriver             string      `json:"network_equipment_controller_driver,omitempty" yaml:"driver,omitempty"`
+	NetworkEquipmentControllerManagementUsername string      `json:"network_equipment_controller_management_username,omitempty" yaml:"managementUsername,omitempty"`
+	NetworkEquipmentControllerManagementPassword string      `json:"network_equipment_controller_management_password,omitempty" yaml:"managementPassword,omitempty"`
+	NetworkEquipmentControllerManagementAddress  string      `json:"network_equipment_controller_management_address,omitempty" yaml:"managementAddress,omitempty"`
+	NetworkEquipmentControllerManagementPort     int         `json:"network_equipment_controller_management_port,omitempty" yaml:"managementPort,omitempty"`
+	NetworkEquipmentControllerManagementProtocol string      `json:"network_equipment_controller_management_protocol,omitempty" yaml:"managementProtocol,omitempty"`
+	NetworkEquipmentControllerDescription        string      `json:"network_equipment_controller_description,omitempty" yaml:"description,omitempty"`
 	NetworkEquipmentControllerID                 int         `json:"network_equipment_controller_id,omitempty" yaml:"id,omitempty"`
 	NetworkEquipmentControllerIdentifierString   string      `json:"network_equipment_controller_identifier_string,omitempty" yaml:"identifierString,omitempty"`
-	NetworkEquipmentControllerManagementAddress  string      `json:"network_equipment_controller_management_address,omitempty" yaml:"managementAddress,omitempty"`
-	NetworkEquipmentControllerManagementPassword string      `json:"network_equipment_controller_management_password,omitempty" yaml:"managementPassword,omitempty"`
-	NetworkEquipmentControllerManagementPort     int         `json:"network_equipment_controller_management_port,omitempty" yaml:"managementPort,omitempty"`
-	NetworkEquipmentControllerManagementUsername string      `json:"network_equipment_controller_management_username,omitempty" yaml:"managementUsername,omitempty"`
 	NetworkEquipmentControllerOptions            interface{} `json:"network_equipment_controller_options,omitempty" yaml:"options,omitempty"`
 	NetworkEquipmentControllerOptionsJSON        string      `json:"network_equipment_controller_options_json,omitempty" yaml:"optionsJSON,omitempty"`
-	NetworkEquipmentControllerProvisionerType    string      `json:"network_equipment_controller_provisioner_type,omitempty" yaml:"provisionerType,omitempty"`
 }
 
 // SwitchDeviceControllerGet retrieves information regarding a specified SwitchDeviceController.
@@ -104,14 +105,13 @@ func (c *Client) SwitchDeviceControllerGetByIdentifierString(networkEquipmentIde
 }
 
 // SwitchDeviceControllerCreate creates a record for a new SwitchDeviceController and for the switches that were detected and created.
-// The return value is a map of switch devices belonging to the newly created SwitchDeviceController.
-func (c *Client) SwitchDeviceControllerCreate(switchDevice SwitchDevice) (*map[int]SwitchDevice, error) {
-	var createdObject map[int]SwitchDevice
+func (c *Client) SwitchDeviceControllerCreate(switchDeviceController SwitchDeviceController) (*SwitchDeviceController, error) {
+	var createdObject SwitchDeviceController
 
 	// When making a call with a single object parameter, we have to put it into an array.
 	resp, err := c.rpcClient.Call(
-		"switch_device_create_from_cisco_aci",
-		[]SwitchDevice{switchDevice},
+		"switch_device_controller_create",
+		[]SwitchDeviceController{switchDeviceController},
 	)
 
 	if resp.Error != nil {
@@ -120,8 +120,7 @@ func (c *Client) SwitchDeviceControllerCreate(switchDevice SwitchDevice) (*map[i
 
 	_, ok := resp.Result.([]interface{})
 	if ok {
-		var m = map[int]SwitchDevice{}
-		return &m, nil
+		return nil, nil
 	}
 
 	err = resp.GetObject(&createdObject)

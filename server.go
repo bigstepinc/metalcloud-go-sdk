@@ -235,6 +235,15 @@ type ServerInterfaceCreate struct {
 	NetworkEquipmentInterfaceIdentifierString string `json:"network_equipment_interface_identifier_string,omitempty" yaml:"switchInterface,omitempty"`
 }
 
+type ServerDefaultCredentials struct {
+	ServerDefaultCredentialsID       int    `json:"server_default_credentials_id,omitempty" yaml:"id,omitempty"`
+	DatacenterName                   string `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+	ServerSerialNumber               string `json:"server_serial_number,omitempty" yaml:"serialNumber,omitempty"`
+	ServerBMCMACAddress              string `json:"server_bmc_mac_address" yaml:"BMCMACAddress"`
+	ServerDefaultCredentialsUsername string `json:"server_default_credentials_username" yaml:"username"`
+	ServerDefaultCredentialsPassword string `json:"server_default_credentials_password" yaml:"password"`
+}
+
 // ServersSearch searches for servers matching certain filter
 func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 
@@ -992,4 +1001,83 @@ func (c *Client) InstanceServerReplace(instanceID int, serverID int) (int, error
 	}
 
 	return createdObject, nil
+}
+
+// ServerDefaultCredentialsAdd Adds BMC credentials to the default credentials list for the ZTP process
+func (c *Client) ServerDefaultCredentialsAdd(credentials []ServerDefaultCredentials) error {
+
+	var createdObject int
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_default_credentials_add",
+		[][]ServerDefaultCredentials{credentials},
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ServerDefaultCredentials retrieves the default credentials for server BMCs for the ZTP process for a given datacenter
+func (c *Client) ServerDefaultCredentials(datacenter_name string, decryptPasswd bool) (*[]ServerDefaultCredentials, error) {
+
+	var createdObjects []ServerDefaultCredentials
+
+	err := c.rpcClient.CallFor(
+		&createdObjects,
+		"server_default_credentials",
+		datacenter_name)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for i, createdObject := range createdObjects {
+
+		if decryptPasswd {
+
+			passwdComponents := strings.Split(createdObject.ServerDefaultCredentialsPassword, ":")
+
+			if len(passwdComponents) == 2 {
+				if strings.Contains(passwdComponents[0], "Not authorized") {
+					return nil, fmt.Errorf("Permission missing. %s", passwdComponents[1])
+				} else {
+					var passwd string
+
+					err = c.rpcClient.CallFor(
+						&passwd,
+						"password_decrypt",
+						passwdComponents[1],
+					)
+					if err != nil {
+						return nil, err
+					}
+
+					createdObjects[i].ServerDefaultCredentialsPassword = passwd
+				}
+			}
+		} else {
+			createdObject.ServerDefaultCredentialsPassword = ""
+		}
+	}
+	return &createdObjects, nil
+}
+
+// ServerDefaultCredentialsRemove Removes BMC credentials to the default credentials list for the ZTP process
+func (c *Client) ServerDefaultCredentialsRemove(default_credentials_id []int) error {
+
+	var createdObject int
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_default_credentials_remove",
+		[][]int{default_credentials_id},
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
