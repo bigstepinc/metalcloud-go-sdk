@@ -212,3 +212,18 @@ func (c *Client) SwitchDeviceControllerUpdate(networkEquipmentControllerID int, 
 
 	return &createdObject, nil
 }
+
+// SwitchDeviceControllerDelete deletes a specified switch device controller. The switches belonging to the controller need to be deleted first.
+func (c *Client) SwitchDeviceControllerDelete(networkEquipmentControllerID int) error {
+	resp, err := c.rpcClient.Call("switch_device_controller_delete", networkEquipmentControllerID)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
+	return nil
+}
