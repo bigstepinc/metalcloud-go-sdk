@@ -446,6 +446,10 @@ type MetalCloudClient interface {
 	SwitchDeviceControllerSwitches(networkEquipmentIdentifierString string) (map[int]SwitchDevice, error)
 	// SwitchDeviceUpdate updates an existing switch configuration
 	SwitchDeviceControllerUpdate(networkEquipmentControllerID int, networkEquipmentControllerData interface{}) (*SwitchDeviceController, error)
+	// Creates multiple network equipment controller records, based on the output from Switch Controller.
+	// Returns the created switches.
+	// Please note that this may take some time, typically a few seconds.
+	SwitchDeviceControllerSync(networkEquipmentControllerID int) (*map[int]SwitchDevice, error)
 	// SwitchDeviceControllerDelete deletes a specified switch device controller. The switches belonging to the controller need to be deleted first.
 	SwitchDeviceControllerDelete(networkEquipmentControllerID int) error
 	// SwitchDeviceLinks Returns all the switch device links found in the database.

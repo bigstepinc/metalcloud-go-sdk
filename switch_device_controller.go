@@ -7,19 +7,19 @@ import (
 
 // SwitchDeviceController represents a switch controller installed in a datacenter.
 type SwitchDeviceController struct {
-	DatacenterName                               string      `json:"datacenter_name,omitempty" yaml:"datacenterName,omitempty"`
-	NetworkEquipmentControllerProvisionerType    string      `json:"network_equipment_controller_provisioner_type,omitempty" yaml:"provisionerType,omitempty"`
-	NetworkEquipmentControllerDriver             string      `json:"network_equipment_controller_driver,omitempty" yaml:"driver,omitempty"`
-	NetworkEquipmentControllerManagementUsername string      `json:"network_equipment_controller_management_username,omitempty" yaml:"managementUsername,omitempty"`
-	NetworkEquipmentControllerManagementPassword string      `json:"network_equipment_controller_management_password,omitempty" yaml:"managementPassword,omitempty"`
-	NetworkEquipmentControllerManagementAddress  string      `json:"network_equipment_controller_management_address,omitempty" yaml:"managementAddress,omitempty"`
-	NetworkEquipmentControllerManagementPort     int         `json:"network_equipment_controller_management_port,omitempty" yaml:"managementPort,omitempty"`
-	NetworkEquipmentControllerManagementProtocol string      `json:"network_equipment_controller_management_protocol,omitempty" yaml:"managementProtocol,omitempty"`
-	NetworkEquipmentControllerDescription        string      `json:"network_equipment_controller_description,omitempty" yaml:"description,omitempty"`
-	NetworkEquipmentControllerID                 int         `json:"network_equipment_controller_id,omitempty" yaml:"id,omitempty"`
-	NetworkEquipmentControllerIdentifierString   string      `json:"network_equipment_controller_identifier_string,omitempty" yaml:"identifierString,omitempty"`
-	NetworkEquipmentControllerOptions            interface{} `json:"network_equipment_controller_options,omitempty" yaml:"options,omitempty"`
-	NetworkEquipmentControllerOptionsJSON        string      `json:"network_equipment_controller_options_json,omitempty" yaml:"optionsJSON,omitempty"`
+	DatacenterName                                string      `json:"datacenter_name,omitempty" yaml:"datacenterName,omitempty"`
+	NetworkEquipmentControllerProvisionerType     string      `json:"network_equipment_controller_provisioner_type,omitempty" yaml:"provisionerType,omitempty"`
+	NetworkEquipmentControllerDriver              string      `json:"network_equipment_controller_driver,omitempty" yaml:"driver,omitempty"`
+	NetworkEquipmentControllerManagementUsername  string      `json:"network_equipment_controller_management_username,omitempty" yaml:"managementUsername,omitempty"`
+	NetworkEquipmentControllerManagementPassword  string      `json:"network_equipment_controller_management_password,omitempty" yaml:"managementPassword,omitempty"`
+	NetworkEquipmentControllerManagementAddress   string      `json:"network_equipment_controller_management_address,omitempty" yaml:"managementAddress,omitempty"`
+	NetworkEquipmentControllerManagementPort      int         `json:"network_equipment_controller_management_port,omitempty" yaml:"managementPort,omitempty"`
+	NetworkEquipmentControllerManagementProtocol  string      `json:"network_equipment_controller_management_protocol,omitempty" yaml:"managementProtocol,omitempty"`
+	NetworkEquipmentControllerDescription         string      `json:"network_equipment_controller_description,omitempty" yaml:"description,omitempty"`
+	NetworkEquipmentControllerID                  int         `json:"network_equipment_controller_id,omitempty" yaml:"id,omitempty"`
+	NetworkEquipmentControllerIdentifierString    string      `json:"network_equipment_controller_identifier_string,omitempty" yaml:"identifierString,omitempty"`
+	NetworkEquipmentControllerOptions             interface{} `json:"network_equipment_controller_options,omitempty" yaml:"options,omitempty"`
+	NetworkEquipmentControllerFabricConfiguration interface{} `json:"network_equipment_controller_fabric_configuration,omitempty" yaml:"fabricConfiguration,omitempty"`
 }
 
 // SwitchDeviceControllerGet retrieves information regarding a specified SwitchDeviceController.
@@ -209,6 +209,35 @@ func (c *Client) SwitchDeviceControllerUpdate(networkEquipmentControllerID int, 
 		return nil, err
 	}
 
+	return &createdObject, nil
+}
+
+// Creates multiple network equipment controller records, based on the output from Switch Controller.
+// Returns the created switches.
+// Please note that this may take some time, typically a few seconds.
+func (c *Client) SwitchDeviceControllerSync(networkEquipmentControllerID int) (*map[int]SwitchDevice, error) {
+	var createdObject map[int]SwitchDevice
+
+	resp, err := c.rpcClient.Call(
+		"switch_device_controller_switches_sync",
+		networkEquipmentControllerID,
+	)
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		var m = map[int]SwitchDevice{}
+		return &m, nil
+	}
+
+	err = resp.GetObject(&createdObject)
+
+	if err != nil {
+		return nil, err
+	}
 	return &createdObject, nil
 }
 
