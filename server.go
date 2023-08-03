@@ -52,6 +52,7 @@ type ServerSearchResult struct {
 	UserEmail                      [][]string        `json:"user_email,omitempty" yaml:"userEmail,omitempty"`
 	UserID                         [][]int           `json:"user_id,omitempty" yaml:"users,omitempty"`
 	DatacenterName                 string            `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+	ServerSubmodel                 string            `json:"server_submodel,omitempty" yaml:"submodel,omitempty"`
 }
 
 // Server represents a server in a datacenter.
@@ -136,6 +137,7 @@ type Server struct {
 	ServerBDKDEbug                             bool                        `json:"server_bdk_debug" yaml:"BDKDebug"`
 	ServerKeysJSON                             string                      `json:"server_keys_json" yaml:"keysJSON"`
 	NICDetails                                 map[string]ServerNICDetails `json:"nic_details,omitempty" yaml:"NICDetails,omitempty"`
+	ServerSubmodel                             string                      `json:"server_submodel,omitempty" yaml:"submodel,omitempty"`
 }
 
 // ServerDisk describes a disk
@@ -296,6 +298,7 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 			"user_id",
 			"user_id_owner",
 			"user_email",
+			"server_submodel",
 		},
 	}
 
