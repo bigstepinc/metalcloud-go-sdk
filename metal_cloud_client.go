@@ -452,6 +452,12 @@ type MetalCloudClient interface {
 	SwitchDeviceControllerSync(networkEquipmentControllerID int) (*map[int]SwitchDevice, error)
 	// SwitchDeviceControllerDelete deletes a specified switch device controller. The switches belonging to the controller need to be deleted first.
 	SwitchDeviceControllerDelete(networkEquipmentControllerID int) error
+	// SwitchDeviceDefaults retrieves all switch defaults registered in the database for a datacenter.
+	SwitchDeviceDefaults(datacenter string) (*[]SwitchDeviceDefaults, error)
+	// SwitchDeviceDefaultsCreate adds records for a new set of switch device defaults.
+	SwitchDeviceDefaultsCreate(switchDeviceDefaultsArray []SwitchDeviceDefaults) error
+	// SwitchDeviceDefaultsDelete removes records for the specified switch device defaults.
+	SwitchDeviceDefaultsDelete(switchDeviceDefaultsIDs []int) error
 	// SwitchDeviceLinks Returns all the switch device links found in the database.
 	SwitchDeviceLinks() (*map[int]SwitchDeviceLink, error)
 	// SwitchDeviceLinkCreate Creates a record for a new SwitchDevice.
