@@ -8,8 +8,8 @@ import (
 type SwitchDeviceDefaults struct {
 	NetworkEquipmentDefaultsID                int               `json:"network_equipment_defaults_id,omitempty" yaml:"id,omitempty"`
 	DatacenterName                            string            `json:"datacenter_name,omitempty" yaml:"datacenterName,omitempty"`
-	NetworkEquipmentSerialNumber              string            `json:"network_equipment_serial_number,omitempty" yaml:"serialNumber,omitempty"`
-	NetworkEquipmentManagementMacAddress      string            `json:"network_equipment_management_mac_address,omitempty" yaml:"managementMacAddress,omitempty"`
+	NetworkEquipmentSerialNumber              *string           `json:"network_equipment_serial_number" yaml:"serialNumber"`
+	NetworkEquipmentManagementMacAddress      *string           `json:"network_equipment_management_mac_address" yaml:"managementMacAddress"`
 	NetworkEquipmentPosition                  string            `json:"network_equipment_position,omitempty" yaml:"position,omitempty"`
 	NetworkEquipmentIdentifierString          string            `json:"network_equipment_identifier_string,omitempty" yaml:"identifierString,omitempty"`
 	NetworkEquipmentAsn                       int               `json:"network_equipment_asn,omitempty" yaml:"asn,omitempty"`
