@@ -107,12 +107,21 @@ func (c *Client) SwitchDeviceControllerGetByIdentifierString(networkEquipmentIde
 // SwitchDeviceControllerCreate creates a record for a new SwitchDeviceController and for the switches that were detected and created.
 func (c *Client) SwitchDeviceControllerCreate(switchDeviceController SwitchDeviceController) (*SwitchDeviceController, error) {
 	var createdObject SwitchDeviceController
-
+	overwriteHostname := true
+	if switchDeviceController.NetworkEquipmentControllerIdentifierString != "" {
+		overwriteHostname = false
+	}
+	
 	// When making a call with a single object parameter, we have to put it into an array.
 	resp, err := c.rpcClient.Call(
 		"switch_device_controller_create",
-		[]SwitchDeviceController{switchDeviceController},
+		switchDeviceController,
+		overwriteHostname,
 	)
+
+	if err != nil {
+		return nil, err
+	}
 
 	if resp.Error != nil {
 		return nil, fmt.Errorf(resp.Error.Message)
