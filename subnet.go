@@ -5,13 +5,14 @@ import (
 	"fmt"
 )
 
-//SubnetPool represents a pool of subnets
+// SubnetPool represents a pool of subnets
 type SubnetPool struct {
 	SubnetPoolID                                int    `json:"subnet_pool_id,omitempty" yaml:"id,omitempty"`
 	DatacenterName                              string `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
 	NetworkEquipmentID                          int    `json:"network_equipment_id,omitempty" yaml:"networkEquipmentID,omitempty"`
 	UserID                                      int    `json:"user_id,omitempty" yaml:"user,omitempty"`
 	SubnetPoolPrefixHumanReadable               string `json:"subnet_pool_prefix_human_readable,omitempty" yaml:"prefix,omitempty"`
+	SubnetPoolLabel                             string `json:"subnet_pool_label,omitempty" yaml:"label,omitempty"`
 	SubnetPoolPrefixHex                         string `json:"subnet_pool_prefix_hex,omitempty" yaml:"prefixHex,omitempty"`
 	SubnetPoolNetmaskHumanReadable              string `json:"subnet_pool_netmask_human_readable,omitempty" yaml:"netmask,omitempty"`
 	SubnetPoolNetmaskHex                        string `json:"subnet_pool_netmask_hex,omitempty" yaml:"netmaskHex,omitempty"`
@@ -24,7 +25,7 @@ type SubnetPool struct {
 	SubnetPoolIsOnlyForManualAllocation         bool   `json:"subnet_pool_is_only_for_manual_allocation" yaml:"manualAllocationOnly"`
 }
 
-//SubnetPoolUtilization describes the current utilization of the subnet
+// SubnetPoolUtilization describes the current utilization of the subnet
 type SubnetPoolUtilization struct {
 	PrefixCountFree                        map[string]int `json:"prefix_count_free,omitempty" yaml:"availableSubnets,omitempty"`
 	PrefixCountAllocated                   map[string]int `json:"prefix_count_allocated,omitempty" yaml:"allocatedSubnets,omitempty"`
@@ -33,7 +34,7 @@ type SubnetPoolUtilization struct {
 	IPAddressesUsableFreePercentOptimistic string         `json:"ip_addresses_usable_free_percent_optimistic,omitempty" yaml:"availablePercentage,omitempty"`
 }
 
-//UnmarshalJSON to handle the shity [] to {} and 0 and "123123" cases
+// UnmarshalJSON to handle the shity [] to {} and 0 and "123123" cases
 func (s *SubnetPoolUtilization) UnmarshalJSON(data []byte) error {
 
 	var v struct {
@@ -90,7 +91,7 @@ func (s *SubnetPoolUtilization) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-//SearchResultForSubnets describes a search result for subnets search
+// SearchResultForSubnets describes a search result for subnets search
 type searchResultForSubnets struct {
 	DurationMilliseconds int          `json:"duration_millisecnds,omitempty"`
 	Rows                 []SubnetPool `json:"rows,omitempty"`
@@ -98,7 +99,7 @@ type searchResultForSubnets struct {
 	RowsTotal            int          `json:"rows_total,omitempty"`
 }
 
-//SubnetPoolCreate creates a new SubnetPool.
+// SubnetPoolCreate creates a new SubnetPool.
 func (c *Client) SubnetPoolCreate(subnetPool SubnetPool) (*SubnetPool, error) {
 	var createdObject SubnetPool
 
@@ -114,7 +115,7 @@ func (c *Client) SubnetPoolCreate(subnetPool SubnetPool) (*SubnetPool, error) {
 	return &createdObject, nil
 }
 
-//SubnetPoolGet retrieves information regarding a specified SubnetPool.
+// SubnetPoolGet retrieves information regarding a specified SubnetPool.
 func (c *Client) SubnetPoolGet(subnetPoolID int) (*SubnetPool, error) {
 
 	var createdObject SubnetPool
@@ -132,7 +133,7 @@ func (c *Client) SubnetPoolGet(subnetPoolID int) (*SubnetPool, error) {
 	return &createdObject, nil
 }
 
-//SubnetPoolPrefixSizesStats retrieves information regarding the utilization of a specified SubnetPool.
+// SubnetPoolPrefixSizesStats retrieves information regarding the utilization of a specified SubnetPool.
 func (c *Client) SubnetPoolPrefixSizesStats(subnetPoolID int) (*SubnetPoolUtilization, error) {
 
 	var createdObject SubnetPoolUtilization
@@ -150,7 +151,7 @@ func (c *Client) SubnetPoolPrefixSizesStats(subnetPoolID int) (*SubnetPoolUtiliz
 	return &createdObject, nil
 }
 
-//SubnetPoolDelete deletes the specified SubnetPool
+// SubnetPoolDelete deletes the specified SubnetPool
 func (c *Client) SubnetPoolDelete(subnetPoolID int) error {
 
 	resp, err := c.rpcClient.Call("subnet_pool_delete", subnetPoolID)
@@ -166,18 +167,19 @@ func (c *Client) SubnetPoolDelete(subnetPoolID int) error {
 	return nil
 }
 
-//SubnetPools retrieves all switch devices registered in the database.
+// SubnetPools retrieves all switch devices registered in the database.
 func (c *Client) SubnetPools() (*[]SubnetPool, error) {
 	return c.SubnetPoolSearch("*")
 }
 
-//SubnetPoolSearch retrieves all switch devices registered in the database with the specified filter
+// SubnetPoolSearch retrieves all switch devices registered in the database with the specified filter
 func (c *Client) SubnetPoolSearch(filter string) (*[]SubnetPool, error) {
 
 	tables := []string{"_subnet_pools"}
 	columns := map[string][]string{
 		"_subnet_pools": {
 			"subnet_pool_id",
+			"subnet_pool_label",
 			"subnet_pool_prefix_human_readable",
 			"subnet_pool_prefix_hex",
 			"subnet_pool_netmask_human_readable",
@@ -236,7 +238,7 @@ func (c *Client) SubnetPoolSearch(filter string) (*[]SubnetPool, error) {
 
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (s SubnetPool) CreateOrUpdate(client MetalCloudClient) error {
 	err := s.Validate()
 
@@ -257,7 +259,7 @@ func (s SubnetPool) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (s SubnetPool) Delete(client MetalCloudClient) error {
 	err := s.Validate()
 
@@ -273,7 +275,7 @@ func (s SubnetPool) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (s SubnetPool) Validate() error {
 	if s.SubnetPoolID == 0 {
 		return fmt.Errorf("id is required")
