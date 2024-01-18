@@ -2,7 +2,6 @@ package metalcloud
 
 import (
 	"encoding/json"
-	"fmt"
 	"testing"
 
 	. "github.com/onsi/gomega"
@@ -29,8 +28,6 @@ func TestClusterGet(t *testing.T) {
 	RegisterTestingT(t)
 
 	responseBody = `{"result": ` + _clusterFixture2 + `,"jsonrpc": "2.0","id": 0}`
-	fmt.Printf(responseBody)
-
 	mc, err := GetMetalcloudClient("userEmail", "APIKey", httpServer.URL, false, "", "", "")
 	Expect(err).To(BeNil())
 
@@ -48,7 +45,7 @@ func TestClusterGet(t *testing.T) {
 
 	var m2 map[string]string
 	json.Unmarshal([]byte(r.ClusterCustomJSON), &m2)
-	Expect(r.ClusterCustomJSON).To(Equal(346))
+	Expect(r.ClusterCustomJSON).To(ContainSubstring("cluster_saas_admin_username"))
 
 }
 
