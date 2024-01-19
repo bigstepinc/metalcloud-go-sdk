@@ -8,19 +8,21 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/ybbus/jsonrpc"
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2/clientcredentials"
 )
 
-//Client struct defines a metalcloud client
+// Client struct defines a metalcloud client
 type Client struct {
 	rpcClient jsonrpc.RPCClient
 	user      string
@@ -29,7 +31,7 @@ type Client struct {
 	userID    int
 }
 
-//GetMetalcloudClient returns a metal cloud client
+// GetMetalcloudClient returns a metal cloud client
 func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEnabled bool, clientId string, clientSecret string, tokenURL string) (*Client, error) {
 
 	if user == "" {
@@ -89,6 +91,7 @@ func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEna
 
 	httpClient := &http.Client{
 		Transport: transport,
+		Timeout:   30 * time.Second,
 	}
 
 	rpcClient := jsonrpc.NewClientWithOpts(endpoint, &jsonrpc.RPCClientOpts{
@@ -105,17 +108,17 @@ func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEna
 
 }
 
-//GetUserEmail returns the user configured for this connection
+// GetUserEmail returns the user configured for this connection
 func (c *Client) GetUserEmail() string {
 	return c.user
 }
 
-//GetEndpoint returns the endpoint configured for this connection
+// GetEndpoint returns the endpoint configured for this connection
 func (c *Client) GetEndpoint() string {
 	return c.endpoint
 }
 
-//GetUserID returns the ID of the user extracted from the API key
+// GetUserID returns the ID of the user extracted from the API key
 func (c *Client) GetUserID() int {
 	return c.userID
 }
@@ -159,10 +162,10 @@ func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 	}
 
 	//force close connection. This will avoid the keep-alive related issues for go < 1.6 https://go-review.googlesource.com/c/go/+/3210
-	req.Close = true
+	//req.Close = true
 
 	// Restore the io.ReadCloser to its original state
-	req.Body = ioutil.NopCloser(bytes.NewBuffer(message))
+	req.Body = io.NopCloser(bytes.NewBuffer(message))
 
 	if c.OAuthToken != "" {
 		req.Header.Set("Authorization", "Bearer "+c.OAuthToken)
