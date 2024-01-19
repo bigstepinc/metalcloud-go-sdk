@@ -324,10 +324,12 @@ func (c *Client) InfrastructureDeployCustomStageAddIntoRunlevel(infraID int, sta
 	return nil
 }
 
-// InfrastructureDeployCustomStageDeleteIntoRunlevel delete a stage into a runlevel
-func (c *Client) InfrastructureDeployCustomStageDeleteIntoRunlevel(infraID int, stageID int, runLevel int, stageRunMoment string) error {
+// InfrastructureDeployCustomStageDelete delete a stage
+func (c *Client) InfrastructureDeployCustomStageDelete(nInfrastructureCustomDeployStageID int) error {
 
-	resp, err := c.rpcClient.Call("infrastructure_deploy_custom_stage_delete_into_runlevel", infraID, stageID, runLevel, stageRunMoment)
+	resp, err := c.rpcClient.Call(
+		"infrastructure_deploy_custom_stage_delete",
+		nInfrastructureCustomDeployStageID)
 	if err != nil {
 		return err
 	}
