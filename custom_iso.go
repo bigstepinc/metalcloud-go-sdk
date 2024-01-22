@@ -18,7 +18,8 @@ type CustomISO struct {
 }
 
 // CustomISOs returns custom ISOs for user
-func (c *Client) CustomISOs(userID id) (*map[string]CustomISO, error) {
+func (c *Client) CustomISOs(userID int) (*map[string]CustomISO, error) {
+
 	resp, err := c.rpcClient.Call(
 		"custom_isos",
 		userID,
@@ -55,7 +56,7 @@ func (c *Client) CustomISOCreate(customISO CustomISO) (*CustomISO, error) {
 	err := c.rpcClient.CallFor(
 		&createdObject,
 		"custom_iso_create",
-		customISO)
+		[]CustomISO{customISO})
 
 	if err != nil {
 

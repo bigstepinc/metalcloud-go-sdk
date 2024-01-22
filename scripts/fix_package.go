@@ -58,6 +58,7 @@ var types = [...]string{
 	"InfrastructuresSearchResult",
 	"ServerEditInventory",
 	"ServerEditRack",
+	"CustomISO",
 }
 
 const packageName = "metalcloud"

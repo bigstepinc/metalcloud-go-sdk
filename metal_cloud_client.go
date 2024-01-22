@@ -19,7 +19,7 @@ type MetalCloudClient interface {
 	//AFCMarkForDeath Tries to kill an AFC
 	AFCMarkForDeath(afcID int, typeOfMark string) error
 	// CustomISOs returns custom ISOs for user
-	CustomISOs(userID id) (*map[string]CustomISO, error)
+	CustomISOs(userID int) (*map[string]CustomISO, error)
 	// CustomISOCreate creates a custom ISO record
 	CustomISOCreate(customISO CustomISO) (*CustomISO, error)
 	// CustomISOCreate creates a custom ISO record
