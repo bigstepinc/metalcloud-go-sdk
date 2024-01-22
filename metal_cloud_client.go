@@ -18,6 +18,18 @@ type MetalCloudClient interface {
 	AFCDelete(afcID int) error
 	//AFCMarkForDeath Tries to kill an AFC
 	AFCMarkForDeath(afcID int, typeOfMark string) error
+	// CustomISOs returns custom ISOs for user
+	CustomISOs(userID id) (*map[string]CustomISO, error)
+	// CustomISOCreate creates a custom ISO record
+	CustomISOCreate(customISO CustomISO) (*CustomISO, error)
+	// CustomISOCreate creates a custom ISO record
+	CustomISOGet(customISOID int) (*CustomISO, error)
+	// CustomISODelete deletes a CustomISO with specified id
+	CustomISODelete(customISOID int) error
+	// CustomISODelete deletes a CustomISO with specified id
+	CustomISOUpdate(customISOID int, customISO CustomISO) (*CustomISO, error)
+	// CustomISOBootIntoServer boots a server with an iso. Returns an AFC group id
+	CustomISOBootIntoServer(customISOID int, serverID int) (int, error)
 	// Datacenters returns datacenters for all users
 	Datacenters(onlyActive bool) (*map[string]Datacenter, error)
 	// DatacentersByUserID returns datacenters for specific user
@@ -210,11 +222,11 @@ type MetalCloudClient interface {
 	InstanceServerPowerGetBatch(infrastructureID int, instanceIDs []int) (*map[string]string, error)
 	//InstanceServerPowerGetBatchByLabel instances
 	InstanceServerPowerGetBatchByLabel(infrastructureLabel string, instanceIDs []int) (*map[string]string, error)
-	//GetUserEmail returns the user configured for this connection
+	// GetUserEmail returns the user configured for this connection
 	GetUserEmail() string
-	//GetEndpoint returns the endpoint configured for this connection
+	// GetEndpoint returns the endpoint configured for this connection
 	GetEndpoint() string
-	//GetUserID returns the ID of the user extracted from the API key
+	// GetUserID returns the ID of the user extracted from the API key
 	GetUserID() int
 	//NetworkGet object
 	NetworkGet(networkID int) (*Network, error)

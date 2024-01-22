@@ -161,6 +161,7 @@ func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 		log.Println(string(message))
 	}
 
+	//update 2.11.5 -> this was commented as it seemes to genrate issues such as net/http: cannot rewind body after connection loss
 	//force close connection. This will avoid the keep-alive related issues for go < 1.6 https://go-review.googlesource.com/c/go/+/3210
 	//req.Close = true
 
