@@ -30,31 +30,56 @@ type Client struct {
 	endpoint  string
 	userID    int
 }
+type ClientOptions struct {
+	User           string
+	ApiKey         string
+	Endpoint       string
+	UserID         int
+	LoggingEnabled bool
+	ClientId       string
+	ClientSecret   string
+	TokenURL       string
+	Timeout        time.Duration
+}
+
+func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEnabled bool, clientId string, clientSecret string, tokenURL string) (*Client, error) {
+	return GetMetalcloudClientWithOptions(ClientOptions{
+		User:           user,
+		ApiKey:         apiKey,
+		Endpoint:       endpoint,
+		UserID:         0,
+		LoggingEnabled: loggingEnabled,
+		ClientId:       clientId,
+		ClientSecret:   clientSecret,
+		TokenURL:       tokenURL,
+		Timeout:        5 * time.Minute,
+	})
+}
 
 // GetMetalcloudClient returns a metal cloud client
-func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEnabled bool, clientId string, clientSecret string, tokenURL string) (*Client, error) {
+func GetMetalcloudClientWithOptions(options ClientOptions) (*Client, error) {
 
-	if user == "" {
+	if options.User == "" {
 		return nil, errors.New("user cannot be an empty string! It is typically in the form of user's email address")
 	}
 
-	if endpoint == "" {
+	if options.Endpoint == "" {
 		return nil, errors.New("endpoint cannot be an empty string! It is typically in the form of user's email address")
 	}
 
-	if apiKey == "" && (clientId == "" || clientSecret == "" || tokenURL == "") {
+	if options.ApiKey == "" && (options.ClientId == "" || options.ClientSecret == "" || options.TokenURL == "") {
 		return nil, errors.New("no authorization method was set(OAuth or API key)")
 	}
 
 	userID := 0
 	oAuthToken := ""
 
-	if clientId != "" && clientSecret != "" && tokenURL != "" {
+	if options.ClientId != "" && options.ClientSecret != "" && options.TokenURL != "" {
 
 		config := clientcredentials.Config{
-			ClientID:     clientId,
-			ClientSecret: clientSecret,
-			TokenURL:     tokenURL,
+			ClientID:     options.ClientId,
+			ClientSecret: options.ClientSecret,
+			TokenURL:     options.TokenURL,
 		}
 
 		oAuthTokenResp, errOauth := config.Token(context.Background())
@@ -62,13 +87,13 @@ func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEna
 			panic(errOauth)
 		}
 		oAuthToken = (*oAuthTokenResp).AccessToken
-		n, err := strconv.Atoi(clientId)
+		n, err := strconv.Atoi(options.ClientId)
 		if err != nil {
 			return nil, err
 		}
 		userID = n
 	} else {
-		components := strings.Split(apiKey, ":")
+		components := strings.Split(options.ApiKey, ":")
 		if len(components) > 1 {
 			n, err := strconv.Atoi(components[0])
 			if err != nil {
@@ -78,31 +103,31 @@ func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEna
 		}
 	}
 
-	_, err := url.ParseRequestURI(endpoint)
+	_, err := url.ParseRequestURI(options.Endpoint)
 	if err != nil {
 		return nil, err
 	}
 
 	transport := &signatureAdderRoundTripper{
-		APIKey:         apiKey,
-		LoggingEnabled: loggingEnabled,
+		APIKey:         options.ApiKey,
+		LoggingEnabled: options.LoggingEnabled,
 		OAuthToken:     oAuthToken,
 	}
 
 	httpClient := &http.Client{
 		Transport: transport,
-		Timeout:   30 * time.Second,
+		Timeout:   options.Timeout,
 	}
 
-	rpcClient := jsonrpc.NewClientWithOpts(endpoint, &jsonrpc.RPCClientOpts{
+	rpcClient := jsonrpc.NewClientWithOpts(options.Endpoint, &jsonrpc.RPCClientOpts{
 		HTTPClient: httpClient,
 	})
 
 	return &Client{
 		rpcClient: rpcClient,
-		user:      user,
-		apiKey:    apiKey,
-		endpoint:  endpoint,
+		user:      options.User,
+		apiKey:    options.ApiKey,
+		endpoint:  options.Endpoint,
 		userID:    userID,
 	}, nil
 

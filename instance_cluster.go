@@ -183,7 +183,7 @@ func (c *Client) clusterAppVMWareVSphere(clusterID id, decryptCredentials bool) 
 	if err != nil {
 		return nil, err
 	}
-
+	
 	if decryptCredentials {
 		createdObject.ClusterApp.AdminPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.AdminPassword)
 		createdObject.ClusterApp.VCSAInitialPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.VCSAInitialPassword)
