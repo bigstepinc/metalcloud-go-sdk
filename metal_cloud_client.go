@@ -451,6 +451,12 @@ type MetalCloudClient interface {
 	StoragePoolSearch(filter string) (*[]StoragePoolSearchResult, error)
 	//StoragePoolGet returns a storage pool's details
 	StoragePoolGet(serverID int, decryptPasswd bool) (*StoragePool, error)
+	// SubnetGet retrieves information regarding a specified Subnet.
+	SubnetGet(subnetID int) (*Subnet, error)
+	// SubnetDelete deletes the specified Subnet
+	SubnetDelete(subnetID int) error
+	// SubnetCreate creates a new Subnet.
+	SubnetCreate(subnet Subnet) (*Subnet, error)
 	// SubnetPoolCreate creates a new SubnetPool.
 	SubnetPoolCreate(subnetPool SubnetPool) (*SubnetPool, error)
 	// SubnetPoolGet retrieves information regarding a specified SubnetPool.
