@@ -39,3 +39,8 @@ func main(){
   }
 }
 ```
+
+### Configuring a proxy:
+
+ProxyFromEnvironment returns the URL of the proxy to use for a given request, as indicated by the environment variables HTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions thereof). Requests use the proxy from the environment variable matching their scheme, unless excluded by NO_PROXY.
+

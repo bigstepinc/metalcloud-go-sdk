@@ -6,10 +6,11 @@ import (
 	"bytes"
 	"crypto/hmac"
 	"crypto/md5"
+	"crypto/tls"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -30,29 +31,40 @@ type Client struct {
 	endpoint  string
 	userID    int
 }
+
+const (
+	AuthMethodSignature string = "signature"
+	AuthMethodBearer    string = "bearer"
+	AuthMethodOauth     string = "oauth"
+)
+
 type ClientOptions struct {
-	User           string
-	ApiKey         string
-	Endpoint       string
-	UserID         int
-	LoggingEnabled bool
-	ClientId       string
-	ClientSecret   string
-	TokenURL       string
-	Timeout        time.Duration
+	User                 string
+	ApiKey               string
+	Endpoint             string
+	UserID               int
+	LoggingEnabled       bool
+	ClientId             string
+	ClientSecret         string
+	TokenURL             string
+	Timeout              time.Duration
+	InsecureSkipVerify   bool
+	AuthenticationMethod string
 }
 
 func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEnabled bool, clientId string, clientSecret string, tokenURL string) (*Client, error) {
 	return GetMetalcloudClientWithOptions(ClientOptions{
-		User:           user,
-		ApiKey:         apiKey,
-		Endpoint:       endpoint,
-		UserID:         0,
-		LoggingEnabled: loggingEnabled,
-		ClientId:       clientId,
-		ClientSecret:   clientSecret,
-		TokenURL:       tokenURL,
-		Timeout:        5 * time.Minute,
+		User:                 user,
+		ApiKey:               apiKey,
+		Endpoint:             endpoint,
+		UserID:               0,
+		LoggingEnabled:       loggingEnabled,
+		ClientId:             clientId,
+		ClientSecret:         clientSecret,
+		TokenURL:             tokenURL,
+		Timeout:              5 * time.Minute,
+		InsecureSkipVerify:   false,
+		AuthenticationMethod: AuthMethodBearer,
 	})
 }
 
@@ -108,10 +120,32 @@ func GetMetalcloudClientWithOptions(options ClientOptions) (*Client, error) {
 		return nil, err
 	}
 
-	transport := &signatureAdderRoundTripper{
-		APIKey:         options.ApiKey,
-		LoggingEnabled: options.LoggingEnabled,
-		OAuthToken:     oAuthToken,
+	var transport http.RoundTripper
+	switch options.AuthenticationMethod {
+	case AuthMethodSignature:
+		transport = &signatureAdderRoundTripper{
+			APIKey:         options.ApiKey,
+			LoggingEnabled: options.LoggingEnabled,
+			OAuthToken:     oAuthToken,
+		}
+	case AuthMethodOauth:
+		transport = &signatureAdderRoundTripper{
+			APIKey:         options.ApiKey,
+			LoggingEnabled: options.LoggingEnabled,
+			OAuthToken:     oAuthToken,
+		}
+	case AuthMethodBearer:
+		transport = &bearerAuthRoundTripper{
+			APIKey:         options.ApiKey,
+			LoggingEnabled: options.LoggingEnabled,
+			Transport: http.Transport{
+				TLSClientConfig:       &tls.Config{InsecureSkipVerify: options.InsecureSkipVerify},
+				ResponseHeaderTimeout: options.Timeout,
+				Proxy:                 http.ProxyFromEnvironment,
+			},
+		}
+	default:
+		return nil, fmt.Errorf("unknown auth method")
 	}
 
 	httpClient := &http.Client{
@@ -175,7 +209,7 @@ func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 	// Read the content
 	var message []byte
 	if req.Body != nil {
-		message, err = ioutil.ReadAll(req.Body)
+		message, err = io.ReadAll(req.Body)
 		if err != nil {
 			return nil, err
 		}
@@ -224,15 +258,91 @@ func (c *signatureAdderRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 	}
 
 	if c.LoggingEnabled && resp != nil {
-		//log the reply
-		if resp.Body != nil {
-			message, _ = ioutil.ReadAll(resp.Body)
+		err = logReply(resp)
+		if err != nil {
+			return nil, err
 		}
+	}
+	return resp, err
+}
 
-		log.Println(string(message))
+type bearerAuthRoundTripper struct {
+	http.Transport
+	APIKey         string
+	LoggingEnabled bool
+}
 
-		// Restore the io.ReadCloser to its original state
-		resp.Body = ioutil.NopCloser(bytes.NewBuffer(message))
+func logRequest(req *http.Request) error {
+
+	var err error
+
+	// Read the content
+	var message []byte
+	if req.Body != nil {
+		message, err = io.ReadAll(req.Body)
+		if err != nil {
+			return err
+		}
+	}
+
+	log.Printf("%s call to:%s\n", req.Method, req.URL)
+	log.Println(string(message))
+
+	//update 2.11.5 -> this was commented as it seems to generate issues such as net/http: cannot rewind body after connection loss
+	//force close connection. This will avoid the keep-alive related issues for go < 1.6 https://go-review.googlesource.com/c/go/+/3210
+	//req.Close = true
+
+	// Restore the io.ReadCloser to its original state
+	req.Body = io.NopCloser(bytes.NewBuffer(message))
+
+	return nil
+}
+
+// log the reply
+func logReply(resp *http.Response) error {
+	var message []byte
+
+	var err error
+	if resp.Body != nil {
+		message, _ = io.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+	}
+
+	log.Println(string(message))
+
+	// Restore the io.ReadCloser to its original state
+	resp.Body = io.NopCloser(bytes.NewBuffer(message))
+
+	return nil
+}
+
+func (c *bearerAuthRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+
+	var err error
+
+	//add the authentication API
+	req.Header.Set("Authorization", "Bearer "+c.APIKey)
+
+	if c.LoggingEnabled {
+		err = logRequest(req)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	var resp *http.Response
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = c.TLSClientConfig
+	http.DefaultTransport.(*http.Transport).Proxy = c.Proxy
+	http.DefaultTransport.(*http.Transport).ResponseHeaderTimeout = c.ResponseHeaderTimeout
+	resp, err = http.DefaultTransport.RoundTrip(req)
+
+	if c.LoggingEnabled && resp != nil {
+		err = logReply(resp)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return resp, err
