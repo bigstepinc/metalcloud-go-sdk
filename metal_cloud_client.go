@@ -451,14 +451,11 @@ type MetalCloudClient interface {
 	StoragePoolSearch(filter string) (*[]StoragePoolSearchResult, error)
 	//StoragePoolGet returns a storage pool's details
 	StoragePoolGet(serverID int, decryptPasswd bool) (*StoragePool, error)
-	// SubnetGet retrieves information regarding a specified Subnet.
-	SubnetGet(subnetID int) (*Subnet, error)
-	// SubnetDelete deletes the specified Subnet
-	SubnetDelete(subnetID int) error
-	// SubnetCreate creates a new Subnet.
-	SubnetCreate(subnet Subnet) (*Subnet, error)
 	// SubnetPoolCreate creates a new SubnetPool.
 	SubnetPoolCreate(subnetPool SubnetPool) (*SubnetPool, error)
+	SubnetGet(subnetID int) (*Subnet, error)
+	SubnetCreate(subnet Subnet) (*Subnet, error)
+	SubnetDelete(subnetID int) error
 	// SubnetPoolGet retrieves information regarding a specified SubnetPool.
 	SubnetPoolGet(subnetPoolID int) (*SubnetPool, error)
 	// SubnetPoolPrefixSizesStats retrieves information regarding the utilization of a specified SubnetPool.
@@ -469,6 +466,8 @@ type MetalCloudClient interface {
 	SubnetPools() (*[]SubnetPool, error)
 	// SubnetPoolSearch retrieves all switch devices registered in the database with the specified filter
 	SubnetPoolSearch(filter string) (*[]SubnetPool, error)
+	// SubnetPoolCreateOrUpdate creates or updates a subnet pool
+	SubnetPoolCreateOrUpdate(subnetPool SubnetPool) (*SubnetPool, error)
 	// SwitchDeviceGet Retrieves information regarding a specified SwitchDevice.
 	SwitchDeviceGet(networkEquipmentID int, decryptPasswd bool) (*SwitchDevice, error)
 	// SwitchDeviceGetByIdentifierString Retrieves information regarding a specified SwitchDevice by identifier string.

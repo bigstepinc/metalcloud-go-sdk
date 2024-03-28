@@ -62,7 +62,7 @@ var types = [...]string{
 }
 
 const packageName = "metalcloud"
-const sdkPackage = "github.com/metalsoft-io/metal-cloud-sdk-go/v2"
+const sdkPackage = "github.com/metalsoft-io/metal-cloud-sdk-go/v3"
 
 func main() {
 
