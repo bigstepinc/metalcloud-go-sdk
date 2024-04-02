@@ -7,10 +7,10 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestSubnetsUnmarshal(t *testing.T) {
+func TestSubnetPoolsUnmarshal(t *testing.T) {
 	RegisterTestingT(t)
 
-	var obj map[string]searchResultForSubnets
+	var obj map[string]searchResultForSubnetPools
 	err := json.Unmarshal([]byte(_subnetsFixture1), &obj)
 	Expect(err).To(BeNil())
 	Expect(obj["_subnet_pools"]).NotTo(BeNil())
@@ -18,9 +18,9 @@ func TestSubnetsUnmarshal(t *testing.T) {
 	Expect(obj["_subnet_pools"].Rows[0].SubnetPoolPrefixHumanReadable).To(Equal("2a02:0cb8:0000:0000:0000:0000:0000:0000"))
 
 }
-func TestSubnetUtilizationUnmarshal(t *testing.T) {
+func TestSubnetPoolUtilizationUnmarshal(t *testing.T) {
 	RegisterTestingT(t)
-	var obj map[string]searchResultForSubnets
+	var obj map[string]searchResultForSubnetPools
 	err := json.Unmarshal([]byte(_subnetsFixture1), &obj)
 	Expect(err).To(BeNil())
 
@@ -67,7 +67,7 @@ func TestSubnetPoolCreateOrUpdate(t *testing.T) {
 
 	responseBody = `{"error": {"message": "Subnet pool not found.","code": 103}, "jsonrpc": "2.0", "id": 0}`
 
-	err = obj.CreateOrUpdate(mc)
+	_ = obj.CreateOrUpdate(mc)
 
 	body = (<-requestChan).body
 	err2 = json.Unmarshal([]byte(body), &m)

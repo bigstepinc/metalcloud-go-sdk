@@ -3,6 +3,7 @@ package metalcloud
 import (
 	"fmt"
 	"reflect"
+	"strings"
 )
 
 var typeRegistry = make(map[string]reflect.Type)
@@ -22,6 +23,7 @@ func initTypeRegistry() {
 		&StageDefinition{},
 		&Workflow{},
 		&SubnetPool{},
+		&SubnetOOB{},
 		&SwitchDevice{},
 		&Variable{},
 	}
@@ -33,13 +35,17 @@ func initTypeRegistry() {
 	}
 }
 
-//GetObjectByKind creates an object of type <name>
+// GetObjectByKind creates an object of type <name>
 func GetObjectByKind(name string) (reflect.Value, error) {
 	initTypeRegistry()
 	t, ok := typeRegistry[name]
+	typesList := []string{}
+	for k, _ := range typeRegistry {
+		typesList = append(typesList, k)
+	}
 
 	if !ok {
-		return reflect.Value{}, fmt.Errorf("%s was not recongnized as a valid product", name)
+		return reflect.Value{}, fmt.Errorf("%s was not supported by the apply method. Only the following types are supported: %s", name, strings.Join(typesList, ","))
 	}
 
 	v := reflect.New(t)

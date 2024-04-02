@@ -451,23 +451,34 @@ type MetalCloudClient interface {
 	StoragePoolSearch(filter string) (*[]StoragePoolSearchResult, error)
 	//StoragePoolGet returns a storage pool's details
 	StoragePoolGet(serverID int, decryptPasswd bool) (*StoragePool, error)
-	// SubnetPoolCreate creates a new SubnetPool.
-	SubnetPoolCreate(subnetPool SubnetPool) (*SubnetPool, error)
 	SubnetGet(subnetID int) (*Subnet, error)
 	SubnetCreate(subnet Subnet) (*Subnet, error)
 	SubnetDelete(subnetID int) error
+	// SubnetPoolCreateOrUpdate creates or updates a subnet pool
+	SubnetPoolCreateOrUpdate(subnetPool SubnetPool) (*SubnetPool, error)
+	SubnetOOBGet(subnetOOBID int) (*SubnetOOB, error)
+	// SubnetOOBGetByLabel retrieves information regarding a specified Subnet by label.
+	SubnetOOBGetByLabel(subnetOOBLabel string) (*SubnetOOB, error)
+	SubnetOOBCreate(subnetOOB SubnetOOB) (*SubnetOOB, error)
+	SubnetOOBDelete(subnetOOBID int) error
+	SubnetOOBDeleteByLabel(subnetOOBLabel string) error
+	// SubnetOOBSearch retrieves all OOB subnets registered in the database with the specified filter
+	SubnetOOBSearch(filter string) (*[]SubnetOOB, error)
+	// SubnetPoolCreate creates a new SubnetPool.
+	SubnetPoolCreate(subnetPool SubnetPool) (*SubnetPool, error)
 	// SubnetPoolGet retrieves information regarding a specified SubnetPool.
 	SubnetPoolGet(subnetPoolID int) (*SubnetPool, error)
+	// SubnetPoolGetByLabel retrieves information regarding a specified SubnetPool by label.
+	SubnetPoolGetByLabel(subnetPoolLabel string) (*SubnetPool, error)
 	// SubnetPoolPrefixSizesStats retrieves information regarding the utilization of a specified SubnetPool.
 	SubnetPoolPrefixSizesStats(subnetPoolID int) (*SubnetPoolUtilization, error)
 	// SubnetPoolDelete deletes the specified SubnetPool
 	SubnetPoolDelete(subnetPoolID int) error
+	SubnetPoolDeleteByLabel(subnetPoolLabel string) error
 	// SubnetPools retrieves all switch devices registered in the database.
 	SubnetPools() (*[]SubnetPool, error)
 	// SubnetPoolSearch retrieves all switch devices registered in the database with the specified filter
 	SubnetPoolSearch(filter string) (*[]SubnetPool, error)
-	// SubnetPoolCreateOrUpdate creates or updates a subnet pool
-	SubnetPoolCreateOrUpdate(subnetPool SubnetPool) (*SubnetPool, error)
 	// SwitchDeviceGet Retrieves information regarding a specified SwitchDevice.
 	SwitchDeviceGet(networkEquipmentID int, decryptPasswd bool) (*SwitchDevice, error)
 	// SwitchDeviceGetByIdentifierString Retrieves information regarding a specified SwitchDevice by identifier string.
