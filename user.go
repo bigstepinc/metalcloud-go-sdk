@@ -66,7 +66,6 @@ func (c *Client) userGet(userID id) (*User, error) {
 		userID)
 
 	if err != nil {
-
 		return nil, err
 	}
 
@@ -80,7 +79,12 @@ func (c *Client) UserGet(userID int) (*User, error) {
 
 //UserGetByEmail describes returns user account specifications.
 func (c *Client) UserGetByEmail(userLabel string) (*User, error) {
-	return c.userGet(userLabel)
+	userID, err := c.UserEmailToUserID(userLabel)
+	if err != nil {
+		return nil, err
+	}
+	
+	return c.userGet(*userID)
 }
 
 //UserEmailToUserID returns the user id of an user given an email

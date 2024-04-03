@@ -2,32 +2,32 @@
 
 package metalcloud
 
-//ExternalConnectionGet returns an external connection with specified id
+//ExternalConnectionGet 
 func (c *Client) ExternalConnectionGet(externalConnectionID int) (*ExternalConnection, error) {
 	return c.externalConnectionGet(externalConnectionID)
 }
 
-//ExternalConnectionGetByLabel returns an external connection with specified id
+//ExternalConnectionGetByLabel 
 func (c *Client) ExternalConnectionGetByLabel(externalConnectionLabel string) (*ExternalConnection, error) {
 	return c.externalConnectionGet(externalConnectionLabel)
 }
 
-//ExternalConnectionEdit updates an external connection.
+//ExternalConnectionEdit connection.
 func (c *Client) ExternalConnectionEdit(externalConnectionID int, externalConnection ExternalConnection) (*ExternalConnection, error) {
 	return c.externalConnectionEdit(externalConnectionID,externalConnection)
 }
 
-//ExternalConnectionEditByLabel updates an external connection.
+//ExternalConnectionEditByLabel connection.
 func (c *Client) ExternalConnectionEditByLabel(externalConnectionLabel string, externalConnection ExternalConnection) (*ExternalConnection, error) {
 	return c.externalConnectionEdit(externalConnectionLabel,externalConnection)
 }
 
-//ExternalConnectionDelete deletes an external connection.
+//ExternalConnectionDelete connection.
 func (c *Client) ExternalConnectionDelete(externalConnectionID int) error {
 	return c.externalConnectionDelete(externalConnectionID)
 }
 
-//ExternalConnectionDeleteByLabel deletes an external connection.
+//ExternalConnectionDeleteByLabel connection.
 func (c *Client) ExternalConnectionDeleteByLabel(externalConnectionLabel string) error {
 	return c.externalConnectionDelete(externalConnectionLabel)
 }

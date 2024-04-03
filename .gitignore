@@ -1,1 +1,6 @@
 .vscode
+
+# direnv
+.envrc
+
+/bin

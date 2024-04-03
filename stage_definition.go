@@ -7,18 +7,21 @@ import (
 
 //StageDefinition contains a JavaScript file, HTTP request url and options, an AnsibleBundle or an API call template.
 type StageDefinition struct {
-	StageDefinitionID                     int         `json:"stage_definition_id,omitempty" yaml:"id,omitempty"`
-	UserIDOwner                           int         `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
-	UserIDAuthenticated                   int         `json:"user_id_authenticated,omitempty" yaml:"userIDAuthenticated,omitempty"`
-	StageDefinitionLabel                  string      `json:"stage_definition_label,omitempty" yaml:"label,omitempty"`
-	IconAssetDataURI                      string      `json:"icon_asset_data_uri,omitempty" yaml:"iconAssetDataURI,omitempty"`
-	StageDefinitionTitle                  string      `json:"stage_definition_title,omitempty" yaml:"title,omitempty"`
-	StageDefinitionDescription            string      `json:"stage_definition_description,omitempty" yaml:"description,omitempty"`
-	StageDefinitionType                   string      `json:"stage_definition_type,omitempty" yaml:"type,omitempty"`
-	StageDefinitionVariablesNamesRequired []string    `json:"stage_definition_variable_names_required,omitempty" yaml:"variableNames,omitempty"`
-	StageDefinition                       interface{} `json:"stage_definition,omitempty" yaml:"stageDefinition,omitempty"`
-	StageDefinitionCreatedTimestamp       string      `json:"stage_definition_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
-	StageDefinitionUpdatedTimestamp       string      `json:"stage_definition_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
+	StageDefinitionID                              int         `json:"stage_definition_id,omitempty" yaml:"id,omitempty"`
+	UserIDOwner                                    int         `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	UserIDAuthenticated                            int         `json:"user_id_authenticated,omitempty" yaml:"userIDAuthenticated,omitempty"`
+	StageDefinitionLabel                           string      `json:"stage_definition_label,omitempty" yaml:"label,omitempty"`
+	IconAssetDataURI                               string      `json:"icon_asset_data_uri,omitempty" yaml:"iconAssetDataURI,omitempty"`
+	StageDefinitionTitle                           string      `json:"stage_definition_title,omitempty" yaml:"title,omitempty"`
+	StageDefinitionDescription                     string      `json:"stage_definition_description,omitempty" yaml:"description,omitempty"`
+	StageDefinitionType                            string      `json:"stage_definition_type,omitempty" yaml:"type,omitempty"`
+	StageDefinitionVariablesNamesRequired          []string    `json:"stage_definition_variable_names_required,omitempty" yaml:"variableNames,omitempty"`
+	StageDefinition                                interface{} `json:"stage_definition,omitempty" yaml:"stageDefinition,omitempty"`
+	StageDefinitionCreatedTimestamp                string      `json:"stage_definition_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	StageDefinitionUpdatedTimestamp                string      `json:"stage_definition_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
+	StageDefinitionContext                         string      `json:"stage_definition_context,omitempty" yaml:"context,omitempty"`
+	StageDefinitionAutomaticallyAddedToPreDeploys  int         `json:"stage_definition_automatically_added_to_pre_deploys,omitempty" yaml:"automaticallyAddedToPreDeploys,omitempty"`
+	StageDefinitionAutomaticallyAddedToPostDeploys int         `json:"stage_definition_automatically_added_to_post_deploys,omitempty" yaml:"automaticallyAddedToPostDeploys,omitempty"`
 }
 
 //HTTPRequest represents an HTTP request definition compatible with the standard Web Fetch API.
@@ -202,6 +205,9 @@ func (s *StageDefinition) UnmarshalJSON(b []byte) error {
 	s.StageDefinitionVariablesNamesRequired = w.StageDefinitionVariablesNamesRequired
 	s.StageDefinitionCreatedTimestamp = w.StageDefinitionCreatedTimestamp
 	s.StageDefinitionUpdatedTimestamp = w.StageDefinitionUpdatedTimestamp
+	s.StageDefinitionContext = w.StageDefinitionContext
+	s.StageDefinitionAutomaticallyAddedToPreDeploys = w.StageDefinitionAutomaticallyAddedToPreDeploys
+	s.StageDefinitionAutomaticallyAddedToPostDeploys = w.StageDefinitionAutomaticallyAddedToPostDeploys
 
 	return err
 }

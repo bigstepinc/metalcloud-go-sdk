@@ -49,6 +49,7 @@ var types = [...]string{
 	"OSTemplateOSAssetData",
 	"SharedDriveOperation",
 	"SwitchDevice",
+	"SwitchDeviceDefaults",
 	"SwitchDeviceLink",
 	"SubnetPool",
 	"SubnetPoolUtilization",

@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-//ServerSearchResult represents a server in a datacenter.
+// ServerSearchResult represents a server in a datacenter.
 type ServerSearchResult struct {
 	ServerID                       int               `json:"server_id,omitempty" yaml:"id,omitempty"`
 	ServerUUID                     string            `json:"server_uuid,omitempty" yaml:"uuid,omitempty"`
@@ -52,9 +52,10 @@ type ServerSearchResult struct {
 	UserEmail                      [][]string        `json:"user_email,omitempty" yaml:"userEmail,omitempty"`
 	UserID                         [][]int           `json:"user_id,omitempty" yaml:"users,omitempty"`
 	DatacenterName                 string            `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+	ServerSubmodel                 string            `json:"server_submodel,omitempty" yaml:"submodel,omitempty"`
 }
 
-//Server represents a server in a datacenter.
+// Server represents a server in a datacenter.
 type Server struct {
 	ServerID                                   int                         `json:"server_id,omitempty" yaml:"id,omitempty"`
 	ServerUUID                                 string                      `json:"server_uuid,omitempty" yaml:"UUID,omitempty"`
@@ -136,9 +137,10 @@ type Server struct {
 	ServerBDKDEbug                             bool                        `json:"server_bdk_debug" yaml:"BDKDebug"`
 	ServerKeysJSON                             string                      `json:"server_keys_json" yaml:"keysJSON"`
 	NICDetails                                 map[string]ServerNICDetails `json:"nic_details,omitempty" yaml:"NICDetails,omitempty"`
+	ServerSubmodel                             string                      `json:"server_submodel,omitempty" yaml:"submodel,omitempty"`
 }
 
-//ServerDisk describes a disk
+// ServerDisk describes a disk
 type ServerDisk struct {
 	ServerDiskID     int    `json:"server_disk_id,omitempty" yaml:"id,omitempty"`
 	ServerDiskModel  string `json:"server_disk_model,omitempty" yaml:"model,omitempty"`
@@ -149,12 +151,12 @@ type ServerDisk struct {
 	ServerDiskSizeGB int    `json:"server_disk_size_gb,omitempty" yaml:"sizeGB,omitempty"`
 }
 
-//ServerInterface contains server connectivity information.
+// ServerInterface contains server connectivity information.
 type ServerInterface struct {
 	ServerInterfaceMACAddress string `json:"server_interface_mac_address,omitempty" yaml:"macAddress,omitempty"`
 }
 
-//SearchResultForServers describes a serach result
+// SearchResultForServers describes a serach result
 type SearchResultForServers struct {
 	DurationMilliseconds int                  `json:"duration_millisecnds,omitempty"`
 	Rows                 []ServerSearchResult `json:"rows,omitempty"`
@@ -162,7 +164,7 @@ type SearchResultForServers struct {
 	RowsTotal            int                  `json:"rows_total,omitempty"`
 }
 
-//ServerComponent information about a server's components
+// ServerComponent information about a server's components
 type ServerComponent struct {
 	ServerComponentID                              int      `json:"server_component_id,omitempty" yaml:"id,omitempty"`
 	ServerID                                       int      `json:"server_id,omitempty" yaml:"serverID,omitempty"`
@@ -178,7 +180,7 @@ type ServerComponent struct {
 	ServerComponentFirmwareScheduledTimestamp      string   `json:"server_component_firmware_scheduled_timestamp,omitempty" yaml:"firmwareScheduledTimestamp,omitempty"`
 }
 
-//SearchResultForServerComponents describes a search result
+// SearchResultForServerComponents describes a search result
 type SearchResultForServerComponents struct {
 	DurationMilliseconds int               `json:"duration_millisecnds,omitempty"`
 	Rows                 []ServerComponent `json:"rows,omitempty"`
@@ -217,7 +219,32 @@ type ServerCreateAndRegister struct {
 	ServerManagementPassword string `json:"server_ipmi_password" yaml:"pass"`
 }
 
-//ServersSearch searches for servers matching certain filter
+type ServerCreateUnmanaged struct {
+	DatacenterName           string                  `json:"datacenter_name" yaml:"datacenter"`
+	ServerSerialNumber       string                  `json:"server_serial_number,omitempty" yaml:"serialNumber,omitempty"`
+	ServerManagementAddress  string                  `json:"server_ipmi_host,omitempty" yaml:"address,omitempty"`
+	ServerManagementUser     string                  `json:"server_ipmi_user,omitempty" yaml:"user,omitempty"`
+	ServerManagementPassword string                  `json:"server_ipmi_password,omitempty" yaml:"pass,omitempty"`
+	ServerInterfaces         []ServerInterfaceCreate `json:"server_interfaces,omitempty" yaml:"interfaces,omitempty"`
+	ServerTypeID             int                     `json:"server_type_id,omitempty" yaml:"serverTypeID,omitempty"`
+}
+
+type ServerInterfaceCreate struct {
+	NetworkEquipmentIdentifierString          string `json:"network_equipment_identifier_string,omitempty" yaml:"switch,omitempty"`
+	ServerInterfaceMACAddress                 string `json:"server_interface_mac_address,omitempty" yaml:"mac,omitempty"`
+	NetworkEquipmentInterfaceIdentifierString string `json:"network_equipment_interface_identifier_string,omitempty" yaml:"switchInterface,omitempty"`
+}
+
+type ServerDefaultCredentials struct {
+	ServerDefaultCredentialsID       int    `json:"server_default_credentials_id,omitempty" yaml:"id,omitempty"`
+	DatacenterName                   string `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+	ServerSerialNumber               string `json:"server_serial_number,omitempty" yaml:"serialNumber,omitempty"`
+	ServerBMCMACAddress              string `json:"server_bmc_mac_address" yaml:"BMCMACAddress"`
+	ServerDefaultCredentialsUsername string `json:"server_default_credentials_username" yaml:"username"`
+	ServerDefaultCredentialsPassword string `json:"server_default_credentials_password" yaml:"password"`
+}
+
+// ServersSearch searches for servers matching certain filter
 func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 
 	tables := []string{"_servers_instances"}
@@ -271,6 +298,7 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 			"user_id",
 			"user_id_owner",
 			"user_email",
+			"server_submodel",
 		},
 	}
 
@@ -315,7 +343,7 @@ func (c *Client) ServersSearch(filter string) (*[]ServerSearchResult, error) {
 	return &servers, nil
 }
 
-//ServerGetByUUID retrieves information about a specified Server by using the server's UUID
+// ServerGetByUUID retrieves information about a specified Server by using the server's UUID
 func (c *Client) ServerGetByUUID(serverUUID string, decryptPasswd bool) (*Server, error) {
 
 	var createdObject Server
@@ -358,7 +386,7 @@ func (c *Client) ServerGetByUUID(serverUUID string, decryptPasswd bool) (*Server
 
 }
 
-//ServerGet returns a server's details
+// ServerGet returns a server's details
 func (c *Client) ServerGet(serverID int, decryptPasswd bool) (*Server, error) {
 
 	var createdObject Server
@@ -410,7 +438,7 @@ func (c *Client) ServerGet(serverID int, decryptPasswd bool) (*Server, error) {
 	return &createdObject, nil
 }
 
-//ServerCreate manually creates a server record
+// ServerCreate manually creates a server record. DEPRECATED
 func (c *Client) ServerCreate(server Server, autoGenerate bool) (int, error) {
 
 	var createdObject int
@@ -429,7 +457,57 @@ func (c *Client) ServerCreate(server Server, autoGenerate bool) (int, error) {
 	return createdObject, nil
 }
 
-//ServerCreateAndRegister manually creates and registers a server
+// ServerUnmanagedImport creates an unmanaged server
+func (c *Client) ServerUnmanagedImport(server ServerCreateUnmanaged) (*Server, error) {
+
+	var createdObject Server
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_unmanaged_import",
+		[]ServerCreateUnmanaged{server},
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdObject, nil
+}
+
+// ServerUnmanagedImportBatch Imports multiple unmanaged servers
+func (c *Client) ServerUnmanagedImportBatch(servers []ServerCreateUnmanaged) (*map[string]Server, error) {
+
+	var createdObject map[string]Server
+
+	resp, err := c.rpcClient.Call(
+		"server_unmanaged_import_batch",
+		[][]ServerCreateUnmanaged{servers},
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
+	if ok {
+		createdObject = map[string]Server{}
+	} else {
+		err = resp.GetObject(&createdObject)
+
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return &createdObject, nil
+}
+
+// ServerCreateAndRegister manually creates and registers a server
 func (c *Client) ServerCreateAndRegister(serverCreateAndRegister ServerCreateAndRegister) (int, error) {
 
 	var createdObject Server
@@ -448,12 +526,12 @@ func (c *Client) ServerCreateAndRegister(serverCreateAndRegister ServerCreateAnd
 	return createdObject.ServerID, nil
 }
 
-//ServerEditComplete - perform a complete edit
+// ServerEditComplete - perform a complete edit
 func (c *Client) ServerEditComplete(serverID int, server Server) (*Server, error) {
 	return c.ServerEdit(serverID, "complete", server)
 }
 
-//ServerEditIPMI - edit only IPMI settings
+// ServerEditIPMI - edit only IPMI settings
 func (c *Client) ServerEditIPMI(serverID int, server Server, serverUpdateInBMC bool) (*Server, error) {
 	var createdObject Server
 
@@ -474,12 +552,12 @@ func (c *Client) ServerEditIPMI(serverID int, server Server, serverUpdateInBMC b
 	return &createdObject, nil
 }
 
-//ServerEditAvailability - edit only server availability settings
+// ServerEditAvailability - edit only server availability settings
 func (c *Client) ServerEditAvailability(serverID int, server Server) (*Server, error) {
 	return c.ServerEdit(serverID, "availability", server)
 }
 
-//ServerEdit edits a server record
+// ServerEdit edits a server record
 func (c *Client) ServerEdit(serverID int, serverEditType string, server Server) (*Server, error) {
 
 	var createdObject Server
@@ -499,9 +577,9 @@ func (c *Client) ServerEdit(serverID int, serverEditType string, server Server) 
 	return &createdObject, nil
 }
 
-//ServerEditProperty edits a specific property from the server record
-//this is used instead of the server edit function as it does not require a marshal-unmarshal to and form the server object
-//which sometimes is broken due to frequent changes on the server side
+// ServerEditProperty edits a specific property from the server record
+// this is used instead of the server edit function as it does not require a marshal-unmarshal to and form the server object
+// which sometimes is broken due to frequent changes on the server side
 func (c *Client) ServerEditProperty(serverID int, serverPropertyToEdit string, serverPropertyValue interface{}) error {
 
 	var createdObject map[string]interface{}
@@ -532,7 +610,7 @@ func (c *Client) ServerEditProperty(serverID int, serverPropertyToEdit string, s
 	return nil
 }
 
-//ServerDelete deletes all the information about a specified Server.
+// ServerDelete deletes all the information about a specified Server.
 func (c *Client) ServerDelete(serverID int, skipIPMI bool) error {
 
 	resp, err := c.rpcClient.Call("server_delete", serverID, skipIPMI)
@@ -548,7 +626,7 @@ func (c *Client) ServerDelete(serverID int, skipIPMI bool) error {
 	return nil
 }
 
-//ServerDecomission decomissions the server row and deletes all child rows.
+// ServerDecomission decomissions the server row and deletes all child rows.
 func (c *Client) ServerDecomission(serverID int, skipIPMI bool) error {
 
 	resp, err := c.rpcClient.Call("server_decomission", serverID, skipIPMI)
@@ -564,8 +642,8 @@ func (c *Client) ServerDecomission(serverID int, skipIPMI bool) error {
 	return nil
 }
 
-//ServerFirmwareComponentUpgrade Creates a firmware upgrading session for the specified component.
-//If no strServerComponentFirmwareNewVersion or strFirmwareBinaryURL are provided the system will use the values from the database which should have been previously added
+// ServerFirmwareComponentUpgrade Creates a firmware upgrading session for the specified component.
+// If no strServerComponentFirmwareNewVersion or strFirmwareBinaryURL are provided the system will use the values from the database which should have been previously added
 func (c *Client) ServerFirmwareComponentUpgrade(serverID int, serverComponentID int, serverComponentFirmwareNewVersion string, firmwareBinaryURL string) error {
 
 	resp, err := c.rpcClient.Call(
@@ -587,7 +665,7 @@ func (c *Client) ServerFirmwareComponentUpgrade(serverID int, serverComponentID 
 	return nil
 }
 
-//ServerFirmwareUpgrade creates a firmware upgrading session that affects all components from the specified server that have a target version set and are updatable.
+// ServerFirmwareUpgrade creates a firmware upgrading session that affects all components from the specified server that have a target version set and are updatable.
 func (c *Client) ServerFirmwareUpgrade(serverID int) error {
 
 	resp, err := c.rpcClient.Call(
@@ -606,7 +684,7 @@ func (c *Client) ServerFirmwareUpgrade(serverID int) error {
 	return nil
 }
 
-//ServerFirmwareComponentTargetVersionSet Sets a firmware target version for the upgrading process. The system will apply the upgrade at the next upgrading session.
+// ServerFirmwareComponentTargetVersionSet Sets a firmware target version for the upgrading process. The system will apply the upgrade at the next upgrading session.
 func (c *Client) ServerFirmwareComponentTargetVersionSet(serverComponentID int, serverComponentFirmwareNewVersion string) error {
 
 	resp, err := c.rpcClient.Call(
@@ -626,7 +704,7 @@ func (c *Client) ServerFirmwareComponentTargetVersionSet(serverComponentID int, 
 	return nil
 }
 
-//ServerFirmwareComponentTargetVersionUpdate Updates for every component of the specified server the available firmware versions that can be used as target by the firmware upgrading process. The available versions are extracted from a vendor specific catalog.
+// ServerFirmwareComponentTargetVersionUpdate Updates for every component of the specified server the available firmware versions that can be used as target by the firmware upgrading process. The available versions are extracted from a vendor specific catalog.
 func (c *Client) ServerFirmwareComponentTargetVersionUpdate(serverComponentID int) error {
 
 	resp, err := c.rpcClient.Call(
@@ -644,7 +722,7 @@ func (c *Client) ServerFirmwareComponentTargetVersionUpdate(serverComponentID in
 	return nil
 }
 
-//ServerFirmwareComponentTargetVersionAdd Adds a new available firmware version for a server component along with the url of the binary. If the version already exists the old url will be overwritten.
+// ServerFirmwareComponentTargetVersionAdd Adds a new available firmware version for a server component along with the url of the binary. If the version already exists the old url will be overwritten.
 func (c *Client) ServerFirmwareComponentTargetVersionAdd(serverComponentID int, version string, firmareBinaryURL string) error {
 
 	resp, err := c.rpcClient.Call(
@@ -664,7 +742,7 @@ func (c *Client) ServerFirmwareComponentTargetVersionAdd(serverComponentID int, 
 	return nil
 }
 
-//ServerComponentGet returns a server's component's details
+// ServerComponentGet returns a server's component's details
 func (c *Client) ServerComponentGet(serverComponentID int) (*ServerComponent, error) {
 
 	var createdObject ServerComponent
@@ -681,7 +759,7 @@ func (c *Client) ServerComponentGet(serverComponentID int) (*ServerComponent, er
 	return &createdObject, nil
 }
 
-//ServerComponents searches for servers matching certain filter
+// ServerComponents searches for servers matching certain filter
 func (c *Client) ServerComponents(serverID int, filter string) (*[]ServerComponent, error) {
 
 	tables := []string{"_server_components"}
@@ -731,7 +809,7 @@ func (c *Client) ServerComponents(serverID int, filter string) (*[]ServerCompone
 	return &list, nil
 }
 
-//ServerPowerSet reboots or powers on a server
+// ServerPowerSet reboots or powers on a server
 func (c *Client) ServerPowerSet(serverID int, operation string) error {
 	if err := checkID(serverID); err != nil {
 		return err
@@ -753,7 +831,7 @@ func (c *Client) ServerPowerSet(serverID int, operation string) error {
 	return nil
 }
 
-//ServerReregister triggers a re-register of a server
+// ServerReregister triggers a re-register of a server
 func (c *Client) ServerReregister(serverID int, bSkipIPMI bool, bUseBDKAgent bool) error {
 	if err := checkID(serverID); err != nil {
 		return err
@@ -776,7 +854,7 @@ func (c *Client) ServerReregister(serverID int, bSkipIPMI bool, bUseBDKAgent boo
 	return nil
 }
 
-//ServerStatusUpdate alters the status of a server
+// ServerStatusUpdate alters the status of a server
 func (c *Client) ServerStatusUpdate(serverID int, status string) error {
 	if err := checkID(serverID); err != nil {
 		return err
@@ -798,7 +876,7 @@ func (c *Client) ServerStatusUpdate(serverID int, status string) error {
 	return nil
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (s Server) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var result *Server
@@ -831,7 +909,7 @@ func (s Server) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (s Server) Delete(client MetalCloudClient) error {
 	var result *Server
 	var id int
@@ -860,7 +938,7 @@ func (s Server) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (s Server) Validate() error {
 	if s.ServerUUID == "" && s.ServerID == 0 {
 		return fmt.Errorf("id is required")
@@ -868,7 +946,7 @@ func (s Server) Validate() error {
 	return nil
 }
 
-//ServerEditRack returns a server's rack info details
+// ServerEditRack returns a server's rack info details
 func (c *Client) ServerEditRack(serverID int, serverEditRack ServerEditRack) (*Server, error) {
 
 	var createdObject Server
@@ -887,7 +965,7 @@ func (c *Client) ServerEditRack(serverID int, serverEditRack ServerEditRack) (*S
 	return &createdObject, nil
 }
 
-//ServerEditInventory returns a server's inventory details
+// ServerEditInventory returns a server's inventory details
 func (c *Client) ServerEditInventory(serverID int, serverEditInventory ServerEditInventory) (*Server, error) {
 
 	var createdObject Server
@@ -906,7 +984,7 @@ func (c *Client) ServerEditInventory(serverID int, serverEditInventory ServerEdi
 	return &createdObject, nil
 }
 
-//InstanceServerReplace replaces a server associated to an instance. Returns an AFC Group ID to be used in the AFC Deploy Viewer.
+// InstanceServerReplace replaces a server associated to an instance. Returns an AFC Group ID to be used in the AFC Deploy Viewer.
 func (c *Client) InstanceServerReplace(instanceID int, serverID int) (int, error) {
 
 	var createdObject int
@@ -923,4 +1001,83 @@ func (c *Client) InstanceServerReplace(instanceID int, serverID int) (int, error
 	}
 
 	return createdObject, nil
+}
+
+// ServerDefaultCredentialsAdd Adds BMC credentials to the default credentials list for the ZTP process
+func (c *Client) ServerDefaultCredentialsAdd(credentials []ServerDefaultCredentials) error {
+
+	var createdObject int
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_default_credentials_add",
+		[][]ServerDefaultCredentials{credentials},
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ServerDefaultCredentials retrieves the default credentials for server BMCs for the ZTP process for a given datacenter
+func (c *Client) ServerDefaultCredentials(datacenter_name string, decryptPasswd bool) (*[]ServerDefaultCredentials, error) {
+
+	var createdObjects []ServerDefaultCredentials
+
+	err := c.rpcClient.CallFor(
+		&createdObjects,
+		"server_default_credentials",
+		datacenter_name)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for i, createdObject := range createdObjects {
+
+		if decryptPasswd {
+
+			passwdComponents := strings.Split(createdObject.ServerDefaultCredentialsPassword, ":")
+
+			if len(passwdComponents) == 2 {
+				if strings.Contains(passwdComponents[0], "Not authorized") {
+					return nil, fmt.Errorf("Permission missing. %s", passwdComponents[1])
+				} else {
+					var passwd string
+
+					err = c.rpcClient.CallFor(
+						&passwd,
+						"password_decrypt",
+						passwdComponents[1],
+					)
+					if err != nil {
+						return nil, err
+					}
+
+					createdObjects[i].ServerDefaultCredentialsPassword = passwd
+				}
+			}
+		} else {
+			createdObject.ServerDefaultCredentialsPassword = ""
+		}
+	}
+	return &createdObjects, nil
+}
+
+// ServerDefaultCredentialsRemove Removes BMC credentials to the default credentials list for the ZTP process
+func (c *Client) ServerDefaultCredentialsRemove(default_credentials_id []int) error {
+
+	var createdObject int
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"server_default_credentials_remove",
+		[][]int{default_credentials_id},
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

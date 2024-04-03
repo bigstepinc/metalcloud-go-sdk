@@ -1,11 +1,12 @@
 package metalcloud
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 )
 
-//Datacenter - datacenter description
+// Datacenter - datacenter description
 type Datacenter struct {
 	DatacenterID               int               `json:"datacenter_id,omitempty" yaml:"id,omitempty"`
 	DatacenterName             string            `json:"datacenter_name,omitempty" yaml:"name,omitempty"`
@@ -22,7 +23,7 @@ type Datacenter struct {
 	DatacenterConfig           *DatacenterConfig `json:"datacenter_config_json,omitempty" yaml:"config,omitempty"`
 }
 
-//DatacenterConfig - datacenter configuration
+// DatacenterConfig - datacenter configuration
 type DatacenterConfig struct {
 	BSIMachinesSubnetIPv4CIDR                          string                 `json:"BSIMachinesSubnetIPv4CIDR,omitempty" yaml:"BSIMachinesSubnetIPv4CIDR,omitempty"`
 	BSIVRRPListenIPv4                                  string                 `json:"BSIVRRPListenIPv4,omitempty" yaml:"BSIVRRPListenIPv4,omitempty"`
@@ -60,8 +61,11 @@ type DatacenterConfig struct {
 	EnableDHCPBMCMACAddressWhitelist                   bool                   `json:"enableDHCPBMCMACAddressWhitelist" yaml:"enableDHCPBMCMACAddressWhitelist"`
 	DHCPBMCMACAddressWhitelist                         []string               `json:"dhcpBMCMACAddressWhitelist" yaml:"dhcpBMCMACAddressWhitelist"`
 	DefaultServerCleanupPolicyID                       int                    `json:"defaultServerCleanupPolicyID" yaml:"defaultServerCleanupPolicyID"`
+	DefaultWANNetworkProfileID                         int                    `json:"defaultWANNetworkProfileID" yaml:"defaultWANNetworkProfileID"`
 	DefaultDeploymentMechanism                         string                 `json:"defaultDeploymentMechanism" yaml:"defaultDeploymentMechanism"`
 	DefaultCleanupAndRegistrationMechanism             string                 `json:"defaultCleanupAndRegistrationMechanism" yaml:"defaultCleanupAndRegistrationMechanism"`
+	NFSServer                                          string                 `json:"NFSServer" yaml:"NFSServer"`
+	Option82ToIPMapping                                Option82ToIPMapping    `json:"Option82ToIPMapping" yaml:"Option82ToIPMapping"`
 }
 
 type WebProxy struct {
@@ -69,6 +73,15 @@ type WebProxy struct {
 	WebProxyServerPort int    `json:"web_proxy_server_port,omitempty" yaml:"port,omitempty"`
 	WebProxyUsername   string `json:"web_proxy_username,omitempty" yaml:"username,omitempty"`
 	WebProxyPassword   string `json:"web_proxy_password,omitempty" yaml:"password,omitempty"`
+}
+
+type Option82ToIPMapping map[string]string
+func (m *Option82ToIPMapping) UnmarshalJSON(data []byte) error {
+    if len(data) == 2 && string(data) == "[]" {
+        *m = make(Option82ToIPMapping)
+        return nil
+    }
+    return json.Unmarshal(data, (*map[string]string)(m))
 }
 
 /*
@@ -175,22 +188,22 @@ func (o *SwitchProvisioner) MarshalJSON() ([]byte, error) {
 }
 */
 
-//Datacenters returns datacenters for all users
+// Datacenters returns datacenters for all users
 func (c *Client) Datacenters(onlyActive bool) (*map[string]Datacenter, error) {
 	return c.datacenters(nil, onlyActive)
 }
 
-//DatacentersByUserID returns datacenters for specific user
+// DatacentersByUserID returns datacenters for specific user
 func (c *Client) DatacentersByUserID(userID int, onlyActive bool) (*map[string]Datacenter, error) {
 	return c.datacenters(userID, onlyActive)
 }
 
-//DatacentersByUserEmail returns datacenters by email
+// DatacentersByUserEmail returns datacenters by email
 func (c *Client) DatacentersByUserEmail(userEmail string, onlyActive bool) (*map[string]Datacenter, error) {
 	return c.datacenters(userEmail, onlyActive)
 }
 
-//datacenters returns datacenters
+// datacenters returns datacenters
 func (c *Client) datacenters(userID id, onlyActive bool) (*map[string]Datacenter, error) {
 	resp, err := c.rpcClient.Call(
 		"datacenters",
@@ -223,22 +236,22 @@ func (c *Client) datacenters(userID id, onlyActive bool) (*map[string]Datacenter
 	return &createdObject, nil
 }
 
-//DatacenterGet returns details of a specific datacenter
+// DatacenterGet returns details of a specific datacenter
 func (c *Client) DatacenterGet(datacenterName string) (*Datacenter, error) {
 	return c.datacenterGetForUser(datacenterName, nil)
 }
 
-//DatacenterGetForUserByEmail returns details of a specific datacenter
+// DatacenterGetForUserByEmail returns details of a specific datacenter
 func (c *Client) DatacenterGetForUserByEmail(datacenterName string, userID string) (*Datacenter, error) {
 	return c.datacenterGetForUser(datacenterName, userID)
 }
 
-//DatacenterGetForUserByID returns details of a specific datacenter
+// DatacenterGetForUserByID returns details of a specific datacenter
 func (c *Client) DatacenterGetForUserByID(datacenterName string, userID int) (*Datacenter, error) {
 	return c.datacenterGetForUser(datacenterName, userID)
 }
 
-//DatacenterGetForUser returns details of a specific datacenter
+// DatacenterGetForUser returns details of a specific datacenter
 func (c *Client) datacenterGetForUser(datacenterName string, userID id) (*Datacenter, error) {
 	var datacenter Datacenter
 
@@ -254,7 +267,7 @@ func (c *Client) datacenterGetForUser(datacenterName string, userID id) (*Datace
 	return &datacenter, nil
 }
 
-//DatacenterConfigGet returns details of a specific datacenter
+// DatacenterConfigGet returns details of a specific datacenter
 func (c *Client) DatacenterConfigGet(datacenterName string) (*DatacenterConfig, error) {
 	var datacenterConfig DatacenterConfig
 
@@ -270,7 +283,7 @@ func (c *Client) DatacenterConfigGet(datacenterName string) (*DatacenterConfig, 
 	return &datacenterConfig, nil
 }
 
-//DatacenterConfigUpdate Updates configuration information for a specified Datacenter.
+// DatacenterConfigUpdate Updates configuration information for a specified Datacenter.
 func (c *Client) DatacenterConfigUpdate(datacenterName string, datacenterConfig DatacenterConfig) error {
 
 	resp, err := c.rpcClient.Call(
@@ -290,7 +303,7 @@ func (c *Client) DatacenterConfigUpdate(datacenterName string, datacenterConfig 
 	return nil
 }
 
-//DatacenterCreate creates a new Datacenter
+// DatacenterCreate creates a new Datacenter
 func (c *Client) DatacenterCreate(datacenter Datacenter, datacenterConfig DatacenterConfig) (*Datacenter, error) {
 	var createdObj Datacenter
 
@@ -309,12 +322,12 @@ func (c *Client) DatacenterCreate(datacenter Datacenter, datacenterConfig Datace
 
 //bsideveloper.datacenter_agents_config_json_download_url('uk-reading')
 
-//structure to hold the return for datacenter_agents_config_json_download_url
+// structure to hold the return for datacenter_agents_config_json_download_url
 type datacenterConfigJSONURL struct {
 	URL string `json:"datacenter_agents_config_json_download_url,omitempty"`
 }
 
-//DatacenterAgentsConfigJSONDownloadURL returns the agent url (and automatically decrypts it)
+// DatacenterAgentsConfigJSONDownloadURL returns the agent url (and automatically decrypts it)
 func (c *Client) DatacenterAgentsConfigJSONDownloadURL(datacenterName string, decrypt bool) (string, error) {
 	var createdObj datacenterConfigJSONURL
 
@@ -355,7 +368,7 @@ func (c *Client) DatacenterAgentsConfigJSONDownloadURL(datacenterName string, de
 	return agentConfigURL, nil
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (dc Datacenter) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	err = dc.Validate()
@@ -383,12 +396,12 @@ func (dc Datacenter) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (dc Datacenter) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (dc Datacenter) Validate() error {
 	if dc.DatacenterName == "" {
 		return fmt.Errorf("name is required")
