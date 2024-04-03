@@ -5,9 +5,9 @@ import (
 	"reflect"
 )
 
-var typeRegistry = make(map[string]reflect.Type)
-
-func initTypeRegistry() {
+// GetTypesThatSupportApplierInterface returns a list of types that support the applier interface
+func GetTypesThatSupportApplierInterface() map[string]reflect.Type {
+	typeRegistry := map[string]reflect.Type{}
 	myTypes := []Applier{
 		&InstanceArray{},
 		&Datacenter{},
@@ -31,11 +31,14 @@ func initTypeRegistry() {
 		u := reflect.TypeOf(v).Elem()
 		typeRegistry[u.Name()] = t.Type()
 	}
+
+	return typeRegistry
 }
 
-//GetObjectByKind creates an object of type <name>
+// GetObjectByKind creates an object of type <name>. Only supported on types that implement
+// the Applier interface. Use GetTypesThatSupportApplierInterface to get a list of supported types
 func GetObjectByKind(name string) (reflect.Value, error) {
-	initTypeRegistry()
+	typeRegistry := GetTypesThatSupportApplierInterface()
 	t, ok := typeRegistry[name]
 
 	if !ok {
