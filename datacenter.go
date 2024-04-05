@@ -413,7 +413,7 @@ func (dc Datacenter) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-// Delete dec
+// Delete implements interface Applier
 func (dc Datacenter) Delete(client MetalCloudClient) error {
 	var err error
 	err = dc.Validate()
