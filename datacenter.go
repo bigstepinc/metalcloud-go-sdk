@@ -76,12 +76,13 @@ type WebProxy struct {
 }
 
 type Option82ToIPMapping map[string]string
+
 func (m *Option82ToIPMapping) UnmarshalJSON(data []byte) error {
-    if len(data) == 2 && string(data) == "[]" {
-        *m = make(Option82ToIPMapping)
-        return nil
-    }
-    return json.Unmarshal(data, (*map[string]string)(m))
+	if len(data) == 2 && string(data) == "[]" {
+		*m = make(Option82ToIPMapping)
+		return nil
+	}
+	return json.Unmarshal(data, (*map[string]string)(m))
 }
 
 /*
@@ -320,6 +321,22 @@ func (c *Client) DatacenterCreate(datacenter Datacenter, datacenterConfig Datace
 	return &createdObj, nil
 }
 
+// DatacenterDelete deletes storage pools, subnet pools, and other resources then marks the datacenter as deleted.
+func (c *Client) DatacenterDelete(datacenterName string) error {
+	var deletedObj Datacenter
+
+	err := c.rpcClient.CallFor(
+		&deletedObj,
+		"datacenter_decommission",
+		datacenterName)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 //bsideveloper.datacenter_agents_config_json_download_url('uk-reading')
 
 // structure to hold the return for datacenter_agents_config_json_download_url
@@ -398,6 +415,19 @@ func (dc Datacenter) CreateOrUpdate(client MetalCloudClient) error {
 
 // Delete implements interface Applier
 func (dc Datacenter) Delete(client MetalCloudClient) error {
+	var err error
+	err = dc.Validate()
+
+	if err != nil {
+		return err
+	}
+
+	err = client.DatacenterDelete(dc.DatacenterName)
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
