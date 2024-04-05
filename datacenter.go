@@ -322,10 +322,10 @@ func (c *Client) DatacenterCreate(datacenter Datacenter, datacenterConfig Datace
 }
 
 // DatacenterDelete deletes storage pools, subnet pools, and other resources then marks the datacenter as deleted.
-func (C *Client) DatacenterDelete(datacenterName string) error {
+func (c *Client) DatacenterDelete(datacenterName string) error {
 	var deletedObj Datacenter
 
-	err := C.rpcClient.CallFor(
+	err := c.rpcClient.CallFor(
 		&deletedObj,
 		"datacenter_decommission",
 		datacenterName)
