@@ -2,12 +2,12 @@
 
 package metalcloud
 
-//ClusterCreate cluster
+//ClusterCreate 
 func (c *Client) ClusterCreate(infrastructureID int, cluster Cluster) (*Cluster, error) {
 	return c.clusterCreate(infrastructureID,cluster)
 }
 
-//ClusterCreateByLabel cluster
+//ClusterCreateByLabel 
 func (c *Client) ClusterCreateByLabel(infrastructureLabel string, cluster Cluster) (*Cluster, error) {
 	return c.clusterCreate(infrastructureLabel,cluster)
 }
@@ -22,22 +22,22 @@ func (c *Client) ClusterGetByLabel(clusterLabel string) (*Cluster, error) {
 	return c.clusterGet(clusterLabel)
 }
 
-//ClusterAppVMWareVSphere cluster
+//ClusterAppVMWareVSphere 
 func (c *Client) ClusterAppVMWareVSphere(clusterID int, decryptCredentials bool) (*AppVMWareVsphere, error) {
 	return c.clusterAppVMWareVSphere(clusterID,decryptCredentials)
 }
 
-//ClusterAppVMWareVSphereByLabel cluster
+//ClusterAppVMWareVSphereByLabel 
 func (c *Client) ClusterAppVMWareVSphereByLabel(clusterLabel string, decryptCredentials bool) (*AppVMWareVsphere, error) {
 	return c.clusterAppVMWareVSphere(clusterLabel,decryptCredentials)
 }
 
-//ClusterAppKubernetes cluster
+//ClusterAppKubernetes 
 func (c *Client) ClusterAppKubernetes(clusterID int, decryptCredentials bool) (*AppKubernetes, error) {
 	return c.clusterAppKubernetes(clusterID,decryptCredentials)
 }
 
-//ClusterAppKubernetesByLabel cluster
+//ClusterAppKubernetesByLabel 
 func (c *Client) ClusterAppKubernetesByLabel(clusterLabel string, decryptCredentials bool) (*AppKubernetes, error) {
 	return c.clusterAppKubernetes(clusterLabel,decryptCredentials)
 }
@@ -62,22 +62,22 @@ func (c *Client) ClusterEditByLabel(clusterLabel string, clusterOperation Cluste
 	return c.clusterEdit(clusterLabel,clusterOperation)
 }
 
-//Clusters cluster
+//Clusters 
 func (c *Client) Clusters(infrastructureId int) (*map[string]Cluster, error) {
 	return c.clusters(infrastructureId)
 }
 
-//ClustersByLabel cluster
+//ClustersByLabel 
 func (c *Client) ClustersByLabel(infrastructureLabel string) (*map[string]Cluster, error) {
 	return c.clusters(infrastructureLabel)
 }
 
-//ClusterInstanceArrays cluster
+//ClusterInstanceArrays 
 func (c *Client) ClusterInstanceArrays(clusterId int) (*map[string]InstanceArray, error) {
 	return c.clusterInstanceArrays(clusterId)
 }
 
-//ClusterInstanceArraysByLabel cluster
+//ClusterInstanceArraysByLabel 
 func (c *Client) ClusterInstanceArraysByLabel(clusterLabel string) (*map[string]InstanceArray, error) {
 	return c.clusterInstanceArrays(clusterLabel)
 }

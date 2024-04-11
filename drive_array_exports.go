@@ -22,22 +22,22 @@ func (c *Client) DriveArrayEditByLabel(driveArrayLabel string, driveArrayOperati
 	return c.driveArrayEdit(driveArrayLabel,driveArrayOperation)
 }
 
-//DriveArrayDelete id
+//DriveArrayDelete 
 func (c *Client) DriveArrayDelete(driveArrayID int) error {
 	return c.driveArrayDelete(driveArrayID)
 }
 
-//DriveArrayDeleteByLabel id
+//DriveArrayDeleteByLabel 
 func (c *Client) DriveArrayDeleteByLabel(driveArrayLabel string) error {
 	return c.driveArrayDelete(driveArrayLabel)
 }
 
-//DriveArrayDrives array
+//DriveArrayDrives 
 func (c *Client) DriveArrayDrives(driveArray int) (*map[string]Drive, error) {
 	return c.driveArrayDrives(driveArray)
 }
 
-//DriveArrayDrivesByLabel array
+//DriveArrayDrivesByLabel 
 func (c *Client) DriveArrayDrivesByLabel(driveArrLabel string) (*map[string]Drive, error) {
 	return c.driveArrayDrives(driveArrLabel)
 }

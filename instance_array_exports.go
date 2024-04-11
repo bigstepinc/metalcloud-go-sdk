@@ -2,22 +2,22 @@
 
 package metalcloud
 
-//InstanceArrayGet id
+//InstanceArrayGet 
 func (c *Client) InstanceArrayGet(instanceArrayID int) (*InstanceArray, error) {
 	return c.instanceArrayGet(instanceArrayID)
 }
 
-//InstanceArrayGetByLabel id
+//InstanceArrayGetByLabel 
 func (c *Client) InstanceArrayGetByLabel(instanceArrayLabel string) (*InstanceArray, error) {
 	return c.instanceArrayGet(instanceArrayLabel)
 }
 
-//InstanceArrays infrastructure
+//InstanceArrays 
 func (c *Client) InstanceArrays(infrastructureID int) (*map[string]InstanceArray, error) {
 	return c.instanceArrays(infrastructureID)
 }
 
-//InstanceArraysByLabel infrastructure
+//InstanceArraysByLabel 
 func (c *Client) InstanceArraysByLabel(infrastructureLabel string) (*map[string]InstanceArray, error) {
 	return c.instanceArrays(infrastructureLabel)
 }

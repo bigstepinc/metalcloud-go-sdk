@@ -22,42 +22,42 @@ func (c *Client) InstanceArrayInstancesByLabel(instanceArrayLabel string) (*map[
 	return c.instanceArrayInstances(instanceArrayLabel)
 }
 
-//InstanceGet id
+//InstanceGet 
 func (c *Client) InstanceGet(instanceID int) (*Instance, error) {
 	return c.instanceGet(instanceID)
 }
 
-//InstanceGetByLabel id
+//InstanceGetByLabel 
 func (c *Client) InstanceGetByLabel(instanceLabel string) (*Instance, error) {
 	return c.instanceGet(instanceLabel)
 }
 
-//InstanceServerPowerSet instance
+//InstanceServerPowerSet 
 func (c *Client) InstanceServerPowerSet(instanceID int, operation string) error {
 	return c.instanceServerPowerSet(instanceID,operation)
 }
 
-//InstanceServerPowerSetByLabel instance
+//InstanceServerPowerSetByLabel 
 func (c *Client) InstanceServerPowerSetByLabel(instanceLabel string, operation string) error {
 	return c.instanceServerPowerSet(instanceLabel,operation)
 }
 
-//InstanceServerPowerGet instance
+//InstanceServerPowerGet 
 func (c *Client) InstanceServerPowerGet(instanceID int) (*string, error) {
 	return c.instanceServerPowerGet(instanceID)
 }
 
-//InstanceServerPowerGetByLabel instance
+//InstanceServerPowerGetByLabel 
 func (c *Client) InstanceServerPowerGetByLabel(instanceLabel string) (*string, error) {
 	return c.instanceServerPowerGet(instanceLabel)
 }
 
-//InstanceServerPowerGetBatch instances
+//InstanceServerPowerGetBatch 
 func (c *Client) InstanceServerPowerGetBatch(infrastructureID int, instanceIDs []int) (*map[string]string, error) {
 	return c.instanceServerPowerGetBatch(infrastructureID,instanceIDs)
 }
 
-//InstanceServerPowerGetBatchByLabel instances
+//InstanceServerPowerGetBatchByLabel 
 func (c *Client) InstanceServerPowerGetBatchByLabel(infrastructureLabel string, instanceIDs []int) (*map[string]string, error) {
 	return c.instanceServerPowerGetBatch(infrastructureLabel,instanceIDs)
 }

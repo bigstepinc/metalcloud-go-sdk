@@ -68,13 +68,13 @@ type MetalCloudClient interface {
 	DriveArrayEdit(driveArrayID int, driveArrayOperation DriveArrayOperation) (*DriveArray, error)
 	// DriveArrayEditByLabel array. Requires deploy.
 	DriveArrayEditByLabel(driveArrayLabel string, driveArrayOperation DriveArrayOperation) (*DriveArray, error)
-	// DriveArrayDelete id
+	// DriveArrayDelete
 	DriveArrayDelete(driveArrayID int) error
-	// DriveArrayDeleteByLabel id
+	// DriveArrayDeleteByLabel
 	DriveArrayDeleteByLabel(driveArrayLabel string) error
-	// DriveArrayDrives array
+	// DriveArrayDrives
 	DriveArrayDrives(driveArray int) (*map[string]Drive, error)
-	// DriveArrayDrivesByLabel array
+	// DriveArrayDrivesByLabel
 	DriveArrayDrivesByLabel(driveArrLabel string) (*map[string]Drive, error)
 	// DriveSnapshotCreate creates a drive snapshot
 	DriveSnapshotCreate(driveID int) (*Snapshot, error)
@@ -108,9 +108,9 @@ type MetalCloudClient interface {
 	Infrastructures() (*map[string]Infrastructure, error)
 	// InfrastructureSearch searches for infrastructures with filtering support
 	InfrastructureSearch(filter string) (*[]InfrastructuresSearchResult, error)
-	// InfrastructureEdit infrastructure
+	// InfrastructureEdit
 	InfrastructureEdit(infrastructureID int, infrastructureOperation InfrastructureOperation) (*Infrastructure, error)
-	// InfrastructureEditByLabel infrastructure
+	// InfrastructureEditByLabel
 	InfrastructureEditByLabel(infrastructureLabel string, infrastructureOperation InfrastructureOperation) (*Infrastructure, error)
 	// InfrastructureDelete elements. Requires deploy
 	InfrastructureDelete(infrastructureID int) error
@@ -120,33 +120,33 @@ type MetalCloudClient interface {
 	InfrastructureOperationCancel(infrastructureID int) error
 	// InfrastructureOperationCancelByLabel (undos) alterations done before deploy
 	InfrastructureOperationCancelByLabel(infrastructureLabel string) error
-	// InfrastructureDeploy infrastructure
+	// InfrastructureDeploy
 	InfrastructureDeploy(infrastructureID int, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error
-	// InfrastructureDeployByLabel infrastructure
+	// InfrastructureDeployByLabel
 	InfrastructureDeployByLabel(infrastructureLabel string, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error
 	// InfrastructureDeployWithOptions infrastructure. With options.
 	InfrastructureDeployWithOptions(infrastructureID int, shutdownOptions ShutdownOptions, deployOptions *DeployOptions, allowDataLoss bool, skipAnsible bool) error
 	// InfrastructureDeployWithOptionsByLabel infrastructure. With options.
 	InfrastructureDeployWithOptionsByLabel(infrastructureLabel string, shutdownOptions ShutdownOptions, deployOptions *DeployOptions, allowDataLoss bool, skipAnsible bool) error
-	// InfrastructureGet id
+	// InfrastructureGet
 	InfrastructureGet(infrastructureID int) (*Infrastructure, error)
-	// InfrastructureGetByLabel id
+	// InfrastructureGetByLabel
 	InfrastructureGetByLabel(infrastructureLabel string) (*Infrastructure, error)
-	// InfrastructureUserLimits metadata
+	// InfrastructureUserLimits
 	InfrastructureUserLimits(infrastructureID int) (*map[string]interface{}, error)
-	// InfrastructureUserLimitsByLabel metadata
+	// InfrastructureUserLimitsByLabel
 	InfrastructureUserLimitsByLabel(infrastructureLabel string) (*map[string]interface{}, error)
 	// InstanceArrayInterfaceAttachNetwork attaches an InstanceArrayInterface to a Network
 	InstanceArrayInterfaceAttachNetwork(instanceArrayID int, instanceArrayInterfaceIndex int, networkID int) (*InstanceArray, error)
 	// InstanceArrayInterfaceDetach detaches an InstanceArrayInterface from any Network element that is attached to.
 	InstanceArrayInterfaceDetach(instanceArrayID int, instanceArrayInterfaceIndex int) (*InstanceArray, error)
-	// InstanceArrayGet id
+	// InstanceArrayGet
 	InstanceArrayGet(instanceArrayID int) (*InstanceArray, error)
-	// InstanceArrayGetByLabel id
+	// InstanceArrayGetByLabel
 	InstanceArrayGetByLabel(instanceArrayLabel string) (*InstanceArray, error)
-	// InstanceArrays infrastructure
+	// InstanceArrays
 	InstanceArrays(infrastructureID int) (*map[string]InstanceArray, error)
-	// InstanceArraysByLabel infrastructure
+	// InstanceArraysByLabel
 	InstanceArraysByLabel(infrastructureLabel string) (*map[string]InstanceArray, error)
 	// InstanceArrayCreate (colletion of identical instances). Requires Deploy.
 	InstanceArrayCreate(infrastructureID int, instanceArray InstanceArray) (*InstanceArray, error)
@@ -168,21 +168,21 @@ type MetalCloudClient interface {
 	InstanceArrayStart(instanceArrayID int) (*InstanceArray, error)
 	// InstanceArrayStartByLabel InstanceArray.
 	InstanceArrayStartByLabel(instanceArrayLabel string) (*InstanceArray, error)
-	// ClusterCreate cluster
+	// ClusterCreate
 	ClusterCreate(infrastructureID int, cluster Cluster) (*Cluster, error)
-	// ClusterCreateByLabel cluster
+	// ClusterCreateByLabel
 	ClusterCreateByLabel(infrastructureLabel string, cluster Cluster) (*Cluster, error)
 	// ClusterGet (app) with specified id
 	ClusterGet(clusterID int) (*Cluster, error)
 	// ClusterGetByLabel (app) with specified id
 	ClusterGetByLabel(clusterLabel string) (*Cluster, error)
-	// ClusterAppVMWareVSphere cluster
+	// ClusterAppVMWareVSphere
 	ClusterAppVMWareVSphere(clusterID int, decryptCredentials bool) (*AppVMWareVsphere, error)
-	// ClusterAppVMWareVSphereByLabel cluster
+	// ClusterAppVMWareVSphereByLabel
 	ClusterAppVMWareVSphereByLabel(clusterLabel string, decryptCredentials bool) (*AppVMWareVsphere, error)
-	// ClusterAppKubernetes cluster
+	// ClusterAppKubernetes
 	ClusterAppKubernetes(clusterID int, decryptCredentials bool) (*AppKubernetes, error)
-	// ClusterAppKubernetesByLabel cluster
+	// ClusterAppKubernetesByLabel
 	ClusterAppKubernetesByLabel(clusterLabel string, decryptCredentials bool) (*AppKubernetes, error)
 	// ClusterDelete array. Requires deploy.
 	ClusterDelete(clusterID int) error
@@ -192,13 +192,13 @@ type MetalCloudClient interface {
 	ClusterEdit(clusterId int, clusterOperation ClusterOperation) (*Cluster, error)
 	// ClusterEditByLabel array. Requires deploy.
 	ClusterEditByLabel(clusterLabel string, clusterOperation ClusterOperation) (*Cluster, error)
-	// Clusters cluster
+	// Clusters
 	Clusters(infrastructureId int) (*map[string]Cluster, error)
-	// ClustersByLabel cluster
+	// ClustersByLabel
 	ClustersByLabel(infrastructureLabel string) (*map[string]Cluster, error)
-	// ClusterInstanceArrays cluster
+	// ClusterInstanceArrays
 	ClusterInstanceArrays(clusterId int) (*map[string]InstanceArray, error)
-	// ClusterInstanceArraysByLabel cluster
+	// ClusterInstanceArraysByLabel
 	ClusterInstanceArraysByLabel(clusterLabel string) (*map[string]InstanceArray, error)
 	// InstanceEdit instance. Requires deploy
 	InstanceEdit(instanceID int, instanceOperation InstanceOperation) (*Instance, error)
@@ -208,21 +208,21 @@ type MetalCloudClient interface {
 	InstanceArrayInstances(instanceArrayID int) (*map[string]Instance, error)
 	// InstanceArrayInstancesByLabel InstanceArray.
 	InstanceArrayInstancesByLabel(instanceArrayLabel string) (*map[string]Instance, error)
-	// InstanceGet id
+	// InstanceGet
 	InstanceGet(instanceID int) (*Instance, error)
-	// InstanceGetByLabel id
+	// InstanceGetByLabel
 	InstanceGetByLabel(instanceLabel string) (*Instance, error)
-	// InstanceServerPowerSet instance
+	// InstanceServerPowerSet
 	InstanceServerPowerSet(instanceID int, operation string) error
-	// InstanceServerPowerSetByLabel instance
+	// InstanceServerPowerSetByLabel
 	InstanceServerPowerSetByLabel(instanceLabel string, operation string) error
-	// InstanceServerPowerGet instance
+	// InstanceServerPowerGet
 	InstanceServerPowerGet(instanceID int) (*string, error)
-	// InstanceServerPowerGetByLabel instance
+	// InstanceServerPowerGetByLabel
 	InstanceServerPowerGetByLabel(instanceLabel string) (*string, error)
-	// InstanceServerPowerGetBatch instances
+	// InstanceServerPowerGetBatch
 	InstanceServerPowerGetBatch(infrastructureID int, instanceIDs []int) (*map[string]string, error)
-	// InstanceServerPowerGetBatchByLabel instances
+	// InstanceServerPowerGetBatchByLabel
 	InstanceServerPowerGetBatchByLabel(infrastructureLabel string, instanceIDs []int) (*map[string]string, error)
 	// GetUserEmail returns the user configured for this connection
 	GetUserEmail() string
