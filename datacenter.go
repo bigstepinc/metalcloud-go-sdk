@@ -323,21 +323,25 @@ func (c *Client) DatacenterCreate(datacenter Datacenter, datacenterConfig Datace
 
 // DatacenterDelete deletes storage pools, subnet pools, and other resources then marks the datacenter as deleted.
 func (c *Client) DatacenterDelete(datacenterName string) error {
-	var deletedObj Datacenter
+	if err := checkLabel(datacenterName); err != nil {
+		return err
+	}
 
-	err := c.rpcClient.CallFor(
-		&deletedObj,
+	resp, err := c.rpcClient.Call(
 		"datacenter_decommission",
-		datacenterName)
+		datacenterName,
+	)
 
 	if err != nil {
 		return err
 	}
 
+	if resp.Error != nil {
+		return fmt.Errorf(resp.Error.Message)
+	}
+
 	return nil
 }
-
-//bsideveloper.datacenter_agents_config_json_download_url('uk-reading')
 
 // structure to hold the return for datacenter_agents_config_json_download_url
 type datacenterConfigJSONURL struct {
