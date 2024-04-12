@@ -29,6 +29,7 @@ type NetworkProfileVLAN struct {
 type NetworkProfileSubnetPool struct {
 	SubnetPoolID   *int   `json:"subnet_pool_id" yaml:"subnetPoolID"`
 	SubnetPoolType string `json:"subnet_pool_type" yaml:"subnetPoolType"`
+	SubnetPoolProvidesDefaultRoute bool `json:"subnet_pool_provides_default_route" yaml:"subnetPoolProvidesDefaultRoute"`
 }
 
 //NetworkProfileGet returns a NetworkProfile with specified id

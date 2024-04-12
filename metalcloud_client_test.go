@@ -3,7 +3,7 @@ package metalcloud
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -30,7 +30,7 @@ var httpServer *httptest.Server
 // start the testhttp server and stop it when tests are finished
 func TestMain(m *testing.M) {
 	httpServer = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		data, _ := ioutil.ReadAll(r.Body)
+		data, _ := io.ReadAll(r.Body)
 		defer r.Body.Close()
 		// put request and body to channel for the client to investigate them
 		requestChan <- &RequestData{r, string(data)}
@@ -74,6 +74,28 @@ func TestSignature(t *testing.T) {
 	expectedSignature := "b8287028c41c7dee8e6f0479ff05dd71"
 
 	Expect(gotSignature).To(Equal(expectedSignature))
+}
+
+func TestBearer(t *testing.T) {
+	RegisterTestingT(t)
+
+	content := strings.NewReader("asldklk234mlk234asd")
+
+	request, err := http.NewRequest("GET", httpServer.URL, content)
+	Expect(request).NotTo(BeNil())
+	Expect(err).To(BeNil())
+
+	transport := &bearerAuthRoundTripper{
+		APIKey:         "asdasdasd",
+		LoggingEnabled: false,
+	}
+
+	_, err = transport.RoundTrip(request)
+	Expect(err).To(BeNil())
+
+	requestWithHeader := (<-requestChan).request
+	bearer := []string{"Bearer asdasdasd"}
+	Expect(requestWithHeader.Header["Authorization"]).To(Equal(bearer))
 }
 
 func TestEmptyListReply(t *testing.T) {

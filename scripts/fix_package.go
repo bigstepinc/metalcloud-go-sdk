@@ -7,7 +7,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"regexp"
 )
@@ -58,10 +57,11 @@ var types = [...]string{
 	"InfrastructuresSearchResult",
 	"ServerEditInventory",
 	"ServerEditRack",
+	"CustomISO",
 }
 
 const packageName = "metalcloud"
-const sdkPackage = "github.com/metalsoft-io/metal-cloud-sdk-go/v2"
+const sdkPackage = "github.com/metalsoft-io/metal-cloud-sdk-go/v3"
 
 func main() {
 
@@ -69,7 +69,7 @@ func main() {
 
 	flag.Parse()
 
-	s, err := ioutil.ReadFile(*input)
+	s, err := os.ReadFile(*input)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s", err)
 		os.Exit(-1)
@@ -95,7 +95,7 @@ func main() {
 
 	s = r.ReplaceAll(s, []byte(""))
 
-	err = ioutil.WriteFile(*input, s, 0644)
+	err = os.WriteFile(*input, s, 0644)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s", err)
 		os.Exit(-1)

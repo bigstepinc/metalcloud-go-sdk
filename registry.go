@@ -3,6 +3,7 @@ package metalcloud
 import (
 	"fmt"
 	"reflect"
+	"strings"
 )
 
 // GetTypesThatSupportApplierInterface returns a list of types that support the applier interface
@@ -22,6 +23,7 @@ func GetTypesThatSupportApplierInterface() map[string]reflect.Type {
 		&StageDefinition{},
 		&Workflow{},
 		&SubnetPool{},
+		&SubnetOOB{},
 		&SwitchDevice{},
 		&Variable{},
 	}
@@ -40,9 +42,13 @@ func GetTypesThatSupportApplierInterface() map[string]reflect.Type {
 func GetObjectByKind(name string) (reflect.Value, error) {
 	typeRegistry := GetTypesThatSupportApplierInterface()
 	t, ok := typeRegistry[name]
+	typesList := []string{}
+	for k, _ := range typeRegistry {
+		typesList = append(typesList, k)
+	}
 
 	if !ok {
-		return reflect.Value{}, fmt.Errorf("%s was not recongnized as a valid product", name)
+		return reflect.Value{}, fmt.Errorf("%s was not supported by the apply method. Only the following types are supported: %s", name, strings.Join(typesList, ","))
 	}
 
 	v := reflect.New(t)
