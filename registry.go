@@ -11,7 +11,7 @@ func GetTypesThatSupportApplierInterface() map[string]reflect.Type {
 	typeRegistry := map[string]reflect.Type{}
 	myTypes := []Applier{
 		&InstanceArray{},
-		&Datacenter{},
+		&DatacenterWithConfig{},
 		&DriveArray{},
 		&Infrastructure{},
 		&Network{},

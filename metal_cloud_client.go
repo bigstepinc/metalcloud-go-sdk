@@ -44,10 +44,14 @@ type MetalCloudClient interface {
 	DatacenterGetForUserByID(datacenterName string, userID int) (*Datacenter, error)
 	// DatacenterConfigGet returns details of a specific datacenter
 	DatacenterConfigGet(datacenterName string) (*DatacenterConfig, error)
+	// DatacenterWithConfigGet returns details of a specific datacenter as a single object that contains the config as well
+	DatacenterWithConfigGet(datacenterName string) (*DatacenterWithConfig, error)
 	// DatacenterConfigUpdate Updates configuration information for a specified Datacenter.
 	DatacenterConfigUpdate(datacenterName string, datacenterConfig DatacenterConfig) error
 	// DatacenterCreate creates a new Datacenter
 	DatacenterCreate(datacenter Datacenter, datacenterConfig DatacenterConfig) (*Datacenter, error)
+	DatacenterCreateFromDatacenterWithConfig(datacenter DatacenterWithConfig) (*DatacenterWithConfig, error)
+	DatacenterUpdateFromDatacenterWithConfig(datacenter DatacenterWithConfig) (*DatacenterWithConfig, error)
 	// DatacenterAgentsConfigJSONDownloadURL returns the agent url (and automatically decrypts it)
 	DatacenterAgentsConfigJSONDownloadURL(datacenterName string, decrypt bool) (string, error)
 	//DriveArrays retrieves the list of drives arrays of an infrastructure

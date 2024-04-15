@@ -6,21 +6,25 @@ import (
 	"strings"
 )
 
+type DatacenterWithConfig struct {
+	Datacenter
+	DatacenterConfig
+}
+
 // Datacenter - datacenter description
 type Datacenter struct {
-	DatacenterID               int               `json:"datacenter_id,omitempty" yaml:"id,omitempty"`
-	DatacenterName             string            `json:"datacenter_name,omitempty" yaml:"name,omitempty"`
-	DatacenterNameParent       string            `json:"datacenter_name_parent,omitempty" yaml:"parentName,omitempty"`
-	UserID                     int               `json:"user_id,omitempty" yaml:"userid,omitempty"`
-	DatacenterDisplayName      string            `json:"datacenter_display_name,omitempty" yaml:"displayname,omitempty"`
-	DatacenterIsMaster         bool              `json:"datacenter_is_master" yaml:"ismaster"`
-	DatacenterIsMaintenance    bool              `json:"datacenter_is_maintenance" yaml:"ismaintenance"`
-	DatacenterType             string            `json:"datacenter_type,omitempty" yaml:"type,omitempty"`
-	DatacenterCreatedTimestamp string            `json:"datacenter_created_timestamp,omitempty" yaml:"createdtimestamp,omitempty"`
-	DatacenterUpdatedTimestamp string            `json:"datacenter_updated_timestamp,omitempty" yaml:"updatedtimestamp,omitempty"`
-	DatacenterHidden           bool              `json:"datacenter_hidden" yaml:"ishidden"`
-	DatacenterTags             []string          `json:"datacenter_tags,omitempty" yaml:"tags,omitempty"`
-	DatacenterConfig           *DatacenterConfig `json:"datacenter_config_json,omitempty" yaml:"config,omitempty"`
+	DatacenterID               int      `json:"datacenter_id,omitempty" yaml:"id,omitempty"`
+	DatacenterName             string   `json:"datacenter_name,omitempty" yaml:"name,omitempty"`
+	DatacenterNameParent       string   `json:"datacenter_name_parent,omitempty" yaml:"parentName,omitempty"`
+	UserID                     int      `json:"user_id,omitempty" yaml:"userid,omitempty"`
+	DatacenterDisplayName      string   `json:"datacenter_display_name,omitempty" yaml:"displayname,omitempty"`
+	DatacenterIsMaster         bool     `json:"datacenter_is_master" yaml:"ismaster"`
+	DatacenterIsMaintenance    bool     `json:"datacenter_is_maintenance" yaml:"ismaintenance"`
+	DatacenterType             string   `json:"datacenter_type,omitempty" yaml:"type,omitempty"`
+	DatacenterCreatedTimestamp string   `json:"datacenter_created_timestamp,omitempty" yaml:"createdtimestamp,omitempty"`
+	DatacenterUpdatedTimestamp string   `json:"datacenter_updated_timestamp,omitempty" yaml:"updatedtimestamp,omitempty"`
+	DatacenterHidden           bool     `json:"datacenter_hidden" yaml:"ishidden"`
+	DatacenterTags             []string `json:"datacenter_tags,omitempty" yaml:"tags,omitempty"`
 }
 
 // DatacenterConfig - datacenter configuration
@@ -76,12 +80,13 @@ type WebProxy struct {
 }
 
 type Option82ToIPMapping map[string]string
+
 func (m *Option82ToIPMapping) UnmarshalJSON(data []byte) error {
-    if len(data) == 2 && string(data) == "[]" {
-        *m = make(Option82ToIPMapping)
-        return nil
-    }
-    return json.Unmarshal(data, (*map[string]string)(m))
+	if len(data) == 2 && string(data) == "[]" {
+		*m = make(Option82ToIPMapping)
+		return nil
+	}
+	return json.Unmarshal(data, (*map[string]string)(m))
 }
 
 /*
@@ -283,6 +288,26 @@ func (c *Client) DatacenterConfigGet(datacenterName string) (*DatacenterConfig, 
 	return &datacenterConfig, nil
 }
 
+// DatacenterWithConfigGet returns details of a specific datacenter as a single object that contains the config as well
+func (c *Client) DatacenterWithConfigGet(datacenterName string) (*DatacenterWithConfig, error) {
+	metadata, err := c.DatacenterGet(datacenterName)
+	if err != nil {
+		return nil, err
+	}
+
+	config, err := c.DatacenterConfigGet(datacenterName)
+	if err != nil {
+		return nil, err
+	}
+
+	dc := DatacenterWithConfig{
+		Datacenter:       *metadata,
+		DatacenterConfig: *config,
+	}
+
+	return &dc, nil
+}
+
 // DatacenterConfigUpdate Updates configuration information for a specified Datacenter.
 func (c *Client) DatacenterConfigUpdate(datacenterName string, datacenterConfig DatacenterConfig) error {
 
@@ -318,6 +343,23 @@ func (c *Client) DatacenterCreate(datacenter Datacenter, datacenterConfig Datace
 	}
 
 	return &createdObj, nil
+}
+
+func (c *Client) DatacenterCreateFromDatacenterWithConfig(datacenter DatacenterWithConfig) (*DatacenterWithConfig, error) {
+	_, err := c.DatacenterCreate(datacenter.Datacenter, datacenter.DatacenterConfig)
+	if err != nil {
+		return nil, err
+	}
+	return c.DatacenterWithConfigGet(datacenter.DatacenterName)
+}
+
+func (c *Client) DatacenterUpdateFromDatacenterWithConfig(datacenter DatacenterWithConfig) (*DatacenterWithConfig, error) {
+
+	err := c.DatacenterConfigUpdate(datacenter.DatacenterName, datacenter.DatacenterConfig)
+	if err != nil {
+		return nil, err
+	}
+	return c.DatacenterWithConfigGet(datacenter.DatacenterName)
 }
 
 //bsideveloper.datacenter_agents_config_json_download_url('uk-reading')
@@ -369,7 +411,7 @@ func (c *Client) DatacenterAgentsConfigJSONDownloadURL(datacenterName string, de
 }
 
 // CreateOrUpdate implements interface Applier
-func (dc Datacenter) CreateOrUpdate(client MetalCloudClient) error {
+func (dc DatacenterWithConfig) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	err = dc.Validate()
 
@@ -380,13 +422,15 @@ func (dc Datacenter) CreateOrUpdate(client MetalCloudClient) error {
 	_, err = client.DatacenterGet(dc.DatacenterName)
 
 	if err != nil {
-		_, err = client.DatacenterCreate(dc, *dc.DatacenterConfig)
+
+		_, err = client.DatacenterUpdateFromDatacenterWithConfig(dc)
 
 		if err != nil {
 			return err
 		}
 	} else {
-		err = client.DatacenterConfigUpdate(dc.DatacenterName, *dc.DatacenterConfig)
+
+		_, err = client.DatacenterCreateFromDatacenterWithConfig(dc)
 
 		if err != nil {
 			return err
@@ -397,12 +441,12 @@ func (dc Datacenter) CreateOrUpdate(client MetalCloudClient) error {
 }
 
 // Delete implements interface Applier
-func (dc Datacenter) Delete(client MetalCloudClient) error {
-	return nil
+func (dc DatacenterWithConfig) Delete(client MetalCloudClient) error {
+	return fmt.Errorf("delete not currently implemented for the Datacenter object")
 }
 
 // Validate implements interface Applier
-func (dc Datacenter) Validate() error {
+func (dc DatacenterWithConfig) Validate() error {
 	if dc.DatacenterName == "" {
 		return fmt.Errorf("name is required")
 	}
