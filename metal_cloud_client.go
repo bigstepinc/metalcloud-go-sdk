@@ -138,9 +138,9 @@ type MetalCloudClient interface {
 	InfrastructureUserLimits(infrastructureID int) (*map[string]interface{}, error)
 	//InfrastructureUserLimitsByLabel metadata
 	InfrastructureUserLimitsByLabel(infrastructureLabel string) (*map[string]interface{}, error)
-	//InstanceArrayInterfaceAttachNetwork attaches an InstanceArrayInterface to a Network
+	// InstanceArrayInterfaceAttachNetwork attaches an InstanceArrayInterface to a Network
 	InstanceArrayInterfaceAttachNetwork(instanceArrayID int, instanceArrayInterfaceIndex int, networkID int) (*InstanceArray, error)
-	//InstanceArrayInterfaceDetach detaches an InstanceArrayInterface from any Network element that is attached to.
+	// InstanceArrayInterfaceDetach detaches an InstanceArrayInterface from any Network element that is attached to.
 	InstanceArrayInterfaceDetach(instanceArrayID int, instanceArrayInterfaceIndex int) (*InstanceArray, error)
 	//InstanceArrayGet id
 	InstanceArrayGet(instanceArrayID int) (*InstanceArray, error)
@@ -150,9 +150,9 @@ type MetalCloudClient interface {
 	InstanceArrays(infrastructureID int) (*map[string]InstanceArray, error)
 	//InstanceArraysByLabel infrastructure
 	InstanceArraysByLabel(infrastructureLabel string) (*map[string]InstanceArray, error)
-	//InstanceArrayCreate (colletion of identical instances). Requires Deploy.
+	//InstanceArrayCreate (collection of identical instances). Requires Deploy.
 	InstanceArrayCreate(infrastructureID int, instanceArray InstanceArray) (*InstanceArray, error)
-	//InstanceArrayCreateByLabel (colletion of identical instances). Requires Deploy.
+	//InstanceArrayCreateByLabel (collection of identical instances). Requires Deploy.
 	InstanceArrayCreateByLabel(infrastructureLabel string, instanceArray InstanceArray) (*InstanceArray, error)
 	//InstanceArrayEdit array. Requires deploy.
 	InstanceArrayEdit(instanceArrayID int, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *ServerTypeMatches, arrInstancesToBeDeleted *[]int) (*InstanceArray, error)

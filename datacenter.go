@@ -1,3 +1,5 @@
+//go:generate go run helper/docgen.go - $GOFILE ./ DatacenterWithConfig,Datacenter,DatacenterConfig,Option82ToIPMapping,WebProxy DatacenterWithConfig
+
 package metalcloud
 
 import (
@@ -6,77 +8,181 @@ import (
 	"strings"
 )
 
+// description: A data center object that contains both metadata and configuration
+// examples1:
+//   - value: datacenterExample
 type DatacenterWithConfig struct {
+	//description: The datacenter part of the object
 	Datacenter
+	//description: The datacenter configuration part of the object
 	DatacenterConfig
 }
 
-// Datacenter - datacenter description
+// description: Datacenter metadata
 type Datacenter struct {
-	DatacenterID               int      `json:"datacenter_id,omitempty" yaml:"id,omitempty"`
-	DatacenterName             string   `json:"datacenter_name,omitempty" yaml:"name,omitempty"`
-	DatacenterNameParent       string   `json:"datacenter_name_parent,omitempty" yaml:"parentName,omitempty"`
-	UserID                     int      `json:"user_id,omitempty" yaml:"userid,omitempty"`
-	DatacenterDisplayName      string   `json:"datacenter_display_name,omitempty" yaml:"displayname,omitempty"`
-	DatacenterIsMaster         bool     `json:"datacenter_is_master" yaml:"ismaster"`
-	DatacenterIsMaintenance    bool     `json:"datacenter_is_maintenance" yaml:"ismaintenance"`
-	DatacenterType             string   `json:"datacenter_type,omitempty" yaml:"type,omitempty"`
-	DatacenterCreatedTimestamp string   `json:"datacenter_created_timestamp,omitempty" yaml:"createdtimestamp,omitempty"`
-	DatacenterUpdatedTimestamp string   `json:"datacenter_updated_timestamp,omitempty" yaml:"updatedtimestamp,omitempty"`
-	DatacenterHidden           bool     `json:"datacenter_hidden" yaml:"ishidden"`
-	DatacenterTags             []string `json:"datacenter_tags,omitempty" yaml:"tags,omitempty"`
+	//description: The ID of this datacenter.
+	DatacenterID int `json:"datacenter_id,omitempty" yaml:"id,omitempty"`
+	//description: The name (label) of this datacenter. Once set it cannot be changed.
+	DatacenterName string `json:"datacenter_name,omitempty" yaml:"name,omitempty"`
+	//description: The name (label) of the parent datacenter. This is useful in hierarchical setups where one datacenter needs to access it's parent's resources.
+	DatacenterNameParent string `json:"datacenter_name_parent,omitempty" yaml:"parentName,omitempty"`
+	//description: The owner of a datacenter.
+	UserID int `json:"user_id,omitempty" yaml:"userid,omitempty"`
+	//description: The display name of a data center. Can be changed.
+	DatacenterDisplayName string `json:"datacenter_display_name,omitempty" yaml:"displayname,omitempty"`
+	//description: Deprecated.
+	DatacenterIsMaster bool `json:"datacenter_is_master" yaml:"ismaster"`
+	//description: If set to true no new operations can happen on this datacenter.
+	DatacenterIsMaintenance bool `json:"datacenter_is_maintenance" yaml:"ismaintenance"`
+	//description: The datacenter type. Deprecated. Currently the only supported value is metal_cloud.
+	//values:
+	// - metal_cloud
+	DatacenterType string `json:"datacenter_type,omitempty" yaml:"type,omitempty"`
+	//description: ISO 8601 timestamp which holds the date and time when the datacenter was created.
+	//example: 2013-11-29T13:00:01Z
+	DatacenterCreatedTimestamp string `json:"datacenter_created_timestamp,omitempty" yaml:"createdtimestamp,omitempty"`
+	//description: ISO 8601 timestamp which holds the date and time when the datacenter was updated.
+	//example: 2013-11-29T13:00:01Z
+	DatacenterUpdatedTimestamp string `json:"datacenter_updated_timestamp,omitempty" yaml:"updatedtimestamp,omitempty"`
+	//description: If set the datacenter will not be visible in the UI
+	DatacenterHidden bool `json:"datacenter_hidden" yaml:"ishidden"`
+	//description: An array of tags (strings)
+	DatacenterTags []string `json:"datacenter_tags,omitempty" yaml:"tags,omitempty"`
 }
 
 // DatacenterConfig - datacenter configuration
 type DatacenterConfig struct {
-	BSIMachinesSubnetIPv4CIDR                          string                 `json:"BSIMachinesSubnetIPv4CIDR,omitempty" yaml:"BSIMachinesSubnetIPv4CIDR,omitempty"`
-	BSIVRRPListenIPv4                                  string                 `json:"BSIVRRPListenIPv4,omitempty" yaml:"BSIVRRPListenIPv4,omitempty"`
-	BSIMachineListenIPv4List                           []string               `json:"BSIMachineListenIPv4List,omitempty" yaml:"BSIMachineListenIPv4List,omitempty"`
-	BSIExternallyVisibleIPv4                           string                 `json:"BSIExternallyVisibleIPv4,omitempty" yaml:"BSIExternallyVisibleIPv4,omitempty"`
-	RepoURLRoot                                        string                 `json:"repoURLRoot,omitempty" yaml:"repoURLRoot,omitempty"`
-	RepoURLRootQuarantineNetwork                       string                 `json:"repoURLRootQuarantineNetwork,omitempty" yaml:"repoURLRootQuarantineNetwork,omitempty"`
-	SANRoutedSubnet                                    string                 `json:"SANRoutedSubnet,omitempty" yaml:"SANRoutedSubnet,omitempty"`
-	NTPServers                                         []string               `json:"NTPServers" yaml:"NTPServers"`
-	DNSServers                                         []string               `json:"DNSServers,omitempty" yaml:"DNSServers,omitempty"`
-	KMS                                                string                 `json:"KMS,omitempty" yaml:"KMS,omitempty"`
-	TFTPServerWANVRRPListenIPv4                        string                 `json:"TFTPServerWANVRRPListenIPv4,omitempty" yaml:"TFTPServerWANVRRPListenIPv4,omitempty"`
-	DataLakeEnabled                                    bool                   `json:"dataLakeEnabled" yaml:"dataLakeEnabled"`
-	MonitoringGraphitePlainTextSocketHost              string                 `json:"monitoringGraphitePlainTextSocketHost,omitempty" yaml:"monitoringGraphitePlainTextSocketHost,omitempty"`
-	MonitoringGraphiteRenderURLHost                    string                 `json:"monitoringGraphiteRenderURLHost,omitempty" yaml:"monitoringGraphiteRenderURLHost,omitempty"`
-	Latitude                                           float64                `json:"latitude,omitempty" yaml:"latitude,omitempty"`
-	Longitude                                          float64                `json:"longitude,omitempty" yaml:"longitude,omitempty"`
-	Address                                            string                 `json:"address,omitempty" yaml:"address,omitempty"`
-	ServerRegisterUsingGeneratedIPMICredentialsEnabled bool                   `json:"serverRegisterUsingGeneratedIPMICredentialsEnabled" yaml:"serverRegisterUsingGeneratedIPMICredentialsEnabled"`
-	ServerRegisterUsingProvidedIPMICredentialsEnabled  bool                   `json:"serverRegisterUsingProvidedIPMICredentialsEnabled" yaml:"serverRegisterUsingProvidedIPMICredentialsEnabled"`
-	SwitchProvisioner                                  map[string]interface{} `json:"switchProvisioner,omitempty" yaml:"switchProvisioner,omitempty"`
-	EnableTenantAccessToIPMI                           bool                   `json:"enableTenantAccessToIPMI" yaml:"enableTenantAccessToIPMI"`
-	AllowVLANOverrides                                 bool                   `json:"allowVLANOverrides" yaml:"allowVLANOverrides"`
-	AllowNetworkProfiles                               bool                   `json:"allowNetworkProfiles" yaml:"allowNetworkProfiles"`
-	EnableServerRegistrationStartedByInBandDHCP        bool                   `json:"enableServerRegistrationStartedByInBandDHCP" yaml:"enableServerRegistrationStartedByInBandDHCP"`
-	ExtraInternalIPsPerSubnet                          int                    `json:"extraInternalIPsPerSubnet" yaml:"extraInternalIPsPerSubnet"`
-	ExtraInternalIPsPerSANSubnet                       int                    `json:"extraInternalIPsPerSANSubnet" yaml:"extraInternalIPsPerSANSubnet"`
-	ServerRAIDConfigurationEnabled                     bool                   `json:"serverRAIDConfigurationEnabled" yaml:"serverRAIDConfigurationEnabled"`
-	WebProxy                                           *WebProxy              `json:"webProxy" yaml:"webProxy"`
-	IsKubernetesDeployment                             bool                   `json:"isKubernetesDeployment" yaml:"isKubernetesDeployment"`
-	AllowInstanceArrayFirmwarePolicies                 bool                   `json:"allowInstanceArrayFirmwarePolicies" yaml:"allowInstanceArrayFirmwarePolicies"`
-	ProvisionUsingTheQuarantineNetwork                 bool                   `json:"provisionUsingTheQuarantineNetwork" yaml:"provisionUsingTheQuarantineNetwork"`
-	EnableDHCPRelaySecurityForQuarantineNetwork        bool                   `json:"enableDHCPRelaySecurityForQuarantineNetwork" yaml:"enableDHCPRelaySecurityForQuarantineNetwork"`
-	EnableDHCPRelaySecurityForClientNetworks           bool                   `json:"enableDHCPRelaySecurityForClientNetworks" yaml:"enableDHCPRelaySecurityForClientNetworks"`
-	EnableDHCPBMCMACAddressWhitelist                   bool                   `json:"enableDHCPBMCMACAddressWhitelist" yaml:"enableDHCPBMCMACAddressWhitelist"`
-	DHCPBMCMACAddressWhitelist                         []string               `json:"dhcpBMCMACAddressWhitelist" yaml:"dhcpBMCMACAddressWhitelist"`
-	DefaultServerCleanupPolicyID                       int                    `json:"defaultServerCleanupPolicyID" yaml:"defaultServerCleanupPolicyID"`
-	DefaultWANNetworkProfileID                         int                    `json:"defaultWANNetworkProfileID" yaml:"defaultWANNetworkProfileID"`
-	DefaultDeploymentMechanism                         string                 `json:"defaultDeploymentMechanism" yaml:"defaultDeploymentMechanism"`
-	DefaultCleanupAndRegistrationMechanism             string                 `json:"defaultCleanupAndRegistrationMechanism" yaml:"defaultCleanupAndRegistrationMechanism"`
-	NFSServer                                          string                 `json:"NFSServer" yaml:"NFSServer"`
-	Option82ToIPMapping                                Option82ToIPMapping    `json:"Option82ToIPMapping" yaml:"Option82ToIPMapping"`
+	//description: The ip address of the Global Controller. Deprecated.
+	//example: 192.168.137.1
+	BSIMachinesSubnetIPv4CIDR string `json:"BSIMachinesSubnetIPv4CIDR,omitempty" yaml:"BSIMachinesSubnetIPv4CIDR,omitempty"`
+	//description: The ip address on which all datacenter agents listen for connections. Deprecated.
+	//example: 192.168.137.1
+	BSIVRRPListenIPv4 string `json:"BSIVRRPListenIPv4,omitempty" yaml:"BSIVRRPListenIPv4,omitempty"`
+	//description: Site Controller's secondary ip addresses. Deprecated.
+	//example:  192.168.137.1,192.168.137.2,192.168.137.4
+	BSIMachineListenIPv4List []string `json:"BSIMachineListenIPv4List,omitempty" yaml:"BSIMachineListenIPv4List,omitempty"`
+	//description: The agent's IP that is visible from the controller. Deprecated.
+	//example:  89.36.24.2
+	BSIExternallyVisibleIPv4 string `json:"BSIExternallyVisibleIPv4,omitempty" yaml:"BSIExternallyVisibleIPv4,omitempty"`
+	//description: The repository to use
+	//example: https://uk-reading-repo.example.com
+	RepoURLRoot string `json:"repoURLRoot,omitempty" yaml:"repoURLRoot,omitempty"`
+	//description: The repository to use during legacy (PXE) provisioning process. Same as repoURLRoot, with an IP address for the hostname, required in networks where DNS is not available.
+	//example: https://192.178.1.1
+	RepoURLRootQuarantineNetwork string `json:"repoURLRootQuarantineNetwork,omitempty" yaml:"repoURLRootQuarantineNetwork,omitempty"`
+	//description: The SAN subnet in CIDR format.
+	//example: 100.96.0.0/16
+	SANRoutedSubnet string `json:"SANRoutedSubnet,omitempty" yaml:"SANRoutedSubnet,omitempty"`
+	//description: IP addresses of NTP servers.
+	//example: 8.8.8.8, 8.8.4.4
+	NTPServers []string `json:"NTPServers" yaml:"NTPServers"`
+	//description: IP addresses of DNS servers to be used in the DHCP response.
+	//example: 8.8.8.8, 8.8.4.4
+	DNSServers []string `json:"DNSServers,omitempty" yaml:"DNSServers,omitempty"`
+	//description: Host (IP:port) of the Windows machine hosting the Key Management Service. Set to empty string to disable.
+	//example: 84.40.58.70:1688
+	KMS string `json:"KMS,omitempty" yaml:"KMS,omitempty"`
+	//description: The IP of the Site Controller TFTP service used during the legacy (PXE) deployment process.
+	//example: 89.36.24.2
+	TFTPServerWANVRRPListenIPv4 string `json:"TFTPServerWANVRRPListenIPv4,omitempty" yaml:"TFTPServerWANVRRPListenIPv4,omitempty"`
+	//description: If set to true, the datalake service is enabled in this environment. Deprecated
+	//values:
+	// - true
+	// - false
+	DataLakeEnabled bool `json:"dataLakeEnabled" yaml:"dataLakeEnabled"`
+	//description: Graphite host (IPv4:port) for the plain text protocol socket. Set to empty string to disable. Deprecated
+	MonitoringGraphitePlainTextSocketHost string `json:"monitoringGraphitePlainTextSocketHost,omitempty" yaml:"monitoringGraphitePlainTextSocketHost,omitempty"`
+	//description: Graphite host (IPv4:port) for the HTTP Render URL API. Set to empty string to disable. Deprecated
+	//example: 192.168.137.2:80
+	MonitoringGraphiteRenderURLHost string `json:"monitoringGraphiteRenderURLHost,omitempty" yaml:"monitoringGraphiteRenderURLHost,omitempty"`
+	//description: The Datacenter's latitude. Use negative numbers for the south hemisphere
+	//example: 41.8426146
+	Latitude float64 `json:"latitude,omitempty" yaml:"latitude,omitempty"`
+	//description: The data center's longitude: Use negative numbers for areas west of Greenwich (UK)
+	//example: -87.6695014
+	Longitude float64 `json:"longitude,omitempty" yaml:"longitude,omitempty"`
+	//description: The data center's address
+	//example: 2800 S Ashland Ave, Chicago, IL 60608, United States
+	Address string `json:"address,omitempty" yaml:"address,omitempty"`
+	//description: If set to true the system will configure a randomly generated username and password on the server's BMC(ILO/IDRAC etc.)
+	//values:
+	// - true
+	// - false
+	ServerRegisterUsingGeneratedIPMICredentialsEnabled bool `json:"serverRegisterUsingGeneratedIPMICredentialsEnabled" yaml:"serverRegisterUsingGeneratedIPMICredentialsEnabled"`
+	//description: If set to true the system will ask for credentials during server registration.
+	//values:
+	// - true
+	// - false
+	ServerRegisterUsingProvidedIPMICredentialsEnabled bool `json:"serverRegisterUsingProvidedIPMICredentialsEnabled" yaml:"serverRegisterUsingProvidedIPMICredentialsEnabled"`
+	//description: The provisioner (fabric) to use when provisioning the network on switch devices
+	//values:
+	// - VLAN
+	// - EVPNVXLANL2
+	// - VPLS
+	// - LAN
+	// - SDN
+	SwitchProvisioner map[string]interface{} `json:"switchProvisioner,omitempty" yaml:"switchProvisioner,omitempty"`
+	//description: If set to true the tenants will receive credentials for accessing the server's BMC with a special user.
+	EnableTenantAccessToIPMI bool `json:"enableTenantAccessToIPMI" yaml:"enableTenantAccessToIPMI"`
+	//description: Allows the end-user to force a VLAN ID (or EPG in CISCO ACI environments). This enables the user to connect to pre-existing VLANs in the established infrastructure. WARNING: This enables a tenant to access unauthorized VLANs.
+	AllowVLANOverrides bool `json:"allowVLANOverrides" yaml:"allowVLANOverrides"`
+	//description: Allows the usage of network profiles for customizing InstanceArray network connections.
+	AllowNetworkProfiles bool `json:"allowNetworkProfiles" yaml:"allowNetworkProfiles"`
+	//description: If set enables in-band triggered registration via the legacy (PXE) mechanism.
+	EnableServerRegistrationStartedByInBandDHCP bool `json:"enableServerRegistrationStartedByInBandDHCP" yaml:"enableServerRegistrationStartedByInBandDHCP"`
+	//description: Extra ips to reserve on each subnet for WAN networks. Certain fabrics (such as VRRP-based L3 SVIs need more than one IP to be allocated on each subnet). This option will force the system to reserve this number of IPs from each subnet.
+	ExtraInternalIPsPerSubnet int `json:"extraInternalIPsPerSubnet" yaml:"extraInternalIPsPerSubnet"`
+	//description: Extra ips to reserve on each subnet for SAN networks. Certain fabrics (such as VRRP-based L3 SVIs need more than one IP to be allocated on each subnet). This option will force the system to reserve this number of IPs from each subnet.
+	ExtraInternalIPsPerSANSubnet int `json:"extraInternalIPsPerSANSubnet" yaml:"extraInternalIPsPerSANSubnet"`
+	//description: If enabled RAID configurations are set on servers
+	ServerRAIDConfigurationEnabled bool `json:"serverRAIDConfigurationEnabled" yaml:"serverRAIDConfigurationEnabled"`
+	//description: If configured the proxy will be used by all operations.
+	WebProxy *WebProxy `json:"webProxy" yaml:"webProxy"`
+	//description: Deprecated.
+	IsKubernetesDeployment bool `json:"isKubernetesDeployment" yaml:"isKubernetesDeployment"`
+	//description: If set it allows  the use of firmware policies. Note that for baselines to function this needs to be enabled.
+	AllowInstanceArrayFirmwarePolicies bool `json:"allowInstanceArrayFirmwarePolicies" yaml:"allowInstanceArrayFirmwarePolicies"`
+	//description: If set to true, during the legacy registration process (PXE) the system will configure special provisioning VLAN on server ports prior to performing the deployment
+	ProvisionUsingTheQuarantineNetwork bool `json:"provisionUsingTheQuarantineNetwork" yaml:"provisionUsingTheQuarantineNetwork"`
+	//description: If set to true, during the legacy registration process (PXE) the system will enforce DHCP option 82 security.
+	EnableDHCPRelaySecurityForQuarantineNetwork bool `json:"enableDHCPRelaySecurityForQuarantineNetwork" yaml:"enableDHCPRelaySecurityForQuarantineNetwork"`
+	//description: If set to true, the DHCP server will ignore requests that do not respect DHCP option 82 for regular networks.
+	EnableDHCPRelaySecurityForClientNetworks bool `json:"enableDHCPRelaySecurityForClientNetworks" yaml:"enableDHCPRelaySecurityForClientNetworks"`
+	//description: If enabled, the DHCPBMCMACAddressWhitelist will be used to whitelist certain MAC addresses in order to ensure that only certain servers get registered during the ZTP process.
+	EnableDHCPBMCMACAddressWhitelist bool `json:"enableDHCPBMCMACAddressWhitelist" yaml:"enableDHCPBMCMACAddressWhitelist"`
+	//description: The mac addresses of the servers that are to be allowed to be registered via ZTP. This is useful during initial testing.
+	DHCPBMCMACAddressWhitelist []string `json:"dhcpBMCMACAddressWhitelist" yaml:"dhcpBMCMACAddressWhitelist"`
+	//description: If set the server cleanup policy will be the policy with the specified id instead of the default one (which is 0)
+	DefaultServerCleanupPolicyID int `json:"defaultServerCleanupPolicyID" yaml:"defaultServerCleanupPolicyID"`
+	//description: If set, this will be the default network profile instead of no network profile.
+	DefaultWANNetworkProfileID int `json:"defaultWANNetworkProfileID" yaml:"defaultWANNetworkProfileID"`
+	//description: Deployment mechanism used in case a server supports both Virtual Media and legacy (PXE).
+	// values:
+	// - virtual_media
+	// - pxe
+	DefaultDeploymentMechanism string `json:"defaultDeploymentMechanism" yaml:"defaultDeploymentMechanism"`
+	//description: The cleanup and register mechanism used in case a server supports both BMC-only and BDK mechanisms. Defaults to BMC.
+	// values:
+	// - bmc
+	// - bdk
+	DefaultCleanupAndRegistrationMechanism string `json:"defaultCleanupAndRegistrationMechanism" yaml:"defaultCleanupAndRegistrationMechanism"`
+	//description: The NFS server to use for server OS deployment (the IP of the site controller as seen from the server's BMC). Should be an IP to avoid DNS resolutions.
+	//example: IP address of the NFS server
+	NFSServer string `json:"NFSServer" yaml:"NFSServer"`
+	//description: Can be used to set a mapping between Option82 and IPs that the DHCP server allocates to servers during registration.
+	Option82ToIPMapping Option82ToIPMapping `json:"Option82ToIPMapping" yaml:"Option82ToIPMapping"`
 }
 
+// description: Defines web proxy configuration
 type WebProxy struct {
-	WebProxyServerIP   string `json:"web_proxy_server_ip,omitempty" yaml:"ip,omitempty"`
-	WebProxyServerPort int    `json:"web_proxy_server_port,omitempty" yaml:"port,omitempty"`
-	WebProxyUsername   string `json:"web_proxy_username,omitempty" yaml:"username,omitempty"`
-	WebProxyPassword   string `json:"web_proxy_password,omitempty" yaml:"password,omitempty"`
+	//description: Ip fo the web proxy
+	WebProxyServerIP string `json:"web_proxy_server_ip,omitempty" yaml:"ip,omitempty"`
+	//description: Port fo the web proxy
+	WebProxyServerPort int `json:"web_proxy_server_port,omitempty" yaml:"port,omitempty"`
+	//description: Username of the web proxy
+	WebProxyUsername string `json:"web_proxy_username,omitempty" yaml:"username,omitempty"`
+	//description: Password to use for the web proxy
+	WebProxyPassword string `json:"web_proxy_password,omitempty" yaml:"password,omitempty"`
 }
 
 type Option82ToIPMapping map[string]string
@@ -389,7 +495,7 @@ func (c *Client) DatacenterAgentsConfigJSONDownloadURL(datacenterName string, de
 
 		if len(passwdComponents) == 2 {
 			if strings.Contains(passwdComponents[0], "Not authorized") {
-				return "", fmt.Errorf("Permission missing. %s", passwdComponents[1])
+				return "", fmt.Errorf("permission missing. %s", passwdComponents[1])
 			} else {
 				var decryptedURL string
 
@@ -463,3 +569,100 @@ func (dc DatacenterWithConfig) Validate() error {
 
 	return nil
 }
+
+/*
+var datacenterExample = getDatacenterWithConfigExample()
+
+func getDatacenterWithConfigExample() DatacenterWithConfig {
+	const exampleDCYaml = `
+kind: DatacenterWithConfig
+apiVersion: 1.0
+datacenter:
+  id: 332
+  name: test-us03-chi-qts01-dc-3
+  displayname: US03 DC
+  ismaster: false
+  ismaintenance: false
+  type: metal_cloud
+  createdtimestamp: "2023-03-06T11:12:20Z"
+  updatedtimestamp: "2024-04-12T12:09:25Z"
+  ishidden: false
+  tags:
+  - ""
+datacenterconfig:
+  BSIMachinesSubnetIPv4CIDR: 172.18.38.16/29
+  BSIVRRPListenIPv4: 172.18.38.22
+  BSIMachineListenIPv4List:
+  - 172.18.38.22
+  BSIExternallyVisibleIPv4: 176.223.248.11
+  repoURLRoot: http://repointegrationpublic.bigstepcloud.com
+  repoURLRootQuarantineNetwork: http://repointegrationpublic.bigstepcloud.com
+  SANRoutedSubnet: 100.96.0.0/16
+  NTPServers:
+  - 45.55.58.103
+  DNSServers:
+  - 1.1.1.1
+  - 8.8.8.8
+  KMS: 84.40.58.70:1688
+  TFTPServerWANVRRPListenIPv4: 172.18.38.22
+  dataLakeEnabled: false
+  latitude: 45
+  longitude: 51.509865
+  serverRegisterUsingGeneratedIPMICredentialsEnabled: false
+  serverRegisterUsingProvidedIPMICredentialsEnabled: true
+  switchProvisioner:
+    ASNRanges: []
+    LAGRanges:
+    - 11-19
+    LANVLANRange: 200-299
+    MLAGRanges:
+    - 20-25
+    SANVLANRange: 300-399
+    SANVNIPrefix: 2
+    VRFL3VNIPrefix: 9
+    VRFVLANRanges: []
+    WANVLANRange: 100-199
+    WANVNIPrefix: 1
+    allocateDefaultLANVLAN: false
+    allocateDefaultSANVLAN: true
+    allocateDefaultWANVLAN: true
+    disableQuarantineNetwork: false
+    leafSwitchesHaveMLAGPairs: false
+    preventCleanupForVLANs: []
+    preventCleanupForVLANsFromExternalConnectionUplinks: []
+    preventCleanupForVRFs: []
+    preventUsageOfVLANs:
+    - 3204
+    preventUsageOfVRFs: []
+    quarantineVLANID: 5
+    storageHasSeparateFabric: false
+    type: EVPNVXLANL2Provisioner
+    zeroTouchRegistrationEnabled: false
+  enableTenantAccessToIPMI: true
+  allowVLANOverrides: true
+  allowNetworkProfiles: true
+  enableServerRegistrationStartedByInBandDHCP: false
+  extraInternalIPsPerSubnet: 0
+  extraInternalIPsPerSANSubnet: 0
+  serverRAIDConfigurationEnabled: true
+  webProxy: null
+  isKubernetesDeployment: false
+  allowInstanceArrayFirmwarePolicies: true
+  provisionUsingTheQuarantineNetwork: true
+  enableDHCPRelaySecurityForQuarantineNetwork: false
+  enableDHCPRelaySecurityForClientNetworks: false
+  enableDHCPBMCMACAddressWhitelist: false
+  dhcpBMCMACAddressWhitelist: []
+  defaultServerCleanupPolicyID: 3
+  defaultWANNetworkProfileID: 864
+  defaultDeploymentMechanism: virtual_media
+  defaultCleanupAndRegistrationMechanism: bmc
+  NFSServer: 172.18.38.22
+  Option82ToIPMapping:
+    Eth1/1: 172.18.32.1
+`
+	var d DatacenterWithConfig
+	yaml.Unmarshal([]byte(exampleDCYaml), &d)
+	return d
+}
+*/

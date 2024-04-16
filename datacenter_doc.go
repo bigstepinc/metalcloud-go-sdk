@@ -5,26 +5,382 @@ import (
 	"github.com/projectdiscovery/yamldoc-go/encoder"
 )
 
-var DatacenterDoc encoder.Doc
+var (
+	DatacenterWithConfigDoc encoder.Doc
+	DatacenterDoc           encoder.Doc
+	DatacenterConfigDoc     encoder.Doc
+	WebProxyDoc             encoder.Doc
+)
 
 func init() {
+	DatacenterWithConfigDoc.Type = "DatacenterWithConfig"
+	DatacenterWithConfigDoc.Comments[encoder.LineComment] = "A data center object that contains both metadata and configuration"
+	DatacenterWithConfigDoc.Description = "A data center object that contains both metadata and configuration"
+	DatacenterWithConfigDoc.Fields = make([]encoder.Doc, 0)
+
 	DatacenterDoc.Type = "Datacenter"
-	DatacenterDoc.Comments[encoder.LineComment] = "Datacenter"
-	DatacenterDoc.Description = "Datacenter"
-	DatacenterDoc.Fields = make([]encoder.Doc, 0)
+	DatacenterDoc.Comments[encoder.LineComment] = "Datacenter metadata"
+	DatacenterDoc.Description = "Datacenter metadata"
+	DatacenterDoc.Fields = make([]encoder.Doc, 12)
+	DatacenterDoc.Fields[0].Name = "id"
+	DatacenterDoc.Fields[0].Type = "int"
+	DatacenterDoc.Fields[0].Note = ""
+	DatacenterDoc.Fields[0].Description = "The ID of this datacenter."
+	DatacenterDoc.Fields[0].Comments[encoder.LineComment] = "The ID of this datacenter."
+	DatacenterDoc.Fields[1].Name = "name"
+	DatacenterDoc.Fields[1].Type = "string"
+	DatacenterDoc.Fields[1].Note = ""
+	DatacenterDoc.Fields[1].Description = "The name (label) of this datacenter. Once set it cannot be changed."
+	DatacenterDoc.Fields[1].Comments[encoder.LineComment] = "The name (label) of this datacenter. Once set it cannot be changed."
+	DatacenterDoc.Fields[2].Name = "parentName"
+	DatacenterDoc.Fields[2].Type = "string"
+	DatacenterDoc.Fields[2].Note = ""
+	DatacenterDoc.Fields[2].Description = "The name (label) of the parent datacenter. This is useful in hierarchical setups where one datacenter needs to access it's parent's resources."
+	DatacenterDoc.Fields[2].Comments[encoder.LineComment] = "The name (label) of the parent datacenter. This is useful in hierarchical setups where one datacenter needs to access it's parent's resources."
+	DatacenterDoc.Fields[3].Name = "userid"
+	DatacenterDoc.Fields[3].Type = "int"
+	DatacenterDoc.Fields[3].Note = ""
+	DatacenterDoc.Fields[3].Description = "The owner of a datacenter."
+	DatacenterDoc.Fields[3].Comments[encoder.LineComment] = "The owner of a datacenter."
+	DatacenterDoc.Fields[4].Name = "displayname"
+	DatacenterDoc.Fields[4].Type = "string"
+	DatacenterDoc.Fields[4].Note = ""
+	DatacenterDoc.Fields[4].Description = "The display name of a data center. Can be changed."
+	DatacenterDoc.Fields[4].Comments[encoder.LineComment] = "The display name of a data center. Can be changed."
+	DatacenterDoc.Fields[5].Name = "ismaster"
+	DatacenterDoc.Fields[5].Type = "bool"
+	DatacenterDoc.Fields[5].Note = ""
+	DatacenterDoc.Fields[5].Description = "Deprecated."
+	DatacenterDoc.Fields[5].Comments[encoder.LineComment] = "Deprecated."
+	DatacenterDoc.Fields[6].Name = "ismaintenance"
+	DatacenterDoc.Fields[6].Type = "bool"
+	DatacenterDoc.Fields[6].Note = ""
+	DatacenterDoc.Fields[6].Description = "If set to true no new operations can happen on this datacenter."
+	DatacenterDoc.Fields[6].Comments[encoder.LineComment] = "If set to true no new operations can happen on this datacenter."
+	DatacenterDoc.Fields[7].Name = "type"
+	DatacenterDoc.Fields[7].Type = "string"
+	DatacenterDoc.Fields[7].Note = ""
+	DatacenterDoc.Fields[7].Description = "The datacenter type. Deprecated. Currently the only supported value is metal_cloud."
+	DatacenterDoc.Fields[7].Comments[encoder.LineComment] = "The datacenter type. Deprecated. Currently the only supported value is metal_cloud."
+	DatacenterDoc.Fields[7].Values = []string{
+		"metal_cloud",
+	}
+	DatacenterDoc.Fields[8].Name = "createdtimestamp"
+	DatacenterDoc.Fields[8].Type = "string"
+	DatacenterDoc.Fields[8].Note = ""
+	DatacenterDoc.Fields[8].Description = "ISO 8601 timestamp which holds the date and time when the datacenter was created."
+	DatacenterDoc.Fields[8].Comments[encoder.LineComment] = "ISO 8601 timestamp which holds the date and time when the datacenter was created."
+	DatacenterDoc.Fields[9].Name = "updatedtimestamp"
+	DatacenterDoc.Fields[9].Type = "string"
+	DatacenterDoc.Fields[9].Note = ""
+	DatacenterDoc.Fields[9].Description = "ISO 8601 timestamp which holds the date and time when the datacenter was updated."
+	DatacenterDoc.Fields[9].Comments[encoder.LineComment] = "ISO 8601 timestamp which holds the date and time when the datacenter was updated."
+	DatacenterDoc.Fields[10].Name = "ishidden"
+	DatacenterDoc.Fields[10].Type = "bool"
+	DatacenterDoc.Fields[10].Note = ""
+	DatacenterDoc.Fields[10].Description = "If set the datacenter will not be visible in the UI"
+	DatacenterDoc.Fields[10].Comments[encoder.LineComment] = "If set the datacenter will not be visible in the UI"
+	DatacenterDoc.Fields[11].Name = "tags"
+	DatacenterDoc.Fields[11].Type = "[]string"
+	DatacenterDoc.Fields[11].Note = ""
+	DatacenterDoc.Fields[11].Description = "An array of tags (strings)"
+	DatacenterDoc.Fields[11].Comments[encoder.LineComment] = "An array of tags (strings)"
+
+	DatacenterConfigDoc.Type = "DatacenterConfig"
+	DatacenterConfigDoc.Comments[encoder.LineComment] = "DatacenterConfig - datacenter configuration"
+	DatacenterConfigDoc.Description = "DatacenterConfig - datacenter configuration"
+	DatacenterConfigDoc.Fields = make([]encoder.Doc, 41)
+	DatacenterConfigDoc.Fields[0].Name = "BSIMachinesSubnetIPv4CIDR"
+	DatacenterConfigDoc.Fields[0].Type = "string"
+	DatacenterConfigDoc.Fields[0].Note = ""
+	DatacenterConfigDoc.Fields[0].Description = "The ip address of the Global Controller. Deprecated."
+	DatacenterConfigDoc.Fields[0].Comments[encoder.LineComment] = "The ip address of the Global Controller. Deprecated."
+	DatacenterConfigDoc.Fields[1].Name = "BSIVRRPListenIPv4"
+	DatacenterConfigDoc.Fields[1].Type = "string"
+	DatacenterConfigDoc.Fields[1].Note = ""
+	DatacenterConfigDoc.Fields[1].Description = "The ip address on which all datacenter agents listen for connections. Deprecated."
+	DatacenterConfigDoc.Fields[1].Comments[encoder.LineComment] = "The ip address on which all datacenter agents listen for connections. Deprecated."
+	DatacenterConfigDoc.Fields[2].Name = "BSIMachineListenIPv4List"
+	DatacenterConfigDoc.Fields[2].Type = "[]string"
+	DatacenterConfigDoc.Fields[2].Note = ""
+	DatacenterConfigDoc.Fields[2].Description = "Site Controller's secondary ip addresses. Deprecated."
+	DatacenterConfigDoc.Fields[2].Comments[encoder.LineComment] = "Site Controller's secondary ip addresses. Deprecated."
+	DatacenterConfigDoc.Fields[3].Name = "BSIExternallyVisibleIPv4"
+	DatacenterConfigDoc.Fields[3].Type = "string"
+	DatacenterConfigDoc.Fields[3].Note = ""
+	DatacenterConfigDoc.Fields[3].Description = "The agent's IP that is visible from the controller. Deprecated."
+	DatacenterConfigDoc.Fields[3].Comments[encoder.LineComment] = "The agent's IP that is visible from the controller. Deprecated."
+	DatacenterConfigDoc.Fields[4].Name = "repoURLRoot"
+	DatacenterConfigDoc.Fields[4].Type = "string"
+	DatacenterConfigDoc.Fields[4].Note = ""
+	DatacenterConfigDoc.Fields[4].Description = "The repository to use"
+	DatacenterConfigDoc.Fields[4].Comments[encoder.LineComment] = "The repository to use"
+	DatacenterConfigDoc.Fields[5].Name = "repoURLRootQuarantineNetwork"
+	DatacenterConfigDoc.Fields[5].Type = "string"
+	DatacenterConfigDoc.Fields[5].Note = ""
+	DatacenterConfigDoc.Fields[5].Description = "The repository to use during legacy (PXE) provisioning process. Same as repoURLRoot, with an IP address for the hostname, required in networks where DNS is not available."
+	DatacenterConfigDoc.Fields[5].Comments[encoder.LineComment] = "The repository to use during legacy (PXE) provisioning process. Same as repoURLRoot, with an IP address for the hostname, required in networks where DNS is not available."
+	DatacenterConfigDoc.Fields[6].Name = "SANRoutedSubnet"
+	DatacenterConfigDoc.Fields[6].Type = "string"
+	DatacenterConfigDoc.Fields[6].Note = ""
+	DatacenterConfigDoc.Fields[6].Description = "The SAN subnet in CIDR format."
+	DatacenterConfigDoc.Fields[6].Comments[encoder.LineComment] = "The SAN subnet in CIDR format."
+	DatacenterConfigDoc.Fields[7].Name = "NTPServers"
+	DatacenterConfigDoc.Fields[7].Type = "[]string"
+	DatacenterConfigDoc.Fields[7].Note = ""
+	DatacenterConfigDoc.Fields[7].Description = "IP addresses of NTP servers."
+	DatacenterConfigDoc.Fields[7].Comments[encoder.LineComment] = "IP addresses of NTP servers."
+	DatacenterConfigDoc.Fields[8].Name = "DNSServers"
+	DatacenterConfigDoc.Fields[8].Type = "[]string"
+	DatacenterConfigDoc.Fields[8].Note = ""
+	DatacenterConfigDoc.Fields[8].Description = "IP addresses of DNS servers to be used in the DHCP response."
+	DatacenterConfigDoc.Fields[8].Comments[encoder.LineComment] = "IP addresses of DNS servers to be used in the DHCP response."
+	DatacenterConfigDoc.Fields[9].Name = "KMS"
+	DatacenterConfigDoc.Fields[9].Type = "string"
+	DatacenterConfigDoc.Fields[9].Note = ""
+	DatacenterConfigDoc.Fields[9].Description = "Host (IP:port) of the Windows machine hosting the Key Management Service. Set to empty string to disable."
+	DatacenterConfigDoc.Fields[9].Comments[encoder.LineComment] = "Host (IP:port) of the Windows machine hosting the Key Management Service. Set to empty string to disable."
+	DatacenterConfigDoc.Fields[10].Name = "TFTPServerWANVRRPListenIPv4"
+	DatacenterConfigDoc.Fields[10].Type = "string"
+	DatacenterConfigDoc.Fields[10].Note = ""
+	DatacenterConfigDoc.Fields[10].Description = "The IP of the Site Controller TFTP service used during the legacy (PXE) deployment process."
+	DatacenterConfigDoc.Fields[10].Comments[encoder.LineComment] = "The IP of the Site Controller TFTP service used during the legacy (PXE) deployment process."
+	DatacenterConfigDoc.Fields[11].Name = "dataLakeEnabled"
+	DatacenterConfigDoc.Fields[11].Type = "bool"
+	DatacenterConfigDoc.Fields[11].Note = ""
+	DatacenterConfigDoc.Fields[11].Description = "If set to true, the datalake service is enabled in this environment. Deprecated"
+	DatacenterConfigDoc.Fields[11].Comments[encoder.LineComment] = "If set to true, the datalake service is enabled in this environment. Deprecated"
+	DatacenterConfigDoc.Fields[11].Values = []string{
+		"true",
+		"false",
+	}
+	DatacenterConfigDoc.Fields[12].Name = "monitoringGraphitePlainTextSocketHost"
+	DatacenterConfigDoc.Fields[12].Type = "string"
+	DatacenterConfigDoc.Fields[12].Note = ""
+	DatacenterConfigDoc.Fields[12].Description = "Graphite host (IPv4:port) for the plain text protocol socket. Set to empty string to disable. Deprecated"
+	DatacenterConfigDoc.Fields[12].Comments[encoder.LineComment] = "Graphite host (IPv4:port) for the plain text protocol socket. Set to empty string to disable. Deprecated"
+	DatacenterConfigDoc.Fields[13].Name = "monitoringGraphiteRenderURLHost"
+	DatacenterConfigDoc.Fields[13].Type = "string"
+	DatacenterConfigDoc.Fields[13].Note = ""
+	DatacenterConfigDoc.Fields[13].Description = "Graphite host (IPv4:port) for the HTTP Render URL API. Set to empty string to disable. Deprecated"
+	DatacenterConfigDoc.Fields[13].Comments[encoder.LineComment] = "Graphite host (IPv4:port) for the HTTP Render URL API. Set to empty string to disable. Deprecated"
+	DatacenterConfigDoc.Fields[14].Name = "latitude"
+	DatacenterConfigDoc.Fields[14].Type = "float64"
+	DatacenterConfigDoc.Fields[14].Note = ""
+	DatacenterConfigDoc.Fields[14].Description = "The Datacenter's latitude. Use negative numbers for the south hemisphere"
+	DatacenterConfigDoc.Fields[14].Comments[encoder.LineComment] = "The Datacenter's latitude. Use negative numbers for the south hemisphere"
+	DatacenterConfigDoc.Fields[15].Name = "longitude"
+	DatacenterConfigDoc.Fields[15].Type = "float64"
+	DatacenterConfigDoc.Fields[15].Note = ""
+	DatacenterConfigDoc.Fields[15].Description = "description: The data center's longitude: Use negative numbers for areas west of Greenwich (UK)"
+	DatacenterConfigDoc.Fields[15].Comments[encoder.LineComment] = "description: The data center's longitude: Use negative numbers for areas west of Greenwich (UK)"
+	DatacenterConfigDoc.Fields[16].Name = "address"
+	DatacenterConfigDoc.Fields[16].Type = "string"
+	DatacenterConfigDoc.Fields[16].Note = ""
+	DatacenterConfigDoc.Fields[16].Description = "The data center's address"
+	DatacenterConfigDoc.Fields[16].Comments[encoder.LineComment] = "The data center's address"
+	DatacenterConfigDoc.Fields[17].Name = "serverRegisterUsingGeneratedIPMICredentialsEnabled"
+	DatacenterConfigDoc.Fields[17].Type = "bool"
+	DatacenterConfigDoc.Fields[17].Note = ""
+	DatacenterConfigDoc.Fields[17].Description = "If set to true the system will configure a randomly generated username and password on the server's BMC(ILO/IDRAC etc.)"
+	DatacenterConfigDoc.Fields[17].Comments[encoder.LineComment] = "If set to true the system will configure a randomly generated username and password on the server's BMC(ILO/IDRAC etc.)"
+	DatacenterConfigDoc.Fields[17].Values = []string{
+		"true",
+		"false",
+	}
+	DatacenterConfigDoc.Fields[18].Name = "serverRegisterUsingProvidedIPMICredentialsEnabled"
+	DatacenterConfigDoc.Fields[18].Type = "bool"
+	DatacenterConfigDoc.Fields[18].Note = ""
+	DatacenterConfigDoc.Fields[18].Description = "If set to true the system will ask for credentials during server registration."
+	DatacenterConfigDoc.Fields[18].Comments[encoder.LineComment] = "If set to true the system will ask for credentials during server registration."
+	DatacenterConfigDoc.Fields[18].Values = []string{
+		"true",
+		"false",
+	}
+	DatacenterConfigDoc.Fields[19].Name = "switchProvisioner"
+	DatacenterConfigDoc.Fields[19].Type = "map[string]interface{}"
+	DatacenterConfigDoc.Fields[19].Note = ""
+	DatacenterConfigDoc.Fields[19].Description = "The provisioner (fabric) to use when provisioning the network on switch devices"
+	DatacenterConfigDoc.Fields[19].Comments[encoder.LineComment] = "The provisioner (fabric) to use when provisioning the network on switch devices"
+	DatacenterConfigDoc.Fields[19].Values = []string{
+		"VLAN",
+		"EVPNVXLANL2",
+		"VPLS",
+		"LAN",
+		"SDN",
+	}
+	DatacenterConfigDoc.Fields[20].Name = "enableTenantAccessToIPMI"
+	DatacenterConfigDoc.Fields[20].Type = "bool"
+	DatacenterConfigDoc.Fields[20].Note = ""
+	DatacenterConfigDoc.Fields[20].Description = "If set to true the tenants will receive credentials for accessing the server's BMC with a special user."
+	DatacenterConfigDoc.Fields[20].Comments[encoder.LineComment] = "If set to true the tenants will receive credentials for accessing the server's BMC with a special user."
+	DatacenterConfigDoc.Fields[21].Name = "allowVLANOverrides"
+	DatacenterConfigDoc.Fields[21].Type = "bool"
+	DatacenterConfigDoc.Fields[21].Note = ""
+	DatacenterConfigDoc.Fields[21].Description = "description: Allows the end-user to force a VLAN ID (or EPG in CISCO ACI environments). This enables the user to connect to pre-existing VLANs in the established infrastructure. WARNING: This enables a tenant to access unauthorized VLANs."
+	DatacenterConfigDoc.Fields[21].Comments[encoder.LineComment] = "description: Allows the end-user to force a VLAN ID (or EPG in CISCO ACI environments). This enables the user to connect to pre-existing VLANs in the established infrastructure. WARNING: This enables a tenant to access unauthorized VLANs."
+	DatacenterConfigDoc.Fields[22].Name = "allowNetworkProfiles"
+	DatacenterConfigDoc.Fields[22].Type = "bool"
+	DatacenterConfigDoc.Fields[22].Note = ""
+	DatacenterConfigDoc.Fields[22].Description = "Allows the usage of network profiles for customizing InstanceArray network connections."
+	DatacenterConfigDoc.Fields[22].Comments[encoder.LineComment] = "Allows the usage of network profiles for customizing InstanceArray network connections."
+	DatacenterConfigDoc.Fields[23].Name = "enableServerRegistrationStartedByInBandDHCP"
+	DatacenterConfigDoc.Fields[23].Type = "bool"
+	DatacenterConfigDoc.Fields[23].Note = ""
+	DatacenterConfigDoc.Fields[23].Description = "If set enables in-band triggered registration via the legacy (PXE) mechanism."
+	DatacenterConfigDoc.Fields[23].Comments[encoder.LineComment] = "If set enables in-band triggered registration via the legacy (PXE) mechanism."
+	DatacenterConfigDoc.Fields[24].Name = "extraInternalIPsPerSubnet"
+	DatacenterConfigDoc.Fields[24].Type = "int"
+	DatacenterConfigDoc.Fields[24].Note = ""
+	DatacenterConfigDoc.Fields[24].Description = "Extra ips to reserve on each subnet for WAN networks. Certain fabrics (such as VRRP-based L3 SVIs need more than one IP to be allocated on each subnet). This option will force the system to reserve this number of IPs from each subnet."
+	DatacenterConfigDoc.Fields[24].Comments[encoder.LineComment] = "Extra ips to reserve on each subnet for WAN networks. Certain fabrics (such as VRRP-based L3 SVIs need more than one IP to be allocated on each subnet). This option will force the system to reserve this number of IPs from each subnet."
+	DatacenterConfigDoc.Fields[25].Name = "extraInternalIPsPerSANSubnet"
+	DatacenterConfigDoc.Fields[25].Type = "int"
+	DatacenterConfigDoc.Fields[25].Note = ""
+	DatacenterConfigDoc.Fields[25].Description = "Extra ips to reserve on each subnet for SAN networks. Certain fabrics (such as VRRP-based L3 SVIs need more than one IP to be allocated on each subnet). This option will force the system to reserve this number of IPs from each subnet."
+	DatacenterConfigDoc.Fields[25].Comments[encoder.LineComment] = "Extra ips to reserve on each subnet for SAN networks. Certain fabrics (such as VRRP-based L3 SVIs need more than one IP to be allocated on each subnet). This option will force the system to reserve this number of IPs from each subnet."
+	DatacenterConfigDoc.Fields[26].Name = "serverRAIDConfigurationEnabled"
+	DatacenterConfigDoc.Fields[26].Type = "bool"
+	DatacenterConfigDoc.Fields[26].Note = ""
+	DatacenterConfigDoc.Fields[26].Description = "If enabled RAID configurations are set on servers"
+	DatacenterConfigDoc.Fields[26].Comments[encoder.LineComment] = "If enabled RAID configurations are set on servers"
+	DatacenterConfigDoc.Fields[27].Name = "webProxy"
+	DatacenterConfigDoc.Fields[27].Type = "WebProxy"
+	DatacenterConfigDoc.Fields[27].Note = ""
+	DatacenterConfigDoc.Fields[27].Description = "If configured the proxy will be used by all operations."
+	DatacenterConfigDoc.Fields[27].Comments[encoder.LineComment] = "If configured the proxy will be used by all operations."
+	DatacenterConfigDoc.Fields[28].Name = "isKubernetesDeployment"
+	DatacenterConfigDoc.Fields[28].Type = "bool"
+	DatacenterConfigDoc.Fields[28].Note = ""
+	DatacenterConfigDoc.Fields[28].Description = "Deprecated."
+	DatacenterConfigDoc.Fields[28].Comments[encoder.LineComment] = "Deprecated."
+	DatacenterConfigDoc.Fields[29].Name = "allowInstanceArrayFirmwarePolicies"
+	DatacenterConfigDoc.Fields[29].Type = "bool"
+	DatacenterConfigDoc.Fields[29].Note = ""
+	DatacenterConfigDoc.Fields[29].Description = "If set it allows  the use of firmware policies. Note that for baselines to function this needs to be enabled."
+	DatacenterConfigDoc.Fields[29].Comments[encoder.LineComment] = "If set it allows  the use of firmware policies. Note that for baselines to function this needs to be enabled."
+	DatacenterConfigDoc.Fields[30].Name = "provisionUsingTheQuarantineNetwork"
+	DatacenterConfigDoc.Fields[30].Type = "bool"
+	DatacenterConfigDoc.Fields[30].Note = ""
+	DatacenterConfigDoc.Fields[30].Description = "If set to true, during the legacy registration process (PXE) the system will configure special provisioning VLAN on server ports prior to performing the deployment"
+	DatacenterConfigDoc.Fields[30].Comments[encoder.LineComment] = "If set to true, during the legacy registration process (PXE) the system will configure special provisioning VLAN on server ports prior to performing the deployment"
+	DatacenterConfigDoc.Fields[31].Name = "enableDHCPRelaySecurityForQuarantineNetwork"
+	DatacenterConfigDoc.Fields[31].Type = "bool"
+	DatacenterConfigDoc.Fields[31].Note = ""
+	DatacenterConfigDoc.Fields[31].Description = "If set to true, during the legacy registration process (PXE) the system will enforce DHCP option 82 security."
+	DatacenterConfigDoc.Fields[31].Comments[encoder.LineComment] = "If set to true, during the legacy registration process (PXE) the system will enforce DHCP option 82 security."
+	DatacenterConfigDoc.Fields[32].Name = "enableDHCPRelaySecurityForClientNetworks"
+	DatacenterConfigDoc.Fields[32].Type = "bool"
+	DatacenterConfigDoc.Fields[32].Note = ""
+	DatacenterConfigDoc.Fields[32].Description = "If set to true, the DHCP server will ignore requests that do not respect DHCP option 82 for regular networks."
+	DatacenterConfigDoc.Fields[32].Comments[encoder.LineComment] = "If set to true, the DHCP server will ignore requests that do not respect DHCP option 82 for regular networks."
+	DatacenterConfigDoc.Fields[33].Name = "enableDHCPBMCMACAddressWhitelist"
+	DatacenterConfigDoc.Fields[33].Type = "bool"
+	DatacenterConfigDoc.Fields[33].Note = ""
+	DatacenterConfigDoc.Fields[33].Description = "If enabled, the DHCPBMCMACAddressWhitelist will be used to whitelist certain MAC addresses in order to ensure that only certain servers get registered during the ZTP process."
+	DatacenterConfigDoc.Fields[33].Comments[encoder.LineComment] = "If enabled, the DHCPBMCMACAddressWhitelist will be used to whitelist certain MAC addresses in order to ensure that only certain servers get registered during the ZTP process."
+	DatacenterConfigDoc.Fields[34].Name = "dhcpBMCMACAddressWhitelist"
+	DatacenterConfigDoc.Fields[34].Type = "[]string"
+	DatacenterConfigDoc.Fields[34].Note = ""
+	DatacenterConfigDoc.Fields[34].Description = "The mac addresses of the servers that are to be allowed to be registered via ZTP. This is useful during initial testing."
+	DatacenterConfigDoc.Fields[34].Comments[encoder.LineComment] = "The mac addresses of the servers that are to be allowed to be registered via ZTP. This is useful during initial testing."
+	DatacenterConfigDoc.Fields[35].Name = "defaultServerCleanupPolicyID"
+	DatacenterConfigDoc.Fields[35].Type = "int"
+	DatacenterConfigDoc.Fields[35].Note = ""
+	DatacenterConfigDoc.Fields[35].Description = "If set the server cleanup policy will be the policy with the specified id instead of the default one (which is 0)"
+	DatacenterConfigDoc.Fields[35].Comments[encoder.LineComment] = "If set the server cleanup policy will be the policy with the specified id instead of the default one (which is 0)"
+	DatacenterConfigDoc.Fields[36].Name = "defaultWANNetworkProfileID"
+	DatacenterConfigDoc.Fields[36].Type = "int"
+	DatacenterConfigDoc.Fields[36].Note = ""
+	DatacenterConfigDoc.Fields[36].Description = "If set, this will be the default network profile instead of no network profile."
+	DatacenterConfigDoc.Fields[36].Comments[encoder.LineComment] = "If set, this will be the default network profile instead of no network profile."
+	DatacenterConfigDoc.Fields[37].Name = "defaultDeploymentMechanism"
+	DatacenterConfigDoc.Fields[37].Type = "string"
+	DatacenterConfigDoc.Fields[37].Note = ""
+	DatacenterConfigDoc.Fields[37].Description = "Deployment mechanism used in case a server supports both Virtual Media and legacy (PXE)."
+	DatacenterConfigDoc.Fields[37].Comments[encoder.LineComment] = "Deployment mechanism used in case a server supports both Virtual Media and legacy (PXE)."
+	DatacenterConfigDoc.Fields[37].Values = []string{
+		"virtual_media",
+		"pxe",
+	}
+	DatacenterConfigDoc.Fields[38].Name = "defaultCleanupAndRegistrationMechanism"
+	DatacenterConfigDoc.Fields[38].Type = "string"
+	DatacenterConfigDoc.Fields[38].Note = ""
+	DatacenterConfigDoc.Fields[38].Description = "The cleanup and register mechanism used in case a server supports both BMC-only and BDK mechanisms. Defaults to BMC."
+	DatacenterConfigDoc.Fields[38].Comments[encoder.LineComment] = "The cleanup and register mechanism used in case a server supports both BMC-only and BDK mechanisms. Defaults to BMC."
+	DatacenterConfigDoc.Fields[38].Values = []string{
+		"bmc",
+		"bdk",
+	}
+	DatacenterConfigDoc.Fields[39].Name = "NFSServer"
+	DatacenterConfigDoc.Fields[39].Type = "string"
+	DatacenterConfigDoc.Fields[39].Note = ""
+	DatacenterConfigDoc.Fields[39].Description = "The NFS server to use for server OS deployment (the IP of the site controller as seen from the server's BMC). Should be an IP to avoid DNS resolutions."
+	DatacenterConfigDoc.Fields[39].Comments[encoder.LineComment] = "The NFS server to use for server OS deployment (the IP of the site controller as seen from the server's BMC). Should be an IP to avoid DNS resolutions."
+	DatacenterConfigDoc.Fields[40].Name = "Option82ToIPMapping"
+	DatacenterConfigDoc.Fields[40].Type = "Option82ToIPMapping"
+	DatacenterConfigDoc.Fields[40].Note = ""
+	DatacenterConfigDoc.Fields[40].Description = "Can be used to set a mapping between Option82 and IPs that the DHCP server allocates to servers during registration."
+	DatacenterConfigDoc.Fields[40].Comments[encoder.LineComment] = "Can be used to set a mapping between Option82 and IPs that the DHCP server allocates to servers during registration."
+
+	WebProxyDoc.Type = "WebProxy"
+	WebProxyDoc.Comments[encoder.LineComment] = "Defines web proxy configuration"
+	WebProxyDoc.Description = "Defines web proxy configuration"
+	WebProxyDoc.AppearsIn = []encoder.Appearance{
+		{
+			TypeName:  "DatacenterConfig",
+			FieldName: "webProxy",
+		},
+	}
+	WebProxyDoc.Fields = make([]encoder.Doc, 4)
+	WebProxyDoc.Fields[0].Name = "ip"
+	WebProxyDoc.Fields[0].Type = "string"
+	WebProxyDoc.Fields[0].Note = ""
+	WebProxyDoc.Fields[0].Description = "Ip fo the web proxy"
+	WebProxyDoc.Fields[0].Comments[encoder.LineComment] = "Ip fo the web proxy"
+	WebProxyDoc.Fields[1].Name = "port"
+	WebProxyDoc.Fields[1].Type = "int"
+	WebProxyDoc.Fields[1].Note = ""
+	WebProxyDoc.Fields[1].Description = "Port fo the web proxy"
+	WebProxyDoc.Fields[1].Comments[encoder.LineComment] = "Port fo the web proxy"
+	WebProxyDoc.Fields[2].Name = "username"
+	WebProxyDoc.Fields[2].Type = "string"
+	WebProxyDoc.Fields[2].Note = ""
+	WebProxyDoc.Fields[2].Description = "Username of the web proxy"
+	WebProxyDoc.Fields[2].Comments[encoder.LineComment] = "Username of the web proxy"
+	WebProxyDoc.Fields[3].Name = "password"
+	WebProxyDoc.Fields[3].Type = "string"
+	WebProxyDoc.Fields[3].Note = ""
+	WebProxyDoc.Fields[3].Description = "Password to use for the web proxy"
+	WebProxyDoc.Fields[3].Comments[encoder.LineComment] = "Password to use for the web proxy"
+}
+
+func (DatacenterWithConfig) Doc() *encoder.Doc {
+	return &DatacenterWithConfigDoc
 }
 
 func (Datacenter) Doc() *encoder.Doc {
 	return &DatacenterDoc
 }
 
-// GetDatacenterDoc returns documentation for the file ./.
-func GetDatacenterDoc() *encoder.FileDoc {
+func (DatacenterConfig) Doc() *encoder.Doc {
+	return &DatacenterConfigDoc
+}
+
+func (WebProxy) Doc() *encoder.Doc {
+	return &WebProxyDoc
+}
+
+// GetDatacenterWithConfigDoc returns documentation for the file ./.
+func GetDatacenterWithConfigDoc() *encoder.FileDoc {
 	return &encoder.FileDoc{
-		Name:        "Datacenter",
+		Name:        "DatacenterWithConfig",
 		Description: "",
 		Structs: []*encoder.Doc{
+			&DatacenterWithConfigDoc,
 			&DatacenterDoc,
+			&DatacenterConfigDoc,
+			&WebProxyDoc,
 		},
 	}
 }
