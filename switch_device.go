@@ -3,6 +3,7 @@ package metalcloud
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/jinzhu/copier"
@@ -51,7 +52,7 @@ type SwitchDevice struct {
 	NetworkEquipmentRequiresOSInstall              bool     `json:"network_equipment_requires_os_install" yaml:"requiresOSInstall"`
 	NetworkEquipmentIsBorderDevice                 bool     `json:"network_equipment_is_border_device" yaml:"isBorderDevice"`
 	NetworkEquipmentIsStorageSwitch                bool     `json:"network_equipment_is_storage_switch" yaml:"isStorageSwitch"`
-	NetworkEquipmentIsGateway		  			   bool `json:"network_equipment_is_gateway" yaml:"isGateway"`
+	NetworkEquipmentIsGateway                      bool     `json:"network_equipment_is_gateway" yaml:"isGateway"`
 	NetworkEquipmentNetworkTypesAllowed            []string `json:"network_equipment_network_types_allowed,omitempty" yaml:"networkTypesAllowed,omitempty"`
 	VolumeTemplateID                               int      `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
 	NetworkEquipmentLoopbackAddress                string   `json:"network_equipment_loopback_address,omitempty" yaml:"LoopbackAddress,omitempty"`
@@ -108,7 +109,7 @@ func (s *SwitchDevice) UnmarshalJSON(data []byte) error {
 		NetworkEquipmentRequiresOSInstall interface{} `json:"network_equipment_requires_os_install" yaml:"requiresOSInstall"`
 		NetworkEquipmentIsBorderDevice    interface{} `json:"network_equipment_is_border_device" yaml:"isBorderDevice"`
 		NetworkEquipmentIsStorageSwitch   interface{} `json:"network_equipment_is_storage_switch" yaml:"isStorageSwitch"`
-		NetworkEquipmentIsGateway		  interface{} `json:"network_equipment_is_gateway" yaml:"isGateway"`
+		NetworkEquipmentIsGateway         interface{} `json:"network_equipment_is_gateway" yaml:"isGateway"`
 		VolumeTemplateID                  int         `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
 		NetworkEquipmentLoopbackAddress   string      `json:"network_equipment_loopback_address,omitempty" yaml:"LoopbackAddress,omitempty"`
 		NetworkEquipmentVTEPAddress       string      `json:"network_equipment_vtep_address,omitempty" yaml:"VTEPAddress,omitempty"`
@@ -345,27 +346,38 @@ func (c *Client) SwitchDeviceUpdate(networkEquipmentID int, switchDevice SwitchD
 // CreateOrUpdate implements interface Applier
 func (s SwitchDevice) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
-	var switchDevice *SwitchDevice
-	err = s.Validate()
 
+	err = s.Validate()
 	if err != nil {
 		return err
 	}
-	if s.NetworkEquipmentIdentifierString != "" {
-		switchDevice, err = client.SwitchDeviceGetByIdentifierString(s.NetworkEquipmentIdentifierString, false)
-	} else {
-		switchDevice, err = client.SwitchDeviceGet(s.NetworkEquipmentID, false)
+
+	switches, err := client.SwitchDevices(s.DatacenterName, "")
+	if err != nil {
+		return err
 	}
 
-	if err != nil {
+	found := false
+	var foundSwitch *SwitchDevice
+	for _, d := range *switches {
+		if d.NetworkEquipmentIdentifierString == s.NetworkEquipmentIdentifierString {
+			found = true
+			foundSwitch = &d
+			break
+		}
+	}
+
+	if !found {
+		log.Printf("######## switch with identifier %s not found in %s datacenter", s.NetworkEquipmentIdentifierString, s.DatacenterName)
 		_, err := client.SwitchDeviceCreate(s, false)
 
 		if err != nil {
 			return err
 		}
 	} else {
-		s.NetworkEquipmentID = switchDevice.NetworkEquipmentID
-		_, err := client.SwitchDeviceUpdate(switchDevice.NetworkEquipmentID, s, false)
+		log.Printf("######## switch with identifier %s was found in %s datacenter", s.NetworkEquipmentIdentifierString, s.DatacenterName)
+		s.NetworkEquipmentID = foundSwitch.NetworkEquipmentID
+		_, err := client.SwitchDeviceUpdate(foundSwitch.NetworkEquipmentID, s, false)
 
 		if err != nil {
 			return err

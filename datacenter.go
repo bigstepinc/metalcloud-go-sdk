@@ -412,16 +412,26 @@ func (c *Client) DatacenterAgentsConfigJSONDownloadURL(datacenterName string, de
 
 // CreateOrUpdate implements interface Applier
 func (dc DatacenterWithConfig) CreateOrUpdate(client MetalCloudClient) error {
-	var err error
-	err = dc.Validate()
 
+	err := dc.Validate()
 	if err != nil {
 		return err
 	}
 
-	_, err = client.DatacenterGet(dc.DatacenterName)
-
+	datacenters, err := client.Datacenters(false)
 	if err != nil {
+		return err
+	}
+
+	found := false
+	for _, d := range *datacenters {
+		if d.DatacenterName == dc.DatacenterName {
+			found = true
+			break
+		}
+	}
+
+	if found {
 
 		_, err = client.DatacenterUpdateFromDatacenterWithConfig(dc)
 
