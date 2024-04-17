@@ -13,9 +13,11 @@ import (
 //   - value: datacenterExample
 type DatacenterWithConfig struct {
 	//description: The datacenter part of the object
-	Datacenter
+	Datacenter `json:"datacenter" yaml:"datacenter"`
 	//description: The datacenter configuration part of the object
-	DatacenterConfig
+	DatacenterConfig `json:"datacenter_config" yaml:"datacenterConfig"`
+	//description: The datacenter agents config url
+	DatacenterAgentsConfigUrl string `json:"datacenter_agents_config_url,omitempty" yaml:"datacenterAgentsConfigUrl,omitempty"`
 }
 
 // description: Datacenter metadata
@@ -27,25 +29,25 @@ type Datacenter struct {
 	//description: The name (label) of the parent datacenter. This is useful in hierarchical setups where one datacenter needs to access it's parent's resources.
 	DatacenterNameParent string `json:"datacenter_name_parent,omitempty" yaml:"parentName,omitempty"`
 	//description: The owner of a datacenter.
-	UserID int `json:"user_id,omitempty" yaml:"userid,omitempty"`
+	UserID int `json:"user_id,omitempty" yaml:"userId,omitempty"`
 	//description: The display name of a data center. Can be changed.
-	DatacenterDisplayName string `json:"datacenter_display_name,omitempty" yaml:"displayname,omitempty"`
+	DatacenterDisplayName string `json:"datacenter_display_name,omitempty" yaml:"displayName,omitempty"`
 	//description: Deprecated.
-	DatacenterIsMaster bool `json:"datacenter_is_master" yaml:"ismaster"`
+	DatacenterIsMaster bool `json:"datacenter_is_master" yaml:"isMaster"`
 	//description: If set to true no new operations can happen on this datacenter.
-	DatacenterIsMaintenance bool `json:"datacenter_is_maintenance" yaml:"ismaintenance"`
+	DatacenterIsMaintenance bool `json:"datacenter_is_maintenance" yaml:"isMaintenance"`
 	//description: The datacenter type. Deprecated. Currently the only supported value is metal_cloud.
 	//values:
 	// - metal_cloud
 	DatacenterType string `json:"datacenter_type,omitempty" yaml:"type,omitempty"`
 	//description: ISO 8601 timestamp which holds the date and time when the datacenter was created.
 	//example: 2013-11-29T13:00:01Z
-	DatacenterCreatedTimestamp string `json:"datacenter_created_timestamp,omitempty" yaml:"createdtimestamp,omitempty"`
+	DatacenterCreatedTimestamp string `json:"datacenter_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
 	//description: ISO 8601 timestamp which holds the date and time when the datacenter was updated.
 	//example: 2013-11-29T13:00:01Z
-	DatacenterUpdatedTimestamp string `json:"datacenter_updated_timestamp,omitempty" yaml:"updatedtimestamp,omitempty"`
+	DatacenterUpdatedTimestamp string `json:"datacenter_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
 	//description: If set the datacenter will not be visible in the UI
-	DatacenterHidden bool `json:"datacenter_hidden" yaml:"ishidden"`
+	DatacenterHidden bool `json:"datacenter_hidden" yaml:"isHidden"`
 	//description: An array of tags (strings)
 	DatacenterTags []string `json:"datacenter_tags,omitempty" yaml:"tags,omitempty"`
 }

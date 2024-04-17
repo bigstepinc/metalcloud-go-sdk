@@ -6,17 +6,17 @@ package metalcloud
 
 // MetalCloudClient interface used for mocking and abstracting the backend
 type MetalCloudClient interface {
-	//AFCSearch searches for AFCs
+	// AFCSearch searches for AFCs
 	AFCSearch(filter string, page_start int, page_end int) (*[]AFCSearchResult, error)
-	//AFCGet Returns an AFC
+	// AFCGet Returns an AFC
 	AFCGet(afcID int) (*AFC, error)
-	//AFCRetryCall Retries an AFC
+	// AFCRetryCall Retries an AFC
 	AFCRetryCall(afcID int) error
-	//AFCRetryCall Skips an AFC
+	// AFCRetryCall Skips an AFC
 	AFCSkip(afcID int) error
-	//AFCDelete Skips an AFC
+	// AFCDelete Skips an AFC
 	AFCDelete(afcID int) error
-	//AFCMarkForDeath Tries to kill an AFC
+	// AFCMarkForDeath Tries to kill an AFC
 	AFCMarkForDeath(afcID int, typeOfMark string) error
 	// CustomISOs returns custom ISOs for user
 	CustomISOs(userID int) (*map[string]CustomISO, error)
@@ -54,177 +54,177 @@ type MetalCloudClient interface {
 	DatacenterUpdateFromDatacenterWithConfig(datacenter DatacenterWithConfig) (*DatacenterWithConfig, error)
 	// DatacenterAgentsConfigJSONDownloadURL returns the agent url (and automatically decrypts it)
 	DatacenterAgentsConfigJSONDownloadURL(datacenterName string, decrypt bool) (string, error)
-	//DriveArrays retrieves the list of drives arrays of an infrastructure
+	// DriveArrays retrieves the list of drives arrays of an infrastructure
 	DriveArrays(infrastructureID int) (*map[string]DriveArray, error)
-	//DriveArraysByLabel retrieves the list of drives arrays of an infrastructure
+	// DriveArraysByLabel retrieves the list of drives arrays of an infrastructure
 	DriveArraysByLabel(infrastructureLabel string) (*map[string]DriveArray, error)
-	//DriveArrayGet retrieves a DriveArray object with specified ids
+	// DriveArrayGet retrieves a DriveArray object with specified ids
 	DriveArrayGet(driveArrayID int) (*DriveArray, error)
-	//DriveArrayGetByLabel retrieves a DriveArray object with specified ids
+	// DriveArrayGetByLabel retrieves a DriveArray object with specified ids
 	DriveArrayGetByLabel(driveArrayLabel string) (*DriveArray, error)
-	//DriveArrayCreate array. Requires deploy.
+	// DriveArrayCreate array. Requires deploy.
 	DriveArrayCreate(infrastructureID int, driveArray DriveArray) (*DriveArray, error)
-	//DriveArrayCreateByLabel array. Requires deploy.
+	// DriveArrayCreateByLabel array. Requires deploy.
 	DriveArrayCreateByLabel(infrastructureLabel string, driveArray DriveArray) (*DriveArray, error)
-	//DriveArrayEdit array. Requires deploy.
+	// DriveArrayEdit array. Requires deploy.
 	DriveArrayEdit(driveArrayID int, driveArrayOperation DriveArrayOperation) (*DriveArray, error)
-	//DriveArrayEditByLabel array. Requires deploy.
+	// DriveArrayEditByLabel array. Requires deploy.
 	DriveArrayEditByLabel(driveArrayLabel string, driveArrayOperation DriveArrayOperation) (*DriveArray, error)
-	//DriveArrayDelete id
+	// DriveArrayDelete id
 	DriveArrayDelete(driveArrayID int) error
-	//DriveArrayDeleteByLabel id
+	// DriveArrayDeleteByLabel id
 	DriveArrayDeleteByLabel(driveArrayLabel string) error
-	//DriveArrayDrives array
+	// DriveArrayDrives array
 	DriveArrayDrives(driveArray int) (*map[string]Drive, error)
-	//DriveArrayDrivesByLabel array
+	// DriveArrayDrivesByLabel array
 	DriveArrayDrivesByLabel(driveArrLabel string) (*map[string]Drive, error)
-	//DriveSnapshotCreate creates a drive snapshot
+	// DriveSnapshotCreate creates a drive snapshot
 	DriveSnapshotCreate(driveID int) (*Snapshot, error)
-	//DriveSnapshotDelete creates a drive snapshot
+	// DriveSnapshotDelete creates a drive snapshot
 	DriveSnapshotDelete(driveSnapshotID int) error
-	//DriveSnapshotRollback rolls a Drive back to a specified DriveSnapshot. The specified snapshot is not destroyed and can be reused.
+	// DriveSnapshotRollback rolls a Drive back to a specified DriveSnapshot. The specified snapshot is not destroyed and can be reused.
 	DriveSnapshotRollback(driveSnapshotID int) error
-	//DriveSnapshotGet gets a drive snapshot
+	// DriveSnapshotGet gets a drive snapshot
 	DriveSnapshotGet(driveSnapshotID int) (*Snapshot, error)
-	//DriveSnapshots retrieves a list of all the snapshot objects
+	// DriveSnapshots retrieves a list of all the snapshot objects
 	DriveSnapshots(driveID int) (*map[string]Snapshot, error)
-	//ExternalConnections returns a list of external connections for the specified datacenter
+	// ExternalConnections returns a list of external connections for the specified datacenter
 	ExternalConnections(datacenterName string) (*map[int]ExternalConnection, error)
-	//ExternalConnectionCreate creates an external connection.
+	// ExternalConnectionCreate creates an external connection.
 	ExternalConnectionCreate(externalConnection ExternalConnection) (*ExternalConnection, error)
-	//ExternalConnectionGet
+	// ExternalConnectionGet
 	ExternalConnectionGet(externalConnectionID int) (*ExternalConnection, error)
-	//ExternalConnectionGetByLabel
+	// ExternalConnectionGetByLabel
 	ExternalConnectionGetByLabel(externalConnectionLabel string) (*ExternalConnection, error)
-	//ExternalConnectionEdit connection.
+	// ExternalConnectionEdit connection.
 	ExternalConnectionEdit(externalConnectionID int, externalConnection ExternalConnection) (*ExternalConnection, error)
-	//ExternalConnectionEditByLabel connection.
+	// ExternalConnectionEditByLabel connection.
 	ExternalConnectionEditByLabel(externalConnectionLabel string, externalConnection ExternalConnection) (*ExternalConnection, error)
-	//ExternalConnectionDelete connection.
+	// ExternalConnectionDelete connection.
 	ExternalConnectionDelete(externalConnectionID int) error
-	//ExternalConnectionDeleteByLabel connection.
+	// ExternalConnectionDeleteByLabel connection.
 	ExternalConnectionDeleteByLabel(externalConnectionLabel string) error
-	//InfrastructureCreate creates an infrastructure
+	// InfrastructureCreate creates an infrastructure
 	InfrastructureCreate(infrastructure Infrastructure) (*Infrastructure, error)
-	//Infrastructures returns a list of infrastructures
+	// Infrastructures returns a list of infrastructures
 	Infrastructures() (*map[string]Infrastructure, error)
-	//InfrastructureSearch searches for infrastructures with filtering support
+	// InfrastructureSearch searches for infrastructures with filtering support
 	InfrastructureSearch(filter string) (*[]InfrastructuresSearchResult, error)
-	//InfrastructureEdit infrastructure
+	// InfrastructureEdit infrastructure
 	InfrastructureEdit(infrastructureID int, infrastructureOperation InfrastructureOperation) (*Infrastructure, error)
-	//InfrastructureEditByLabel infrastructure
+	// InfrastructureEditByLabel infrastructure
 	InfrastructureEditByLabel(infrastructureLabel string, infrastructureOperation InfrastructureOperation) (*Infrastructure, error)
-	//InfrastructureDelete elements. Requires deploy
+	// InfrastructureDelete elements. Requires deploy
 	InfrastructureDelete(infrastructureID int) error
-	//InfrastructureDeleteByLabel elements. Requires deploy
+	// InfrastructureDeleteByLabel elements. Requires deploy
 	InfrastructureDeleteByLabel(infrastructureLabel string) error
-	//InfrastructureOperationCancel (undos) alterations done before deploy
+	// InfrastructureOperationCancel (undos) alterations done before deploy
 	InfrastructureOperationCancel(infrastructureID int) error
-	//InfrastructureOperationCancelByLabel (undos) alterations done before deploy
+	// InfrastructureOperationCancelByLabel (undos) alterations done before deploy
 	InfrastructureOperationCancelByLabel(infrastructureLabel string) error
-	//InfrastructureDeploy infrastructure
+	// InfrastructureDeploy infrastructure
 	InfrastructureDeploy(infrastructureID int, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error
-	//InfrastructureDeployByLabel infrastructure
+	// InfrastructureDeployByLabel infrastructure
 	InfrastructureDeployByLabel(infrastructureLabel string, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error
-	//InfrastructureDeployWithOptions infrastructure. With options.
+	// InfrastructureDeployWithOptions infrastructure. With options.
 	InfrastructureDeployWithOptions(infrastructureID int, shutdownOptions ShutdownOptions, deployOptions *DeployOptions, allowDataLoss bool, skipAnsible bool) error
-	//InfrastructureDeployWithOptionsByLabel infrastructure. With options.
+	// InfrastructureDeployWithOptionsByLabel infrastructure. With options.
 	InfrastructureDeployWithOptionsByLabel(infrastructureLabel string, shutdownOptions ShutdownOptions, deployOptions *DeployOptions, allowDataLoss bool, skipAnsible bool) error
-	//InfrastructureGet id
+	// InfrastructureGet id
 	InfrastructureGet(infrastructureID int) (*Infrastructure, error)
-	//InfrastructureGetByLabel id
+	// InfrastructureGetByLabel id
 	InfrastructureGetByLabel(infrastructureLabel string) (*Infrastructure, error)
-	//InfrastructureUserLimits metadata
+	// InfrastructureUserLimits metadata
 	InfrastructureUserLimits(infrastructureID int) (*map[string]interface{}, error)
-	//InfrastructureUserLimitsByLabel metadata
+	// InfrastructureUserLimitsByLabel metadata
 	InfrastructureUserLimitsByLabel(infrastructureLabel string) (*map[string]interface{}, error)
 	// InstanceArrayInterfaceAttachNetwork attaches an InstanceArrayInterface to a Network
 	InstanceArrayInterfaceAttachNetwork(instanceArrayID int, instanceArrayInterfaceIndex int, networkID int) (*InstanceArray, error)
 	// InstanceArrayInterfaceDetach detaches an InstanceArrayInterface from any Network element that is attached to.
 	InstanceArrayInterfaceDetach(instanceArrayID int, instanceArrayInterfaceIndex int) (*InstanceArray, error)
-	//InstanceArrayGet id
+	// InstanceArrayGet id
 	InstanceArrayGet(instanceArrayID int) (*InstanceArray, error)
-	//InstanceArrayGetByLabel id
+	// InstanceArrayGetByLabel id
 	InstanceArrayGetByLabel(instanceArrayLabel string) (*InstanceArray, error)
-	//InstanceArrays infrastructure
+	// InstanceArrays infrastructure
 	InstanceArrays(infrastructureID int) (*map[string]InstanceArray, error)
-	//InstanceArraysByLabel infrastructure
+	// InstanceArraysByLabel infrastructure
 	InstanceArraysByLabel(infrastructureLabel string) (*map[string]InstanceArray, error)
-	//InstanceArrayCreate (collection of identical instances). Requires Deploy.
+	// InstanceArrayCreate (collection of identical instances). Requires Deploy.
 	InstanceArrayCreate(infrastructureID int, instanceArray InstanceArray) (*InstanceArray, error)
-	//InstanceArrayCreateByLabel (collection of identical instances). Requires Deploy.
+	// InstanceArrayCreateByLabel (collection of identical instances). Requires Deploy.
 	InstanceArrayCreateByLabel(infrastructureLabel string, instanceArray InstanceArray) (*InstanceArray, error)
-	//InstanceArrayEdit array. Requires deploy.
+	// InstanceArrayEdit array. Requires deploy.
 	InstanceArrayEdit(instanceArrayID int, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *ServerTypeMatches, arrInstancesToBeDeleted *[]int) (*InstanceArray, error)
-	//InstanceArrayEditByLabel array. Requires deploy.
+	// InstanceArrayEditByLabel array. Requires deploy.
 	InstanceArrayEditByLabel(instanceArrayLabel string, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *ServerTypeMatches, arrInstancesToBeDeleted *[]int) (*InstanceArray, error)
-	//InstanceArrayDelete array. Requires deploy.
+	// InstanceArrayDelete array. Requires deploy.
 	InstanceArrayDelete(instanceArrayID int) error
-	//InstanceArrayDeleteByLabel array. Requires deploy.
+	// InstanceArrayDeleteByLabel array. Requires deploy.
 	InstanceArrayDeleteByLabel(instanceArrayLabel string) error
-	//InstanceArrayStop InstanceArray.
+	// InstanceArrayStop InstanceArray.
 	InstanceArrayStop(instanceArrayID int) (*InstanceArray, error)
-	//InstanceArrayStopByLabel InstanceArray.
+	// InstanceArrayStopByLabel InstanceArray.
 	InstanceArrayStopByLabel(instanceArrayLabel string) (*InstanceArray, error)
-	//InstanceArrayStart InstanceArray.
+	// InstanceArrayStart InstanceArray.
 	InstanceArrayStart(instanceArrayID int) (*InstanceArray, error)
-	//InstanceArrayStartByLabel InstanceArray.
+	// InstanceArrayStartByLabel InstanceArray.
 	InstanceArrayStartByLabel(instanceArrayLabel string) (*InstanceArray, error)
-	//ClusterCreate cluster
+	// ClusterCreate cluster
 	ClusterCreate(infrastructureID int, cluster Cluster) (*Cluster, error)
-	//ClusterCreateByLabel cluster
+	// ClusterCreateByLabel cluster
 	ClusterCreateByLabel(infrastructureLabel string, cluster Cluster) (*Cluster, error)
-	//ClusterGet (app) with specified id
+	// ClusterGet (app) with specified id
 	ClusterGet(clusterID int) (*Cluster, error)
-	//ClusterGetByLabel (app) with specified id
+	// ClusterGetByLabel (app) with specified id
 	ClusterGetByLabel(clusterLabel string) (*Cluster, error)
-	//ClusterAppVMWareVSphere cluster
+	// ClusterAppVMWareVSphere cluster
 	ClusterAppVMWareVSphere(clusterID int, decryptCredentials bool) (*AppVMWareVsphere, error)
-	//ClusterAppVMWareVSphereByLabel cluster
+	// ClusterAppVMWareVSphereByLabel cluster
 	ClusterAppVMWareVSphereByLabel(clusterLabel string, decryptCredentials bool) (*AppVMWareVsphere, error)
-	//ClusterAppKubernetes cluster
+	// ClusterAppKubernetes cluster
 	ClusterAppKubernetes(clusterID int, decryptCredentials bool) (*AppKubernetes, error)
-	//ClusterAppKubernetesByLabel cluster
+	// ClusterAppKubernetesByLabel cluster
 	ClusterAppKubernetesByLabel(clusterLabel string, decryptCredentials bool) (*AppKubernetes, error)
-	//ClusterDelete array. Requires deploy.
+	// ClusterDelete array. Requires deploy.
 	ClusterDelete(clusterID int) error
-	//ClusterDeleteByLabel array. Requires deploy.
+	// ClusterDeleteByLabel array. Requires deploy.
 	ClusterDeleteByLabel(clusterLabel string) error
-	//ClusterEdit array. Requires deploy.
+	// ClusterEdit array. Requires deploy.
 	ClusterEdit(clusterId int, clusterOperation ClusterOperation) (*Cluster, error)
-	//ClusterEditByLabel array. Requires deploy.
+	// ClusterEditByLabel array. Requires deploy.
 	ClusterEditByLabel(clusterLabel string, clusterOperation ClusterOperation) (*Cluster, error)
-	//Clusters cluster
+	// Clusters cluster
 	Clusters(infrastructureId int) (*map[string]Cluster, error)
-	//ClustersByLabel cluster
+	// ClustersByLabel cluster
 	ClustersByLabel(infrastructureLabel string) (*map[string]Cluster, error)
-	//ClusterInstanceArrays cluster
+	// ClusterInstanceArrays cluster
 	ClusterInstanceArrays(clusterId int) (*map[string]InstanceArray, error)
-	//ClusterInstanceArraysByLabel cluster
+	// ClusterInstanceArraysByLabel cluster
 	ClusterInstanceArraysByLabel(clusterLabel string) (*map[string]InstanceArray, error)
-	//InstanceEdit instance. Requires deploy
+	// InstanceEdit instance. Requires deploy
 	InstanceEdit(instanceID int, instanceOperation InstanceOperation) (*Instance, error)
-	//InstanceEditByLabel instance. Requires deploy
+	// InstanceEditByLabel instance. Requires deploy
 	InstanceEditByLabel(instanceLabel string, instanceOperation InstanceOperation) (*Instance, error)
-	//InstanceArrayInstances InstanceArray.
+	// InstanceArrayInstances InstanceArray.
 	InstanceArrayInstances(instanceArrayID int) (*map[string]Instance, error)
-	//InstanceArrayInstancesByLabel InstanceArray.
+	// InstanceArrayInstancesByLabel InstanceArray.
 	InstanceArrayInstancesByLabel(instanceArrayLabel string) (*map[string]Instance, error)
-	//InstanceGet id
+	// InstanceGet id
 	InstanceGet(instanceID int) (*Instance, error)
-	//InstanceGetByLabel id
+	// InstanceGetByLabel id
 	InstanceGetByLabel(instanceLabel string) (*Instance, error)
-	//InstanceServerPowerSet instance
+	// InstanceServerPowerSet instance
 	InstanceServerPowerSet(instanceID int, operation string) error
-	//InstanceServerPowerSetByLabel instance
+	// InstanceServerPowerSetByLabel instance
 	InstanceServerPowerSetByLabel(instanceLabel string, operation string) error
-	//InstanceServerPowerGet instance
+	// InstanceServerPowerGet instance
 	InstanceServerPowerGet(instanceID int) (*string, error)
-	//InstanceServerPowerGetByLabel instance
+	// InstanceServerPowerGetByLabel instance
 	InstanceServerPowerGetByLabel(instanceLabel string) (*string, error)
-	//InstanceServerPowerGetBatch instances
+	// InstanceServerPowerGetBatch instances
 	InstanceServerPowerGetBatch(infrastructureID int, instanceIDs []int) (*map[string]string, error)
-	//InstanceServerPowerGetBatchByLabel instances
+	// InstanceServerPowerGetBatchByLabel instances
 	InstanceServerPowerGetBatchByLabel(infrastructureLabel string, instanceIDs []int) (*map[string]string, error)
 	// GetUserEmail returns the user configured for this connection
 	GetUserEmail() string
@@ -232,64 +232,64 @@ type MetalCloudClient interface {
 	GetEndpoint() string
 	// GetUserID returns the ID of the user extracted from the API key
 	GetUserID() int
-	//NetworkGet object
+	// NetworkGet object
 	NetworkGet(networkID int) (*Network, error)
-	//NetworkGetByLabel object
+	// NetworkGetByLabel object
 	NetworkGetByLabel(networkLabel string) (*Network, error)
-	//Networks infrastructure
+	// Networks infrastructure
 	Networks(infrastructureID int) (*map[string]Network, error)
-	//NetworksByLabel infrastructure
+	// NetworksByLabel infrastructure
 	NetworksByLabel(infrastructureLabel string) (*map[string]Network, error)
-	//NetworkCreate network
+	// NetworkCreate network
 	NetworkCreate(infrastructureID int, network Network) (*Network, error)
-	//NetworkCreateByLabel network
+	// NetworkCreateByLabel network
 	NetworkCreateByLabel(infrastructureLabel string, network Network) (*Network, error)
-	//NetworkEdit network
+	// NetworkEdit network
 	NetworkEdit(networkID int, networkOperation NetworkOperation) (*Network, error)
-	//NetworkEditByLabel network
+	// NetworkEditByLabel network
 	NetworkEditByLabel(networkLabel string, networkOperation NetworkOperation) (*Network, error)
-	//NetworkDelete network.
+	// NetworkDelete network.
 	NetworkDelete(networkID int) error
-	//NetworkDeleteByLabel network.
+	// NetworkDeleteByLabel network.
 	NetworkDeleteByLabel(networkLabel string) error
-	//NetworkJoin objects.
+	// NetworkJoin objects.
 	NetworkJoin(networkID int, networkToBeDeletedID int) error
-	//NetworkJoinByLabel objects.
+	// NetworkJoinByLabel objects.
 	NetworkJoinByLabel(networkLabel string, networkToBeDeletedID int) error
-	//NetworkProfiles returns a list of network profiles for the specified datacenter
+	// NetworkProfiles returns a list of network profiles for the specified datacenter
 	NetworkProfiles(datacenterName string) (*map[int]NetworkProfile, error)
-	//NetworkProfileCreate creates a network profile.
+	// NetworkProfileCreate creates a network profile.
 	NetworkProfileCreate(datacenterName string, networkProfile NetworkProfile) (*NetworkProfile, error)
 	InstanceArrayNetworkProfileSet(instanceArrayID int, networkID int, networkProfileID int) (*map[int]int, error)
 	InstanceArrayNetworkProfileClear(instanceArrayID int, networkID int) error
 	NetworkProfileListByInstanceArray(instanceArrayID int) (*map[int]int, error)
-	//NetworkProfileGet
+	// NetworkProfileGet
 	NetworkProfileGet(networkProfileID int) (*NetworkProfile, error)
-	//NetworkProfileGetByLabel
+	// NetworkProfileGetByLabel
 	NetworkProfileGetByLabel(networkProfileLabel string) (*NetworkProfile, error)
-	//NetworkProfileUpdate profile.
+	// NetworkProfileUpdate profile.
 	NetworkProfileUpdate(networkProfileID int, networkProfile NetworkProfile) (*NetworkProfile, error)
-	//NetworkProfileUpdateByLabel profile.
+	// NetworkProfileUpdateByLabel profile.
 	NetworkProfileUpdateByLabel(networkProfileLabel string, networkProfile NetworkProfile) (*NetworkProfile, error)
-	//NetworkProfileDelete profile.
+	// NetworkProfileDelete profile.
 	NetworkProfileDelete(networkProfileID int) error
-	//NetworkProfileDeleteByLabel profile.
+	// NetworkProfileDeleteByLabel profile.
 	NetworkProfileDeleteByLabel(networkProfileLabel string) error
-	//OSAssetCreate creates a osAsset object
+	// OSAssetCreate creates a osAsset object
 	OSAssetCreate(osAsset OSAsset) (*OSAsset, error)
-	//OSAssetDelete permanently destroys a OSAsset.
+	// OSAssetDelete permanently destroys a OSAsset.
 	OSAssetDelete(osAssetID int) error
-	//OSAssetUpdate updates a osAsset
+	// OSAssetUpdate updates a osAsset
 	OSAssetUpdate(osAssetID int, osAsset OSAsset) (*OSAsset, error)
-	//OSAssetGet returns a OSAsset specified by nOSAssetID. The OSAsset's protected value is never returned.
+	// OSAssetGet returns a OSAsset specified by nOSAssetID. The OSAsset's protected value is never returned.
 	OSAssetGet(osAssetID int) (*OSAsset, error)
-	//OSAssetGetStoredContent returns the content of an OSAsset specified by nOSAssetID.
+	// OSAssetGetStoredContent returns the content of an OSAsset specified by nOSAssetID.
 	OSAssetGetStoredContent(osAssetID int) (string, error)
-	//OSAssets retrieves a list of all the OSAsset objects which a specified User is allowed to see through ownership or delegation. The OSAsset objects never return the actual protected OSAsset value.
+	// OSAssets retrieves a list of all the OSAsset objects which a specified User is allowed to see through ownership or delegation. The OSAsset objects never return the actual protected OSAsset value.
 	OSAssets() (*map[string]OSAsset, error)
-	//OSAssetMakePublic makes an OS Asset public
+	// OSAssetMakePublic makes an OS Asset public
 	OSAssetMakePublic(osAssetID int) (*OSAsset, error)
-	//OSAssetMakePrivate makes an OS Asset private and owned by the current user
+	// OSAssetMakePrivate makes an OS Asset private and owned by the current user
 	OSAssetMakePrivate(osAssetID int, userID int) (*OSAsset, error)
 	// OSTemplateCreate creates a osTemplate object
 	OSTemplateCreate(osTemplate OSTemplate) (*OSTemplate, error)
@@ -317,15 +317,15 @@ type MetalCloudClient interface {
 	OSTemplateMakePublic(osTemplateID int) error
 	// OSTemplateMakePrivate makes a template private
 	OSTemplateMakePrivate(osTemplateID int, userID int) error
-	//SecretCreate creates a secret
+	// SecretCreate creates a secret
 	SecretCreate(secret Secret) (*Secret, error)
-	//SecretDelete Permanently destroys a Secret.
+	// SecretDelete Permanently destroys a Secret.
 	SecretDelete(secretID int) error
-	//SecretUpdate This function allows updating the secret_usage, secret_label and secret_base64 of a Secret
+	// SecretUpdate This function allows updating the secret_usage, secret_label and secret_base64 of a Secret
 	SecretUpdate(secretID int, secret Secret) (*Secret, error)
-	//SecretGet returns a Secret specified by nSecretID. The secret's protected value is never returned.
+	// SecretGet returns a Secret specified by nSecretID. The secret's protected value is never returned.
 	SecretGet(secretID int) (*Secret, error)
-	//Secrets retrieves a list of all the Secret objects which a specified User is allowed to see through ownership or delegation. The secret objects never return the actual protected secret value.
+	// Secrets retrieves a list of all the Secret objects which a specified User is allowed to see through ownership or delegation. The secret objects never return the actual protected secret value.
 	Secrets(usage string) (*map[string]Secret, error)
 	// ServersSearch searches for servers matching certain filter
 	ServersSearch(filter string) (*[]ServerSearchResult, error)
@@ -390,20 +390,20 @@ type MetalCloudClient interface {
 	ServerDefaultCredentials(datacenter_name string, decryptPasswd bool) (*[]ServerDefaultCredentials, error)
 	// ServerDefaultCredentialsRemove Removes BMC credentials to the default credentials list for the ZTP process
 	ServerDefaultCredentialsRemove(default_credentials_id []int) error
-	//ServerFirmwarePolicyGet returns a server policy's details
+	// ServerFirmwarePolicyGet returns a server policy's details
 	ServerFirmwarePolicyGet(serverFirmwarePolicyID int) (*ServerFirmwareUpgradePolicy, error)
-	//ServerFirmwareUpgradePolicyCreate creates a server firmware policy.
+	// ServerFirmwareUpgradePolicyCreate creates a server firmware policy.
 	ServerFirmwareUpgradePolicyCreate(serverFirmwarePolicy *ServerFirmwareUpgradePolicy) (*ServerFirmwareUpgradePolicy, error)
-	//ServerFirmwarePolicyAddRule add a new rule for a policy.
+	// ServerFirmwarePolicyAddRule add a new rule for a policy.
 	ServerFirmwarePolicyAddRule(serverFirmwarePolicyID int, serverRule *ServerFirmwareUpgradePolicyRule) (*ServerFirmwareUpgradePolicy, error)
-	//ServerFirmwarePolicyDeleteRule deletes a rule from a policy.
+	// ServerFirmwarePolicyDeleteRule deletes a rule from a policy.
 	ServerFirmwarePolicyDeleteRule(serverFirmwarePolicyID int, serverRule *ServerFirmwareUpgradePolicyRule) error
-	//ServerFirmwareUpgradePolicyDelete deletes all the information about a specified ServerFirmwareUpgradePolicy.
+	// ServerFirmwareUpgradePolicyDelete deletes all the information about a specified ServerFirmwareUpgradePolicy.
 	ServerFirmwareUpgradePolicyDelete(serverFirmwarePolicyID int) error
 	ServerFirmwareUgradePolicyInstanceArraySet(serverFirmwarePolicyID int, instanceArrayList []int) error
-	//ServerFirmwareUpgradePolicyActionSet sets the upgrade action for a specified ServerFirmwareUpgradePolicy.
+	// ServerFirmwareUpgradePolicyActionSet sets the upgrade action for a specified ServerFirmwareUpgradePolicy.
 	ServerFirmwareUpgradePolicyActionSet(serverFirmwarePolicyID int, serverFirmwarePolicyAction string) error
-	//ServerFirmwareUpgradePolicyLabelSet sets the label for a specified ServerFirmwareUpgradePolicy.
+	// ServerFirmwareUpgradePolicyLabelSet sets the label for a specified ServerFirmwareUpgradePolicy.
 	ServerFirmwareUpgradePolicyLabelSet(serverFirmwarePolicyID int, serverFirmwarePolicyLabel string) error
 	// ServerTypesMatchHardwareConfiguration Retrieves a list of server types that match the provided hardware configuration. The function does not check for availability, only compatibility, so physical servers associated with the returned server types might be unavailable.
 	ServerTypesMatchHardwareConfiguration(datacenterName string, hardwareConfiguration HardwareConfiguration) (*map[int]ServerType, error)
@@ -413,47 +413,47 @@ type MetalCloudClient interface {
 	ServerTypes(bOnlyAvailable bool) (*map[int]ServerType, error)
 	// ServerTypesForDatacenter retrieves all ServerType objects from the database.
 	ServerTypesForDatacenter(datacenterName string, bOnlyAvailable bool) (*map[int]ServerType, error)
-	//ServerTypeGet id
+	// ServerTypeGet id
 	ServerTypeGet(serverTypeID int) (*ServerType, error)
-	//ServerTypeGetByLabel id
+	// ServerTypeGetByLabel id
 	ServerTypeGetByLabel(serverTypeLabel string) (*ServerType, error)
-	//ServerTypesMatches Instance&#39;s configuration, using the properties specified in the objHardwareConfiguration object, and returns the number of compatible servers for each server_type_id.
+	// ServerTypesMatches Instance&#39;s configuration, using the properties specified in the objHardwareConfiguration object, and returns the number of compatible servers for each server_type_id.
 	ServerTypesMatches(infrastructureID int, hardwareConfiguration HardwareConfiguration, instanceArrayID *int, bAllowServerSwap bool) (*map[string]ServerType, error)
-	//ServerTypesMatchesByLabel Instance&#39;s configuration, using the properties specified in the objHardwareConfiguration object, and returns the number of compatible servers for each server_type_id.
+	// ServerTypesMatchesByLabel Instance&#39;s configuration, using the properties specified in the objHardwareConfiguration object, and returns the number of compatible servers for each server_type_id.
 	ServerTypesMatchesByLabel(infrastructureLabel string, hardwareConfiguration HardwareConfiguration, instanceArrayID *int, bAllowServerSwap bool) (*map[string]ServerType, error)
 	SharedDriveAttachInstanceArray(sharedDriveID int, instanceArrayID int) (*SharedDrive, error)
 	SharedDriveDetachInstanceArray(sharedDriveID int, instanceArrayID int) (*SharedDrive, error)
-	//SharedDrives retrieves the list of shared drives of an infrastructure
+	// SharedDrives retrieves the list of shared drives of an infrastructure
 	SharedDrives(infrastructureID int) (*map[string]SharedDrive, error)
-	//SharedDriveCreate array. Requires deploy.
+	// SharedDriveCreate array. Requires deploy.
 	SharedDriveCreate(infrastructureID int, sharedDrive SharedDrive) (*SharedDrive, error)
-	//SharedDriveCreateByLabel array. Requires deploy.
+	// SharedDriveCreateByLabel array. Requires deploy.
 	SharedDriveCreateByLabel(infrastructureLabel string, sharedDrive SharedDrive) (*SharedDrive, error)
-	//SharedDriveGet drive
+	// SharedDriveGet drive
 	SharedDriveGet(sharedDriveID int) (*SharedDrive, error)
-	//SharedDriveGetByLabel drive
+	// SharedDriveGetByLabel drive
 	SharedDriveGetByLabel(sharedDriveLabel string) (*SharedDrive, error)
-	//SharedDriveEdit array. Requires deploy.
+	// SharedDriveEdit array. Requires deploy.
 	SharedDriveEdit(sharedDriveID int, sharedDriveOperation SharedDriveOperation) (*SharedDrive, error)
-	//SharedDriveEditByLabel array. Requires deploy.
+	// SharedDriveEditByLabel array. Requires deploy.
 	SharedDriveEditByLabel(sharedDriveLabel string, sharedDriveOperation SharedDriveOperation) (*SharedDrive, error)
-	//SharedDriveDelete drive.
+	// SharedDriveDelete drive.
 	SharedDriveDelete(sharedDriveID int) error
-	//SharedDriveDeleteByLabel drive.
+	// SharedDriveDeleteByLabel drive.
 	SharedDriveDeleteByLabel(sharedDriveLabel string) error
-	//StageDefinitionCreate creates a stageDefinition
+	// StageDefinitionCreate creates a stageDefinition
 	StageDefinitionCreate(stageDefinition StageDefinition) (*StageDefinition, error)
-	//StageDefinitionDelete Permanently destroys a StageDefinition.
+	// StageDefinitionDelete Permanently destroys a StageDefinition.
 	StageDefinitionDelete(stageDefinitionID int) error
-	//StageDefinitionUpdate This function allows updating the stageDefinition_usage, stageDefinition_label and stageDefinition_base64 of a StageDefinition
+	// StageDefinitionUpdate This function allows updating the stageDefinition_usage, stageDefinition_label and stageDefinition_base64 of a StageDefinition
 	StageDefinitionUpdate(stageDefinitionID int, stageDefinition StageDefinition) (*StageDefinition, error)
-	//StageDefinitionGet returns a StageDefinition specified by nStageDefinitionID. The stageDefinition's protected value is never returned.
+	// StageDefinitionGet returns a StageDefinition specified by nStageDefinitionID. The stageDefinition's protected value is never returned.
 	StageDefinitionGet(stageDefinitionID int) (*StageDefinition, error)
-	//StageDefinitions retrieves a list of all the StageDefinition objects which a specified User is allowed to see through ownership or delegation. The stageDefinition objects never return the actual protected stageDefinition value.
+	// StageDefinitions retrieves a list of all the StageDefinition objects which a specified User is allowed to see through ownership or delegation. The stageDefinition objects never return the actual protected stageDefinition value.
 	StageDefinitions() (*map[string]StageDefinition, error)
-	//StoragePoolSearch searches for storage pools matching certain filter
+	// StoragePoolSearch searches for storage pools matching certain filter
 	StoragePoolSearch(filter string) (*[]StoragePoolSearchResult, error)
-	//StoragePoolGet returns a storage pool's details
+	// StoragePoolGet returns a storage pool's details
 	StoragePoolGet(serverID int, decryptPasswd bool) (*StoragePool, error)
 	SubnetGet(subnetID int) (*Subnet, error)
 	SubnetCreate(subnet Subnet) (*Subnet, error)
@@ -522,23 +522,23 @@ type MetalCloudClient interface {
 	SwitchDeviceDefaultsCreate(switchDeviceDefaultsArray []SwitchDeviceDefaults) error
 	// SwitchDeviceDefaultsDelete removes records for the specified switch device defaults.
 	SwitchDeviceDefaultsDelete(switchDeviceDefaultsIDs []int) error
-	//SwitchDeviceLinks Returns all the switch device links found in the database.
+	// SwitchDeviceLinks Returns all the switch device links found in the database.
 	SwitchDeviceLinks() (*map[int]SwitchDeviceLink, error)
-	//SwitchDeviceLinkCreate Creates a record for a new SwitchDevice.
+	// SwitchDeviceLinkCreate Creates a record for a new SwitchDevice.
 	SwitchDeviceLinkCreate(networkEquipmentID1 int, networkEquipmentID2 int, networkEquipmentLinkType string) (*SwitchDeviceLink, error)
-	//SwitchDeviceLinkGet Retrieves information regarding a specified switch device link
+	// SwitchDeviceLinkGet Retrieves information regarding a specified switch device link
 	SwitchDeviceLinkGet(networkEquipmentID1 int, networkEquipmentID2 int, linkType string) (*SwitchDeviceLink, error)
-	//SwitchDeviceLinkDelete deletes a specified switch device and its registered interfaces.
+	// SwitchDeviceLinkDelete deletes a specified switch device and its registered interfaces.
 	SwitchDeviceLinkDelete(networkEquipmentID1 int, networkEquipmentID2 int, linkType string) error
-	//SwitchInterfaceSearch searches for server interfaces filtering on various elements such as switch id or server id
+	// SwitchInterfaceSearch searches for server interfaces filtering on various elements such as switch id or server id
 	SwitchInterfaceSearch(filter string) (*[]SwitchInterfaceSearchResult, error)
-	//UserGet describes returns user account specifications.
+	// UserGet describes returns user account specifications.
 	UserGet(userID int) (*User, error)
-	//UserGetByEmail describes returns user account specifications.
+	// UserGetByEmail describes returns user account specifications.
 	UserGetByEmail(userLabel string) (*User, error)
-	//UserEmailToUserID returns the user id of an user given an email
+	// UserEmailToUserID returns the user id of an user given an email
 	UserEmailToUserID(userEmail string) (*int, error)
-	//UserSearch searches for users with filtering support
+	// UserSearch searches for users with filtering support
 	UserSearch(filter string) (*[]UsersSearchResult, error)
 	// VariableCreate creates a variable object
 	VariableCreate(variable Variable) (*Variable, error)
@@ -556,13 +556,13 @@ type MetalCloudClient interface {
 	VolumeTemplateMakePublic(volumeTemplateID int, bootstrapFunctionName string) error
 	// VolumeTemplateMakePrivate makes a template private
 	VolumeTemplateMakePrivate(volumeTemplateID int, userID int) error
-	//VolumeTemplateGet template
+	// VolumeTemplateGet template
 	VolumeTemplateGet(volumeTemplateID int) (*VolumeTemplate, error)
-	//VolumeTemplateGetByLabel template
+	// VolumeTemplateGetByLabel template
 	VolumeTemplateGetByLabel(volumeTemplateLabel string) (*VolumeTemplate, error)
-	//VolumeTemplateCreateFromDrive drive
+	// VolumeTemplateCreateFromDrive drive
 	VolumeTemplateCreateFromDrive(driveID int, objVolumeTemplate VolumeTemplate) (*VolumeTemplate, error)
-	//VolumeTemplateCreateFromDriveByLabel drive
+	// VolumeTemplateCreateFromDriveByLabel drive
 	VolumeTemplateCreateFromDriveByLabel(driveLabel string, objVolumeTemplate VolumeTemplate) (*VolumeTemplate, error)
 	// WorkflowCreate creates a workflow
 	WorkflowCreate(workflow Workflow) (*Workflow, error)
