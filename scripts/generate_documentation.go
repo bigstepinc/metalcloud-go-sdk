@@ -12,10 +12,14 @@ type docFunc func() *encoder.FileDoc
 
 // add here your other objects
 var OBJECT_DOC_FUNCS = []docFunc{
-	metalcloud.GetInstanceArrayDoc,
-	metalcloud.GetSubnetOOBDoc,
 	metalcloud.GetDatacenterWithConfigDoc,
+	metalcloud.GetSubnetOOBDoc,
+	metalcloud.GetInfrastructureDoc,
+	metalcloud.GetInstanceArrayDoc,
+	metalcloud.GetDriveArrayDoc,
+	metalcloud.GetNetworkDoc,
 	metalcloud.GetVariableDoc,
+	metalcloud.GetOSAssetDoc,
 }
 
 // This will generate the markdown documentation for all the objects
@@ -43,25 +47,6 @@ func main() {
 			panic(err)
 		}
 	}
-	/*
-		data, err := metalcloud.GetSubnetOOBDoc().Encode()
-		if err != nil {
-			panic(err)
-		}
-		_, err = f.Write(data)
-		if err != nil {
-			panic(err)
-		}
-
-		data, err = metalcloud.GetVariableDoc().Encode()
-		if err != nil {
-			panic(err)
-		}
-		_, err = f.Write(data)
-		if err != nil {
-			panic(err)
-		}
-	*/
 
 	f.Close()
 

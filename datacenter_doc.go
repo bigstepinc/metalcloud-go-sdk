@@ -16,11 +16,29 @@ func init() {
 	DatacenterWithConfigDoc.Type = "DatacenterWithConfig"
 	DatacenterWithConfigDoc.Comments[encoder.LineComment] = "A data center object that contains both metadata and configuration"
 	DatacenterWithConfigDoc.Description = "A data center object that contains both metadata and configuration"
-	DatacenterWithConfigDoc.Fields = make([]encoder.Doc, 0)
+
+	DatacenterWithConfigDoc.AddExample("", exampleDCYaml)
+	DatacenterWithConfigDoc.Fields = make([]encoder.Doc, 2)
+	DatacenterWithConfigDoc.Fields[0].Name = "metadata"
+	DatacenterWithConfigDoc.Fields[0].Type = "Datacenter"
+	DatacenterWithConfigDoc.Fields[0].Note = ""
+	DatacenterWithConfigDoc.Fields[0].Description = "The datacenter part of the object"
+	DatacenterWithConfigDoc.Fields[0].Comments[encoder.LineComment] = "The datacenter part of the object"
+	DatacenterWithConfigDoc.Fields[1].Name = "config"
+	DatacenterWithConfigDoc.Fields[1].Type = "DatacenterConfig"
+	DatacenterWithConfigDoc.Fields[1].Note = ""
+	DatacenterWithConfigDoc.Fields[1].Description = "The datacenter configuration part of the object"
+	DatacenterWithConfigDoc.Fields[1].Comments[encoder.LineComment] = "The datacenter configuration part of the object"
 
 	DatacenterDoc.Type = "Datacenter"
 	DatacenterDoc.Comments[encoder.LineComment] = "Datacenter metadata"
 	DatacenterDoc.Description = "Datacenter metadata"
+	DatacenterDoc.AppearsIn = []encoder.Appearance{
+		{
+			TypeName:  "DatacenterWithConfig",
+			FieldName: "metadata",
+		},
+	}
 	DatacenterDoc.Fields = make([]encoder.Doc, 12)
 	DatacenterDoc.Fields[0].Name = "id"
 	DatacenterDoc.Fields[0].Type = "int"
@@ -89,6 +107,12 @@ func init() {
 	DatacenterConfigDoc.Type = "DatacenterConfig"
 	DatacenterConfigDoc.Comments[encoder.LineComment] = "DatacenterConfig - datacenter configuration"
 	DatacenterConfigDoc.Description = "DatacenterConfig - datacenter configuration"
+	DatacenterConfigDoc.AppearsIn = []encoder.Appearance{
+		{
+			TypeName:  "DatacenterWithConfig",
+			FieldName: "config",
+		},
+	}
 	DatacenterConfigDoc.Fields = make([]encoder.Doc, 41)
 	DatacenterConfigDoc.Fields[0].Name = "BSIMachinesSubnetIPv4CIDR"
 	DatacenterConfigDoc.Fields[0].Type = "string"

@@ -54,13 +54,13 @@ type MetalCloudClient interface {
 	DatacenterUpdateFromDatacenterWithConfig(datacenter DatacenterWithConfig) (*DatacenterWithConfig, error)
 	// DatacenterAgentsConfigJSONDownloadURL returns the agent url (and automatically decrypts it)
 	DatacenterAgentsConfigJSONDownloadURL(datacenterName string, decrypt bool) (string, error)
-	//DriveArrays retrieves the list of drives arrays of an infrastructure
+	// DriveArrays retrieves the list of drives arrays of an infrastructure
 	DriveArrays(infrastructureID int) (*map[string]DriveArray, error)
-	//DriveArraysByLabel retrieves the list of drives arrays of an infrastructure
+	// DriveArraysByLabel retrieves the list of drives arrays of an infrastructure
 	DriveArraysByLabel(infrastructureLabel string) (*map[string]DriveArray, error)
-	//DriveArrayGet retrieves a DriveArray object with specified ids
+	// DriveArrayGet retrieves a DriveArray object with specified ids
 	DriveArrayGet(driveArrayID int) (*DriveArray, error)
-	//DriveArrayGetByLabel retrieves a DriveArray object with specified ids
+	// DriveArrayGetByLabel retrieves a DriveArray object with specified ids
 	DriveArrayGetByLabel(driveArrayLabel string) (*DriveArray, error)
 	//DriveArrayCreate array. Requires deploy.
 	DriveArrayCreate(infrastructureID int, driveArray DriveArray) (*DriveArray, error)
@@ -104,11 +104,11 @@ type MetalCloudClient interface {
 	ExternalConnectionDelete(externalConnectionID int) error
 	//ExternalConnectionDeleteByLabel connection.
 	ExternalConnectionDeleteByLabel(externalConnectionLabel string) error
-	//InfrastructureCreate creates an infrastructure
+	// InfrastructureCreate creates an infrastructure
 	InfrastructureCreate(infrastructure Infrastructure) (*Infrastructure, error)
-	//Infrastructures returns a list of infrastructures
+	// Infrastructures returns a list of infrastructures
 	Infrastructures() (*map[string]Infrastructure, error)
-	//InfrastructureSearch searches for infrastructures with filtering support
+	// InfrastructureSearch searches for infrastructures with filtering support
 	InfrastructureSearch(filter string) (*[]InfrastructuresSearchResult, error)
 	//InfrastructureEdit infrastructure
 	InfrastructureEdit(infrastructureID int, infrastructureOperation InfrastructureOperation) (*Infrastructure, error)
@@ -275,21 +275,21 @@ type MetalCloudClient interface {
 	NetworkProfileDelete(networkProfileID int) error
 	//NetworkProfileDeleteByLabel profile.
 	NetworkProfileDeleteByLabel(networkProfileLabel string) error
-	//OSAssetCreate creates a osAsset object
+	// OSAssetCreate creates a osAsset object
 	OSAssetCreate(osAsset OSAsset) (*OSAsset, error)
-	//OSAssetDelete permanently destroys a OSAsset.
+	// OSAssetDelete permanently destroys a OSAsset.
 	OSAssetDelete(osAssetID int) error
-	//OSAssetUpdate updates a osAsset
+	// OSAssetUpdate updates a osAsset
 	OSAssetUpdate(osAssetID int, osAsset OSAsset) (*OSAsset, error)
-	//OSAssetGet returns a OSAsset specified by nOSAssetID. The OSAsset's protected value is never returned.
+	// OSAssetGet returns a OSAsset specified by nOSAssetID. The OSAsset's protected value is never returned.
 	OSAssetGet(osAssetID int) (*OSAsset, error)
-	//OSAssetGetStoredContent returns the content of an OSAsset specified by nOSAssetID.
+	// OSAssetGetStoredContent returns the content of an OSAsset specified by nOSAssetID.
 	OSAssetGetStoredContent(osAssetID int) (string, error)
-	//OSAssets retrieves a list of all the OSAsset objects which a specified User is allowed to see through ownership or delegation. The OSAsset objects never return the actual protected OSAsset value.
+	// OSAssets retrieves a list of all the OSAsset objects which a specified User is allowed to see through ownership or delegation. The OSAsset objects never return the actual protected OSAsset value.
 	OSAssets() (*map[string]OSAsset, error)
-	//OSAssetMakePublic makes an OS Asset public
+	// OSAssetMakePublic makes an OS Asset public
 	OSAssetMakePublic(osAssetID int) (*OSAsset, error)
-	//OSAssetMakePrivate makes an OS Asset private and owned by the current user
+	// OSAssetMakePrivate makes an OS Asset private and owned by the current user
 	OSAssetMakePrivate(osAssetID int, userID int) (*OSAsset, error)
 	// OSTemplateCreate creates a osTemplate object
 	OSTemplateCreate(osTemplate OSTemplate) (*OSTemplate, error)

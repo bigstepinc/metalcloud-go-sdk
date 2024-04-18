@@ -170,11 +170,11 @@ func TestDatacenterDeleteForApply(t *testing.T) {
 	Expect(err).To(BeNil())
 
 	obj := DatacenterWithConfig{
-		Datacenter: Datacenter{
+		Metadata: Datacenter{
 			DatacenterName: "dctest",
 			UserID:         1,
 		},
-		DatacenterConfig: DatacenterConfig{
+		Config: DatacenterConfig{
 			SANRoutedSubnet:                       "100.64.0.0/21",
 			BSIVRRPListenIPv4:                     "172.16.10.6",
 			BSIMachineListenIPv4List:              []string{"172.16.10.6"},

@@ -1,50 +1,102 @@
 package metalcloud
 
 //go:generate go run helper/gen_exports.go
-
+//go:generate go run helper/docgen.go - $GOFILE ./ DriveArray,DriveArrayOperation DriveArray
 import "fmt"
 
-//DriveArray represents a collection of identical drives
+// DriveArray represents a collection of identical drives
 type DriveArray struct {
-	DriveArrayID                      int                  `json:"drive_array_id,omitempty" yaml:"id,omitempty"`
-	DriveArrayLabel                   string               `json:"drive_array_label,omitempty" yaml:"label,omitempty"`
-	VolumeTemplateID                  int                  `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
-	DriveArrayStorageType             string               `json:"drive_array_storage_type,omitempty" yaml:"storageType,omitempty"`
-	DriveSizeMBytesDefault            int                  `json:"drive_size_mbytes_default,omitempty" yaml:"sizeMBytesDefault,omitempty"`
-	InstanceArrayID                   int                  `json:"instance_array_id,omitempty" yaml:"instanceArrayID,omitempty"`
-	InfrastructureID                  int                  `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
-	DriveArrayServiceStatus           string               `json:"drive_array_service_status,omitempty" yaml:"serviceStatus,omitempty"`
-	DriveArrayCount                   int                  `json:"drive_array_count,omitempty" yaml:"count,omitempty"`
-	DriveArrayExpandWithInstanceArray bool                 `json:"drive_array_expand_with_instance_array" yaml:"expandWithInstanceArray"`
-	DriveArrayOperation               *DriveArrayOperation `json:"drive_array_operation,omitempty" yaml:"operation,omitempty"`
-	DriveArrayIOLimitPolicy           string               `json:"drive_array_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
-	StoragePoolID                     int                  `json:"storage_pool_id,omitempty" yaml:"storagePoolID,omitempty"`
-	DriveArrayAllocationAffinity      string               `json:"drive_array_allocation_affinity,omitempty" yaml:"affinity,omitempty"`
+	// description: The id of the object
+	DriveArrayID int `json:"drive_array_id,omitempty" yaml:"id,omitempty"`
+	// description: The label of the object
+	DriveArrayLabel string `json:"drive_array_label,omitempty" yaml:"label,omitempty"`
+	// description: When the drive array is used with images (such as for diskless boot) this field will keep the Volume Template ID of template to use.
+	VolumeTemplateID int `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
+	// description: What type of storage to use. This string needs to match the type of storage exported by a storage pool
+	// example:
+	// - iscsi_ssd
+	DriveArrayStorageType string `json:"drive_array_storage_type,omitempty" yaml:"storageType,omitempty"`
+	// description: The size of the volume. Note that this value is used when creating the drive array but also when expanding the drive array (increasing the count).
+	DriveSizeMBytesDefault int `json:"drive_size_mbytes_default,omitempty" yaml:"sizeMBytesDefault,omitempty"`
+	// description: The ID of the instance array to which this drive array is connected. Can be 0 if not connected.
+	InstanceArrayID int `json:"instance_array_id,omitempty" yaml:"instanceArrayID,omitempty"`
+	// description: The ID of the infrastructure to which this drive array belongs.
+	InfrastructureID int `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
+	// description: The ID of the infrastructure to which this drive array belongs.
+	DriveArrayServiceStatus string `json:"drive_array_service_status,omitempty" yaml:"serviceStatus,omitempty"`
+	// description: The number of drives in this drive array.
+	DriveArrayCount int `json:"drive_array_count,omitempty" yaml:"count,omitempty"`
+	// description: If set to true the number of drives in the drive array will expand if the attached instance array expands (instance count increases).
+	DriveArrayExpandWithInstanceArray bool `json:"drive_array_expand_with_instance_array" yaml:"expandWithInstanceArray"`
+	// description: Operation object of the drive array
+	DriveArrayOperation *DriveArrayOperation `json:"drive_array_operation,omitempty" yaml:"operation,omitempty"`
+	// description: Only valid for certain storage systems (such as Dell Unity).
+	DriveArrayIOLimitPolicy string `json:"drive_array_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
+	// description: If set the specified storage pool will be used to allocate the drive instead of automatic allocation.
+	StoragePoolID int `json:"storage_pool_id,omitempty" yaml:"storagePoolID,omitempty"`
+	// description: Used to control if drives in this drive array should be allocated on the same storage pool or different storage pools
+	// values:
+	// - same_storage
+	// - different_storage
+	DriveArrayAllocationAffinity string `json:"drive_array_allocation_affinity,omitempty" yaml:"affinity,omitempty"`
 }
 
-//DriveArrayOperation defines changes to be applied to a DriveArray
+// DriveArrayOperation defines changes to be applied to a DriveArray
 type DriveArrayOperation struct {
-	DriveArrayID                      int         `json:"drive_array_id,omitempty" yaml:"id,omitempty"`
-	DriveArrayLabel                   string      `json:"drive_array_label,omitempty" yaml:"label,omitempty"`
-	VolumeTemplateID                  int         `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
-	DriveArrayStorageType             string      `json:"drive_array_storage_type,omitempty" yaml:"storageType,omitempty"`
-	DriveSizeMBytesDefault            int         `json:"drive_size_mbytes_default,omitempty" yaml:"sizeMBytes,omitempty"`
-	InstanceArrayID                   interface{} `json:"instance_array_id" yaml:"instanceArrayID"`
-	InfrastructureID                  int         `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
-	DriveArrayCount                   int         `json:"drive_array_count,omitempty" yaml:"count,omitempty"`
-	DriveArrayExpandWithInstanceArray bool        `json:"drive_array_expand_with_instance_array" yaml:"expandWithInstanceArray"`
-	DriveArrayDeployType              string      `json:"drive_array_deploy_type,omitempty" yaml:"deployType,omitempty"`
-	DriveArrayDeployStatus            string      `json:"drive_array_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
-	DriveArrayChangeID                int         `json:"drive_array_change_id,omitempty" yaml:"changeID,omitempty"`
-	DriveArrayIOLimitPolicy           string      `json:"drive_array_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
+	// description: The id of the object
+	DriveArrayID int `json:"drive_array_id,omitempty" yaml:"id,omitempty"`
+	// description: The label of the object
+	DriveArrayLabel string `json:"drive_array_label,omitempty" yaml:"label,omitempty"`
+	// description: When the drive array is used with images (such as for diskless boot) this field will keep the Volume Template ID of template to use.
+	VolumeTemplateID int `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
+	// description: What type of storage to use. This string needs to match the type of storage exported by a storage pool
+	// example:
+	// - iscsi_ssd
+	DriveArrayStorageType string `json:"drive_array_storage_type,omitempty" yaml:"storageType,omitempty"`
+	// description: The size of the volume. Note that this value is used when creating the drive array but also when expanding the drive array (increasing the count).
+	DriveSizeMBytesDefault int `json:"drive_size_mbytes_default,omitempty" yaml:"sizeMBytes,omitempty"`
+	// description: The ID of the instance array to which this drive array is connected. Can be 0 if not connected.
+	InstanceArrayID interface{} `json:"instance_array_id" yaml:"instanceArrayID"`
+	// description: The ID of the infrastructure to which this drive array belongs.
+	InfrastructureID int `json:"infrastructure_id,omitempty" yaml:"infrastructureID,omitempty"`
+	// description: The ID of the infrastructure to which this drive array belongs.
+	DriveArrayCount int `json:"drive_array_count,omitempty" yaml:"count,omitempty"`
+	// description: If set to true the number of drives in the drive array will expand if the attached instance array expands (instance count increases).
+	DriveArrayExpandWithInstanceArray bool `json:"drive_array_expand_with_instance_array" yaml:"expandWithInstanceArray"`
+	// description: The deploy type
+	// values:
+	//     - create
+	// 	   - delete
+	//     - edit
+	// 	   - start
+	//     - stop
+	// 	   - suspend
+	DriveArrayDeployType string `json:"drive_array_deploy_type,omitempty" yaml:"deployType,omitempty"`
+	// description: The status of the deployment
+	// values:
+	//     - not_started
+	//     - ongoing
+	//     - finished
+	DriveArrayDeployStatus string `json:"drive_array_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
+	// description: The id of the change operation. Readonly.
+	DriveArrayChangeID int `json:"drive_array_change_id,omitempty" yaml:"changeID,omitempty"`
+	// description: Only valid for certain storage systems (such as Dell Unity).
+	DriveArrayIOLimitPolicy string `json:"drive_array_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
+	// description: If set the specified storage pool will be used to allocate the drive instead of automatic allocation.
+	StoragePoolID int `json:"storage_pool_id,omitempty" yaml:"storagePoolID,omitempty"`
+	// description: Used to control if drives in this drive array should be allocated on the same storage pool or different storage pools
+	// values:
+	// - same_storage
+	// - different_storage
+	DriveArrayAllocationAffinity string `json:"drive_array_allocation_affinity,omitempty" yaml:"affinity,omitempty"`
 }
 
-//DriveArrays retrieves the list of drives arrays of an infrastructure
+// DriveArrays retrieves the list of drives arrays of an infrastructure
 func (c *Client) DriveArrays(infrastructureID int) (*map[string]DriveArray, error) {
 	return c.driveArrays(infrastructureID)
 }
 
-//DriveArraysByLabel retrieves the list of drives arrays of an infrastructure
+// DriveArraysByLabel retrieves the list of drives arrays of an infrastructure
 func (c *Client) DriveArraysByLabel(infrastructureLabel string) (*map[string]DriveArray, error) {
 	return c.driveArrays(infrastructureLabel)
 }
@@ -86,12 +138,12 @@ func (c *Client) driveArrays(infrastructureID id) (*map[string]DriveArray, error
 	return &createdObject, nil
 }
 
-//DriveArrayGet retrieves a DriveArray object with specified ids
+// DriveArrayGet retrieves a DriveArray object with specified ids
 func (c *Client) DriveArrayGet(driveArrayID int) (*DriveArray, error) {
 	return c.driveArrayGet(driveArrayID)
 }
 
-//DriveArrayGetByLabel retrieves a DriveArray object with specified ids
+// DriveArrayGetByLabel retrieves a DriveArray object with specified ids
 func (c *Client) DriveArrayGetByLabel(driveArrayLabel string) (*DriveArray, error) {
 	return c.driveArrayGet(driveArrayLabel)
 }
@@ -117,7 +169,7 @@ func (c *Client) driveArrayGet(driveArrayID id) (*DriveArray, error) {
 	return &createdObject, nil
 }
 
-//driveArrayCreate creates a drive array. Requires deploy.
+// driveArrayCreate creates a drive array. Requires deploy.
 func (c *Client) driveArrayCreate(infrastructureID id, driveArray DriveArray) (*DriveArray, error) {
 	var createdObject DriveArray
 
@@ -139,7 +191,7 @@ func (c *Client) driveArrayCreate(infrastructureID id, driveArray DriveArray) (*
 	return &createdObject, nil
 }
 
-//driveArrayEdit alters a deployed drive array. Requires deploy.
+// driveArrayEdit alters a deployed drive array. Requires deploy.
 func (c *Client) driveArrayEdit(driveArrayID id, driveArrayOperation DriveArrayOperation) (*DriveArray, error) {
 	var createdObject DriveArray
 
@@ -161,7 +213,7 @@ func (c *Client) driveArrayEdit(driveArrayID id, driveArrayOperation DriveArrayO
 	return &createdObject, nil
 }
 
-//driveArrayDelete deletes a Drive Array with specified id
+// driveArrayDelete deletes a Drive Array with specified id
 func (c *Client) driveArrayDelete(driveArrayID id) error {
 
 	if err := checkID(driveArrayID); err != nil {
@@ -183,7 +235,7 @@ func (c *Client) driveArrayDelete(driveArrayID id) error {
 	return nil
 }
 
-//driveArrayDrives returns the drives of a drive array
+// driveArrayDrives returns the drives of a drive array
 func (c *Client) driveArrayDrives(driveArray id) (*map[string]Drive, error) {
 
 	if err := checkID(driveArray); err != nil {
@@ -233,7 +285,7 @@ func (da *DriveArray) instanceToOperation(op *DriveArrayOperation) {
 	operation.DriveArrayChangeID = op.DriveArrayChangeID
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (da DriveArray) CreateOrUpdate(client MetalCloudClient) error {
 	var result *DriveArray
 	var err error
@@ -266,7 +318,7 @@ func (da DriveArray) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (da DriveArray) Delete(client MetalCloudClient) error {
 	err := da.Validate()
 	var result *DriveArray
@@ -295,7 +347,7 @@ func (da DriveArray) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (da DriveArray) Validate() error {
 	if da.DriveArrayID == 0 && da.DriveArrayLabel == "" {
 		return fmt.Errorf("id is required")

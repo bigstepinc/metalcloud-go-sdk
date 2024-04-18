@@ -9,13 +9,13 @@ import (
 )
 
 // description: A data center object that contains both metadata and configuration
-// examples1:
-//   - value: datacenterExample
+// examples:
+//   - value: exampleDCYaml
 type DatacenterWithConfig struct {
-	//description: The datacenter part of the object
-	Datacenter
+	// description: The datacenter part of the object
+	Metadata Datacenter `json:"metadata,omitempty" yaml:"metadata,omitempty"`
 	//description: The datacenter configuration part of the object
-	DatacenterConfig
+	Config DatacenterConfig `json:"config,omitempty" yaml:"config,omitempty"`
 }
 
 // description: Datacenter metadata
@@ -407,8 +407,8 @@ func (c *Client) DatacenterWithConfigGet(datacenterName string) (*DatacenterWith
 	}
 
 	dc := DatacenterWithConfig{
-		Datacenter:       *metadata,
-		DatacenterConfig: *config,
+		Metadata: *metadata,
+		Config:   *config,
 	}
 
 	return &dc, nil
@@ -452,20 +452,20 @@ func (c *Client) DatacenterCreate(datacenter Datacenter, datacenterConfig Datace
 }
 
 func (c *Client) DatacenterCreateFromDatacenterWithConfig(datacenter DatacenterWithConfig) (*DatacenterWithConfig, error) {
-	_, err := c.DatacenterCreate(datacenter.Datacenter, datacenter.DatacenterConfig)
+	_, err := c.DatacenterCreate(datacenter.Metadata, datacenter.Config)
 	if err != nil {
 		return nil, err
 	}
-	return c.DatacenterWithConfigGet(datacenter.DatacenterName)
+	return c.DatacenterWithConfigGet(datacenter.Metadata.DatacenterName)
 }
 
 func (c *Client) DatacenterUpdateFromDatacenterWithConfig(datacenter DatacenterWithConfig) (*DatacenterWithConfig, error) {
 
-	err := c.DatacenterConfigUpdate(datacenter.DatacenterName, datacenter.DatacenterConfig)
+	err := c.DatacenterConfigUpdate(datacenter.Metadata.DatacenterName, datacenter.Config)
 	if err != nil {
 		return nil, err
 	}
-	return c.DatacenterWithConfigGet(datacenter.DatacenterName)
+	return c.DatacenterWithConfigGet(datacenter.Metadata.DatacenterName)
 }
 
 //bsideveloper.datacenter_agents_config_json_download_url('uk-reading')
@@ -531,7 +531,7 @@ func (dc DatacenterWithConfig) CreateOrUpdate(client MetalCloudClient) error {
 
 	found := false
 	for _, d := range *datacenters {
-		if d.DatacenterName == dc.DatacenterName {
+		if d.DatacenterName == dc.Metadata.DatacenterName {
 			found = true
 			break
 		}
@@ -563,21 +563,17 @@ func (dc DatacenterWithConfig) Delete(client MetalCloudClient) error {
 
 // Validate implements interface Applier
 func (dc DatacenterWithConfig) Validate() error {
-	if dc.DatacenterName == "" {
+	if dc.Metadata.DatacenterName == "" {
 		return fmt.Errorf("name is required")
 	}
 
 	return nil
 }
 
-/*
-var datacenterExample = getDatacenterWithConfigExample()
-
-func getDatacenterWithConfigExample() DatacenterWithConfig {
-	const exampleDCYaml = `
+const exampleDCYaml = `
 kind: DatacenterWithConfig
 apiVersion: 1.0
-datacenter:
+metadata:
   id: 332
   name: test-us03-chi-qts01-dc-3
   displayname: US03 DC
@@ -589,7 +585,7 @@ datacenter:
   ishidden: false
   tags:
   - ""
-datacenterconfig:
+config:
   BSIMachinesSubnetIPv4CIDR: 172.18.38.16/29
   BSIVRRPListenIPv4: 172.18.38.22
   BSIMachineListenIPv4List:
@@ -661,8 +657,3 @@ datacenterconfig:
   Option82ToIPMapping:
     Eth1/1: 172.18.32.1
 `
-	var d DatacenterWithConfig
-	yaml.Unmarshal([]byte(exampleDCYaml), &d)
-	return d
-}
-*/
