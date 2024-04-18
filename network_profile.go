@@ -27,9 +27,9 @@ type NetworkProfileVLAN struct {
 }
 
 type NetworkProfileSubnetPool struct {
-	SubnetPoolID   *int   `json:"subnet_pool_id" yaml:"subnetPoolID"`
-	SubnetPoolType string `json:"subnet_pool_type" yaml:"subnetPoolType"`
-	SubnetPoolProvidesDefaultRoute bool `json:"subnet_pool_provides_default_route" yaml:"subnetPoolProvidesDefaultRoute"`
+	SubnetPoolID                   *int   `json:"subnet_pool_id" yaml:"subnetPoolID"`
+	SubnetPoolType                 string `json:"subnet_pool_type" yaml:"subnetPoolType"`
+	SubnetPoolProvidesDefaultRoute bool   `json:"subnet_pool_provides_default_route" yaml:"subnetPoolProvidesDefaultRoute"`
 }
 
 //NetworkProfileGet returns a NetworkProfile with specified id
@@ -245,4 +245,73 @@ func (c *Client) NetworkProfileListByInstanceArray(instanceArrayID int) (*map[in
 	}
 
 	return &createdObject, nil
+}
+
+//CreateOrUpdate implements interface Applier
+func (np NetworkProfile) CreateOrUpdate(client MetalCloudClient) error {
+	var result *NetworkProfile
+	var err error
+	err = np.Validate()
+
+	if err != nil {
+		return err
+	}
+
+	if np.NetworkProfileID != 0 {
+		result, err = client.NetworkProfileGet(np.NetworkProfileID)
+	} else {
+		result, err = client.NetworkProfileGetByLabel(np.NetworkProfileLabel)
+	}
+
+	if err != nil {
+		_, err = client.NetworkProfileCreate(np.DatacenterName, np)
+
+		if err != nil {
+			return err
+		}
+	} else {
+		_, err = client.NetworkProfileUpdate(result.NetworkProfileID, np)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//Delete implements interface Applier
+func (np NetworkProfile) Delete(client MetalCloudClient) error {
+	var result *NetworkProfile
+	var id int
+	err := np.Validate()
+
+	if err != nil {
+		return err
+	}
+
+	if np.NetworkProfileLabel != "" {
+		result, err = client.NetworkProfileGetByLabel(np.NetworkProfileLabel)
+		if err != nil {
+			return err
+		}
+		id = result.NetworkProfileID
+	} else {
+		id = np.NetworkProfileID
+	}
+	err = client.NetworkProfileDelete(id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+//Validate implements interface Applier
+func (np NetworkProfile) Validate() error {
+	if np.NetworkProfileID == 0 && np.NetworkProfileLabel == "" {
+		return fmt.Errorf("id is required")
+	}
+	return nil
 }

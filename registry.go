@@ -15,6 +15,7 @@ func GetTypesThatSupportApplierInterface() map[string]reflect.Type {
 		&DriveArray{},
 		&Infrastructure{},
 		&Network{},
+		&NetworkProfile{},
 		&OSAsset{},
 		&OSTemplate{},
 		&Secret{},
