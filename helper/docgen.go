@@ -1,6 +1,3 @@
-//go:build ignore
-// +build ignore
-
 // Taken from https://github.com/talos-systems/talos/blob/master/hack/docgen/main.go
 package main
 

@@ -185,7 +185,7 @@ The name (label) of the parent datacenter. This is useful in hierarchical setups
 
 <div class="dd">
 
-<code>userid</code>  <i>int</i>
+<code>userId</code>  <i>int</i>
 
 </div>
 <div class="dt">
@@ -198,7 +198,7 @@ The owner of a datacenter.
 
 <div class="dd">
 
-<code>displayname</code>  <i>string</i>
+<code>displayName</code>  <i>string</i>
 
 </div>
 <div class="dt">
@@ -211,7 +211,7 @@ The display name of a data center. Can be changed.
 
 <div class="dd">
 
-<code>ismaster</code>  <i>bool</i>
+<code>isMaster</code>  <i>bool</i>
 
 </div>
 <div class="dt">
@@ -224,7 +224,7 @@ Deprecated.
 
 <div class="dd">
 
-<code>ismaintenance</code>  <i>bool</i>
+<code>isMaintenance</code>  <i>bool</i>
 
 </div>
 <div class="dt">
@@ -255,7 +255,7 @@ Valid values:
 
 <div class="dd">
 
-<code>createdtimestamp</code>  <i>string</i>
+<code>createdTimestamp</code>  <i>string</i>
 
 </div>
 <div class="dt">
@@ -268,7 +268,7 @@ ISO 8601 timestamp which holds the date and time when the datacenter was created
 
 <div class="dd">
 
-<code>updatedtimestamp</code>  <i>string</i>
+<code>updatedTimestamp</code>  <i>string</i>
 
 </div>
 <div class="dt">
@@ -281,7 +281,7 @@ ISO 8601 timestamp which holds the date and time when the datacenter was updated
 
 <div class="dd">
 
-<code>ishidden</code>  <i>bool</i>
+<code>isHidden</code>  <i>bool</i>
 
 </div>
 <div class="dt">
@@ -1272,6 +1272,628 @@ rangeEnd: 192.168.0.100
 <div class="dt">
 
 The data center in which this subnet is valid
+
+</div>
+
+<hr />
+
+
+
+
+
+
+
+
+## Network
+Network object describes an high level connection construct
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>id</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The ID of the object.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>label</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The Label of the object.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>subdomain</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+A unique string representing the network. Deprecated
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>type</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The network type
+
+
+Valid values:
+
+
+  - <code>wan</code>
+
+  - <code>lan</code>
+
+  - <code>san</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>infrastructureID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The infrastructure on which this network is defined
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>createdTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the network was created.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>updatedTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the network was last updated.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>LANAutoAllocateIPs</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set to true and if the network is of type LAN IPs will be automatically allocated from any attached subnet pool. Deprecated.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>operation</code>  <i><a href="#networkoperation">NetworkOperation</a></i>
+
+</div>
+<div class="dt">
+
+The operation object.
+
+</div>
+
+<hr />
+
+
+
+
+
+## NetworkOperation
+NetworkOperation object describes the change(s) required to be applied to a Network
+
+Appears in:
+
+
+- <code><a href="#network">Network</a>.operation</code>
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>id</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The ID of the object.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>label</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The Label of the object.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>subdomain</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+A unique string representing the network. Deprecated
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>type</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The network type
+
+
+Valid values:
+
+
+  - <code>wan</code>
+
+  - <code>lan</code>
+
+  - <code>san</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>infrastructureID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The infrastructure on which this network is defined
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>LANAutoAllocateIPs</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set to true and if the network is of type LAN IPs will be automatically allocated from any attached subnet pool. Deprecated.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>deployType</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+description: The deploy type
+values:
+    - create
+	   - delete
+    - edit
+	   - start
+    - stop
+	   - suspend
+
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>changeID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The id of the change operation. Readonly.
+
+</div>
+
+<hr />
+
+
+
+
+
+
+
+
+## NetworkProfile
+NetworkProfile  A network profile modifies the default network configuration of an instance array when attached to a specific Network.
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>id</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The id of the network profile
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>label</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The label of the network profile
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>dc</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The label of the datacenter on which this network profile applies
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>networkProfileIsPublic</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+description: If set to true any of the users can use this network profile. If set to false the network profile needs to be
+explicitly allowed in the user limits for a user to be able to use it
+
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>networkType</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Type of network to which this network profile can be applied
+
+
+Valid values:
+
+
+  - <code>wan</code>
+
+  - <code>lan</code>
+
+  - <code>san</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>vlans</code>  <i>[]<a href="#networkprofilevlan">NetworkProfileVLAN</a></i>
+
+</div>
+<div class="dt">
+
+VLAN (L2 network) entries
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>createdTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the network profile was created.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>updatedTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the network profile was updated.
+
+</div>
+
+<hr />
+
+
+
+
+
+## NetworkProfileVLAN
+NetworkProfileVLAN object describes an overlay L2 network which usually translates into a VLAN and
+associated VXLAN VNIs or EPGs depending on the vendor
+
+
+Appears in:
+
+
+- <code><a href="#networkprofile">NetworkProfile</a>.vlans</code>
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>vlanID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+description: the VLAN ID to use (on EVPNVXLAN provisioner this translates to a VLAN ID to be used as VTEP for VXLAN).
+On VLAN provisioner the VLAN will be used end-to-end. On SDN provisioner with CISCO ACI it will be translated into a VLAN attached to an EPG.
+If set to null it will be automatically allocated based on the settings in the Datacenter config object.
+
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>label</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+the label of this VLAN entry
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>portMode</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Type of VLAN
+
+
+Valid values:
+
+
+  - <code>native</code>
+
+  - <code>trunk</code>
+
+  - <code>access</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>provisionSubnetGateways</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+description: if true will provision subnet gateways on the switches. This depends on the provisioner and vendor: Symmetric IRB, VRRP-based redundant gateway configuration etc.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>provisionVXLAN</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+if false it will not configure the vxlan tunnel. Equivalent to the VLAN provisioner.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>extConnectionIDs</code>  <i>[]int</i>
+
+</div>
+<div class="dt">
+
+If any external connection id is configured in the array the L2 network will be extended to that external connection point
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>subnetPools</code>  <i>[]<a href="#networkprofilesubnetpool">NetworkProfileSubnetPool</a></i>
+
+</div>
+<div class="dt">
+
+Subnet pools to allocate IPs from
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>vlanAutoAllocationIndex</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+If set to a non-null value this will help ensure that two different network profiles can get the same auto-allocated VLAN ID
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>vrfID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The VRF ID to use. If set to null it will fall back to automatically allocated VRFs
+
+</div>
+
+<hr />
+
+
+
+
+
+## NetworkProfileSubnetPool
+
+Appears in:
+
+
+- <code><a href="#networkprofilevlan">NetworkProfileVLAN</a>.subnetPools</code>
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>subnetPoolID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The ID of the subnet pool to use. Set to null for auto in which case the type of subnet pool will be used to pick a subnet pool
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>subnetPoolType</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+description: The type of subnet pool to use
+- ipv4
+- ipv6
+
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>subnetPoolProvidesDefaultRoute</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set to true this subnet pool will be used to set the default route
 
 </div>
 
@@ -3915,6 +4537,518 @@ ISO 8601 timestamp which holds the date and time when the asset was created.
 <div class="dt">
 
 ISO 8601 timestamp which holds the date and time when the asset was last updated.
+
+</div>
+
+<hr />
+
+
+
+
+
+
+
+
+## OSTemplate
+OSTemplate A template can be created based on a drive and it has the same characteristics and holds the same information as the parent drive.
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>id</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The id of the object
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>label</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The label of the object
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>name</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The display name of the object
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>sizeMBytes</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+If this is an image type os template, the size of the image
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>localDisk</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set to true if this template can be installed to local disks
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>isOsTemplate</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set to true this is an unattended install type template. If set to false this will be an image type template.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code></code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set to true this is a template for switches rather than servers.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>isImageBuildRequired</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set to true this is a template that requires a build using the image builder to package assets into the ISO
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>provisionViaOOB</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set to true this template can be installed via the OOB network (Virtual Media)
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>bootMethods</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+If set to true this template can be installed via the OOB network (Virtual Media)
+
+
+Valid values:
+
+
+  - <code>pxe_iscsi</code>
+
+  - <code>local_drives</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code></code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+description: Defines how the template is initialized.
+values:
+ - "provisioner_os_bootstrap_dummy",
+ - "provisioner_os_bootstrap_generic",
+ - "provisioner_os_bootstrap_centos",
+ - "provisioner_os_bootstrap_ubuntu",
+ - "provisioner_os_cloudinit_prepare_centos",
+ - "provisioner_os_cloudinit_prepare_rhel",
+ - "provisioner_os_cloudinit_prepare_ubuntu",
+ - "provisioner_os_cloudbaseinit_prepare_windows",
+ - "provisioner_os_cloudinit_prepare_generic_unix",
+ - "provisioner_os_bootstrap_generic_non_cloudinit
+
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>bootType</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Controls the type of boot method supported by this template
+
+
+Valid values:
+
+
+  - <code>legacy_only</code>
+
+  - <code>uefi_only</code>
+
+  - <code>hybrid</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>description</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+A description of the template
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>createdTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the template was created. Readonly.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>updatedTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the template was updated. Readonly.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>userID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The user that owns this template
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>os</code>  <i>OperatingSystem</i>
+
+</div>
+<div class="dt">
+
+The operating system details
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>repoURL</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+In some cases additional files are required and these are typically pulled from this URL
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>deprecationStatus</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Controls if this template can be used for new provisioning operations or just expanding of existing clusters
+
+
+Valid values:
+
+
+  - <code>not_deprecated</code>
+
+  - <code>deprecated_allow_expand</code>
+
+  - <code>deprecated_deny_provision</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>credentials</code>  <i><a href="#ostemplatecredentials">OSTemplateCredentials</a></i>
+
+</div>
+<div class="dt">
+
+Credentials of the template
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>tags</code>  <i>[]string</i>
+
+</div>
+<div class="dt">
+
+Tags
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>OSAssetIDBootloaderLocalInstall</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The ID of the bootloader asset to use during local install
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>OSAssetIDBootloaderOSBoot</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The ID of the bootloader asset to use during initial boot (such as iPXE)
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>variablesJSON</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Variables this template requires.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>networkOS</code>  <i>NetworkOperatingSystem</i>
+
+</div>
+<div class="dt">
+
+If this is an network operating system, here are the details
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code></code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Version of the operating system
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code></code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The method to determine if the OS is ready to use.
+
+
+Valid values:
+
+
+  - <code>wait_for_ssh</code>
+
+  - <code>wait_for_signal_from_os</code>
+
+  - <code>wait_for_power_off</code>
+
+  - <code>wait_for_signal_from_os_and_wait_for_power_off</code>
+</div>
+
+<hr />
+
+
+
+
+
+## OSTemplateCredentials
+OSTemplateCredentials holds information needed to connect to an OS installed by an OSTemplate.
+
+Appears in:
+
+
+- <code><a href="#ostemplate">OSTemplate</a>.credentials</code>
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>initialUser</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The initial user
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>initialPasswordEncrypted</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The initial password. Readonly
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>initialPassword</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The initial password. Write-only
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>initialSSHPort</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The port to use for SSH
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>changePasswordAfterDeploy</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set, and if the template supports it the password will be changed after deploy (this password will be used only during deploy).
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>useAutogeneratedInitialPassword</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set, the password will be automatically generated
 
 </div>
 

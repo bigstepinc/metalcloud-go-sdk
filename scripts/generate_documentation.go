@@ -14,12 +14,15 @@ type docFunc func() *encoder.FileDoc
 var OBJECT_DOC_FUNCS = []docFunc{
 	metalcloud.GetDatacenterWithConfigDoc,
 	metalcloud.GetSubnetOOBDoc,
+	metalcloud.GetNetworkDoc,
+	metalcloud.GetNetworkProfileDoc,
 	metalcloud.GetInfrastructureDoc,
 	metalcloud.GetInstanceArrayDoc,
 	metalcloud.GetDriveArrayDoc,
 	metalcloud.GetNetworkDoc,
 	metalcloud.GetVariableDoc,
 	metalcloud.GetOSAssetDoc,
+	metalcloud.GetOSTemplateDoc,
 }
 
 // This will generate the markdown documentation for all the objects
