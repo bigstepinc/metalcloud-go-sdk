@@ -264,3 +264,77 @@ func (c *Client) SwitchDeviceControllerDelete(networkEquipmentControllerID int) 
 
 	return nil
 }
+
+// CreateOrUpdate implements interface Applier
+func (sdc SwitchDeviceController) CreateOrUpdate(client MetalCloudClient) error {
+	var result *SwitchDeviceController
+	var err error
+
+	decryptPassword := false
+	if sdc.NetworkEquipmentControllerID != 0 {
+		result, err = client.SwitchDeviceControllerGet(sdc.NetworkEquipmentControllerID, decryptPassword)
+	} else {
+		result, err = client.SwitchDeviceControllerGetByIdentifierString(sdc.NetworkEquipmentControllerIdentifierString, decryptPassword)
+	}
+
+	if err != nil {
+		_, err = client.SwitchDeviceControllerCreate(sdc)
+
+		if err != nil {
+			return err
+		}
+	} else {
+		networkEquipmentControllerData := map[string]interface{}{
+			"datacenter_name":                                   sdc.DatacenterName,
+			"network_equipment_controller_options":              sdc.NetworkEquipmentControllerOptions,
+			"network_equipment_controller_fabric_configuration": sdc.NetworkEquipmentControllerFabricConfiguration,
+		}
+		
+		_, err = client.SwitchDeviceControllerUpdate(result.NetworkEquipmentControllerID, networkEquipmentControllerData)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// Delete implements interface Applier
+func (sdc SwitchDeviceController) Delete(client MetalCloudClient) error {
+	err := sdc.Validate()
+	var result *SwitchDeviceController
+	var id int
+	decryptPassword := false
+
+	if err != nil {
+		return err
+	}
+
+	if sdc.NetworkEquipmentControllerIdentifierString != "" {
+		result, err = client.SwitchDeviceControllerGetByIdentifierString(sdc.NetworkEquipmentControllerIdentifierString, decryptPassword)
+
+		if err != nil {
+			return err
+		}
+
+		id = result.NetworkEquipmentControllerID
+	} else {
+		id = sdc.NetworkEquipmentControllerID
+	}
+	err = client.SwitchDeviceControllerDelete(id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Validate implements interface Applier
+func (sdc SwitchDeviceController) Validate() error {
+	if sdc.NetworkEquipmentControllerID == 0 && sdc.NetworkEquipmentControllerIdentifierString == "" {
+		return fmt.Errorf("id is required")
+	}
+
+	return nil
+}

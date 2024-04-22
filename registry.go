@@ -25,6 +25,7 @@ func GetTypesThatSupportApplierInterface() map[string]reflect.Type {
 		&Workflow{},
 		&SubnetPool{},
 		&SubnetOOB{},
+		&SwitchDeviceController{},
 		&SwitchDevice{},
 		&Variable{},
 	}
