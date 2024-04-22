@@ -23,6 +23,9 @@ var OBJECT_DOC_FUNCS = []docFunc{
 	metalcloud.GetVariableDoc,
 	metalcloud.GetOSAssetDoc,
 	metalcloud.GetOSTemplateDoc,
+	metalcloud.GetSecretDoc,
+	metalcloud.GetServerDoc,
+	metalcloud.GetSharedDriveDoc,
 }
 
 // This will generate the markdown documentation for all the objects

@@ -34,6 +34,7 @@ type NetworkOperatingSystem struct {
 	//description: The datacenter for this operating system.
 	OperatingSystemDatacenterName string `json:"operating_system_datacenter_name,omitempty" yaml:"datacenter_name,omitempty"`
 	//description: A switch model number to be matched against an ONIE or POAP request during ztp.
+	//example: s5232f_c3538
 	OperatingSystemMachine string `json:"operating_system_machine,omitempty" yaml:"machine,omitempty"`
 	//description: The switch driver to use.
 	OperatingSystemSwitchDriver string `json:"operating_system_switch_driver,omitempty" yaml:"switchDriver,omitempty"`
@@ -44,7 +45,7 @@ type NetworkOperatingSystem struct {
 	OperatingSystemSwitchRole string `json:"operating_system_switch_role,omitempty" yaml:"switchRole,omitempty"`
 	//description: The vendor of the switch
 	//examples:
-	// - dell
+	// - dellemc
 	// - juniper
 	OperatingSystemVendor string `json:"operating_system_vendor,omitempty" yaml:"vendor,omitempty"`
 	//description: The version of the operating system
@@ -110,7 +111,7 @@ type VolumeTemplate struct {
 	VolumeTemplateIsExperimental bool `json:"volume_template_is_experimental,omitempty"`
 	//description: If set to true, this template is for switches rather than servers
 	VolumeTemplateIsForSwitch bool `json:"volume_template_is_for_switch,omitempty"`
-	//description: If set to true, this template is for switches rather than servers
+	//description: The method used to determine if the OS is ready to use.
 	//values:
 	// - wait_for_ssh
 	// - wait_for_signal_from_os

@@ -78,7 +78,7 @@ func init() {
 	NetworkOperatingSystemDoc.Fields[5].Name = "vendor"
 	NetworkOperatingSystemDoc.Fields[5].Type = "string"
 	NetworkOperatingSystemDoc.Fields[5].Note = ""
-	NetworkOperatingSystemDoc.Fields[5].Description = "description: The vendor of the switch\nexamples:\n- dell\n- juniper\n"
+	NetworkOperatingSystemDoc.Fields[5].Description = "description: The vendor of the switch\nexamples:\n- dellemc\n- juniper\n"
 	NetworkOperatingSystemDoc.Fields[5].Comments[encoder.LineComment] = "description: The vendor of the switch"
 	NetworkOperatingSystemDoc.Fields[6].Name = "version"
 	NetworkOperatingSystemDoc.Fields[6].Type = "string"
