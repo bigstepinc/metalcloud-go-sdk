@@ -6631,3 +6631,526 @@ MAX Speed of the interface
 
 
 
+
+
+
+
+## SharedDrive
+SharedDrive represents a drive that can be shared between instances
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>label</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Label of the shared drive
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>subdomain</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Unique string representing the shared drive
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>id</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Id of the shared drive
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>storageType</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Type of the shared drive
+
+
+Valid values:
+
+
+  - <code>iscsi_ssd</code>
+
+  - <code>iscsi_hdd</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>infrastructureID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+ID of the infrastructure
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>serviceStatus</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Service status of the shared drive
+
+
+Valid values:
+
+
+  - <code>ordered</code>
+
+  - <code>active</code>
+
+  - <code>stopped</code>
+
+  - <code>deleted</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>createdTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the SharedDrive was created.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>updatedTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the SharedDrive was updated.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>sizeMBytes</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Size of the drive
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>attachedInstaceArrays</code>  <i>[]int</i>
+
+</div>
+<div class="dt">
+
+An array of the instance array ids attached to this drive
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>operation</code>  <i><a href="#shareddriveoperation">SharedDriveOperation</a></i>
+
+</div>
+<div class="dt">
+
+The operation object
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>credentials</code>  <i><a href="#shareddrivecredentials">SharedDriveCredentials</a></i>
+
+</div>
+<div class="dt">
+
+Credentials of the shared drive
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>changeID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The operation id
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>targetsJSON</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Details on the ISCSI or FC targets
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>ioLimit</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Used by certain storage types
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>wwn</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+WWN of the drive as reported by the storage appliance
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>storagePoolID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The storage pool id to use if set.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>affinity</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Used to control if drives in this drive array should be allocated on the same storage pool or different storage pools
+
+
+Valid values:
+
+
+  - <code>same_storage</code>
+
+  - <code>different_storage</code>
+</div>
+
+<hr />
+
+
+
+
+
+## SharedDriveCredentials
+SharedDriveCredentials iscsi or other forms of connection details
+
+Appears in:
+
+
+- <code><a href="#shareddrive">SharedDrive</a>.credentials</code>
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>iscsi</code>  <i>ISCSI</i>
+
+</div>
+<div class="dt">
+
+details
+
+</div>
+
+<hr />
+
+
+
+
+
+## SharedDriveOperation
+SharedDriveOperation represents an ongoing or new operation on a shared drive
+
+Appears in:
+
+
+- <code><a href="#shareddrive">SharedDrive</a>.operation</code>
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>deployStatus</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Deploy status
+
+
+Valid values:
+
+
+  - <code>not_started</code>
+
+  - <code>ongoing</code>
+
+  - <code>finished</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>deployType</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Type of operation
+
+
+Valid values:
+
+
+  - <code>create</code>
+
+  - <code>edit</code>
+
+  - <code>delete</code>
+
+  - <code>start</code>
+
+  - <code>stop</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>label</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Label
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>subdomain</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Unique string describing this shared drive
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>id</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+ID of the shared drive
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>sizeMBytes</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Size of the drive
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>storageType</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Type of the shared drive. Readonly.
+
+
+Valid values:
+
+
+  - <code>iscsi_ssd</code>
+
+  - <code>iscsi_hdd</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>infrastructureID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+ID of the infrastructure
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>serviceStatus</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Status of the service
+
+
+Valid values:
+
+
+  - <code>active</code>
+
+  - <code>ordered</code>
+
+  - <code>deleted</code>
+
+  - <code>suspended</code>
+
+  - <code>stopped</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>attachedInstanceArrays</code>  <i>[]int</i>
+
+</div>
+<div class="dt">
+
+List of instance arrays to which this shared drive is attached
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>changeID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+ID of the operation
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>ioLimit</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Used for certain SAN appliances
+
+</div>
+
+<hr />
+
+
+
+
