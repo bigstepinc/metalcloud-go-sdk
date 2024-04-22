@@ -5057,3 +5057,1577 @@ If set, the password will be automatically generated
 
 
 
+
+
+
+
+## Secret
+Secret struct defines a server type
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>id</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The id of the object
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>ownerID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The id of the owner of the object
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>userIDAuthenticated</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The id of the user that created the object
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>name</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The name (label) of the secret
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>usage</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+How this secret is to be used
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>base64</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The content of the secret. Readonly.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>createdTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the secret was created. Readonly.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>updatedTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the secret was updated. Readonly.
+
+</div>
+
+<hr />
+
+
+
+
+
+
+
+
+## Server
+Server represents a server in a datacenter. Many of these fields are readonly.
+Servers should always be registered via the registration process but in certain circumstances such as brownfield setups
+it may be required to create these entries by hand.
+
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>id</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+id of the server
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>UUID</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+UUID of the server. Readonly.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>status</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Status of a server. Note that not all transitions between states are possible.
+
+
+Valid values:
+
+
+  - <code>registering</code>
+
+  - <code>available</code>
+
+  - <code>cleaning_required</code>
+
+  - <code>cleaning</code>
+
+  - <code>used</code>
+
+  - <code>used_registering</code>
+
+  - <code>unavailable</code>
+
+  - <code>defective</code>
+
+  - <code>removed_from_rack</code>
+
+  - <code>decommissioned</code>
+
+  - <code>updating_firmware</code>
+
+  - <code>used_diagnostics</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>serialNumber</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+serial number
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>vendor</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Vendor. Must be one of the supported values.
+
+
+Valid values:
+
+
+  - <code>HP</code>
+
+  - <code>HPE</code>
+
+  - <code>Dell Inc.</code>
+
+  - <code>Lenovo</code>
+
+  - <code>Supermicro</code>
+
+  - <code>BULL</code>
+
+  - <code>QEMU</code>
+
+  - <code>BSI</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>datacenter</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Datacenter where this datacenter is registered
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>networkTotalCapacityMbps</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Summed up value of total network capacities of all in-band network connections of the server.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>bootType</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Type of boot this server uses
+
+
+Valid values:
+
+
+  - <code>classic</code>
+
+  - <code>uefi</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>powerStatus</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Server power status
+
+
+Valid values:
+
+
+  - <code>on</code>
+
+  - <code>off</code>
+
+  - <code>unknown</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>processorName</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Server processor name
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>processorCoreCount</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Server total core count
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>processorCoreMhz</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Server maximum frequency
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>processorCount</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Server CPU count
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>processorThreads</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Server threads per core count
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>processorCPUMark</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Deprecated
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>ramGbytes</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Total amount of RAM in Gbytes
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>disks</code>  <i>[]<a href="#serverdisk">ServerDisk</a></i>
+
+</div>
+<div class="dt">
+
+The list of disks
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>diskCount</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The count of disks
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>diskSizeMbytes</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+If all disks are identical this is the size of the disk. Deprecated.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>diskType</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+If all disks are identical this type of disk. Deprecated.
+
+
+Valid values:
+
+
+  - <code>none</code>
+
+  - <code>NVME</code>
+
+  - <code>HDD</code>
+
+  - <code>SSD</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>rackName</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Name of rack (metadata)
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>rackPositionLowerUnit</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Rack position lower U (metadata)
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>rackPositionUpperUnit</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Rack position upper U (metadata)
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>rackID</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Rack ID (metadata)
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>chassisRackID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+ID of the chassis if any
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>inventoryId</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Inventory ID (metadata)
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>productName</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Name of the server as returned by the server itself
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>serverClass</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Class of server. Deprecated
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>serverTypeID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The ID of the server type. Note that the server types are normally automatically determined during registration. However this value can be changed by the client if needed although it is not recommended.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>interfaces</code>  <i>[]<a href="#serverinterface">ServerInterface</a></i>
+
+</div>
+<div class="dt">
+
+Descriptions of the server's interfaces
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>supportsOOBProvisioning</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+Set to true if the server can be deployed via the out-of-band network (currently via virtual media)
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>tags</code>  <i>[]string</i>
+
+</div>
+<div class="dt">
+
+Tags (metadata)
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>IPMIChannel</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The IPMI channel to use when communicating on the IPMI protocol. Used in Legacy scenarios.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>IPMIHostname</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The IPMI host  to use when communicating on the IPMI protocol. Used in Legacy scenarios.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>IPMIUsername</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The IPMI username to use when communicating on the IPMI protocol. Used in Legacy scenarios.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>IPMIPassword</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The IPMI username to use when communicating on the IPMI protocol. Used in Legacy scenarios. Use this field to set the password. Write-only.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>IPMIPasswordEncrypted</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The IPMI username to use when communicating on the IPMI protocol. Used in Legacy scenarios. Readonly. Encrypted.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>IPMICredentialsNeedUpdate</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+Internal field denoting that the credentials will be updated.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>vendorSKU</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+SKU ID returned by the server. Note that not all vendors return this.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>comments</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Comments on the server (metadata)
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>BIOSInfoJson</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>CustomJSON</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>infoJSON</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>serverDetailsXML</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>instanceCustomJSON</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>supportsSOL</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>ILOResetTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>BootLastUpdateTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Timestamp value denoting the last known boot.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>PowerStatusUpdateTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Timestamp value denoting the last power status update.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>subnetOOBID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+What OOB subnet is used to allocate ips to the BMC of this server
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>subnetDHCPStatus</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+DHCP server's behavior in relation to this server.
+
+
+Valid values:
+
+
+  - <code>quarantine</code>
+
+  - <code>deny_requests</code>
+
+  - <code>ansible_provision</code>
+
+  - <code>allow_requests</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>BMCMACAddress</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+MAC address of the server's BMC
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>SNMPCommunityPaswordDCencrypted</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+SNMP Community password encrypted. Internal.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>MGMTNMPCommunityPasswordDCEncrypted</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+SNMP Community password encrypted
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>MGMTSNMPVersion</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+SNMP Community version
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>MGMTSNMPPort</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+SNMP Community port
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>secureBootIsEnabled</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If the Secure Boot is enabled
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>subnetOOBIndex</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>subnetIPMIVersion</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The version of the IPMI protocol when IPMI is used.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>createdTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the server record was created. Readonly.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>lastCleanupStart</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Last cleanup timestamp
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>vendorInfoJSON</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Version information as returned by the server.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>chipsetName</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>requiresReregiter</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+Set if the server is considered 'dirty' and needs re-registration.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>GPUCount</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Count of GPUs
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>GPUModel</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Model of GPUs if all are identical
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>GPUVendor</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Vendor of GPUs if all are identical
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>allocationTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+When the server was allocated to an infrastructure.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>DHCPRelaySecurityIsEnabled</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If enabled, the DHCP server will use verify the DHCP option82 for added security in interpreting the DHCP packet. Used for diagnosing issues with the legacy protocol.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>requiresManualCleaning</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If true, some steps of the cleanup process could not be performed automatically.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>cleanupInProgress</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If true, a cleanup operation is ongoing.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>serverSupportsVirtualMedia</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If true, server supports virtual media-based deployment
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>serverIsInDiagnostics</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If true, server is ongoing a diagnosis. Deprecated.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>diskWipe</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If true, server will be wiped.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>metricsMetadataJSON</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>agentID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Id of the site controller agent managing this server.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>DHCPPacketSniffingIsEnabled</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set to true the DHCP server will record a log of the dialog with the server. Useful for diagnosing issues with the legacy protocol.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>BDKDebug</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>keysJSON</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>NICDetails</code>  <i>map[string]<a href="#servernicdetails">ServerNICDetails</a></i>
+
+</div>
+<div class="dt">
+
+Details about the network interfaces
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>submodel</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Model details as returned by the server
+
+</div>
+
+<hr />
+
+
+
+
+
+## ServerDisk
+ServerDisk describes a disk
+
+Appears in:
+
+
+- <code><a href="#server">Server</a>.disks</code>
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>id</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The id of the object
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>model</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The model of the object
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>type</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The type of the disk
+
+
+Valid values:
+
+
+  - <code>NVME</code>
+
+  - <code>SSD</code>
+
+  - <code>HDD</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>vendor</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The vendor of the disk
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>status</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The status of the disk
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>serial_number</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The serial number of the disk
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>sizeGB</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+The size of the disk
+
+</div>
+
+<hr />
+
+
+
+
+
+## ServerInterface
+ServerInterface contains server connectivity information.
+
+Appears in:
+
+
+- <code><a href="#server">Server</a>.interfaces</code>
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>macAddress</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+MAC address of the interface
+
+</div>
+
+<hr />
+
+
+
+
+
+## ServerNICDetails
+
+Appears in:
+
+
+- <code><a href="#server">Server</a>.NICDetails</code>
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>networkEquipmentInterfaceLLDPInformation</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+LLDP information for this interface
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>networkEquipmentInterfaceMACAddress</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+MAC Address of the switch interface
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>switchPortID</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Switch ID of the switch to which this interface is connected to
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>switchPortDescription</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Switch port name
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>switchHostname</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Hostname of the switch
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>networkEquipmentDescription</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Description of the switch
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>switchVLANID</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+VLAN ID allocated as native to this interface
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>switchInterfaceIndex</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Index of this interface on the server. This is determined based on the switch hostname and port description.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>serverInterfaceMACAddress</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+MAC Address of the server interface
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>serverInterfaceCapacityMBPs</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+MAX Speed of the interface
+
+</div>
+
+<hr />
+
+
+
+

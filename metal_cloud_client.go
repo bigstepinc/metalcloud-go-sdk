@@ -317,15 +317,15 @@ type MetalCloudClient interface {
 	OSTemplateMakePublic(osTemplateID int) error
 	// OSTemplateMakePrivate makes a template private
 	OSTemplateMakePrivate(osTemplateID int, userID int) error
-	//SecretCreate creates a secret
+	// SecretCreate creates a secret
 	SecretCreate(secret Secret) (*Secret, error)
-	//SecretDelete Permanently destroys a Secret.
+	// SecretDelete Permanently destroys a Secret.
 	SecretDelete(secretID int) error
-	//SecretUpdate This function allows updating the secret_usage, secret_label and secret_base64 of a Secret
+	// SecretUpdate This function allows updating the secret_usage, secret_label and secret_base64 of a Secret
 	SecretUpdate(secretID int, secret Secret) (*Secret, error)
-	//SecretGet returns a Secret specified by nSecretID. The secret's protected value is never returned.
+	// SecretGet returns a Secret specified by nSecretID. The secret's protected value is never returned.
 	SecretGet(secretID int) (*Secret, error)
-	//Secrets retrieves a list of all the Secret objects which a specified User is allowed to see through ownership or delegation. The secret objects never return the actual protected secret value.
+	// Secrets retrieves a list of all the Secret objects which a specified User is allowed to see through ownership or delegation. The secret objects never return the actual protected secret value.
 	Secrets(usage string) (*map[string]Secret, error)
 	// ServersSearch searches for servers matching certain filter
 	ServersSearch(filter string) (*[]ServerSearchResult, error)
@@ -423,7 +423,7 @@ type MetalCloudClient interface {
 	ServerTypesMatchesByLabel(infrastructureLabel string, hardwareConfiguration HardwareConfiguration, instanceArrayID *int, bAllowServerSwap bool) (*map[string]ServerType, error)
 	SharedDriveAttachInstanceArray(sharedDriveID int, instanceArrayID int) (*SharedDrive, error)
 	SharedDriveDetachInstanceArray(sharedDriveID int, instanceArrayID int) (*SharedDrive, error)
-	//SharedDrives retrieves the list of shared drives of an infrastructure
+	// SharedDrives retrieves the list of shared drives of an infrastructure
 	SharedDrives(infrastructureID int) (*map[string]SharedDrive, error)
 	//SharedDriveCreate array. Requires deploy.
 	SharedDriveCreate(infrastructureID int, sharedDrive SharedDrive) (*SharedDrive, error)

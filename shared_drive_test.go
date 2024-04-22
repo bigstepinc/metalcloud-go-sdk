@@ -48,7 +48,6 @@ func TestSharedDriveCreateOrUpdate(t *testing.T) {
 		SharedDriveLabel:                  "shared-drive-test",
 		SharedDriveSizeMbytes:             2048,
 		SharedDriveSubdomain:              "csivolumename.test-kube-csi.7.bigstep.io",
-		SharedDriveHasGFS:                 false,
 		SharedDriveAttachedInstanceArrays: []int{37824},
 		SharedDriveOperation: SharedDriveOperation{
 			InfrastructureID:                  1,
@@ -56,7 +55,6 @@ func TestSharedDriveCreateOrUpdate(t *testing.T) {
 			SharedDriveLabel:                  "shared-drive-test",
 			SharedDriveSizeMbytes:             2048,
 			SharedDriveSubdomain:              "csivolumename.test-kube-csi.7.bigstep.io",
-			SharedDriveHasGFS:                 false,
 			SharedDriveAttachedInstanceArrays: []int{37824},
 			SharedDriveChangeID:               16508,
 		},
@@ -132,7 +130,6 @@ func TestSharedDriveDeleteForApply(t *testing.T) {
 		SharedDriveLabel:                  "shared-drive-test",
 		SharedDriveSizeMbytes:             2048,
 		SharedDriveSubdomain:              "csivolumename.test-kube-csi.7.bigstep.io",
-		SharedDriveHasGFS:                 false,
 		SharedDriveAttachedInstanceArrays: []int{37824},
 		SharedDriveOperation: SharedDriveOperation{
 			InfrastructureID:                  1,
@@ -140,7 +137,6 @@ func TestSharedDriveDeleteForApply(t *testing.T) {
 			SharedDriveLabel:                  "shared-drive-test",
 			SharedDriveSizeMbytes:             2048,
 			SharedDriveSubdomain:              "csivolumename.test-kube-csi.7.bigstep.io",
-			SharedDriveHasGFS:                 false,
 			SharedDriveAttachedInstanceArrays: []int{37824},
 			SharedDriveChangeID:               16508,
 		},

@@ -1,3 +1,4 @@
+//go:generate go run helper/docgen.go - $GOFILE ./ Secret Secret
 package metalcloud
 
 import (
@@ -6,19 +7,29 @@ import (
 	"github.com/ybbus/jsonrpc"
 )
 
-//Secret struct defines a server type
+// Secret struct defines a server type
 type Secret struct {
-	SecretID               int    `json:"secret_id,omitempty" yaml:"id,omitempty"`
-	UserIDOwner            int    `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
-	UserIDAuthenticated    int    `json:"user_id_authenticated,omitempty" yaml:"userIDAuthenticated,omitempty"`
-	SecretName             string `json:"secret_name,omitempty" yaml:"name,omitempty"`
-	SecretUsage            string `json:"secret_usage,omitempty" yaml:"usage,omitempty"`
-	SecretBase64           string `json:"secret_base64,omitempty" yaml:"base64,omitempty"`
+	//description: The id of the object
+	SecretID int `json:"secret_id,omitempty" yaml:"id,omitempty"`
+	//description: The id of the owner of the object
+	UserIDOwner int `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	//description: The id of the user that created the object
+	UserIDAuthenticated int `json:"user_id_authenticated,omitempty" yaml:"userIDAuthenticated,omitempty"`
+	//description: The name (label) of the secret
+	SecretName string `json:"secret_name,omitempty" yaml:"name,omitempty"`
+	//description: How this secret is to be used
+	SecretUsage string `json:"secret_usage,omitempty" yaml:"usage,omitempty"`
+	//description: The content of the secret. Readonly.
+	SecretBase64 string `json:"secret_base64,omitempty" yaml:"base64,omitempty"`
+	// description: ISO 8601 timestamp which holds the date and time when the secret was created. Readonly.
+	// example: 2013-11-29T13:00:01Z
 	SecretCreatedTimestamp string `json:"secret_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	// description: ISO 8601 timestamp which holds the date and time when the secret was updated. Readonly.
+	// example: 2013-11-29T13:00:01Z
 	SecretUpdatedTimestamp string `json:"secret_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
 }
 
-//SecretCreate creates a secret
+// SecretCreate creates a secret
 func (c *Client) SecretCreate(secret Secret) (*Secret, error) {
 	var createdObject Secret
 
@@ -37,7 +48,7 @@ func (c *Client) SecretCreate(secret Secret) (*Secret, error) {
 	return &createdObject, nil
 }
 
-//SecretDelete Permanently destroys a Secret.
+// SecretDelete Permanently destroys a Secret.
 func (c *Client) SecretDelete(secretID int) error {
 
 	if err := checkID(secretID); err != nil {
@@ -57,7 +68,7 @@ func (c *Client) SecretDelete(secretID int) error {
 	return nil
 }
 
-//SecretUpdate This function allows updating the secret_usage, secret_label and secret_base64 of a Secret
+// SecretUpdate This function allows updating the secret_usage, secret_label and secret_base64 of a Secret
 func (c *Client) SecretUpdate(secretID int, secret Secret) (*Secret, error) {
 	var createdObject Secret
 
@@ -78,7 +89,7 @@ func (c *Client) SecretUpdate(secretID int, secret Secret) (*Secret, error) {
 	return &createdObject, nil
 }
 
-//SecretGet returns a Secret specified by nSecretID. The secret's protected value is never returned.
+// SecretGet returns a Secret specified by nSecretID. The secret's protected value is never returned.
 func (c *Client) SecretGet(secretID int) (*Secret, error) {
 
 	var createdObject Secret
@@ -100,7 +111,7 @@ func (c *Client) SecretGet(secretID int) (*Secret, error) {
 	return &createdObject, nil
 }
 
-//Secrets retrieves a list of all the Secret objects which a specified User is allowed to see through ownership or delegation. The secret objects never return the actual protected secret value.
+// Secrets retrieves a list of all the Secret objects which a specified User is allowed to see through ownership or delegation. The secret objects never return the actual protected secret value.
 func (c *Client) Secrets(usage string) (*map[string]Secret, error) {
 
 	userID := c.GetUserID()
@@ -143,7 +154,7 @@ func (c *Client) Secrets(usage string) (*map[string]Secret, error) {
 	return &createdObject, nil
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (s Secret) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var result *Secret
@@ -185,7 +196,7 @@ func (s Secret) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (s Secret) Delete(client MetalCloudClient) error {
 	var result *Secret
 	var id int
@@ -220,7 +231,7 @@ func (s Secret) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (s Secret) Validate() error {
 	if s.SecretID == 0 && s.SecretName == "" {
 		return fmt.Errorf("id is required")
