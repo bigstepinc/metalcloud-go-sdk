@@ -524,10 +524,12 @@ type MetalCloudClient interface {
 	SwitchDeviceDefaultsDelete(switchDeviceDefaultsIDs []int) error
 	// SwitchDeviceLinks Returns all the switch device links found in the database.
 	SwitchDeviceLinks() (*map[int]SwitchDeviceLink, error)
-	// SwitchDeviceLinkCreate Creates a record for a new SwitchDevice.
+	// SwitchDeviceLinkCreate creates a record for a new SwitchDeviceLink.
 	SwitchDeviceLinkCreate(networkEquipmentID1 int, networkEquipmentID2 int, networkEquipmentLinkType string) (*SwitchDeviceLink, error)
-	// SwitchDeviceLinkGet Retrieves information regarding a specified switch device link
+	// SwitchDeviceLinkGet retrieves information regarding a specified switch device link
 	SwitchDeviceLinkGet(networkEquipmentID1 int, networkEquipmentID2 int, linkType string) (*SwitchDeviceLink, error)
+	// SwitchDeviceLinkUpdate updates information regarding a specified switch device link
+	SwitchDeviceLinkUpdate(networkEquipmentID1 int, networkEquipmentID2 int, networkEquipmentLinkType string) (*SwitchDeviceLink, error)
 	// SwitchDeviceLinkDelete deletes a specified switch device and its registered interfaces.
 	SwitchDeviceLinkDelete(networkEquipmentID1 int, networkEquipmentID2 int, linkType string) error
 	// SwitchInterfaceSearch searches for server interfaces filtering on various elements such as switch id or server id
