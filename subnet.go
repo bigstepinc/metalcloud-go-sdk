@@ -39,6 +39,7 @@ type Subnet struct {
 	SubnetOverrideVLANID                        int    `json:"subnet_override_vlan_id,omitempty" yaml:"overrideVLANID,omitempty"`
 	SubnetOverrideVLANAutoAllocationIndex       int    `json:"subnet_override_vlan_auto_allocation_index,omitempty" yaml:"overrideVLANAutoAllocationIndex,omitempty"`
 	SubnetIsIPRange                             bool   `json:"subnet_is_ip_range,omitempty" yaml:"isIPRange,omitempty"`
+	SubnetRangeStartHumanReadable               string `json:"subnet_range_start_human_readable,omitempty" yaml:"rangeStart,omitempty"`
 }
 
 func (c *Client) SubnetGet(subnetID int) (*Subnet, error) {
