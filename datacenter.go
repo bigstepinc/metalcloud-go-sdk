@@ -460,12 +460,27 @@ func (c *Client) DatacenterCreateFromDatacenterWithConfig(datacenter DatacenterW
 }
 
 func (c *Client) DatacenterUpdateFromDatacenterWithConfig(datacenter DatacenterWithConfig) (*DatacenterWithConfig, error) {
-
 	err := c.DatacenterConfigUpdate(datacenter.Metadata.DatacenterName, datacenter.Config)
 	if err != nil {
 		return nil, err
 	}
 	return c.DatacenterWithConfigGet(datacenter.Metadata.DatacenterName)
+}
+
+// DatacenterDelete deletes storage pools, subnet pools, and other resources then marks the datacenter as deleted.
+func (c *Client) DatacenterDelete(datacenterName string) error {
+	var deletedObj Datacenter
+
+	err := c.rpcClient.CallFor(
+		&deletedObj,
+		"datacenter_decommission",
+		datacenterName)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 //bsideveloper.datacenter_agents_config_json_download_url('uk-reading')
@@ -558,7 +573,20 @@ func (dc DatacenterWithConfig) CreateOrUpdate(client MetalCloudClient) error {
 
 // Delete implements interface Applier
 func (dc DatacenterWithConfig) Delete(client MetalCloudClient) error {
-	return fmt.Errorf("delete not currently implemented for the Datacenter object")
+	var err error
+	err = dc.Validate()
+
+	if err != nil {
+		return err
+	}
+
+	err = client.DatacenterDelete(dc.Metadata.DatacenterName)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // Validate implements interface Applier

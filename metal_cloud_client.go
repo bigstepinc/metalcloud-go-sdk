@@ -52,6 +52,8 @@ type MetalCloudClient interface {
 	DatacenterCreate(datacenter Datacenter, datacenterConfig DatacenterConfig) (*Datacenter, error)
 	DatacenterCreateFromDatacenterWithConfig(datacenter DatacenterWithConfig) (*DatacenterWithConfig, error)
 	DatacenterUpdateFromDatacenterWithConfig(datacenter DatacenterWithConfig) (*DatacenterWithConfig, error)
+	// DatacenterDelete deletes storage pools, subnet pools, and other resources then marks the datacenter as deleted.
+	DatacenterDelete(datacenterName string) error
 	// DatacenterAgentsConfigJSONDownloadURL returns the agent url (and automatically decrypts it)
 	DatacenterAgentsConfigJSONDownloadURL(datacenterName string, decrypt bool) (string, error)
 	// DriveArrays retrieves the list of drives arrays of an infrastructure
