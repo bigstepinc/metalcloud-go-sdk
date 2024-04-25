@@ -1,3 +1,5 @@
+//go:generate go run helper/docgen.go - $GOFILE ./ StageDefinition,HTTPRequest,WebFetchAAPIOptions,WebFetchAPIRequestHeaders,AnsibleBundle,WorkflowReference,SSHExec,SSHClientOptions,SSHAlgorithms,Copy,SCPResourceLocation StageDefinition
+
 package metalcloud
 
 import (
@@ -5,120 +7,220 @@ import (
 	"fmt"
 )
 
-//StageDefinition contains a JavaScript file, HTTP request url and options, an AnsibleBundle or an API call template.
+// StageDefinition Also called a workflow task contains a JavaScript file, HTTP request url and options, an AnsibleBundle or an API call template.
 type StageDefinition struct {
-	StageDefinitionID                              int         `json:"stage_definition_id,omitempty" yaml:"id,omitempty"`
-	UserIDOwner                                    int         `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
-	UserIDAuthenticated                            int         `json:"user_id_authenticated,omitempty" yaml:"userIDAuthenticated,omitempty"`
-	StageDefinitionLabel                           string      `json:"stage_definition_label,omitempty" yaml:"label,omitempty"`
-	IconAssetDataURI                               string      `json:"icon_asset_data_uri,omitempty" yaml:"iconAssetDataURI,omitempty"`
-	StageDefinitionTitle                           string      `json:"stage_definition_title,omitempty" yaml:"title,omitempty"`
-	StageDefinitionDescription                     string      `json:"stage_definition_description,omitempty" yaml:"description,omitempty"`
-	StageDefinitionType                            string      `json:"stage_definition_type,omitempty" yaml:"type,omitempty"`
-	StageDefinitionVariablesNamesRequired          []string    `json:"stage_definition_variable_names_required,omitempty" yaml:"variableNames,omitempty"`
-	StageDefinition                                interface{} `json:"stage_definition,omitempty" yaml:"stageDefinition,omitempty"`
-	StageDefinitionCreatedTimestamp                string      `json:"stage_definition_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
-	StageDefinitionUpdatedTimestamp                string      `json:"stage_definition_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
-	StageDefinitionContext                         string      `json:"stage_definition_context,omitempty" yaml:"context,omitempty"`
-	StageDefinitionAutomaticallyAddedToPreDeploys  int         `json:"stage_definition_automatically_added_to_pre_deploys,omitempty" yaml:"automaticallyAddedToPreDeploys,omitempty"`
-	StageDefinitionAutomaticallyAddedToPostDeploys int         `json:"stage_definition_automatically_added_to_post_deploys,omitempty" yaml:"automaticallyAddedToPostDeploys,omitempty"`
+	//description: Id of the object
+	StageDefinitionID int `json:"stage_definition_id,omitempty" yaml:"id,omitempty"`
+	//description: Id of the owner
+	UserIDOwner int `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	//description: Id of the user who created the task. Internal.
+	UserIDAuthenticated int `json:"user_id_authenticated,omitempty" yaml:"userIDAuthenticated,omitempty"`
+	//description: Label of the task
+	StageDefinitionLabel string `json:"stage_definition_label,omitempty" yaml:"label,omitempty"`
+	//description: Internal
+	IconAssetDataURI string `json:"icon_asset_data_uri,omitempty" yaml:"iconAssetDataURI,omitempty"`
+	//description: Title (Name) of the task
+	StageDefinitionTitle string `json:"stage_definition_title,omitempty" yaml:"title,omitempty"`
+	//description: Description of the task
+	StageDefinitionDescription string `json:"stage_definition_description,omitempty" yaml:"description,omitempty"`
+	//description: Type of task
+	//values:
+	// - AnsibleBundle
+	// - JavaScript
+	// - APICall
+	// - HTTPRequest
+	// - Copy
+	// - WorkflowReference
+	StageDefinitionType string `json:"stage_definition_type,omitempty" yaml:"type,omitempty"`
+	//description: list of variable names required when executing this task.
+	StageDefinitionVariablesNamesRequired []string `json:"stage_definition_variable_names_required,omitempty" yaml:"variableNames,omitempty"`
+	//description: More details depending on the type of task
+	// values:
+	// - HTTPRequest
+	// - AnsibleBundle
+	// - WorkflowReference
+	// - SSHExec
+	// - Copy
+	StageDefinition interface{} `json:"stage_definition,omitempty" yaml:"stageDefinition,omitempty"`
+	//description: ISO 8601 timestamp which holds the date and time when the stage definition record was created. Readonly.
+	//example: 2013-11-29T13:00:01Z
+	StageDefinitionCreatedTimestamp string `json:"stage_definition_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	//description: ISO 8601 timestamp which holds the date and time when the stage definition record was updated. Readonly.
+	//example: 2013-11-29T13:00:01Z
+	StageDefinitionUpdatedTimestamp string `json:"stage_definition_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
+	//description: Internal. Readonly.
+	//values:
+	// - local
+	// - global
+	StageDefinitionContext string `json:"stage_definition_context,omitempty" yaml:"context,omitempty"`
+	//description: If set to 1 it will be added to all infrastructures at the pre-deploy stage
+	StageDefinitionAutomaticallyAddedToPreDeploys int `json:"stage_definition_automatically_added_to_pre_deploys,omitempty" yaml:"automaticallyAddedToPreDeploys,omitempty"`
+	//description: If set to 1 it will be added to all infrastructures at the post-deploy stage
+	StageDefinitionAutomaticallyAddedToPostDeploys int `json:"stage_definition_automatically_added_to_post_deploys,omitempty" yaml:"automaticallyAddedToPostDeploys,omitempty"`
 }
 
-//HTTPRequest represents an HTTP request definition compatible with the standard Web Fetch API.
+// HTTPRequest represents an HTTP request definition compatible with the standard Web Fetch API.
 type HTTPRequest struct {
-	URL     string              `json:"url,omitempty"`
-	Options WebFetchAAPIOptions `json:"options,omitempty"`
-	Type    string              `json:"type,omitempty"`
+	//description: URL to call
+	URL string `json:"url,omitempty" yaml:"url,omitempty"`
+	//description: Options
+	Options WebFetchAAPIOptions `json:"options,omitempty" yaml:"options,omitempty"`
+	//description: Internal
+	Type string `json:"type,omitempty" yaml:"url,omitempty"`
 }
 
-//WebFetchAAPIOptions represents node-fetch options which is follows the Web API Fetch specification. See https://github.com/node-fetch/node-fetch
+// WebFetchAAPIOptions represents node-fetch options which is follows the Web API Fetch specification. See https://github.com/node-fetch/node-fetch
 type WebFetchAAPIOptions struct {
-	Method           string                    `json:"method,omitempty"`
-	Redirect         string                    `json:"redirect,omitempty"`
-	Follow           int                       `json:"follow,omitempty"`
-	Compress         bool                      `json:"compress"`
-	Timeout          int                       `json:"timeout,omitempty"`
-	Size             int                       `json:"size,omitempty"`
-	Headers          WebFetchAPIRequestHeaders `json:"headers,omitempty"`
-	Body             string                    `json:"body,omitempty"`
-	BodyBufferBase64 string                    `json:"bodyBufferBase64,omitempty"`
+	//description: HTTP Method to use
+	//example: "get"
+	Method string `json:"method,omitempty" yaml:"method,omitempty"`
+	//description: Defaults to 'follow'. Set to `manual` to extract redirect headers, `error` to reject redirect
+	//values:
+	// - 'follow'
+	// - 'manual'
+	// - 'error'
+	Redirect string `json:"redirect,omitempty" yaml:"redirect,omitempty"`
+	//description: Maximum redirect count. 0 to not follow redirect. Defaults to 20
+	Follow int `json:"follow,omitempty" yaml:"follow,omitempty"`
+	//description: If se to true it will support compression
+	Compress bool `json:"compress" yaml:"compress,omitempty"`
+	//description: Timeout setting in seconds
+	Timeout int `json:"timeout,omitempty"  yaml:"timeout,omitempty"`
+	//description: Maximum response body size in bytes. 0 to disable (default)
+	Size int `json:"size,omitempty" yaml:"size,omitempty"`
+	//description: Request headers
+	Headers WebFetchAPIRequestHeaders `json:"headers,omitempty" yaml:"headers,omitempty"`
+	//description: Body of the request
+	Body string `json:"body,omitempty" yaml:"body,omitempty"`
+	//description: Body of the requested encoded base64
+	BodyBufferBase64 string `json:"bodyBufferBase64,omitempty" yaml:"bodyBase64,omitempty"`
 }
 
-//WebFetchAPIRequestHeaders HTTP request headers. null means undefined (the default for most) so the header will not be included with the request.
+// WebFetchAPIRequestHeaders HTTP request headers. null means undefined (the default for most) so the header will not be included with the request.
 type WebFetchAPIRequestHeaders struct {
-	Accept             string `json:"Accept,omitempty"`
-	UserAgent          string `json:"User-Agent,omitempty"`
-	ContentType        string `json:"Content-Type,omitempty"`
-	Cookie             string `json:"Cookie,omitempty"`
-	Authorization      string `json:"Authorization,omitempty"`
-	ProxyAuthorization string `json:"Proxy-Authorization,omitempty"`
-	ContentMD5         string `json:"Content-MD5,omitempty"`
+	//description: accept header
+	Accept string `json:"Accept,omitempty" yaml:"accept,omitempty"`
+	//description: user-agent header
+	UserAgent string `json:"User-Agent,omitempty" yaml:"userAgent,omitempty"`
+	//description: content-type header
+	ContentType string `json:"Content-Type,omitempty" yaml:"contentType,omitempty"`
+	//description: cookie header
+	Cookie string `json:"Cookie,omitempty" yaml:"cookie,omitempty"`
+	//description: authorization header
+	Authorization string `json:"Authorization,omitempty" yaml:"authorization,omitempty"`
+	//description: proxy-authorization header
+	ProxyAuthorization string `json:"Proxy-Authorization,omitempty" yaml:"proxyAuthorization,omitempty"`
+	//description: content-md5 header
+	ContentMD5 string `json:"Content-MD5,omitempty" yaml:"contentMD5,omitempty"`
 }
 
-//AnsibleBundle contains an Ansible project as a single archive file, usually .zip
+// AnsibleBundle contains an Ansible project as a single archive file, usually .zip
 type AnsibleBundle struct {
-	AnsibleBundleArchiveFilename       string `json:"ansible_bundle_archive_filename,omitempty"`
-	AnsibleBundleArchiveContentsBase64 string `json:"ansible_bundle_archive_contents_base64,omitempty"`
-	Type                               string `json:"type,omitempty"`
+	//description: file name
+	AnsibleBundleArchiveFilename string `json:"ansible_bundle_archive_filename,omitempty"  yaml:"filename,omitempty"`
+	//description: Content in base64
+	AnsibleBundleArchiveContentsBase64 string `json:"ansible_bundle_archive_contents_base64,omitempty" yaml:"contentsBase64,omitempty"`
+	//description: internal
+	Type string `json:"type,omitempty" yaml:"type,omitempty"`
 }
 
-//WorkflowReference points to a Workflow object via its workflow_id. To be used as a stage definition.
+// WorkflowReference points to a Workflow object via its workflow_id. To be used as a stage definition.
 type WorkflowReference struct {
-	WorkflowID int    `json:"workflow_id,omitempty"`
-	Type       string `json:"type,omitempty"`
+	//description: id of the workflow to reference
+	WorkflowID int `json:"workflow_id,omitempty" yaml:"workflowId,omitempty"`
+	//description: internal
+	Type string `json:"type,omitempty" yaml:"type,omitempty"`
 }
 
-//SSHExec executes a command on a remote server using the SSH exec functionality (not through a shell).
+// SSHExec executes a command on a remote server using the SSH exec functionality (not through a shell).
 type SSHExec struct {
-	Command   string           `json:"command,omitempty"`
-	SSHTarget SSHClientOptions `json:"ssh_target,omitempty"`
-	Timeout   int              `json:"timeout,omitempty"`
-	Type      string           `json:"type,omitempty"`
+	//description: Command to execute
+	Command string `json:"command,omitempty" yaml:"command,omitempty"`
+	//description: Details on how to connect to the target system
+	SSHTarget SSHClientOptions `json:"ssh_target,omitempty" yaml:"target,omitempty"`
+	//description: Timeout in seconds
+	Timeout int `json:"timeout,omitempty" yaml:"timeout,omitempty"`
+	//description: Internal
+	Type string `json:"type,omitempty" yaml:"type,omitempty"`
 }
 
-//SSHClientOptions defines an ssh cnnection such as the host, port, user, password, private keys, etc. All properties support template-like variables; for example, ${{instance_credentials_password}} may be used as value for the password property.
+// SSHClientOptions defines an ssh cnnection such as the host, port, user, password, private keys, etc. All properties support template-like variables; for example, ${{instance_credentials_password}} may be used as value for the password property.
 type SSHClientOptions struct {
-	Host         string        `json:"host,omitempty"`
-	Port         int           `json:"port,omitempty"`
-	ForceIPv4    bool          `json:"forceIPv4,omitempty"`
-	ForceIPv6    bool          `json:"forceIPv6,omitempty"`
-	HostHash     string        `json:"hostHash,omitempty"`
-	HashedKey    string        `json:"hashedKey,omitempty"`
-	Username     string        `json:"username,omitempty"`
-	Password     string        `json:"password,omitempty"`
-	PrivateKey   string        `json:"privateKey,omitempty"`
-	Passphrase   string        `json:"passphrase,omitempty"`
-	ReadyTimeout int           `json:"readyTimeout,omitempty"`
-	StrictVendor bool          `json:"strictVendor,omitempty"`
-	Algorithms   SSHAlgorithms `json:"algorithms,omitempty"`
-	Compress     interface{}   `json:"compress,omitempty"`
+	//description: Host
+	Host string `json:"host,omitempty" yaml:"host,omitempty"`
+	//description: Port
+	Port int `json:"port,omitempty" yaml:"port,omitempty"`
+	//description: Force the use of ipv4
+	ForceIPv4 bool `json:"forceIPv4,omitempty" yaml:"forceIPv4,omitempty"`
+	//description: Force the use of ipv6
+	ForceIPv6 bool `json:"forceIPv6,omitempty" yaml:"forceIPv6,omitempty"`
+	//description: Hash of the host
+	HostHash string `json:"hostHash,omitempty" yaml:"hostHash,omitempty"`
+	//description: Hash key of the host
+	HashedKey string `json:"hashedKey,omitempty" yaml:"hashedKey,omitempty"`
+	//description: Username
+	Username string `json:"username,omitempty" yaml:"username,omitempty"`
+	//description: Password
+	Password string `json:"password,omitempty" yaml:"password,omitempty"`
+	//description: Private key to use
+	PrivateKey string `json:"privateKey,omitempty" yaml:"privateKey,omitempty"`
+	//description: Private key passphrase to use
+	Passphrase string `json:"passphrase,omitempty" yaml:"passphrase,omitempty"`
+	//description: Timeout in seconds
+	ReadyTimeout int `json:"readyTimeout,omitempty" yaml:"readyTimeout,omitempty"`
+	//description: Internal
+	StrictVendor bool `json:"strictVendor,omitempty" yaml:"strictVendor,omitempty"`
+	//description: SSH Algorithms to use
+	Algorithms SSHAlgorithms `json:"algorithms,omitempty" yaml:"algorithms,omitempty"`
+	//description: Internal
+	Compress interface{} `json:"compress,omitempty" yaml:"compress,omitempty"`
 }
 
-//SSHAlgorithms defines algorithms that can be used during an ssh session
+// SSHAlgorithms defines algorithms that can be used during an ssh session
 type SSHAlgorithms struct {
-	Kex           []string `json:"kex,omitempty"`
-	Cipher        []string `json:"cipher,omitempty"`
-	ServerHostKey []string `json:"serverHostKey,omitempty"`
-	HMAC          []string `json:"hmac,omitempty"`
-	Compress      []string `json:"compress,omitempty"`
+	//description: Kex
+	Kex []string `json:"kex,omitempty" yaml:"kex,omitempty"`
+	//description: Ciphers accepted
+	Cipher []string `json:"cipher,omitempty" yaml:"cipher,omitempty"`
+	//description: Host keys accepted
+	ServerHostKey []string `json:"serverHostKey,omitempty" yaml:"serverHostKey,omitempty"`
+	//description: HMAC accepted
+	HMAC []string `json:"hmac,omitempty" yaml:"hmac,omitempty"`
+	//description: Compress
+	Compress []string `json:"compress,omitempty" yaml:"compress,omitempty"`
 }
 
-//Copy defines the source and destination of a SCP operation. The source may be of various types. SCP and HTTP requests are streamed so they are recommended as sources. The destination has to be a SCP resource.
+// Copy defines the source and destination of a SCP operation. The source may be of various types. SCP and HTTP requests are streamed so they are recommended as sources. The destination has to be a SCP resource.
 type Copy struct {
-	Source                     interface{}         `json:"source,omitempty"`
-	Destination                SCPResourceLocation `json:"destination,omitempty"`
-	TimeoutMinutes             int                 `json:"timeoutMinutes,omitempty"`
-	IfDestinationAlreadyExists string              `json:"ifDestinationAlreadyExists,omitempty"`
-	Type                       string              `json:"type,omitempty"`
+	//description: the source of the file
+	//values:
+	// - SCPResourceLocation
+	Source interface{} `json:"source,omitempty" yaml:"source,omitempty"`
+	//description: the destination
+	Destination SCPResourceLocation `json:"destination,omitempty" yaml:"destination,omitempty"`
+	//description: timeout in minutes
+	TimeoutMinutes int `json:"timeoutMinutes,omitempty" yaml:"timeoutMinutes,omitempty"`
+	//description: What to do if file exists at the destination. Defaults to 'overwrite'
+	//values:
+	// - error
+	// - overwrite
+	// - errorIfNotSameSize
+	// - overwriteIfNotSameSize
+	// - ignore
+	IfDestinationAlreadyExists string `json:"ifDestinationAlreadyExists,omitempty" yaml:"ifDestinationAlreadyExists,omitempty"`
+	//description: internal
+	Type string `json:"type,omitempty" yaml:"type,omitempty"`
 }
 
-//SCPResourceLocation defines a file path and SSH client connection options for use with Secure Copy Protocol (SCP).
+// SCPResourceLocation defines a file path and SSH client connection options for use with Secure Copy Protocol (SCP).
 type SCPResourceLocation struct {
-	Path      string           `json:"path,omitempty"`
-	SSHTarget SSHClientOptions `json:"ssh_target,omitempty"`
+	//description: path
+	Path string `json:"path,omitempty" yaml:"path,omitempty"`
+	//description: SSH Options for the target
+	SSHTarget SSHClientOptions `json:"ssh_target,omitempty" yaml:"target,omitempty"`
 }
 
-//UnmarshalJSON custom json marshaling
+// UnmarshalJSON custom json marshaling
 func (s *StageDefinition) UnmarshalJSON(b []byte) error {
 	type Alias StageDefinition
 	var w Alias
@@ -212,7 +314,7 @@ func (s *StageDefinition) UnmarshalJSON(b []byte) error {
 	return err
 }
 
-//StageDefinitionCreate creates a stageDefinition
+// StageDefinitionCreate creates a stageDefinition
 func (c *Client) StageDefinitionCreate(stageDefinition StageDefinition) (*StageDefinition, error) {
 	var createdObject StageDefinition
 
@@ -231,7 +333,7 @@ func (c *Client) StageDefinitionCreate(stageDefinition StageDefinition) (*StageD
 	return &createdObject, nil
 }
 
-//StageDefinitionDelete Permanently destroys a StageDefinition.
+// StageDefinitionDelete Permanently destroys a StageDefinition.
 func (c *Client) StageDefinitionDelete(stageDefinitionID int) error {
 
 	if err := checkID(stageDefinitionID); err != nil {
@@ -251,7 +353,7 @@ func (c *Client) StageDefinitionDelete(stageDefinitionID int) error {
 	return nil
 }
 
-//StageDefinitionUpdate This function allows updating the stageDefinition_usage, stageDefinition_label and stageDefinition_base64 of a StageDefinition
+// StageDefinitionUpdate This function allows updating the stageDefinition_usage, stageDefinition_label and stageDefinition_base64 of a StageDefinition
 func (c *Client) StageDefinitionUpdate(stageDefinitionID int, stageDefinition StageDefinition) (*StageDefinition, error) {
 	var createdObject StageDefinition
 
@@ -273,7 +375,7 @@ func (c *Client) StageDefinitionUpdate(stageDefinitionID int, stageDefinition St
 	return &createdObject, nil
 }
 
-//StageDefinitionGet returns a StageDefinition specified by nStageDefinitionID. The stageDefinition's protected value is never returned.
+// StageDefinitionGet returns a StageDefinition specified by nStageDefinitionID. The stageDefinition's protected value is never returned.
 func (c *Client) StageDefinitionGet(stageDefinitionID int) (*StageDefinition, error) {
 
 	var createdObject StageDefinition
@@ -295,7 +397,7 @@ func (c *Client) StageDefinitionGet(stageDefinitionID int) (*StageDefinition, er
 	return &createdObject, nil
 }
 
-//StageDefinitions retrieves a list of all the StageDefinition objects which a specified User is allowed to see through ownership or delegation. The stageDefinition objects never return the actual protected stageDefinition value.
+// StageDefinitions retrieves a list of all the StageDefinition objects which a specified User is allowed to see through ownership or delegation. The stageDefinition objects never return the actual protected stageDefinition value.
 func (c *Client) StageDefinitions() (*map[string]StageDefinition, error) {
 
 	userID := c.GetUserID()
@@ -329,7 +431,7 @@ func (c *Client) StageDefinitions() (*map[string]StageDefinition, error) {
 	return &createdObject, nil
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (s StageDefinition) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var result *StageDefinition
@@ -371,7 +473,7 @@ func (s StageDefinition) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (s StageDefinition) Delete(client MetalCloudClient) error {
 	var result *StageDefinition
 	var id int
@@ -406,7 +508,7 @@ func (s StageDefinition) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (s StageDefinition) Validate() error {
 	if s.StageDefinitionID == 0 && s.StageDefinitionLabel == "" {
 		return fmt.Errorf("id is required")

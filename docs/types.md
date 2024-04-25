@@ -7154,3 +7154,1815 @@ Used for certain SAN appliances
 
 
 
+
+
+
+
+## StageDefinition
+StageDefinition Also called a workflow task contains a JavaScript file, HTTP request url and options, an AnsibleBundle or an API call template.
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>id</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Id of the object
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>ownerID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Id of the owner
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>userIDAuthenticated</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Id of the user who created the task. Internal.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>label</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Label of the task
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>iconAssetDataURI</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>title</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Title (Name) of the task
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>description</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Description of the task
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>type</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Type of task
+
+
+Valid values:
+
+
+  - <code>AnsibleBundle</code>
+
+  - <code>JavaScript</code>
+
+  - <code>APICall</code>
+
+  - <code>HTTPRequest</code>
+
+  - <code>Copy</code>
+
+  - <code>WorkflowReference</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>variableNames</code>  <i>[]string</i>
+
+</div>
+<div class="dt">
+
+list of variable names required when executing this task.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>stageDefinition</code>  <i>interface{}</i>
+
+</div>
+<div class="dt">
+
+More details depending on the type of task
+
+
+Valid values:
+
+
+  - <code>HTTPRequest</code>
+
+  - <code>AnsibleBundle</code>
+
+  - <code>WorkflowReference</code>
+
+  - <code>SSHExec</code>
+
+  - <code>Copy</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>createdTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the stage definition record was created. Readonly.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>updatedTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the stage definition record was updated. Readonly.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>context</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal. Readonly.
+
+
+Valid values:
+
+
+  - <code>local</code>
+
+  - <code>global</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>automaticallyAddedToPreDeploys</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+If set to 1 it will be added to all infrastructures at the pre-deploy stage
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>automaticallyAddedToPostDeploys</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+If set to 1 it will be added to all infrastructures at the post-deploy stage
+
+</div>
+
+<hr />
+
+
+
+
+
+## HTTPRequest
+HTTPRequest represents an HTTP request definition compatible with the standard Web Fetch API.
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>url</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+URL to call
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>options</code>  <i><a href="#webfetchaapioptions">WebFetchAAPIOptions</a></i>
+
+</div>
+<div class="dt">
+
+Options
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>url</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+
+
+
+
+## WebFetchAAPIOptions
+WebFetchAAPIOptions represents node-fetch options which is follows the Web API Fetch specification. See https://github.com/node-fetch/node-fetch
+
+Appears in:
+
+
+- <code><a href="#httprequest">HTTPRequest</a>.options</code>
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>method</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+HTTP Method to use
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>redirect</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Defaults to 'follow'. Set to `manual` to extract redirect headers, `error` to reject redirect
+
+
+Valid values:
+
+
+  - <code>follow</code>
+
+  - <code>manual</code>
+
+  - <code>error</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>follow</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Maximum redirect count. 0 to not follow redirect. Defaults to 20
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>compress</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If se to true it will support compression
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>timeout</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Timeout setting in seconds
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>size</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Maximum response body size in bytes. 0 to disable (default)
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>headers</code>  <i><a href="#webfetchapirequestheaders">WebFetchAPIRequestHeaders</a></i>
+
+</div>
+<div class="dt">
+
+Request headers
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>body</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Body of the request
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>bodyBase64</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Body of the requested encoded base64
+
+</div>
+
+<hr />
+
+
+
+
+
+## WebFetchAPIRequestHeaders
+WebFetchAPIRequestHeaders HTTP request headers. null means undefined (the default for most) so the header will not be included with the request.
+
+Appears in:
+
+
+- <code><a href="#webfetchaapioptions">WebFetchAAPIOptions</a>.headers</code>
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>accept</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+accept header
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>userAgent</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+user-agent header
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>contentType</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+content-type header
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>cookie</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+cookie header
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>authorization</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+authorization header
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>proxyAuthorization</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+proxy-authorization header
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>contentMD5</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+content-md5 header
+
+</div>
+
+<hr />
+
+
+
+
+
+## AnsibleBundle
+AnsibleBundle contains an Ansible project as a single archive file, usually .zip
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>filename</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+file name
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>contentsBase64</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Content in base64
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>type</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+internal
+
+</div>
+
+<hr />
+
+
+
+
+
+## WorkflowReference
+WorkflowReference points to a Workflow object via its workflow_id. To be used as a stage definition.
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>workflowId</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+id of the workflow to reference
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>type</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+internal
+
+</div>
+
+<hr />
+
+
+
+
+
+## SSHExec
+SSHExec executes a command on a remote server using the SSH exec functionality (not through a shell).
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>command</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Command to execute
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>target</code>  <i><a href="#sshclientoptions">SSHClientOptions</a></i>
+
+</div>
+<div class="dt">
+
+Details on how to connect to the target system
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>timeout</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Timeout in seconds
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>type</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+
+
+
+
+## SSHClientOptions
+SSHClientOptions defines an ssh cnnection such as the host, port, user, password, private keys, etc. All properties support template-like variables; for example, ${{instance_credentials_password}} may be used as value for the password property.
+
+Appears in:
+
+
+- <code><a href="#sshexec">SSHExec</a>.target</code>
+
+- <code><a href="#scpresourcelocation">SCPResourceLocation</a>.target</code>
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>host</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Host
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>port</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Port
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>forceIPv4</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+Force the use of ipv4
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>forceIPv6</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+Force the use of ipv6
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>hostHash</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Hash of the host
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>hashedKey</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Hash key of the host
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>username</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Username
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>password</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Password
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>privateKey</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Private key to use
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>passphrase</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Private key passphrase to use
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>readyTimeout</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Timeout in seconds
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>strictVendor</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>algorithms</code>  <i><a href="#sshalgorithms">SSHAlgorithms</a></i>
+
+</div>
+<div class="dt">
+
+SSH Algorithms to use
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>compress</code>  <i>interface{}</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+
+
+
+
+## SSHAlgorithms
+SSHAlgorithms defines algorithms that can be used during an ssh session
+
+Appears in:
+
+
+- <code><a href="#sshclientoptions">SSHClientOptions</a>.algorithms</code>
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>kex</code>  <i>[]string</i>
+
+</div>
+<div class="dt">
+
+Kex
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>cipher</code>  <i>[]string</i>
+
+</div>
+<div class="dt">
+
+Ciphers accepted
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>serverHostKey</code>  <i>[]string</i>
+
+</div>
+<div class="dt">
+
+Host keys accepted
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>hmac</code>  <i>[]string</i>
+
+</div>
+<div class="dt">
+
+HMAC accepted
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>compress</code>  <i>[]string</i>
+
+</div>
+<div class="dt">
+
+Compress
+
+</div>
+
+<hr />
+
+
+
+
+
+## Copy
+Copy defines the source and destination of a SCP operation. The source may be of various types. SCP and HTTP requests are streamed so they are recommended as sources. The destination has to be a SCP resource.
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>source</code>  <i>interface{}</i>
+
+</div>
+<div class="dt">
+
+the source of the file
+
+
+Valid values:
+
+
+  - <code>SCPResourceLocation</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>destination</code>  <i><a href="#scpresourcelocation">SCPResourceLocation</a></i>
+
+</div>
+<div class="dt">
+
+the destination
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>timeoutMinutes</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+timeout in minutes
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>ifDestinationAlreadyExists</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+What to do if file exists at the destination. Defaults to 'overwrite'
+
+
+Valid values:
+
+
+  - <code>error</code>
+
+  - <code>overwrite</code>
+
+  - <code>errorIfNotSameSize</code>
+
+  - <code>overwriteIfNotSameSize</code>
+
+  - <code>ignore</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>type</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+internal
+
+</div>
+
+<hr />
+
+
+
+
+
+## SCPResourceLocation
+SCPResourceLocation defines a file path and SSH client connection options for use with Secure Copy Protocol (SCP).
+
+Appears in:
+
+
+- <code><a href="#copy">Copy</a>.destination</code>
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>path</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+path
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>target</code>  <i><a href="#sshclientoptions">SSHClientOptions</a></i>
+
+</div>
+<div class="dt">
+
+SSH Options for the target
+
+</div>
+
+<hr />
+
+
+
+
+
+
+
+
+## Workflow
+Workflow struct defines a server type
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>id</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Id of the object
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>ownerID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Id of the owner
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>userIDAuthenticated</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Internal.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>label</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Label
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>usage</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Usage of this workflow
+
+
+Valid values:
+
+
+  - <code>infrastructure</code>
+
+  - <code>switch_device</code>
+
+  - <code>server</code>
+
+  - <code>free_standing</code>
+
+  - <code>storage_pool</code>
+
+  - <code>user</code>
+
+  - <code>os_template</code>
+
+  - <code>global</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>title</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Title (name) of this workflow
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>description</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Description of this workflow
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>isDeprecated</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+Set to true if this workflow is deprecated
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>assetDataURI</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>createdTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the workflow record was created. Readonly.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>updatedTimestamp</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+ISO 8601 timestamp which holds the date and time when the workflow record was updated. Readonly.
+
+</div>
+
+<hr />
+
+
+
+
+
+## WorkflowStageDefinitionReference
+WorkflowStageDefinitionReference defines where in a workflow a stage definition resides
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>workflowStageID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Workflow stage id
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>workflowID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Workflow id
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>stageDefinitionID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Stage definition id
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>runLevel</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Run level in the workflow
+
+</div>
+
+<hr />
+
+
+
+
+
+## WorkflowStageAssociation
+WorkflowStageAssociation associations
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>infrastructureDeployStageID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Infrastructure stage id
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>infrastructureID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Infrastructure id
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>definitionID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Stage definition id
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>type</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+description: Type of position in the infrastructure:
+
+
+Valid values:
+
+
+  - <code>pre_deploy</code>
+
+  - <code>post_deploy</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>runLevel</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Run level (the depth in the tree where this stage resides).
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>lastOutput</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+The output of the last execution of this task
+
+</div>
+
+<hr />
+
+
+
+
+
+
+
+
+## SubnetPool
+SubnetPool represents a pool of subnets
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>id</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Id of the subnetpool
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>datacenter</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Label fo the Datacenter
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>networkEquipmentID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+ID fo the network equipment to which this subnet pool is associated
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>user</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Owner of this subent pool
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>prefix</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Prefix
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>label</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Label of this subnet pool
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>prefixHex</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>netmask</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Netmask
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>netmaskHex</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>size</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Size of the prefix
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>type</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Type
+
+
+Valid values:
+
+
+  - <code>ipv4</code>
+
+  - <code>ipv6</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>routable</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set to true this subnet pool will be used for subnets that are routed (usually to the internet)
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>destination</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+description: What this subnet is intended for:
+
+
+Valid values:
+
+
+  - <code>wan</code>
+
+  - <code>lan</code>
+
+  - <code>san</code>
+
+  - <code>oob</code>
+
+  - <code>quarantine</code>
+
+  - <code>loopback</code>
+
+  - <code>vtep</code>
+
+  - <code>disabled</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>currentUtilizationJSON</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>currentUtilizationLastUpdated</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Internal
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>manualAllocationOnly</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set to true this subnet will not be used for automatic allocation and will only be used in network profiles.
+
+</div>
+
+<hr />
+
+
+
+
+
+## SubnetPoolUtilization
+SubnetPoolUtilization describes the current utilization of the subnet
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>availableSubnets</code>  <i>map[string]int</i>
+
+</div>
+<div class="dt">
+
+Count of available addresses
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>allocatedSubnets</code>  <i>map[string]int</i>
+
+</div>
+<div class="dt">
+
+Count of allocated addresses
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>availableUsableIps</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Amount of usable addresses (excludes broadcast)
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>allocatedUsableIps</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Amount of allocated from the usable set
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>availablePercentage</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Available usable (Percentage)
+
+</div>
+
+<hr />
+
+
+
+

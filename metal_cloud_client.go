@@ -441,15 +441,15 @@ type MetalCloudClient interface {
 	SharedDriveDelete(sharedDriveID int) error
 	//SharedDriveDeleteByLabel drive.
 	SharedDriveDeleteByLabel(sharedDriveLabel string) error
-	//StageDefinitionCreate creates a stageDefinition
+	// StageDefinitionCreate creates a stageDefinition
 	StageDefinitionCreate(stageDefinition StageDefinition) (*StageDefinition, error)
-	//StageDefinitionDelete Permanently destroys a StageDefinition.
+	// StageDefinitionDelete Permanently destroys a StageDefinition.
 	StageDefinitionDelete(stageDefinitionID int) error
-	//StageDefinitionUpdate This function allows updating the stageDefinition_usage, stageDefinition_label and stageDefinition_base64 of a StageDefinition
+	// StageDefinitionUpdate This function allows updating the stageDefinition_usage, stageDefinition_label and stageDefinition_base64 of a StageDefinition
 	StageDefinitionUpdate(stageDefinitionID int, stageDefinition StageDefinition) (*StageDefinition, error)
-	//StageDefinitionGet returns a StageDefinition specified by nStageDefinitionID. The stageDefinition's protected value is never returned.
+	// StageDefinitionGet returns a StageDefinition specified by nStageDefinitionID. The stageDefinition's protected value is never returned.
 	StageDefinitionGet(stageDefinitionID int) (*StageDefinition, error)
-	//StageDefinitions retrieves a list of all the StageDefinition objects which a specified User is allowed to see through ownership or delegation. The stageDefinition objects never return the actual protected stageDefinition value.
+	// StageDefinitions retrieves a list of all the StageDefinition objects which a specified User is allowed to see through ownership or delegation. The stageDefinition objects never return the actual protected stageDefinition value.
 	StageDefinitions() (*map[string]StageDefinition, error)
 	//StoragePoolSearch searches for storage pools matching certain filter
 	StoragePoolSearch(filter string) (*[]StoragePoolSearchResult, error)

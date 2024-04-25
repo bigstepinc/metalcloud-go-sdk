@@ -1,3 +1,4 @@
+//go:generate go run helper/docgen.go - $GOFILE ./ SubnetPool,SubnetPoolUtilization SubnetPool
 package metalcloud
 
 import (
@@ -7,31 +8,65 @@ import (
 
 // SubnetPool represents a pool of subnets
 type SubnetPool struct {
-	SubnetPoolID                                int    `json:"subnet_pool_id,omitempty" yaml:"id,omitempty"`
-	DatacenterName                              string `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
-	NetworkEquipmentID                          int    `json:"network_equipment_id,omitempty" yaml:"networkEquipmentID,omitempty"`
-	UserID                                      int    `json:"user_id,omitempty" yaml:"user,omitempty"`
-	SubnetPoolPrefixHumanReadable               string `json:"subnet_pool_prefix_human_readable,omitempty" yaml:"prefix,omitempty"`
-	SubnetPoolLabel                             string `json:"subnet_pool_label,omitempty" yaml:"label,omitempty"`
-	SubnetPoolPrefixHex                         string `json:"subnet_pool_prefix_hex,omitempty" yaml:"prefixHex,omitempty"`
-	SubnetPoolNetmaskHumanReadable              string `json:"subnet_pool_netmask_human_readable,omitempty" yaml:"netmask,omitempty"`
-	SubnetPoolNetmaskHex                        string `json:"subnet_pool_netmask_hex,omitempty" yaml:"netmaskHex,omitempty"`
-	SubnetPoolPrefixSize                        int    `json:"subnet_pool_prefix_size,omitempty" yaml:"size,omitempty"`
-	SubnetPoolType                              string `json:"subnet_pool_type,omitempty" yaml:"type,omitempty"`
-	SubnetPoolRoutable                          bool   `json:"subnet_pool_routable" yaml:"routable"`
-	SubnetPoolDestination                       string `json:"subnet_pool_destination,omitempty" yaml:"destination,omitempty"`
-	SubnetPoolUtilizationCachedJSON             string `json:"subnet_pool_utilization_cached_json,omitempty" yaml:"currentUtilizationJSON,omitempty"`
+	//description: Id of the subnetpool
+	SubnetPoolID int `json:"subnet_pool_id,omitempty" yaml:"id,omitempty"`
+	//description: Label fo the Datacenter
+	DatacenterName string `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+	//description: ID fo the network equipment to which this subnet pool is associated
+	NetworkEquipmentID int `json:"network_equipment_id,omitempty" yaml:"networkEquipmentID,omitempty"`
+	//description: Owner of this subent pool
+	UserID int `json:"user_id,omitempty" yaml:"user,omitempty"`
+	//description: Prefix
+	SubnetPoolPrefixHumanReadable string `json:"subnet_pool_prefix_human_readable,omitempty" yaml:"prefix,omitempty"`
+	//description: Label of this subnet pool
+	SubnetPoolLabel string `json:"subnet_pool_label,omitempty" yaml:"label,omitempty"`
+	//description: Internal
+	SubnetPoolPrefixHex string `json:"subnet_pool_prefix_hex,omitempty" yaml:"prefixHex,omitempty"`
+	//description: Netmask
+	SubnetPoolNetmaskHumanReadable string `json:"subnet_pool_netmask_human_readable,omitempty" yaml:"netmask,omitempty"`
+	//description: Internal
+	SubnetPoolNetmaskHex string `json:"subnet_pool_netmask_hex,omitempty" yaml:"netmaskHex,omitempty"`
+	//description: Size of the prefix
+	//example: 27
+	SubnetPoolPrefixSize int `json:"subnet_pool_prefix_size,omitempty" yaml:"size,omitempty"`
+	//description: Type
+	//values:
+	// - ipv4
+	// - ipv6
+	SubnetPoolType string `json:"subnet_pool_type,omitempty" yaml:"type,omitempty"`
+	//description: If set to true this subnet pool will be used for subnets that are routed (usually to the internet)
+	SubnetPoolRoutable bool `json:"subnet_pool_routable" yaml:"routable"`
+	//description: What this subnet is intended for:
+	//values:
+	// - wan
+	// - lan
+	// - san
+	// - oob
+	// - quarantine
+	// - loopback
+	// - vtep
+	// - disabled
+	SubnetPoolDestination string `json:"subnet_pool_destination,omitempty" yaml:"destination,omitempty"`
+	//description: Internal
+	SubnetPoolUtilizationCachedJSON string `json:"subnet_pool_utilization_cached_json,omitempty" yaml:"currentUtilizationJSON,omitempty"`
+	//description: Internal
 	SubnetPoolUtilizationCachedUpdatedTimestamp string `json:"subnet_pool_cached_updated_timestamp,omitempty" yaml:"currentUtilizationLastUpdated,omitempty"`
-	SubnetPoolIsOnlyForManualAllocation         bool   `json:"subnet_pool_is_only_for_manual_allocation" yaml:"manualAllocationOnly"`
+	//description: If set to true this subnet will not be used for automatic allocation and will only be used in network profiles.
+	SubnetPoolIsOnlyForManualAllocation bool `json:"subnet_pool_is_only_for_manual_allocation" yaml:"manualAllocationOnly"`
 }
 
 // SubnetPoolUtilization describes the current utilization of the subnet
 type SubnetPoolUtilization struct {
-	PrefixCountFree                        map[string]int `json:"prefix_count_free,omitempty" yaml:"availableSubnets,omitempty"`
-	PrefixCountAllocated                   map[string]int `json:"prefix_count_allocated,omitempty" yaml:"allocatedSubnets,omitempty"`
-	IPAddressesUsableCountFree             string         `json:"ip_addresses_usable_count_free,omitempty" yaml:"availableUsableIps,omitempty"`
-	IPAddressesUsableCountAllocated        string         `json:"ip_addresses_usable_count_allocated,omitempty" yaml:"allocatedUsableIps,omitempty"`
-	IPAddressesUsableFreePercentOptimistic string         `json:"ip_addresses_usable_free_percent_optimistic,omitempty" yaml:"availablePercentage,omitempty"`
+	//description: Count of available addresses
+	PrefixCountFree map[string]int `json:"prefix_count_free,omitempty" yaml:"availableSubnets,omitempty"`
+	//description: Count of allocated addresses
+	PrefixCountAllocated map[string]int `json:"prefix_count_allocated,omitempty" yaml:"allocatedSubnets,omitempty"`
+	//description: Amount of usable addresses (excludes broadcast)
+	IPAddressesUsableCountFree string `json:"ip_addresses_usable_count_free,omitempty" yaml:"availableUsableIps,omitempty"`
+	//description: Amount of allocated from the usable set
+	IPAddressesUsableCountAllocated string `json:"ip_addresses_usable_count_allocated,omitempty" yaml:"allocatedUsableIps,omitempty"`
+	//description: Available usable (Percentage)
+	IPAddressesUsableFreePercentOptimistic string `json:"ip_addresses_usable_free_percent_optimistic,omitempty" yaml:"availablePercentage,omitempty"`
 }
 
 // SearchResultForSubnetPools describes a search result for subnet pools search

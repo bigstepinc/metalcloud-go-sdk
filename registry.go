@@ -44,7 +44,7 @@ func GetObjectByKind(name string) (reflect.Value, error) {
 	typeRegistry := GetTypesThatSupportApplierInterface()
 	t, ok := typeRegistry[name]
 	typesList := []string{}
-	for k, _ := range typeRegistry {
+	for k := range typeRegistry {
 		typesList = append(typesList, k)
 	}
 
