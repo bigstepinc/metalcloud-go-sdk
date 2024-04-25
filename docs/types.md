@@ -8966,3 +8966,712 @@ Available usable (Percentage)
 
 
 
+
+
+
+
+## SwitchDevice
+SwitchDevice Represents a switch installed in a datacenter.
+
+
+
+
+
+
+<hr />
+
+<div class="dd">
+
+<code>id</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+id of the network equipment
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>identifierString</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Hostname (or unique label) of the network equipment
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>datacenterName</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Datacenter
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>provisionerType</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Type of provisioner. Read only
+
+
+Valid values:
+
+
+  - <code>vpls</code>
+
+  - <code>vxlan</code>
+
+  - <code>vlan</code>
+
+  - <code>lan</code>
+
+  - <code>sdn</code>
+
+  - <code>evpnvxlanl2</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>provisionerPosition</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Role of this equipment in the provisioner
+
+
+Valid values:
+
+
+  - <code>tor</code>
+
+  - <code>north</code>
+
+  - <code>leaf</code>
+
+  - <code>spine</code>
+
+  - <code>other</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>driver</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Driver to use. Note that this list may change frequently.
+
+
+Valid values:
+
+
+  - <code>hp5800</code>
+
+  - <code>hp5900</code>
+
+  - <code>hp5950</code>
+
+  - <code>dell_s4000</code>
+
+  - <code>dell_s4048</code>
+
+  - <code>dell_s6010</code>
+
+  - <code>os_10</code>
+
+  - <code>cumulus42</code>
+
+  - <code>nexus9000</code>
+
+  - <code>cisco_aci51</code>
+
+  - <code>junos</code>
+
+  - <code>junos18</code>
+
+  - <code>sonic_enterprise</code>
+
+  - <code>dummy</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>managementUsername</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Username
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>managementPassword</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Password
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>managementAddress</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Address
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>managementPort</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Port
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>managementProtocol</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Deprecated.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>managementAddressMask</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Netmask of the management address
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>managementAddressGateway</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Gateway of the management address
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>managementMACAddress</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+MAC address of the management address
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>primaryWANIPv4SubnetPool</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+When set it will automatically create an IPv4 subnet pool for WAN. Deprecated
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>primaryWANIPv4SubnetPrefixSize</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Size of the subnet pool to automatically create. Deprecated
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>primaryWANIPv6SubnetPool</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Label of an IPv6 subnet to use when creating the switch.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>primaryWANIPv6SubnetPoolID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+ID of an IPv6 subnet to use when creating the switch.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>primaryWANIPv6SubnetCIDR</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+CIDR of the subnet to create a subnet pool with
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>primaryWANIPv6SubnetPrefixSize</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Size of the subnet
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>primarySANSubnetPool</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Label of the SAN subnet to use
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>primarySANSubnetPrefixSize</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Size of the san subnet to use
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>quarantineSubnetStart</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Only used for legacy operation. Start of the quarantine subnet to use during provisioning.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>quarantineSubnetEnd</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Only used for legacy operation. End of the quarantine subnet to use during provisioning.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>quarantineSubnetPrefixSize</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Only used for legacy operation. End of the quarantine subnet to use during provisioning.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>quarantineSubnetGateway</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Only used for legacy operation. Gateway to use during provisioning.
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>description</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Description of the network equipment
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>country</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Location of the network equipment
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>city</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Location of the network equipment
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>netDatacenter</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Location of the network equipment
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>datacenterRoom</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Location of the network equipment
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>datacenterRack</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Location of the network equipment
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>rackPositionUpperUnit</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Location of the network equipment
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>rackPositionLowerUnit</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Location of the network equipment
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>serialNumber</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Serial number of the network equipment
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>chassisRackID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+If applicable the chassis id
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>TORLinkedID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+If applicable, the id of the linked equipment
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>tags</code>  <i>[]string</i>
+
+</div>
+<div class="dt">
+
+Tags
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>requiresOSInstall</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set to true the OS will be reinstalled upon reboot
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>isBorderDevice</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set to true this network equipment can be used for external connections
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>isStorageSwitch</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+If set to true this network equipment can be used for SAN fabrics
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>isGateway</code>  <i>bool</i>
+
+</div>
+<div class="dt">
+
+In certain situations (such as for the VPLS provisioner) a switch can be used as a router
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>networkTypesAllowed</code>  <i>[]string</i>
+
+</div>
+<div class="dt">
+
+Types of networks allowed on this switch
+
+
+Valid values:
+
+
+  - <code>wan</code>
+
+  - <code>lan</code>
+
+  - <code>san</code>
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>volumeTemplateID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Template id of the NOS to be installed
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>LoopbackAddress</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Address of a loopback interface (if applicable)
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>VTEPAddress</code>  <i>string</i>
+
+</div>
+<div class="dt">
+
+Address of a VTEP
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>ASN</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+Address of an ASN
+
+</div>
+
+<hr />
+
+<div class="dd">
+
+<code>controllerID</code>  <i>int</i>
+
+</div>
+<div class="dt">
+
+In the SDN provisioner the ID of the controller device
+
+</div>
+
+<hr />
+
+
+
+
