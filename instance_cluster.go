@@ -84,6 +84,7 @@ type AppKubernetesWrapper struct {
 
 const (
 	CLUSTER_TYPE_VMWARE_VSPHERE  string = "vmware_vsphere"
+	CLUSTER_TYPE_VMWARE_VCF      string = "vmware_vcf"
 	CLUSTER_TYPE_KUBERNETES      string = "kubernetes"
 	CLUSTER_TYPE_KUBERNETES_EKSA string = "kubernetes_eksa"
 )
