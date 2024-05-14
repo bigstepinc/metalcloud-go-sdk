@@ -83,8 +83,9 @@ type AppKubernetesWrapper struct {
 }
 
 const (
-	CLUSTER_TYPE_VMWARE_VSPHERE string = "vmware_vsphere"
-	CLUSTER_TYPE_KUBERNETES     string = "kubernetes"
+	CLUSTER_TYPE_VMWARE_VSPHERE  string = "vmware_vsphere"
+	CLUSTER_TYPE_KUBERNETES      string = "kubernetes"
+	CLUSTER_TYPE_KUBERNETES_EKSA string = "kubernetes_eksa"
 )
 
 // clusterCreate creates an application cluster
@@ -183,7 +184,7 @@ func (c *Client) clusterAppVMWareVSphere(clusterID id, decryptCredentials bool) 
 	if err != nil {
 		return nil, err
 	}
-	
+
 	if decryptCredentials {
 		createdObject.ClusterApp.AdminPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.AdminPassword)
 		createdObject.ClusterApp.VCSAInitialPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.VCSAInitialPassword)
