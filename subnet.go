@@ -39,7 +39,9 @@ type Subnet struct {
 	SubnetOverrideVLANID                        int    `json:"subnet_override_vlan_id,omitempty" yaml:"overrideVLANID,omitempty"`
 	SubnetOverrideVLANAutoAllocationIndex       int    `json:"subnet_override_vlan_auto_allocation_index,omitempty" yaml:"overrideVLANAutoAllocationIndex,omitempty"`
 	SubnetIsIPRange                             bool   `json:"subnet_is_ip_range,omitempty" yaml:"isIPRange,omitempty"`
+	SubnetIPRangeCount                          int    `json:"subnet_ip_range_ip_count,omitempty" yaml:"IPCount,omitempty"`
 	SubnetRangeStartHumanReadable               string `json:"subnet_range_start_human_readable,omitempty" yaml:"rangeStart,omitempty"`
+	SubnetRangeEndHumanReadable                 string `json:"subnet_range_end_human_readable,omitempty" yaml:"rangeEnd,omitempty"`
 }
 
 func (c *Client) SubnetGet(subnetID int) (*Subnet, error) {
@@ -148,4 +150,37 @@ func (c *Client) SubnetPoolCreateOrUpdate(subnetPool SubnetPool) (*SubnetPool, e
 	}
 
 	return &subnetPool, nil
+}
+
+// Subnets retrieves a list of all the Subnets objects for a particular network
+func (c *Client) Subnets(infrastructure_id int) (*map[string]Subnet, error) {
+
+	resp, err := c.rpcClient.Call(
+		"subnets",
+		infrastructure_id,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.Error != nil {
+		return nil, fmt.Errorf(resp.Error.Message)
+	}
+
+	_, ok := resp.Result.([]interface{})
+
+	if ok {
+		var m = map[string]Subnet{}
+		return &m, nil
+	}
+
+	var createdObject map[string]Subnet
+
+	err = resp.GetObject(&createdObject)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdObject, nil
 }
