@@ -37,7 +37,7 @@ type Subnet struct {
 	SubnetTrafficFetchedUntilTimestampTemporary string `json:"subnet_traffic_fetched_until_timestamp_temporary,omitempty" yaml:"trafficFetchedUntilTimestampTemporary,omitempty"`
 	SubnetFromSubnetPoolForcedOnly              bool   `json:"subnet_from_subnet_pool_forced_only,omitempty" yaml:"fromSubnetPoolForcedOnly,omitempty"`
 	SubnetOverrideVLANID                        int    `json:"subnet_override_vlan_id,omitempty" yaml:"overrideVLANID,omitempty"`
-	SubnetOverrideVLANAutoAllocationIndex       int    `json:"subnet_override_vlan_auto_allocation_index,omitempty" yaml:"overrideVLANAutoAllocationIndex,omitempty"`
+	SubnetOverrideVLANAutoAllocationIndex       *int   `json:"subnet_override_vlan_auto_allocation_index,omitempty" yaml:"overrideVLANAutoAllocationIndex,omitempty"`
 	SubnetIsIPRange                             bool   `json:"subnet_is_ip_range,omitempty" yaml:"isIPRange,omitempty"`
 	SubnetIPRangeCount                          int    `json:"subnet_ip_range_ip_count,omitempty" yaml:"IPCount,omitempty"`
 	SubnetRangeStartHumanReadable               string `json:"subnet_range_start_human_readable,omitempty" yaml:"rangeStart,omitempty"`
