@@ -2,12 +2,12 @@
 
 package metalcloud
 
-//ClusterCreate 
+//ClusterCreate cluster
 func (c *Client) ClusterCreate(infrastructureID int, cluster Cluster) (*Cluster, error) {
 	return c.clusterCreate(infrastructureID,cluster)
 }
 
-//ClusterCreateByLabel 
+//ClusterCreateByLabel cluster
 func (c *Client) ClusterCreateByLabel(infrastructureLabel string, cluster Cluster) (*Cluster, error) {
 	return c.clusterCreate(infrastructureLabel,cluster)
 }
@@ -22,24 +22,44 @@ func (c *Client) ClusterGetByLabel(clusterLabel string) (*Cluster, error) {
 	return c.clusterGet(clusterLabel)
 }
 
-//ClusterAppVMWareVSphere 
+//ClusterAppVMWareVSphere cluster
 func (c *Client) ClusterAppVMWareVSphere(clusterID int, decryptCredentials bool) (*AppVMWareVsphere, error) {
 	return c.clusterAppVMWareVSphere(clusterID,decryptCredentials)
 }
 
-//ClusterAppVMWareVSphereByLabel 
+//ClusterAppVMWareVSphereByLabel cluster
 func (c *Client) ClusterAppVMWareVSphereByLabel(clusterLabel string, decryptCredentials bool) (*AppVMWareVsphere, error) {
 	return c.clusterAppVMWareVSphere(clusterLabel,decryptCredentials)
 }
 
-//ClusterAppKubernetes 
+//ClusterAppVMWareVCF cluster
+func (c *Client) ClusterAppVMWareVCF(clusterID int, decryptCredentials bool) (*AppVMWareVCF, error) {
+	return c.clusterAppVMWareVCF(clusterID,decryptCredentials)
+}
+
+//ClusterAppVMWareVCFByLabel cluster
+func (c *Client) ClusterAppVMWareVCFByLabel(clusterLabel string, decryptCredentials bool) (*AppVMWareVCF, error) {
+	return c.clusterAppVMWareVCF(clusterLabel,decryptCredentials)
+}
+
+//ClusterAppKubernetes cluster
 func (c *Client) ClusterAppKubernetes(clusterID int, decryptCredentials bool) (*AppKubernetes, error) {
 	return c.clusterAppKubernetes(clusterID,decryptCredentials)
 }
 
-//ClusterAppKubernetesByLabel 
+//ClusterAppKubernetesByLabel cluster
 func (c *Client) ClusterAppKubernetesByLabel(clusterLabel string, decryptCredentials bool) (*AppKubernetes, error) {
 	return c.clusterAppKubernetes(clusterLabel,decryptCredentials)
+}
+
+//ClusterAppKubernetesEKSA cluster
+func (c *Client) ClusterAppKubernetesEKSA(clusterID int, decryptCredentials bool) (*AppKubernetesEKSA, error) {
+	return c.clusterAppKubernetesEKSA(clusterID,decryptCredentials)
+}
+
+//ClusterAppKubernetesEKSAByLabel cluster
+func (c *Client) ClusterAppKubernetesEKSAByLabel(clusterLabel string, decryptCredentials bool) (*AppKubernetesEKSA, error) {
+	return c.clusterAppKubernetesEKSA(clusterLabel,decryptCredentials)
 }
 
 //ClusterDelete array. Requires deploy.
@@ -62,22 +82,22 @@ func (c *Client) ClusterEditByLabel(clusterLabel string, clusterOperation Cluste
 	return c.clusterEdit(clusterLabel,clusterOperation)
 }
 
-//Clusters 
+//Clusters cluster
 func (c *Client) Clusters(infrastructureId int) (*map[string]Cluster, error) {
 	return c.clusters(infrastructureId)
 }
 
-//ClustersByLabel 
+//ClustersByLabel cluster
 func (c *Client) ClustersByLabel(infrastructureLabel string) (*map[string]Cluster, error) {
 	return c.clusters(infrastructureLabel)
 }
 
-//ClusterInstanceArrays 
+//ClusterInstanceArrays cluster
 func (c *Client) ClusterInstanceArrays(clusterId int) (*map[string]InstanceArray, error) {
 	return c.clusterInstanceArrays(clusterId)
 }
 
-//ClusterInstanceArraysByLabel 
+//ClusterInstanceArraysByLabel cluster
 func (c *Client) ClusterInstanceArraysByLabel(clusterLabel string) (*map[string]InstanceArray, error) {
 	return c.clusterInstanceArrays(clusterLabel)
 }

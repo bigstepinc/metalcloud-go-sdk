@@ -67,9 +67,28 @@ type AppVMWareVsphereWrapper struct {
 	Type       string           `json:"type,omitempty" yaml:"type,omitempty"`
 }
 
+type AppVMWareVCF struct {
+	VSphereWorkload                  map[string]AppInstanceDetails `json:"vcf_workload,omitempty" yaml:"vcfWorkload,omitempty"`
+	VSphereManagement                map[string]AppInstanceDetails `json:"vcf_management,omitempty" yaml:"vcfManagement,omitempty"`
+	AdminUsername                    string                        `json:"admin_username,omitempty" yaml:"adminUsername,omitempty"`
+	AdminPassword                    string                        `json:"admin_password,omitempty" yaml:"adminPassword,omitempty"`
+	ClusterSoftwareAvailableVersions []string                      `json:"cluster_software_available_versions,omitempty" yaml:"clusterSoftwareAvailableVersions,omitempty"`
+	ClusterSoftwareVersion           string                        `json:"cluster_software_version,omitempty" yaml:"clusterSoftwareVersion,omitempty"`
+	Type                             string                        `json:"type,omitempty" yaml:"type,omitempty"`
+	InstanceVCenterServerManagement  string                        `json:"instance_vcenter_server_management,omitempty" yaml:"instanceVcenterServerManagement,omitempty"`
+	InstanceVcenterWebClient         string                        `json:"instance_vcenter_web_client,omitempty" yaml:"instanceVcenterWebClient,omitempty"`
+	VCSAUsername                     string                        `json:"vcsa_username,omitempty" yaml:"vcsaUsername,omitempty"`
+	VCSAInitialPassword              string                        `json:"vcsa_initial_password,omitempty" yaml:"vcsaUsername,omitempty"`
+}
+
+type AppVMWareVCFWrapper struct {
+	ClusterApp AppVMWareVCF `json:"cluster_app,omitempty" yaml:"clusterApp,omitempty"`
+	Type       string       `json:"type,omitempty" yaml:"type,omitempty"`
+}
+
 type AppKubernetes struct {
-	KubernetesNodes                  map[string]AppInstanceDetails `json:"vsphere_worker,omitempty" yaml:"vsphereWorker,omitempty"`
-	KubernetesMaster                 map[string]AppInstanceDetails `json:"vsphere_master,omitempty" yaml:"vsphereWorker,omitempty"`
+	KubernetesWorker                 map[string]AppInstanceDetails `json:"kubernetes_worker,omitempty" yaml:"kubernetesWorker,omitempty"`
+	KubernetesMaster                 map[string]AppInstanceDetails `json:"kubernetes_master,omitempty" yaml:"kubernetesMaster,omitempty"`
 	AdminUsername                    string                        `json:"admin_username,omitempty" yaml:"adminUsername,omitempty"`
 	AdminPassword                    string                        `json:"admin_password,omitempty" yaml:"adminPassword,omitempty"`
 	ClusterSoftwareAvailableVersions []string                      `json:"cluster_software_available_versions,omitempty" yaml:"clusterSoftwareAvailableVersions,omitempty"`
@@ -80,6 +99,28 @@ type AppKubernetes struct {
 type AppKubernetesWrapper struct {
 	ClusterApp AppKubernetes `json:"cluster_app,omitempty" yaml:"clusterApp,omitempty"`
 	Type       string        `json:"type,omitempty" yaml:"type,omitempty"`
+}
+
+type AppKubernetesEKSAConnectableClusters struct {
+	Cluster          interface{} `json:"cluster,omitempty" yaml:"cluster,omitempty"`
+	ContainerCluster interface{} `json:"container_cluster,omitempty" yaml:"containerCluster,omitempty"`
+}
+
+type AppKubernetesEKSA struct {
+	KubernetesEKSAMgmt               []AppInstanceDetails                 `json:"eks_mgmt,omitempty" yaml:"eksMgmt,omitempty"`
+	KubernetesMaster                 []AppInstanceDetails                 `json:"kubernetes_control_plane,omitempty" yaml:"kubernetesMaster,omitempty"`
+	KubernetesWorker                 []AppInstanceDetails                 `json:"kubernetes_worker,omitempty" yaml:"kubernetesWorker,omitempty"`
+	AdminUsername                    string                               `json:"admin_username,omitempty" yaml:"adminUsername,omitempty"`
+	AdminPassword                    string                               `json:"admin_password,omitempty" yaml:"adminPassword,omitempty"`
+	ClusterSoftwareAvailableVersions []string                             `json:"cluster_software_available_versions,omitempty" yaml:"clusterSoftwareAvailableVersions,omitempty"`
+	ClusterSoftwareVersion           string                               `json:"cluster_software_version,omitempty" yaml:"clusterSoftwareVersion,omitempty"`
+	ConnectableClusters              AppKubernetesEKSAConnectableClusters `json:"connectable_clusters,omitempty" yaml:"connectableClusters,omitempty"`
+	Type                             string                               `json:"type,omitempty" yaml:"type,omitempty"`
+}
+
+type AppKubernetesEKSAWrapper struct {
+	ClusterApp AppKubernetesEKSA `json:"cluster_app,omitempty" yaml:"clusterApp,omitempty"`
+	Type       string            `json:"type,omitempty" yaml:"type,omitempty"`
 }
 
 const (
@@ -205,9 +246,69 @@ func (c *Client) clusterAppVMWareVSphere(clusterID id, decryptCredentials bool) 
 	return &createdObject.ClusterApp, nil
 }
 
+// clusterAppVMWare returns details for a vmware cluster
+func (c *Client) clusterAppVMWareVCF(clusterID id, decryptCredentials bool) (*AppVMWareVCF, error) {
+
+	var createdObject AppVMWareVCFWrapper
+
+	if err := checkID(clusterID); err != nil {
+		return nil, err
+	}
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"cluster_app",
+		clusterID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if decryptCredentials {
+		createdObject.ClusterApp.AdminPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.AdminPassword)
+		createdObject.ClusterApp.VCSAInitialPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.VCSAInitialPassword)
+		for label, inst := range createdObject.ClusterApp.VSphereManagement {
+			s, _ := c.decryptIfEncrypted(createdObject.ClusterApp.VSphereManagement[label].ESXIPassword)
+			inst.ESXIPassword = s
+			createdObject.ClusterApp.VSphereManagement[label] = inst
+		}
+
+		for label, inst := range createdObject.ClusterApp.VSphereWorkload {
+			s, _ := c.decryptIfEncrypted(createdObject.ClusterApp.VSphereWorkload[label].ESXIPassword)
+			inst.ESXIPassword = s
+			createdObject.ClusterApp.VSphereWorkload[label] = inst
+		}
+	}
+
+	return &createdObject.ClusterApp, nil
+}
+
 // clusterAppKubernetes returns details for a kubernetes cluster
 func (c *Client) clusterAppKubernetes(clusterID id, decryptCredentials bool) (*AppKubernetes, error) {
 	var createdObject AppKubernetesWrapper
+
+	if err := checkID(clusterID); err != nil {
+		return nil, err
+	}
+
+	err := c.rpcClient.CallFor(
+		&createdObject,
+		"cluster_app",
+		clusterID)
+
+	if err != nil {
+		return nil, err
+	}
+	if decryptCredentials {
+		createdObject.ClusterApp.AdminPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.AdminPassword)
+	}
+
+	return &createdObject.ClusterApp, nil
+}
+
+// clusterAppKubernetes returns details for a kubernetes EKSA cluster
+func (c *Client) clusterAppKubernetesEKSA(clusterID id, decryptCredentials bool) (*AppKubernetesEKSA, error) {
+	var createdObject AppKubernetesEKSAWrapper
 
 	if err := checkID(clusterID); err != nil {
 		return nil, err

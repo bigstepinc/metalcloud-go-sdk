@@ -2,12 +2,12 @@
 
 package metalcloud
 
-//InfrastructureEdit 
+//InfrastructureEdit infrastructure
 func (c *Client) InfrastructureEdit(infrastructureID int, infrastructureOperation InfrastructureOperation) (*Infrastructure, error) {
 	return c.infrastructureEdit(infrastructureID,infrastructureOperation)
 }
 
-//InfrastructureEditByLabel 
+//InfrastructureEditByLabel infrastructure
 func (c *Client) InfrastructureEditByLabel(infrastructureLabel string, infrastructureOperation InfrastructureOperation) (*Infrastructure, error) {
 	return c.infrastructureEdit(infrastructureLabel,infrastructureOperation)
 }
@@ -32,12 +32,12 @@ func (c *Client) InfrastructureOperationCancelByLabel(infrastructureLabel string
 	return c.infrastructureOperationCancel(infrastructureLabel)
 }
 
-//InfrastructureDeploy 
+//InfrastructureDeploy infrastructure
 func (c *Client) InfrastructureDeploy(infrastructureID int, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error {
 	return c.infrastructureDeploy(infrastructureID,shutdownOptions,allowDataLoss,skipAnsible)
 }
 
-//InfrastructureDeployByLabel 
+//InfrastructureDeployByLabel infrastructure
 func (c *Client) InfrastructureDeployByLabel(infrastructureLabel string, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error {
 	return c.infrastructureDeploy(infrastructureLabel,shutdownOptions,allowDataLoss,skipAnsible)
 }
@@ -52,22 +52,22 @@ func (c *Client) InfrastructureDeployWithOptionsByLabel(infrastructureLabel stri
 	return c.infrastructureDeployWithOptions(infrastructureLabel,shutdownOptions,deployOptions,allowDataLoss,skipAnsible)
 }
 
-//InfrastructureGet 
+//InfrastructureGet id
 func (c *Client) InfrastructureGet(infrastructureID int) (*Infrastructure, error) {
 	return c.infrastructureGet(infrastructureID)
 }
 
-//InfrastructureGetByLabel 
+//InfrastructureGetByLabel id
 func (c *Client) InfrastructureGetByLabel(infrastructureLabel string) (*Infrastructure, error) {
 	return c.infrastructureGet(infrastructureLabel)
 }
 
-//InfrastructureUserLimits 
+//InfrastructureUserLimits metadata
 func (c *Client) InfrastructureUserLimits(infrastructureID int) (*map[string]interface{}, error) {
 	return c.infrastructureUserLimits(infrastructureID)
 }
 
-//InfrastructureUserLimitsByLabel 
+//InfrastructureUserLimitsByLabel metadata
 func (c *Client) InfrastructureUserLimitsByLabel(infrastructureLabel string) (*map[string]interface{}, error) {
 	return c.infrastructureUserLimits(infrastructureLabel)
 }
