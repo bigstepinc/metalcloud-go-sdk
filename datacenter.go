@@ -64,6 +64,7 @@ type DatacenterConfig struct {
 	DefaultWANNetworkProfileID                         int                    `json:"defaultWANNetworkProfileID" yaml:"defaultWANNetworkProfileID"`
 	DefaultDeploymentMechanism                         string                 `json:"defaultDeploymentMechanism" yaml:"defaultDeploymentMechanism"`
 	DefaultCleanupAndRegistrationMechanism             string                 `json:"defaultCleanupAndRegistrationMechanism" yaml:"defaultCleanupAndRegistrationMechanism"`
+	ServerMinimumNumberOfSwitchConnectedInterfaces     int                    `json:"serverMinimumNumberOfSwitchConnectedInterfaces" yaml:"serverMinimumNumberOfSwitchConnectedInterfaces"`
 	NFSServer                                          string                 `json:"NFSServer" yaml:"NFSServer"`
 	Option82ToIPMapping                                Option82ToIPMapping    `json:"Option82ToIPMapping" yaml:"Option82ToIPMapping"`
 }
