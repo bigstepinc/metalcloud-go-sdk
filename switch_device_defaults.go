@@ -10,19 +10,20 @@ type SwitchDeviceDefaults struct {
 	DatacenterName                            string            `json:"datacenter_name,omitempty" yaml:"datacenterName,omitempty"`
 	NetworkEquipmentSerialNumber              *string           `json:"network_equipment_serial_number" yaml:"serialNumber"`
 	NetworkEquipmentManagementMacAddress      *string           `json:"network_equipment_management_mac_address" yaml:"managementMacAddress"`
-	NetworkEquipmentPosition                  string            `json:"network_equipment_position,omitempty" yaml:"position,omitempty"`
-	NetworkEquipmentIdentifierString          string            `json:"network_equipment_identifier_string,omitempty" yaml:"identifierString,omitempty"`
-	NetworkEquipmentAsn                       int               `json:"network_equipment_asn,omitempty" yaml:"asn,omitempty"`
-	NetworkEquipmentPartOfMlagPair            bool              `json:"network_equipment_part_of_mlag_pair,omitempty" yaml:"partOfMlagPair,omitempty"`
-	NetworkEquipmentMlagSystemMac             string            `json:"network_equipment_mlag_system_mac,omitempty" yaml:"mlagSystemMac,omitempty"`
-	NetworkEquipmentMlagDomainId              int               `json:"network_equipment_mlag_domain_id,omitempty" yaml:"mlagDomainId,omitempty"`
-	NetworkEquipmentMlagPeerLinkPortChannelId int               `json:"network_equipment_mlag_peer_link_port_channel_id,omitempty" yaml:"mlagPeerLinkPortChannelId,omitempty"`
-	NetworkEquipmentMlagPartnerVlanId         int               `json:"network_equipment_mlag_partner_vlan_id,omitempty" yaml:"mlagPartnerVlanId,omitempty"`
-	NetworkEquipmentMlagPartnerHostname       string            `json:"network_equipment_mlag_partner_hostname,omitempty" yaml:"mlagPartnerHostname,omitempty"`
-	NetworkEquipmentLoopbackAddressIpv4       string            `json:"network_equipment_loopback_address_ipv4,omitempty" yaml:"loopbackAddressIpv4,omitempty"`
-	NetworkEquipmentLoopbackAddressIpv6       string            `json:"network_equipment_loopback_address_ipv6,omitempty" yaml:"loopbackAddressIpv6,omitempty"`
-	NetworkEquipmentVtepAddressIpv4           string            `json:"network_equipment_vtep_address_ipv4,omitempty" yaml:"vtepAddressIpv4,omitempty"`
-	NetworkEquipmentVtepAddressIpv6           string            `json:"network_equipment_vtep_address_ipv6,omitempty" yaml:"vtepAddressIpv6,omitempty"`
+	NetworkEquipmentPosition                  *string           `json:"network_equipment_position,omitempty" yaml:"position,omitempty"`
+	NetworkEquipmentIdentifierString          *string           `json:"network_equipment_identifier_string,omitempty" yaml:"identifierString,omitempty"`
+	NetworkEquipmentAsn                       *int              `json:"network_equipment_asn,omitempty" yaml:"asn,omitempty"`
+	NetworkEquipmentPartOfMlagPair            *bool             `json:"network_equipment_part_of_mlag_pair,omitempty" yaml:"partOfMlagPair,omitempty"`
+	NetworkEquipmentMlagSystemMac             *string           `json:"network_equipment_mlag_system_mac,omitempty" yaml:"mlagSystemMac,omitempty"`
+	NetworkEquipmentMlagDomainId              *int              `json:"network_equipment_mlag_domain_id,omitempty" yaml:"mlagDomainId,omitempty"`
+	NetworkEquipmentMlagPeerLinkPortChannelId *int              `json:"network_equipment_mlag_peer_link_port_channel_id,omitempty" yaml:"mlagPeerLinkPortChannelId,omitempty"`
+	NetworkEquipmentMlagPartnerVlanId         *int              `json:"network_equipment_mlag_partner_vlan_id,omitempty" yaml:"mlagPartnerVlanId,omitempty"`
+	NetworkEquipmentMlagPartnerHostname       *string           `json:"network_equipment_mlag_partner_hostname,omitempty" yaml:"mlagPartnerHostname,omitempty"`
+	NetworkEquipmentLoopbackAddressIpv4       *string           `json:"network_equipment_loopback_address_ipv4,omitempty" yaml:"loopbackAddressIpv4,omitempty"`
+	NetworkEquipmentLoopbackAddressIpv6       *string           `json:"network_equipment_loopback_address_ipv6,omitempty" yaml:"loopbackAddressIpv6,omitempty"`
+	NetworkEquipmentVtepAddressIpv4           *string           `json:"network_equipment_vtep_address_ipv4,omitempty" yaml:"vtepAddressIpv4,omitempty"`
+	NetworkEquipmentVtepAddressIpv6           *string           `json:"network_equipment_vtep_address_ipv6,omitempty" yaml:"vtepAddressIpv6,omitempty"`
+	NetworkEquipmentOrderIndex                *int              `json:"network_equipment_order_index,omitempty" yaml:"networkEquipmentOrderIndex,omitempty"`
 	NetworkEquipmentSkipInitialConfiguration  bool              `json:"network_equipment_skip_initial_configuration,omitempty" yaml:"skipInitialConfiguration,omitempty"`
 	VolumeTemplateID                          int               `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
 	NetworkEquipmentCustomVariables           map[string]string `json:"network_equipment_custom_variables,omitempty" yaml:"customVariables,omitempty"`
