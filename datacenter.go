@@ -62,6 +62,8 @@ type DatacenterConfig struct {
 	DHCPBMCMACAddressWhitelist                         []string               `json:"dhcpBMCMACAddressWhitelist" yaml:"dhcpBMCMACAddressWhitelist"`
 	DefaultServerCleanupPolicyID                       int                    `json:"defaultServerCleanupPolicyID" yaml:"defaultServerCleanupPolicyID"`
 	DefaultWANNetworkProfileID                         int                    `json:"defaultWANNetworkProfileID" yaml:"defaultWANNetworkProfileID"`
+	DefaultLANNetworkProfileID                         int                    `json:"defaultLANNetworkProfileID" yaml:"defaultLANNetworkProfileID"`
+	DefaultSANNetworkProfileID                         int                    `json:"defaultSANNetworkProfileID" yaml:"defaultSANNetworkProfileID"`
 	DefaultDeploymentMechanism                         string                 `json:"defaultDeploymentMechanism" yaml:"defaultDeploymentMechanism"`
 	DefaultCleanupAndRegistrationMechanism             string                 `json:"defaultCleanupAndRegistrationMechanism" yaml:"defaultCleanupAndRegistrationMechanism"`
 	ServerMinimumNumberOfSwitchConnectedInterfaces     int                    `json:"serverMinimumNumberOfSwitchConnectedInterfaces" yaml:"serverMinimumNumberOfSwitchConnectedInterfaces"`
