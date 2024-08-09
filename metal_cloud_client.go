@@ -136,9 +136,11 @@ type MetalCloudClient interface {
 	InfrastructureUserLimits(infrastructureID int) (*map[string]interface{}, error)
 	//InfrastructureUserLimitsByLabel metadata
 	InfrastructureUserLimitsByLabel(infrastructureLabel string) (*map[string]interface{}, error)
-	//InstanceArrayInterfaceAttachNetwork attaches an InstanceArrayInterface to a Network
+	// InstanceArrayInterfaceAttachNetwork attaches an InstanceArrayInterface to a Network
 	InstanceArrayInterfaceAttachNetwork(instanceArrayID int, instanceArrayInterfaceIndex int, networkID int) (*InstanceArray, error)
-	//InstanceArrayInterfaceDetach detaches an InstanceArrayInterface from any Network element that is attached to.
+	// InstanceArrayInterfaceCreate creates a new interface to the instance array
+	InstanceArrayInterfaceCreate(instanceArrayID int) (*InstanceArrayInterface, error)
+	// InstanceArrayInterfaceDetach detaches an InstanceArrayInterface from any Network element that is attached to.
 	InstanceArrayInterfaceDetach(instanceArrayID int, instanceArrayInterfaceIndex int) (*InstanceArray, error)
 	//InstanceArrayGet id
 	InstanceArrayGet(instanceArrayID int) (*InstanceArray, error)
@@ -232,8 +234,6 @@ type MetalCloudClient interface {
 	InstanceServerPowerGetBatch(infrastructureID int, instanceIDs []int) (*map[string]string, error)
 	//InstanceServerPowerGetBatchByLabel instances
 	InstanceServerPowerGetBatchByLabel(infrastructureLabel string, instanceIDs []int) (*map[string]string, error)
-	// GetUserEmail returns the user configured for this connection
-	GetUserEmail() string
 	// GetEndpoint returns the endpoint configured for this connection
 	GetEndpoint() string
 	// GetUserID returns the ID of the user extracted from the API key
@@ -540,13 +540,13 @@ type MetalCloudClient interface {
 	SwitchDeviceLinkDelete(networkEquipmentID1 int, networkEquipmentID2 int, linkType string) error
 	//SwitchInterfaceSearch searches for server interfaces filtering on various elements such as switch id or server id
 	SwitchInterfaceSearch(filter string) (*[]SwitchInterfaceSearchResult, error)
-	//UserGet describes returns user account specifications.
+	// UserGet describes returns user account specifications.
 	UserGet(userID int) (*User, error)
-	//UserGetByEmail describes returns user account specifications.
+	// UserGetByEmail describes returns user account specifications.
 	UserGetByEmail(userLabel string) (*User, error)
-	//UserEmailToUserID returns the user id of an user given an email
+	// UserEmailToUserID returns the user id of an user given an email
 	UserEmailToUserID(userEmail string) (*int, error)
-	//UserSearch searches for users with filtering support
+	// UserSearch searches for users with filtering support
 	UserSearch(filter string) (*[]UsersSearchResult, error)
 	//VariableCreate creates a variable object
 	VariableCreate(variable Variable) (*Variable, error)

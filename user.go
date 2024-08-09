@@ -4,11 +4,44 @@ import (
 	"fmt"
 )
 
-//User describes user account specifications.
+// User describes user account specifications.
 type User struct {
-	UserID          int    `json:"user_id,omitempty"`
-	UserDisplayName string `json:"user_display_name,omitempty"`
-	UserEmail       string `json:"user_email,omitempty"`
+	UserID                               int      `json:"user_id,omitempty"`
+	UserDisplayName                      string   `json:"user_display_name,omitempty"`
+	UserEmail                            string   `json:"user_email,omitempty"`
+	Franchise                            string   `json:"franchise" yaml:"franchise"`
+	UserAccessLevel                      string   `json:"user_access_level" yaml:"user_access_level"`
+	UserAuthFailedAttemptsSinceLastLogin int      `json:"user_auth_failed_attempts_since_last_login" yaml:"userFailedLoginAttempts"`
+	UserAuthenticatorCreatedTimestamp    string   `json:"user_authenticator_created_timestamp" yaml:"userCreatedTimestamp"`
+	UserAuthenticatorIsMandatory         bool     `json:"user_authenticator_is_mandatory,omitempty" yaml:"userAuthenticatorIsMandatory,omitempty"`
+	UserAuthenticatorMustChange          bool     `json:"user_authenticator_must_change,omitempty" yaml:"userAuthenticatorMustChange,omitempty"`
+	UserBlocked                          bool     `json:"user_blocked" yaml:"userBlocked"`
+	UserBrand                            string   `json:"user_brand,omitempty" yaml:"userBrand,omitempty"`
+	UserCreatedTimestamp                 string   `json:"user_created_timestamp" yaml:"userCreatedTimestamp"`
+	UserCustomPricesJson                 string   `json:"user_custom_prices_json,omitempty" yaml:"userCustomPricesJson,omitempty"`
+	UserEmailStatus                      string   `json:"user_email_status,omitempty" yaml:"emailStatus,omitempty"`
+	UserExcludeFromReports               bool     `json:"user_exclude_from_reports,omitempty" yaml:"userExcludeFromReports,omitempty"`
+	UserExperimentalTagsJson             string   `json:"user_experimental_tags_json,omitempty" yaml:"userExperimentalTagsJson,omitempty"`
+	UserExternalIDsJson                  string   `json:"user_external_ids_json,omitempty" yaml:"userExternalIDsJson,omitempty"`
+	UserGuiSettingsJson                  string   `json:"user_gui_settings_json,omitempty" yaml:"userGuiSettingsJson,omitempty"`
+	UserInfrastructureIDDefault          int      `json:"user_infrastructure_id_default,omitempty" yaml:"userInfrastructureIDDefault,omitempty"`
+	UserIsBillable                       bool     `json:"user_is_billable,omitempty" yaml:"userIsBillable,omitempty"`
+	UserIsBrandManager                   bool     `json:"user_is_brand_manager,omitempty" yaml:"userIsBrandManager,omitempty"`
+	UserIsDatastorePublisher             bool     `json:"user_is_datastore_publisher,omitempty" yaml:"userIsDatastorePublisher,omitempty"`
+	UserIsSuspended                      bool     `json:"user_is_suspended,omitempty" yaml:"userIsSuspended,omitempty"`
+	UserIsTestAccount                    bool     `json:"user_is_test_account,omitempty" yaml:"userIsTestAccount,omitempty"`
+	UserIsTestingMode                    bool     `json:"user_is_testing_mode,omitempty" yaml:"userIsTestingMode,omitempty"`
+	UserKerberosPrincipalName            string   `json:"user_kerberos_principal_name,omitempty" yaml:"userKerberosPrincipalName,omitempty"`
+	UserLanguage                         string   `json:"user_language,omitempty" yaml:"userLanguage,omitempty"`
+	UserLastLoginTimestamp               string   `json:"user_last_login_timestamp" yaml:"userLastLoginTimestamp"`
+	UserLastLoginType                    string   `json:"user_last_login_type,omitempty" yaml:"userLastLoginType,omitempty"`
+	UserLimitsJson                       string   `json:"user_limits_json,omitempty" yaml:"userLimitsJson,omitempty"`
+	UserPasswordChangeRequired           bool     `json:"user_password_change_required,omitempty" yaml:"userPasswordChangeRequired,omitempty"`
+	UserPermissionsJson                  string   `json:"user_permissions_json,omitempty" yaml:"userPermissionsJson,omitempty"`
+	UserPermissions                      []string `json:"user_permissions,omitempty" yaml:"userPermissions,omitempty"`
+	UserPlanType                         string   `json:"user_plan_type,omitempty" yaml:"userPlanType,omitempty"`
+	UserPromotionTagsJson                string   `json:"user_promotion_tags_json,omitempty" yaml:"userPromotionTagsJson,omitempty"`
+	UserProvider                         string   `json:"user_provider,omitempty" yaml:"userProvider,omitempty"`
 }
 
 type searchResultWrapperForUsers struct {
@@ -55,7 +88,7 @@ type UsersSearchResult struct {
 	UserPromotionTagsJson                string `json:"user_promotion_tags_json,omitempty" yaml:"userPromotionTagsJson,omitempty"`
 }
 
-//userGet describes returns user account specifications.
+// userGet describes returns user account specifications.
 func (c *Client) userGet(userID id) (*User, error) {
 
 	var createdObject User
@@ -72,22 +105,22 @@ func (c *Client) userGet(userID id) (*User, error) {
 	return &createdObject, nil
 }
 
-//UserGet describes returns user account specifications.
+// UserGet describes returns user account specifications.
 func (c *Client) UserGet(userID int) (*User, error) {
 	return c.userGet(userID)
 }
 
-//UserGetByEmail describes returns user account specifications.
+// UserGetByEmail describes returns user account specifications.
 func (c *Client) UserGetByEmail(userLabel string) (*User, error) {
 	userID, err := c.UserEmailToUserID(userLabel)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return c.userGet(*userID)
 }
 
-//UserEmailToUserID returns the user id of an user given an email
+// UserEmailToUserID returns the user id of an user given an email
 func (c *Client) UserEmailToUserID(userEmail string) (*int, error) {
 
 	var createdObject int
@@ -105,7 +138,7 @@ func (c *Client) UserEmailToUserID(userEmail string) (*int, error) {
 	return &createdObject, nil
 }
 
-//UserSearch searches for users with filtering support
+// UserSearch searches for users with filtering support
 func (c *Client) UserSearch(filter string) (*[]UsersSearchResult, error) {
 
 	tables := []string{"_users"}
