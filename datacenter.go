@@ -64,6 +64,9 @@ type DatacenterConfig struct {
 	DefaultWANNetworkProfileID                         int                    `json:"defaultWANNetworkProfileID" yaml:"defaultWANNetworkProfileID"`
 	DefaultLANNetworkProfileID                         int                    `json:"defaultLANNetworkProfileID" yaml:"defaultLANNetworkProfileID"`
 	DefaultSANNetworkProfileID                         int                    `json:"defaultSANNetworkProfileID" yaml:"defaultSANNetworkProfileID"`
+	DefaultWANNetworkProfileLabel                      string                 `json:"defaultWANNetworkProfileLabel,omitempty" yaml:"defaultWANNetworkProfileLabel,omitempty"`
+	DefaultLANNetworkProfileLabel                      string                 `json:"defaultLANNetworkProfileLabel,omitempty" yaml:"defaultLANNetworkProfileLabel,omitempty"`
+	DefaultSANNetworkProfileLabel                      string                 `json:"defaultSANNetworkProfileLabel,omitempty" yaml:"defaultSANNetworkProfileLabel,omitempty"`
 	DefaultDeploymentMechanism                         string                 `json:"defaultDeploymentMechanism" yaml:"defaultDeploymentMechanism"`
 	DefaultCleanupAndRegistrationMechanism             string                 `json:"defaultCleanupAndRegistrationMechanism" yaml:"defaultCleanupAndRegistrationMechanism"`
 	ServerMinimumNumberOfSwitchConnectedInterfaces     int                    `json:"serverMinimumNumberOfSwitchConnectedInterfaces" yaml:"serverMinimumNumberOfSwitchConnectedInterfaces"`
