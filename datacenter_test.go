@@ -14,8 +14,9 @@ func TestDatacenterConfiglUnmarshalTest(t *testing.T) {
 	var dc DatacenterConfig
 
 	err := json.Unmarshal([]byte(_DCConfigFixture), &dc)
-
-	Expect(err).To(BeNil())
+	if err != nil {
+		t.Fatalf("Unmarshal failed: %v", err)
+	}
 	Expect(dc).NotTo(BeNil())
 	/*
 		Expect(dc.SANRoutedSubnet).To(Equal("100.64.0.0/21"))
@@ -39,17 +40,22 @@ func TestDatacenterConfigMarshalTest(t *testing.T) {
 	var dc DatacenterConfig
 
 	err := json.Unmarshal([]byte(_DCConfigFixture), &dc)
-
-	Expect(err).To(BeNil())
+	if err != nil {
+		t.Fatalf("Unmarshal failed: %v", err)
+	}
 	Expect(dc).NotTo(BeNil())
 
 	b, err := json.Marshal(dc)
-	Expect(err).To(BeNil())
+	if err != nil {
+		t.Fatalf("Marshal failed: %v", err)
+	}
 	Expect(b).NotTo(BeNil())
 
 	var dc2 DatacenterConfig
 	err = json.Unmarshal(b, &dc2)
-	Expect(err).To(BeNil())
+	if err != nil {
+		t.Fatalf("Unmarshal failed: %v", err)
+	}
 
 	Expect(dc2.SANRoutedSubnet).To(Equal("100.64.0.0/21"))
 	Expect(dc2.SwitchProvisioner["type"]).To(Equal("VPLSProvisioner"))
@@ -103,7 +109,9 @@ func TestDatacenterCreateOrUpdate(t *testing.T) {
 	}
 
 	err = obj.CreateOrUpdate(mc)
-	Expect(err).To(BeNil())
+	if err != nil {
+		t.Fatalf("CreateOrUpdate failed: %v", err)
+	}
 
 	body := (<-requestChan).body
 	var m map[string]interface{}
@@ -132,6 +140,9 @@ func TestDatacenterCreateOrUpdate(t *testing.T) {
 	responseBody = `{"error": {"message": "Datacenter not found.","code": 269}, "jsonrpc": "2.0", "id": 0}`
 
 	err = obj.CreateOrUpdate(mc)
+	if err != nil {
+		t.Fatalf("CreateOrUpdate failed: %v", err)
+	}
 
 	body = (<-requestChan).body
 	err2 = json.Unmarshal([]byte(body), &m)
@@ -211,8 +222,9 @@ func TestDatacenterUnmarshalTest(t *testing.T) {
 	var dc Datacenter
 
 	err := json.Unmarshal([]byte(_DCFixture), &dc)
-
-	Expect(err).To(BeNil())
+	if err != nil {
+		t.Fatalf("Unmarshal failed: %v", err)
+	}
 	Expect(dc).NotTo(BeNil())
 
 }
