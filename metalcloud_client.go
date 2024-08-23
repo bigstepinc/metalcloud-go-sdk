@@ -26,7 +26,6 @@ import (
 // Client struct defines a metalcloud client
 type Client struct {
 	rpcClient jsonrpc.RPCClient
-	user      string
 	apiKey    string
 	endpoint  string
 	userID    int
@@ -52,6 +51,7 @@ type ClientOptions struct {
 	AuthenticationMethod string
 }
 
+// GetMetalcloudClient inits the client. Note that the user string is deprecated
 func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEnabled bool, clientId string, clientSecret string, tokenURL string) (*Client, error) {
 	return GetMetalcloudClientWithOptions(ClientOptions{
 		User:                 user,
@@ -71,12 +71,8 @@ func GetMetalcloudClient(user string, apiKey string, endpoint string, loggingEna
 // GetMetalcloudClient returns a metal cloud client
 func GetMetalcloudClientWithOptions(options ClientOptions) (*Client, error) {
 
-	if options.User == "" {
-		return nil, errors.New("user cannot be an empty string! It is typically in the form of user's email address")
-	}
-
 	if options.Endpoint == "" {
-		return nil, errors.New("endpoint cannot be an empty string! It is typically in the form of user's email address")
+		return nil, errors.New("endpoint cannot be an empty string. It is usually in the form of https://<hostname>:<port>/api/developer/developer")
 	}
 
 	if options.ApiKey == "" && (options.ClientId == "" || options.ClientSecret == "" || options.TokenURL == "") {
@@ -159,17 +155,11 @@ func GetMetalcloudClientWithOptions(options ClientOptions) (*Client, error) {
 
 	return &Client{
 		rpcClient: rpcClient,
-		user:      options.User,
 		apiKey:    options.ApiKey,
 		endpoint:  options.Endpoint,
 		userID:    userID,
 	}, nil
 
-}
-
-// GetUserEmail returns the user configured for this connection
-func (c *Client) GetUserEmail() string {
-	return c.user
 }
 
 // GetEndpoint returns the endpoint configured for this connection
