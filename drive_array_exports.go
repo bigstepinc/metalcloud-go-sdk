@@ -2,42 +2,42 @@
 
 package metalcloud
 
-//DriveArrayCreate array. Requires deploy.
+// DriveArrayCreate array. Requires deploy.
 func (c *Client) DriveArrayCreate(infrastructureID int, driveArray DriveArray) (*DriveArray, error) {
-	return c.driveArrayCreate(infrastructureID,driveArray)
+	return c.driveArrayCreate(infrastructureID, driveArray)
 }
 
-//DriveArrayCreateByLabel array. Requires deploy.
+// DriveArrayCreateByLabel array. Requires deploy.
 func (c *Client) DriveArrayCreateByLabel(infrastructureLabel string, driveArray DriveArray) (*DriveArray, error) {
-	return c.driveArrayCreate(infrastructureLabel,driveArray)
+	return c.driveArrayCreate(infrastructureLabel, driveArray)
 }
 
-//DriveArrayEdit array. Requires deploy.
+// DriveArrayEdit array. Requires deploy.
 func (c *Client) DriveArrayEdit(driveArrayID int, driveArrayOperation DriveArrayOperation) (*DriveArray, error) {
-	return c.driveArrayEdit(driveArrayID,driveArrayOperation)
+	return c.driveArrayEdit(driveArrayID, driveArrayOperation)
 }
 
-//DriveArrayEditByLabel array. Requires deploy.
+// DriveArrayEditByLabel array. Requires deploy.
 func (c *Client) DriveArrayEditByLabel(driveArrayLabel string, driveArrayOperation DriveArrayOperation) (*DriveArray, error) {
-	return c.driveArrayEdit(driveArrayLabel,driveArrayOperation)
+	return c.driveArrayEdit(driveArrayLabel, driveArrayOperation)
 }
 
-//DriveArrayDelete id
+// DriveArrayDelete id
 func (c *Client) DriveArrayDelete(driveArrayID int) error {
 	return c.driveArrayDelete(driveArrayID)
 }
 
-//DriveArrayDeleteByLabel id
+// DriveArrayDeleteByLabel id
 func (c *Client) DriveArrayDeleteByLabel(driveArrayLabel string) error {
 	return c.driveArrayDelete(driveArrayLabel)
 }
 
-//DriveArrayDrives array
+// DriveArrayDrives array
 func (c *Client) DriveArrayDrives(driveArray int) (*map[string]Drive, error) {
 	return c.driveArrayDrives(driveArray)
 }
 
-//DriveArrayDrivesByLabel array
+// DriveArrayDrivesByLabel array
 func (c *Client) DriveArrayDrivesByLabel(driveArrLabel string) (*map[string]Drive, error) {
 	return c.driveArrayDrives(driveArrLabel)
 }

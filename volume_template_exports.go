@@ -2,22 +2,22 @@
 
 package metalcloud
 
-//VolumeTemplateGet template
+// VolumeTemplateGet template
 func (c *Client) VolumeTemplateGet(volumeTemplateID int) (*VolumeTemplate, error) {
 	return c.volumeTemplateGet(volumeTemplateID)
 }
 
-//VolumeTemplateGetByLabel template
+// VolumeTemplateGetByLabel template
 func (c *Client) VolumeTemplateGetByLabel(volumeTemplateLabel string) (*VolumeTemplate, error) {
 	return c.volumeTemplateGet(volumeTemplateLabel)
 }
 
-//VolumeTemplateCreateFromDrive drive
+// VolumeTemplateCreateFromDrive drive
 func (c *Client) VolumeTemplateCreateFromDrive(driveID int, objVolumeTemplate VolumeTemplate) (*VolumeTemplate, error) {
-	return c.volumeTemplateCreateFromDrive(driveID,objVolumeTemplate)
+	return c.volumeTemplateCreateFromDrive(driveID, objVolumeTemplate)
 }
 
-//VolumeTemplateCreateFromDriveByLabel drive
+// VolumeTemplateCreateFromDriveByLabel drive
 func (c *Client) VolumeTemplateCreateFromDriveByLabel(driveLabel string, objVolumeTemplate VolumeTemplate) (*VolumeTemplate, error) {
-	return c.volumeTemplateCreateFromDrive(driveLabel,objVolumeTemplate)
+	return c.volumeTemplateCreateFromDrive(driveLabel, objVolumeTemplate)
 }

@@ -2,102 +2,102 @@
 
 package metalcloud
 
-//ClusterCreate cluster
+// ClusterCreate cluster
 func (c *Client) ClusterCreate(infrastructureID int, cluster Cluster) (*Cluster, error) {
-	return c.clusterCreate(infrastructureID,cluster)
+	return c.clusterCreate(infrastructureID, cluster)
 }
 
-//ClusterCreateByLabel cluster
+// ClusterCreateByLabel cluster
 func (c *Client) ClusterCreateByLabel(infrastructureLabel string, cluster Cluster) (*Cluster, error) {
-	return c.clusterCreate(infrastructureLabel,cluster)
+	return c.clusterCreate(infrastructureLabel, cluster)
 }
 
-//ClusterGet (app) with specified id
+// ClusterGet (app) with specified id
 func (c *Client) ClusterGet(clusterID int) (*Cluster, error) {
 	return c.clusterGet(clusterID)
 }
 
-//ClusterGetByLabel (app) with specified id
+// ClusterGetByLabel (app) with specified id
 func (c *Client) ClusterGetByLabel(clusterLabel string) (*Cluster, error) {
 	return c.clusterGet(clusterLabel)
 }
 
-//ClusterAppVMWareVSphere cluster
+// ClusterAppVMWareVSphere cluster
 func (c *Client) ClusterAppVMWareVSphere(clusterID int, decryptCredentials bool) (*AppVMWareVsphere, error) {
-	return c.clusterAppVMWareVSphere(clusterID,decryptCredentials)
+	return c.clusterAppVMWareVSphere(clusterID, decryptCredentials)
 }
 
-//ClusterAppVMWareVSphereByLabel cluster
+// ClusterAppVMWareVSphereByLabel cluster
 func (c *Client) ClusterAppVMWareVSphereByLabel(clusterLabel string, decryptCredentials bool) (*AppVMWareVsphere, error) {
-	return c.clusterAppVMWareVSphere(clusterLabel,decryptCredentials)
+	return c.clusterAppVMWareVSphere(clusterLabel, decryptCredentials)
 }
 
-//ClusterAppVMWareVCF cluster
+// ClusterAppVMWareVCF cluster
 func (c *Client) ClusterAppVMWareVCF(clusterID int, decryptCredentials bool) (*AppVMWareVCF, error) {
-	return c.clusterAppVMWareVCF(clusterID,decryptCredentials)
+	return c.clusterAppVMWareVCF(clusterID, decryptCredentials)
 }
 
-//ClusterAppVMWareVCFByLabel cluster
+// ClusterAppVMWareVCFByLabel cluster
 func (c *Client) ClusterAppVMWareVCFByLabel(clusterLabel string, decryptCredentials bool) (*AppVMWareVCF, error) {
-	return c.clusterAppVMWareVCF(clusterLabel,decryptCredentials)
+	return c.clusterAppVMWareVCF(clusterLabel, decryptCredentials)
 }
 
-//ClusterAppKubernetes cluster
+// ClusterAppKubernetes cluster
 func (c *Client) ClusterAppKubernetes(clusterID int, decryptCredentials bool) (*AppKubernetes, error) {
-	return c.clusterAppKubernetes(clusterID,decryptCredentials)
+	return c.clusterAppKubernetes(clusterID, decryptCredentials)
 }
 
-//ClusterAppKubernetesByLabel cluster
+// ClusterAppKubernetesByLabel cluster
 func (c *Client) ClusterAppKubernetesByLabel(clusterLabel string, decryptCredentials bool) (*AppKubernetes, error) {
-	return c.clusterAppKubernetes(clusterLabel,decryptCredentials)
+	return c.clusterAppKubernetes(clusterLabel, decryptCredentials)
 }
 
-//ClusterAppKubernetesEKSA cluster
+// ClusterAppKubernetesEKSA cluster
 func (c *Client) ClusterAppKubernetesEKSA(clusterID int, decryptCredentials bool) (*AppKubernetesEKSA, error) {
-	return c.clusterAppKubernetesEKSA(clusterID,decryptCredentials)
+	return c.clusterAppKubernetesEKSA(clusterID, decryptCredentials)
 }
 
-//ClusterAppKubernetesEKSAByLabel cluster
+// ClusterAppKubernetesEKSAByLabel cluster
 func (c *Client) ClusterAppKubernetesEKSAByLabel(clusterLabel string, decryptCredentials bool) (*AppKubernetesEKSA, error) {
-	return c.clusterAppKubernetesEKSA(clusterLabel,decryptCredentials)
+	return c.clusterAppKubernetesEKSA(clusterLabel, decryptCredentials)
 }
 
-//ClusterDelete array. Requires deploy.
+// ClusterDelete array. Requires deploy.
 func (c *Client) ClusterDelete(clusterID int) error {
 	return c.clusterDelete(clusterID)
 }
 
-//ClusterDeleteByLabel array. Requires deploy.
+// ClusterDeleteByLabel array. Requires deploy.
 func (c *Client) ClusterDeleteByLabel(clusterLabel string) error {
 	return c.clusterDelete(clusterLabel)
 }
 
-//ClusterEdit array. Requires deploy.
+// ClusterEdit array. Requires deploy.
 func (c *Client) ClusterEdit(clusterId int, clusterOperation ClusterOperation) (*Cluster, error) {
-	return c.clusterEdit(clusterId,clusterOperation)
+	return c.clusterEdit(clusterId, clusterOperation)
 }
 
-//ClusterEditByLabel array. Requires deploy.
+// ClusterEditByLabel array. Requires deploy.
 func (c *Client) ClusterEditByLabel(clusterLabel string, clusterOperation ClusterOperation) (*Cluster, error) {
-	return c.clusterEdit(clusterLabel,clusterOperation)
+	return c.clusterEdit(clusterLabel, clusterOperation)
 }
 
-//Clusters cluster
+// Clusters cluster
 func (c *Client) Clusters(infrastructureId int) (*map[string]Cluster, error) {
 	return c.clusters(infrastructureId)
 }
 
-//ClustersByLabel cluster
+// ClustersByLabel cluster
 func (c *Client) ClustersByLabel(infrastructureLabel string) (*map[string]Cluster, error) {
 	return c.clusters(infrastructureLabel)
 }
 
-//ClusterInstanceArrays cluster
+// ClusterInstanceArrays cluster
 func (c *Client) ClusterInstanceArrays(clusterId int) (*map[string]InstanceArray, error) {
 	return c.clusterInstanceArrays(clusterId)
 }
 
-//ClusterInstanceArraysByLabel cluster
+// ClusterInstanceArraysByLabel cluster
 func (c *Client) ClusterInstanceArraysByLabel(clusterLabel string) (*map[string]InstanceArray, error) {
 	return c.clusterInstanceArrays(clusterLabel)
 }

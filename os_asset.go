@@ -2,7 +2,7 @@ package metalcloud
 
 import "fmt"
 
-//OSAsset struct defines a server type
+// OSAsset struct defines a server type
 type OSAsset struct {
 	OSAssetID                    int      `json:"os_asset_id,omitempty" yaml:"id,omitempty"`
 	UserIDOwner                  int      `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
@@ -21,7 +21,7 @@ type OSAsset struct {
 	OSAssetUpdatedTimestamp      string   `json:"os_asset_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
 }
 
-//OSAssetCreate creates a osAsset object
+// OSAssetCreate creates a osAsset object
 func (c *Client) OSAssetCreate(osAsset OSAsset) (*OSAsset, error) {
 	var createdObject OSAsset
 
@@ -40,7 +40,7 @@ func (c *Client) OSAssetCreate(osAsset OSAsset) (*OSAsset, error) {
 	return &createdObject, nil
 }
 
-//OSAssetDelete permanently destroys a OSAsset.
+// OSAssetDelete permanently destroys a OSAsset.
 func (c *Client) OSAssetDelete(osAssetID int) error {
 
 	if err := checkID(osAssetID); err != nil {
@@ -60,7 +60,7 @@ func (c *Client) OSAssetDelete(osAssetID int) error {
 	return nil
 }
 
-//OSAssetUpdate updates a osAsset
+// OSAssetUpdate updates a osAsset
 func (c *Client) OSAssetUpdate(osAssetID int, osAsset OSAsset) (*OSAsset, error) {
 	var createdObject OSAsset
 
@@ -82,7 +82,7 @@ func (c *Client) OSAssetUpdate(osAssetID int, osAsset OSAsset) (*OSAsset, error)
 	return &createdObject, nil
 }
 
-//OSAssetGet returns a OSAsset specified by nOSAssetID. The OSAsset's protected value is never returned.
+// OSAssetGet returns a OSAsset specified by nOSAssetID. The OSAsset's protected value is never returned.
 func (c *Client) OSAssetGet(osAssetID int) (*OSAsset, error) {
 
 	var createdObject OSAsset
@@ -104,7 +104,7 @@ func (c *Client) OSAssetGet(osAssetID int) (*OSAsset, error) {
 	return &createdObject, nil
 }
 
-//OSAssetGetStoredContent returns the content of an OSAsset specified by nOSAssetID.
+// OSAssetGetStoredContent returns the content of an OSAsset specified by nOSAssetID.
 func (c *Client) OSAssetGetStoredContent(osAssetID int) (string, error) {
 
 	var createdObject string
@@ -126,7 +126,7 @@ func (c *Client) OSAssetGetStoredContent(osAssetID int) (string, error) {
 	return createdObject, nil
 }
 
-//OSAssets retrieves a list of all the OSAsset objects which a specified User is allowed to see through ownership or delegation. The OSAsset objects never return the actual protected OSAsset value.
+// OSAssets retrieves a list of all the OSAsset objects which a specified User is allowed to see through ownership or delegation. The OSAsset objects never return the actual protected OSAsset value.
 func (c *Client) OSAssets() (*map[string]OSAsset, error) {
 	userID := c.GetUserID()
 
@@ -160,7 +160,7 @@ func (c *Client) OSAssets() (*map[string]OSAsset, error) {
 	return &createdObject, nil
 }
 
-//OSAssetMakePublic makes an OS Asset public
+// OSAssetMakePublic makes an OS Asset public
 func (c *Client) OSAssetMakePublic(osAssetID int) (*OSAsset, error) {
 	var createdObject OSAsset
 
@@ -180,7 +180,7 @@ func (c *Client) OSAssetMakePublic(osAssetID int) (*OSAsset, error) {
 	return &createdObject, nil
 }
 
-//OSAssetMakePrivate makes an OS Asset private and owned by the current user
+// OSAssetMakePrivate makes an OS Asset private and owned by the current user
 func (c *Client) OSAssetMakePrivate(osAssetID int, userID int) (*OSAsset, error) {
 	var createdObject OSAsset
 
@@ -205,7 +205,7 @@ func (c *Client) OSAssetMakePrivate(osAssetID int, userID int) (*OSAsset, error)
 	return &createdObject, nil
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (asset OSAsset) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var result *OSAsset
@@ -247,7 +247,7 @@ func (asset OSAsset) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (asset OSAsset) Delete(client MetalCloudClient) error {
 	var result *OSAsset
 	var id int
@@ -284,7 +284,7 @@ func (asset OSAsset) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (asset OSAsset) Validate() error {
 	if asset.OSAssetID == 0 && asset.OSAssetFileName == "" {
 		return fmt.Errorf("id is required")

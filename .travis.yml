@@ -1,12 +1,10 @@
-dist: trusty
+dist: jammy
 sudo: required
 services:
 - docker
 language: go
 go:
-- 1.11.x
-env:
-  GO111MODULE="on"
+- 1.22.x
 
 install:
 # This script is used by the Travis build to install a cookie for

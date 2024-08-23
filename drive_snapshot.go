@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-//Snapshot A snapshot of a drive created at a specific time.
+// Snapshot A snapshot of a drive created at a specific time.
 type Snapshot struct {
 	DriveSnapshotID               int    `json:"drive_snapshot_id,omitempty"`
 	DriveSnapshotLabel            string `json:"drive_snapshot_label,omitempty"`
@@ -12,7 +12,7 @@ type Snapshot struct {
 	DriveSnapshotCreatedTimestamp string `json:"drive_snapshot_created_timestamp,omitempty"`
 }
 
-//DriveSnapshotCreate creates a drive snapshot
+// DriveSnapshotCreate creates a drive snapshot
 func (c *Client) DriveSnapshotCreate(driveID int) (*Snapshot, error) {
 	var createdObject Snapshot
 
@@ -29,7 +29,7 @@ func (c *Client) DriveSnapshotCreate(driveID int) (*Snapshot, error) {
 	return &createdObject, nil
 }
 
-//DriveSnapshotDelete creates a drive snapshot
+// DriveSnapshotDelete creates a drive snapshot
 func (c *Client) DriveSnapshotDelete(driveSnapshotID int) error {
 	if err := checkID(driveSnapshotID); err != nil {
 		return err
@@ -48,7 +48,7 @@ func (c *Client) DriveSnapshotDelete(driveSnapshotID int) error {
 	return nil
 }
 
-//DriveSnapshotRollback rolls a Drive back to a specified DriveSnapshot. The specified snapshot is not destroyed and can be reused.
+// DriveSnapshotRollback rolls a Drive back to a specified DriveSnapshot. The specified snapshot is not destroyed and can be reused.
 func (c *Client) DriveSnapshotRollback(driveSnapshotID int) error {
 	if err := checkID(driveSnapshotID); err != nil {
 		return err
@@ -67,7 +67,7 @@ func (c *Client) DriveSnapshotRollback(driveSnapshotID int) error {
 	return nil
 }
 
-//DriveSnapshotGet gets a drive snapshot
+// DriveSnapshotGet gets a drive snapshot
 func (c *Client) DriveSnapshotGet(driveSnapshotID int) (*Snapshot, error) {
 	var createdObject Snapshot
 
@@ -84,7 +84,7 @@ func (c *Client) DriveSnapshotGet(driveSnapshotID int) (*Snapshot, error) {
 	return &createdObject, nil
 }
 
-//DriveSnapshots retrieves a list of all the snapshot objects
+// DriveSnapshots retrieves a list of all the snapshot objects
 func (c *Client) DriveSnapshots(driveID int) (*map[string]Snapshot, error) {
 	var err error
 

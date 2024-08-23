@@ -2,8 +2,6 @@
 
 package metalcloud
 
-
-
 // MetalCloudClient interface used for mocking and abstracting the backend
 type MetalCloudClient interface {
 	//AFCSearch searches for AFCs

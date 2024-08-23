@@ -2,32 +2,32 @@
 
 package metalcloud
 
-//NetworkProfileGet 
+// NetworkProfileGet
 func (c *Client) NetworkProfileGet(networkProfileID int) (*NetworkProfile, error) {
 	return c.networkProfileGet(networkProfileID)
 }
 
-//NetworkProfileGetByLabel 
+// NetworkProfileGetByLabel
 func (c *Client) NetworkProfileGetByLabel(networkProfileLabel string) (*NetworkProfile, error) {
 	return c.networkProfileGet(networkProfileLabel)
 }
 
-//NetworkProfileUpdate profile.
+// NetworkProfileUpdate profile.
 func (c *Client) NetworkProfileUpdate(networkProfileID int, networkProfile NetworkProfile) (*NetworkProfile, error) {
-	return c.networkProfileUpdate(networkProfileID,networkProfile)
+	return c.networkProfileUpdate(networkProfileID, networkProfile)
 }
 
-//NetworkProfileUpdateByLabel profile.
+// NetworkProfileUpdateByLabel profile.
 func (c *Client) NetworkProfileUpdateByLabel(networkProfileLabel string, networkProfile NetworkProfile) (*NetworkProfile, error) {
-	return c.networkProfileUpdate(networkProfileLabel,networkProfile)
+	return c.networkProfileUpdate(networkProfileLabel, networkProfile)
 }
 
-//NetworkProfileDelete profile.
+// NetworkProfileDelete profile.
 func (c *Client) NetworkProfileDelete(networkProfileID int) error {
 	return c.networkProfileDelete(networkProfileID)
 }
 
-//NetworkProfileDeleteByLabel profile.
+// NetworkProfileDeleteByLabel profile.
 func (c *Client) NetworkProfileDeleteByLabel(networkProfileLabel string) error {
 	return c.networkProfileDelete(networkProfileLabel)
 }
