@@ -6,7 +6,7 @@ import (
 	"github.com/ybbus/jsonrpc"
 )
 
-//Variable struct defines a Variable type
+// Variable struct defines a Variable type
 type Variable struct {
 	VariableID               int    `json:"variable_id,omitempty" yaml:"id,omitempty"`
 	UserIDOwner              int    `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
@@ -18,7 +18,7 @@ type Variable struct {
 	VariableUpdatedTimestamp string `json:"variable_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
 }
 
-//VariableCreate creates a variable object
+// VariableCreate creates a variable object
 func (c *Client) VariableCreate(variable Variable) (*Variable, error) {
 	var createdObject Variable
 
@@ -37,7 +37,7 @@ func (c *Client) VariableCreate(variable Variable) (*Variable, error) {
 	return &createdObject, nil
 }
 
-//VariableDelete permanently destroys a Variable.
+// VariableDelete permanently destroys a Variable.
 func (c *Client) VariableDelete(variableID int) error {
 
 	if err := checkID(variableID); err != nil {
@@ -57,7 +57,7 @@ func (c *Client) VariableDelete(variableID int) error {
 	return nil
 }
 
-//VariableUpdate updates a variable
+// VariableUpdate updates a variable
 func (c *Client) VariableUpdate(variableID int, variable Variable) (*Variable, error) {
 	var createdObject Variable
 
@@ -79,7 +79,7 @@ func (c *Client) VariableUpdate(variableID int, variable Variable) (*Variable, e
 	return &createdObject, nil
 }
 
-//VariableGet returns a Variable specified by nVariableID. The Variable's protected value is never returned.
+// VariableGet returns a Variable specified by nVariableID. The Variable's protected value is never returned.
 func (c *Client) VariableGet(variableID int) (*Variable, error) {
 
 	var createdObject Variable
@@ -101,7 +101,7 @@ func (c *Client) VariableGet(variableID int) (*Variable, error) {
 	return &createdObject, nil
 }
 
-//Variables retrieves a list of all the Variable objects which a specified User is allowed to see through ownership or delegation. The Variable objects never return the actual protected Variable value.
+// Variables retrieves a list of all the Variable objects which a specified User is allowed to see through ownership or delegation. The Variable objects never return the actual protected Variable value.
 func (c *Client) Variables(usage string) (*map[string]Variable, error) {
 
 	userID := c.GetUserID()
@@ -145,7 +145,7 @@ func (c *Client) Variables(usage string) (*map[string]Variable, error) {
 	return &createdObject, nil
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (v Variable) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var result *Variable
@@ -186,7 +186,7 @@ func (v Variable) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (v Variable) Delete(client MetalCloudClient) error {
 	var result *Variable
 	var id int
@@ -222,7 +222,7 @@ func (v Variable) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (v Variable) Validate() error {
 	if v.VariableID == 0 && v.VariableName == "" {
 		return fmt.Errorf("id is required")

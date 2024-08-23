@@ -1,11 +1,10 @@
 # Metal Cloud Go SDK
 
-[![GoDoc](https://godoc.org/github.com/bigstepinc/metal-cloud-sdk-go?status.svg)](https://godoc.org/github.com/bigstepinc/metal-cloud-sdk-go) 
 [![Build Status](https://travis-ci.com/metalsoft-io/metal-cloud-sdk-go.svg?branch=master)](https://travis-ci.com/metalsoft-io/metal-cloud-sdk-go)
 
 This SDK allows control of the `Metalsoft Cloud` from Go.
 
-GoDoc documentation available [here](https://godoc.org/github.com/bigstepinc/metal-cloud-sdk-go)
+Generated GoDoc documentation available <https://godoc.org/github.com/bigstepinc/metal-cloud-sdk-go>
 
 ## Setup
 
@@ -45,6 +44,27 @@ GoDoc documentation available [here](https://godoc.org/github.com/bigstepinc/met
 
 All changes are done through pull requests against the `master` branch.  
 Once the PR is merged a new release can be create manually in order to have the changes available in the SDK.
+
+Make sure you also run the following before submitting a PR:
+
+1. Format the code
+
+```sh
+go fmt .
+```
+
+2. Run the linter
+
+```sh
+go vet .
+golangci-lint run 
+```
+
+3. Run the tests
+
+```sh
+go test -v
+```
 
 ## Testing
 

@@ -2,42 +2,42 @@
 
 package metalcloud
 
-//SharedDriveCreate array. Requires deploy.
+// SharedDriveCreate array. Requires deploy.
 func (c *Client) SharedDriveCreate(infrastructureID int, sharedDrive SharedDrive) (*SharedDrive, error) {
-	return c.sharedDriveCreate(infrastructureID,sharedDrive)
+	return c.sharedDriveCreate(infrastructureID, sharedDrive)
 }
 
-//SharedDriveCreateByLabel array. Requires deploy.
+// SharedDriveCreateByLabel array. Requires deploy.
 func (c *Client) SharedDriveCreateByLabel(infrastructureLabel string, sharedDrive SharedDrive) (*SharedDrive, error) {
-	return c.sharedDriveCreate(infrastructureLabel,sharedDrive)
+	return c.sharedDriveCreate(infrastructureLabel, sharedDrive)
 }
 
-//SharedDriveGet drive
+// SharedDriveGet drive
 func (c *Client) SharedDriveGet(sharedDriveID int) (*SharedDrive, error) {
 	return c.sharedDriveGet(sharedDriveID)
 }
 
-//SharedDriveGetByLabel drive
+// SharedDriveGetByLabel drive
 func (c *Client) SharedDriveGetByLabel(sharedDriveLabel string) (*SharedDrive, error) {
 	return c.sharedDriveGet(sharedDriveLabel)
 }
 
-//SharedDriveEdit array. Requires deploy.
+// SharedDriveEdit array. Requires deploy.
 func (c *Client) SharedDriveEdit(sharedDriveID int, sharedDriveOperation SharedDriveOperation) (*SharedDrive, error) {
-	return c.sharedDriveEdit(sharedDriveID,sharedDriveOperation)
+	return c.sharedDriveEdit(sharedDriveID, sharedDriveOperation)
 }
 
-//SharedDriveEditByLabel array. Requires deploy.
+// SharedDriveEditByLabel array. Requires deploy.
 func (c *Client) SharedDriveEditByLabel(sharedDriveLabel string, sharedDriveOperation SharedDriveOperation) (*SharedDrive, error) {
-	return c.sharedDriveEdit(sharedDriveLabel,sharedDriveOperation)
+	return c.sharedDriveEdit(sharedDriveLabel, sharedDriveOperation)
 }
 
-//SharedDriveDelete drive.
+// SharedDriveDelete drive.
 func (c *Client) SharedDriveDelete(sharedDriveID int) error {
 	return c.sharedDriveDelete(sharedDriveID)
 }
 
-//SharedDriveDeleteByLabel drive.
+// SharedDriveDeleteByLabel drive.
 func (c *Client) SharedDriveDeleteByLabel(sharedDriveLabel string) error {
 	return c.sharedDriveDelete(sharedDriveLabel)
 }

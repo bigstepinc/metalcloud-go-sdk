@@ -11,7 +11,7 @@ type SwitchDeviceLink struct {
 	NetworkEquipmentLinkType string `json:"network_equipment_link_type,omitempty" yaml:"type,omitempty"`
 }
 
-//SwitchDeviceLinks Returns all the switch device links found in the database.
+// SwitchDeviceLinks Returns all the switch device links found in the database.
 func (c *Client) SwitchDeviceLinks() (*map[int]SwitchDeviceLink, error) {
 
 	var createdObject map[int]SwitchDeviceLink
@@ -47,7 +47,7 @@ func (c *Client) SwitchDeviceLinks() (*map[int]SwitchDeviceLink, error) {
 	return &createdObject, nil
 }
 
-//SwitchDeviceLinkCreate Creates a record for a new SwitchDevice.
+// SwitchDeviceLinkCreate Creates a record for a new SwitchDevice.
 func (c *Client) SwitchDeviceLinkCreate(networkEquipmentID1 int, networkEquipmentID2 int, networkEquipmentLinkType string) (*SwitchDeviceLink, error) {
 	var createdObject SwitchDeviceLink
 	emptyObj := map[string]string{}
@@ -67,7 +67,7 @@ func (c *Client) SwitchDeviceLinkCreate(networkEquipmentID1 int, networkEquipmen
 	return &createdObject, nil
 }
 
-//SwitchDeviceLinkGet Retrieves information regarding a specified switch device link
+// SwitchDeviceLinkGet Retrieves information regarding a specified switch device link
 func (c *Client) SwitchDeviceLinkGet(networkEquipmentID1 int, networkEquipmentID2 int, linkType string) (*SwitchDeviceLink, error) {
 
 	var createdObject SwitchDeviceLink
@@ -85,7 +85,7 @@ func (c *Client) SwitchDeviceLinkGet(networkEquipmentID1 int, networkEquipmentID
 	return &createdObject, nil
 }
 
-//SwitchDeviceLinkDelete deletes a specified switch device and its registered interfaces.
+// SwitchDeviceLinkDelete deletes a specified switch device and its registered interfaces.
 func (c *Client) SwitchDeviceLinkDelete(networkEquipmentID1 int, networkEquipmentID2 int, linkType string) error {
 
 	resp, err := c.rpcClient.Call("switch_device_link_delete", networkEquipmentID1, networkEquipmentID2, linkType)

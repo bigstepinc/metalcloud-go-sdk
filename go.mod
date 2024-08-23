@@ -1,6 +1,6 @@
 module github.com/metalsoft-io/metal-cloud-sdk-go/v3
 
-go 1.18
+go 1.22
 
 require (
 	github.com/jinzhu/copier v0.0.0-20190924061706-b57f9002281a

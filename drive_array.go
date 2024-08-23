@@ -4,7 +4,7 @@ package metalcloud
 
 import "fmt"
 
-//DriveArray represents a collection of identical drives
+// DriveArray represents a collection of identical drives
 type DriveArray struct {
 	DriveArrayID                      int                  `json:"drive_array_id,omitempty" yaml:"id,omitempty"`
 	DriveArrayLabel                   string               `json:"drive_array_label,omitempty" yaml:"label,omitempty"`
@@ -22,7 +22,7 @@ type DriveArray struct {
 	DriveArrayAllocationAffinity      string               `json:"drive_array_allocation_affinity,omitempty" yaml:"affinity,omitempty"`
 }
 
-//DriveArrayOperation defines changes to be applied to a DriveArray
+// DriveArrayOperation defines changes to be applied to a DriveArray
 type DriveArrayOperation struct {
 	DriveArrayID                      int         `json:"drive_array_id,omitempty" yaml:"id,omitempty"`
 	DriveArrayLabel                   string      `json:"drive_array_label,omitempty" yaml:"label,omitempty"`
@@ -39,12 +39,12 @@ type DriveArrayOperation struct {
 	DriveArrayIOLimitPolicy           string      `json:"drive_array_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
 }
 
-//DriveArrays retrieves the list of drives arrays of an infrastructure
+// DriveArrays retrieves the list of drives arrays of an infrastructure
 func (c *Client) DriveArrays(infrastructureID int) (*map[string]DriveArray, error) {
 	return c.driveArrays(infrastructureID)
 }
 
-//DriveArraysByLabel retrieves the list of drives arrays of an infrastructure
+// DriveArraysByLabel retrieves the list of drives arrays of an infrastructure
 func (c *Client) DriveArraysByLabel(infrastructureLabel string) (*map[string]DriveArray, error) {
 	return c.driveArrays(infrastructureLabel)
 }
@@ -86,12 +86,12 @@ func (c *Client) driveArrays(infrastructureID id) (*map[string]DriveArray, error
 	return &createdObject, nil
 }
 
-//DriveArrayGet retrieves a DriveArray object with specified ids
+// DriveArrayGet retrieves a DriveArray object with specified ids
 func (c *Client) DriveArrayGet(driveArrayID int) (*DriveArray, error) {
 	return c.driveArrayGet(driveArrayID)
 }
 
-//DriveArrayGetByLabel retrieves a DriveArray object with specified ids
+// DriveArrayGetByLabel retrieves a DriveArray object with specified ids
 func (c *Client) DriveArrayGetByLabel(driveArrayLabel string) (*DriveArray, error) {
 	return c.driveArrayGet(driveArrayLabel)
 }
@@ -117,7 +117,7 @@ func (c *Client) driveArrayGet(driveArrayID id) (*DriveArray, error) {
 	return &createdObject, nil
 }
 
-//driveArrayCreate creates a drive array. Requires deploy.
+// driveArrayCreate creates a drive array. Requires deploy.
 func (c *Client) driveArrayCreate(infrastructureID id, driveArray DriveArray) (*DriveArray, error) {
 	var createdObject DriveArray
 
@@ -139,7 +139,7 @@ func (c *Client) driveArrayCreate(infrastructureID id, driveArray DriveArray) (*
 	return &createdObject, nil
 }
 
-//driveArrayEdit alters a deployed drive array. Requires deploy.
+// driveArrayEdit alters a deployed drive array. Requires deploy.
 func (c *Client) driveArrayEdit(driveArrayID id, driveArrayOperation DriveArrayOperation) (*DriveArray, error) {
 	var createdObject DriveArray
 
@@ -161,7 +161,7 @@ func (c *Client) driveArrayEdit(driveArrayID id, driveArrayOperation DriveArrayO
 	return &createdObject, nil
 }
 
-//driveArrayDelete deletes a Drive Array with specified id
+// driveArrayDelete deletes a Drive Array with specified id
 func (c *Client) driveArrayDelete(driveArrayID id) error {
 
 	if err := checkID(driveArrayID); err != nil {
@@ -183,7 +183,7 @@ func (c *Client) driveArrayDelete(driveArrayID id) error {
 	return nil
 }
 
-//driveArrayDrives returns the drives of a drive array
+// driveArrayDrives returns the drives of a drive array
 func (c *Client) driveArrayDrives(driveArray id) (*map[string]Drive, error) {
 
 	if err := checkID(driveArray); err != nil {
@@ -233,7 +233,7 @@ func (da *DriveArray) instanceToOperation(op *DriveArrayOperation) {
 	operation.DriveArrayChangeID = op.DriveArrayChangeID
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (da DriveArray) CreateOrUpdate(client MetalCloudClient) error {
 	var result *DriveArray
 	var err error
@@ -266,7 +266,7 @@ func (da DriveArray) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (da DriveArray) Delete(client MetalCloudClient) error {
 	err := da.Validate()
 	var result *DriveArray
@@ -295,7 +295,7 @@ func (da DriveArray) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (da DriveArray) Validate() error {
 	if da.DriveArrayID == 0 && da.DriveArrayLabel == "" {
 		return fmt.Errorf("id is required")

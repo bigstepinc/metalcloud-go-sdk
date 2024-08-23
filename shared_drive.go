@@ -4,7 +4,7 @@ import "fmt"
 
 //go:generate go run helper/gen_exports.go
 
-//SharedDrive represents a drive that can be shared between instances
+// SharedDrive represents a drive that can be shared between instances
 type SharedDrive struct {
 	SharedDriveLabel                  string                 `json:"shared_drive_label,omitempty" yaml:"label,omitempty"`
 	SharedDriveSubdomain              string                 `json:"shared_drive_subdomain,omitempty" yaml:"subdomain,omitempty"`
@@ -27,12 +27,12 @@ type SharedDrive struct {
 	SharedDriveAllocationAffinity     string                 `json:"shared_drive_allocation_affinity,omitempty" yaml:"affinity,omitempty"`
 }
 
-//SharedDriveCredentials iscsi or other forms of connection details
+// SharedDriveCredentials iscsi or other forms of connection details
 type SharedDriveCredentials struct {
 	ISCSI ISCSI `json:"iscsi,omitempty" yaml:"iscsi,omitempty"`
 }
 
-//SharedDriveOperation represents an ongoing or new operation on a shared drive
+// SharedDriveOperation represents an ongoing or new operation on a shared drive
 type SharedDriveOperation struct {
 	SharedDriveDeployStatus           string `json:"shared_drive_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
 	SharedDriveDeployType             string `json:"shared_drive_deploy_type,omitempty" yaml:"deployType,omitempty"`
@@ -49,7 +49,7 @@ type SharedDriveOperation struct {
 	SharedDriveIOLimitPolicy          string `json:"shared_drive_io_limit_policy,omitempty" yaml:"ioLimit,omitempty"`
 }
 
-//sharedDriveCreate creates a shared drive array. Requires deploy.
+// sharedDriveCreate creates a shared drive array. Requires deploy.
 func (c *Client) sharedDriveCreate(infrastructureID id, sharedDrive SharedDrive) (*SharedDrive, error) {
 	var createdObject SharedDrive
 
@@ -71,7 +71,7 @@ func (c *Client) sharedDriveCreate(infrastructureID id, sharedDrive SharedDrive)
 	return &createdObject, nil
 }
 
-//sharedDriveGet Retrieves a shared drive
+// sharedDriveGet Retrieves a shared drive
 func (c *Client) sharedDriveGet(sharedDriveID id) (*SharedDrive, error) {
 
 	var createdObject SharedDrive
@@ -93,7 +93,7 @@ func (c *Client) sharedDriveGet(sharedDriveID id) (*SharedDrive, error) {
 	return &createdObject, nil
 }
 
-//sharedDriveEdit alters a deployed drive array. Requires deploy.
+// sharedDriveEdit alters a deployed drive array. Requires deploy.
 func (c *Client) sharedDriveEdit(sharedDriveID id, sharedDriveOperation SharedDriveOperation) (*SharedDrive, error) {
 	var createdObject SharedDrive
 
@@ -115,7 +115,7 @@ func (c *Client) sharedDriveEdit(sharedDriveID id, sharedDriveOperation SharedDr
 	return &createdObject, nil
 }
 
-//sharedDriveDelete deletes a shared drive.
+// sharedDriveDelete deletes a shared drive.
 func (c *Client) sharedDriveDelete(sharedDriveID id) error {
 
 	if err := checkID(sharedDriveID); err != nil {
@@ -185,7 +185,7 @@ func (c *Client) SharedDriveDetachInstanceArray(sharedDriveID int, instanceArray
 	return &updatedObject, nil
 }
 
-//SharedDrives retrieves the list of shared drives of an infrastructure
+// SharedDrives retrieves the list of shared drives of an infrastructure
 func (c *Client) SharedDrives(infrastructureID int) (*map[string]SharedDrive, error) {
 	return c.sharedDrives(infrastructureID)
 }
@@ -237,7 +237,7 @@ func (sd *SharedDrive) instanceToOperation(op *SharedDriveOperation) {
 	operation.SharedDriveChangeID = op.SharedDriveChangeID
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (sd SharedDrive) CreateOrUpdate(client MetalCloudClient) error {
 	var result *SharedDrive
 	var err error
@@ -272,7 +272,7 @@ func (sd SharedDrive) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (sd SharedDrive) Delete(client MetalCloudClient) error {
 	var result *SharedDrive
 	var id int
@@ -300,7 +300,7 @@ func (sd SharedDrive) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (sd SharedDrive) Validate() error {
 	if sd.SharedDriveID == 0 && sd.SharedDriveLabel == "" {
 		return fmt.Errorf("id is required")
