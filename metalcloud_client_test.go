@@ -2,7 +2,6 @@ package metalcloud
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -35,7 +34,7 @@ func TestMain(m *testing.M) {
 		// put request and body to channel for the client to investigate them
 		requestChan <- &RequestData{r, string(data)}
 
-		fmt.Fprintf(w, responseBody)
+		io.WriteString(w, responseBody)
 	}))
 	defer httpServer.Close()
 

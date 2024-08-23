@@ -66,19 +66,11 @@ golangci-lint run
 go test -v
 ```
 
-## Testing
-
-To run the tests, run the following command:
-
-```sh
-go test -v
-```
-
 ## Release
 
 Releases are created manually by creating a new tag and release in the GitHub UI.
 
-See the [Releases](https://github.com/metalsoft-io/metal-cloud-sdk-go/releases) page for more information.
+See the [Releases](https://github.com/metalsoft-io/metal-cloud-sdk-go/releases) page for more information, use the `Draft a new release` button to create a new release.
 
 ## Sample Code
 
