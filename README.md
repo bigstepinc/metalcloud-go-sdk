@@ -46,6 +46,14 @@ GoDoc documentation available [here](https://godoc.org/github.com/bigstepinc/met
 All changes are done through pull requests against the `master` branch.  
 Once the PR is merged a new release can be create manually in order to have the changes available in the SDK.
 
+## Testing
+
+To run the tests, run the following command:
+
+```sh
+go test -v
+```
+
 ## Release
 
 Releases are created manually by creating a new tag and release in the GitHub UI.
