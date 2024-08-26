@@ -111,7 +111,7 @@ func (c *Client) SwitchDeviceControllerCreate(switchDeviceController SwitchDevic
 	if switchDeviceController.NetworkEquipmentControllerIdentifierString != "" {
 		overwriteHostname = false
 	}
-	
+
 	// When making a call with a single object parameter, we have to put it into an array.
 	resp, err := c.rpcClient.Call(
 		"switch_device_controller_create",

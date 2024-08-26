@@ -2,22 +2,22 @@
 
 package metalcloud
 
-//ServerTypeGet id
+// ServerTypeGet id
 func (c *Client) ServerTypeGet(serverTypeID int) (*ServerType, error) {
 	return c.serverTypeGet(serverTypeID)
 }
 
-//ServerTypeGetByLabel id
+// ServerTypeGetByLabel id
 func (c *Client) ServerTypeGetByLabel(serverTypeLabel string) (*ServerType, error) {
 	return c.serverTypeGet(serverTypeLabel)
 }
 
-//ServerTypesMatches Instance&#39;s configuration, using the properties specified in the objHardwareConfiguration object, and returns the number of compatible servers for each server_type_id.
+// ServerTypesMatches Instance&#39;s configuration, using the properties specified in the objHardwareConfiguration object, and returns the number of compatible servers for each server_type_id.
 func (c *Client) ServerTypesMatches(infrastructureID int, hardwareConfiguration HardwareConfiguration, instanceArrayID *int, bAllowServerSwap bool) (*map[string]ServerType, error) {
-	return c.serverTypesMatches(infrastructureID,hardwareConfiguration,instanceArrayID,bAllowServerSwap)
+	return c.serverTypesMatches(infrastructureID, hardwareConfiguration, instanceArrayID, bAllowServerSwap)
 }
 
-//ServerTypesMatchesByLabel Instance&#39;s configuration, using the properties specified in the objHardwareConfiguration object, and returns the number of compatible servers for each server_type_id.
+// ServerTypesMatchesByLabel Instance&#39;s configuration, using the properties specified in the objHardwareConfiguration object, and returns the number of compatible servers for each server_type_id.
 func (c *Client) ServerTypesMatchesByLabel(infrastructureLabel string, hardwareConfiguration HardwareConfiguration, instanceArrayID *int, bAllowServerSwap bool) (*map[string]ServerType, error) {
-	return c.serverTypesMatches(infrastructureLabel,hardwareConfiguration,instanceArrayID,bAllowServerSwap)
+	return c.serverTypesMatches(infrastructureLabel, hardwareConfiguration, instanceArrayID, bAllowServerSwap)
 }

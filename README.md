@@ -1,11 +1,10 @@
 # Metal Cloud Go SDK
 
-[![GoDoc](https://godoc.org/github.com/bigstepinc/metal-cloud-sdk-go?status.svg)](https://godoc.org/github.com/bigstepinc/metal-cloud-sdk-go) 
 [![Build Status](https://travis-ci.com/metalsoft-io/metal-cloud-sdk-go.svg?branch=master)](https://travis-ci.com/metalsoft-io/metal-cloud-sdk-go)
 
 This SDK allows control of the `Metalsoft Cloud` from Go.
 
-GoDoc documentation available [here](https://godoc.org/github.com/bigstepinc/metal-cloud-sdk-go)
+Generated GoDoc documentation available <https://godoc.org/github.com/bigstepinc/metal-cloud-sdk-go>
 
 ## Setup
 
@@ -46,19 +45,65 @@ GoDoc documentation available [here](https://godoc.org/github.com/bigstepinc/met
 All changes are done through pull requests against the `master` branch.  
 Once the PR is merged a new release can be create manually in order to have the changes available in the SDK.
 
-## Testing
+Make sure you also run the following before submitting a PR:
 
-To run the tests, run the following command:
+1. Format the code
 
-```sh
-go test -v
-```
+    ```sh
+    go fmt .
+    ```
+
+2. Run the linters, static analysis and format checkers, first install the tools:
+
+    ```sh
+    # Install golint
+    go install golang.org/x/lint/golint@latest
+
+    # Install golangci-lint
+    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+
+    # Install staticcheck
+    go install honnef.co/go/tools/cmd/staticcheck@latest
+
+    # Install errcheck
+    go install github.com/kisielk/errcheck@latest
+
+    # Install ineffassign
+    go install github.com/gordonklaus/ineffassign@latest
+
+    # Install goimports
+    go install golang.org/x/tools/cmd/goimports@latest
+    ```
+
+    Run the tools and fix the issues:
+
+    ```sh
+    golangci-lint run 
+    go vet .
+    staticcheck .
+    errcheck .
+    ineffassign .
+    golint .
+    ```
+
+3. Format the code with:
+
+    ```sh
+    goimports -w .
+    go fmt .
+    ```
+
+4. Run the tests
+
+  ```sh
+  go test -v
+  ```
 
 ## Release
 
 Releases are created manually by creating a new tag and release in the GitHub UI.
 
-See the [Releases](https://github.com/metalsoft-io/metal-cloud-sdk-go/releases) page for more information.
+See the [Releases](https://github.com/metalsoft-io/metal-cloud-sdk-go/releases) page for more information, use the `Draft a new release` button to create a new release.
 
 ## Sample Code
 

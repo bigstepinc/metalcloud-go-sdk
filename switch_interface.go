@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-//searchResultResponseWrapperForSwitchInterfaces describes a search result for switch interfaces
+// searchResultResponseWrapperForSwitchInterfaces describes a search result for switch interfaces
 type searchResultResponseWrapperForSwitchInterfaces struct {
 	DurationMilliseconds int                           `json:"duration_millisecnds,omitempty"`
 	Rows                 []SwitchInterfaceSearchResult `json:"rows,omitempty"`
@@ -12,7 +12,7 @@ type searchResultResponseWrapperForSwitchInterfaces struct {
 	RowsTotal            int                           `json:"rows_total,omitempty"`
 }
 
-//SwitchInterfaceSearchResult Represents a switch interface-to-server interface mapping.
+// SwitchInterfaceSearchResult Represents a switch interface-to-server interface mapping.
 type SwitchInterfaceSearchResult struct {
 	ServerID                                  int        `json:"server_id,omitempty" yaml:"serverID,omitempty"`
 	ServerIPMIHost                            string     `json:"server_ipmi_host,omitempty" yaml:"serverIPMIHost,omitempty"`
@@ -35,7 +35,7 @@ type SwitchInterfaceSearchResult struct {
 	SubnetPoolID                              [][]int    `json:"subnet_pool_id,omitempty" yaml:"subnetPoolID,omitempty"`
 }
 
-//SwitchInterfaceSearch searches for server interfaces filtering on various elements such as switch id or server id
+// SwitchInterfaceSearch searches for server interfaces filtering on various elements such as switch id or server id
 func (c *Client) SwitchInterfaceSearch(filter string) (*[]SwitchInterfaceSearchResult, error) {
 
 	tables := []string{"_switch_interfaces"}

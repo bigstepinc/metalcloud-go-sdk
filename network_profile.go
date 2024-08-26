@@ -4,7 +4,7 @@ package metalcloud
 
 import "fmt"
 
-//NetworkProfile object describes a network profile
+// NetworkProfile object describes a network profile
 type NetworkProfile struct {
 	NetworkProfileID               int                  `json:"network_profile_id,omitempty" yaml:"id,omitempty"`
 	NetworkProfileLabel            string               `json:"network_profile_label,omitempty" yaml:"label,omitempty"`
@@ -16,7 +16,7 @@ type NetworkProfile struct {
 	NetworkProfileUpdatedTimestamp string               `json:"nework_profile_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
 }
 
-//NetworkProfileVLAN object describes a VLAN
+// NetworkProfileVLAN object describes a VLAN
 type NetworkProfileVLAN struct {
 	VlanID                  *int                       `json:"vlan_id" yaml:"vlanID"`
 	PortMode                string                     `json:"port_mode,omitempty" yaml:"portMode,omitempty"`
@@ -27,12 +27,12 @@ type NetworkProfileVLAN struct {
 }
 
 type NetworkProfileSubnetPool struct {
-	SubnetPoolID   *int   `json:"subnet_pool_id" yaml:"subnetPoolID"`
-	SubnetPoolType string `json:"subnet_pool_type" yaml:"subnetPoolType"`
-	SubnetPoolProvidesDefaultRoute bool `json:"subnet_pool_provides_default_route" yaml:"subnetPoolProvidesDefaultRoute"`
+	SubnetPoolID                   *int   `json:"subnet_pool_id" yaml:"subnetPoolID"`
+	SubnetPoolType                 string `json:"subnet_pool_type" yaml:"subnetPoolType"`
+	SubnetPoolProvidesDefaultRoute bool   `json:"subnet_pool_provides_default_route" yaml:"subnetPoolProvidesDefaultRoute"`
 }
 
-//NetworkProfileGet returns a NetworkProfile with specified id
+// NetworkProfileGet returns a NetworkProfile with specified id
 func (c *Client) networkProfileGet(networkProfileID id) (*NetworkProfile, error) {
 	var createdObject NetworkProfile
 
@@ -52,7 +52,7 @@ func (c *Client) networkProfileGet(networkProfileID id) (*NetworkProfile, error)
 	return &createdObject, nil
 }
 
-//NetworkProfiles returns a list of network profiles for the specified datacenter
+// NetworkProfiles returns a list of network profiles for the specified datacenter
 func (c *Client) NetworkProfiles(datacenterName string) (*map[int]NetworkProfile, error) {
 
 	resp, err := c.rpcClient.Call(
@@ -85,7 +85,7 @@ func (c *Client) NetworkProfiles(datacenterName string) (*map[int]NetworkProfile
 	return &createdObject, nil
 }
 
-//NetworkProfileCreate creates a network profile.
+// NetworkProfileCreate creates a network profile.
 func (c *Client) NetworkProfileCreate(datacenterName string, networkProfile NetworkProfile) (*NetworkProfile, error) {
 	var createdObject NetworkProfile
 
@@ -102,7 +102,7 @@ func (c *Client) NetworkProfileCreate(datacenterName string, networkProfile Netw
 	return &createdObject, nil
 }
 
-//NetworkProfileUpdate updates a network profile.
+// NetworkProfileUpdate updates a network profile.
 func (c *Client) networkProfileUpdate(networkProfileID id, networkProfile NetworkProfile) (*NetworkProfile, error) {
 	var createdObject NetworkProfile
 
@@ -123,7 +123,7 @@ func (c *Client) networkProfileUpdate(networkProfileID id, networkProfile Networ
 	return &createdObject, nil
 }
 
-//NetworkProfileDelete deletes a network profile.
+// NetworkProfileDelete deletes a network profile.
 func (c *Client) networkProfileDelete(networkProfileID id) error {
 
 	if err := checkID(networkProfileID); err != nil {

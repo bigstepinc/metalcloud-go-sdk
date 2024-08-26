@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-//StoragePoolSearchResult represents a storage appliance in a datacenter.
+// StoragePoolSearchResult represents a storage appliance in a datacenter.
 type StoragePoolSearchResult struct {
 	StoragePoolID                              int    `json:"storage_pool_id,omitempty" yaml:"id,omitempty"`
 	StoragePoolName                            string `json:"storage_pool_name,omitempty" yaml:"name,omitempty"`
@@ -24,7 +24,7 @@ type StoragePoolSearchResult struct {
 	StoragePoolCapacityUsedCachedVirtualMbytes int    `json:"storage_pool_capacity_used_cached_virtual_mbytes,omitempty" yaml:"capacityUsedRealMbytes,omitempty"`
 }
 
-//searchResultResponseWrapperForStoragePoolSearchResult describes a search result for storage pools
+// searchResultResponseWrapperForStoragePoolSearchResult describes a search result for storage pools
 type searchResultResponseWrapperForStoragePoolSearchResult struct {
 	DurationMilliseconds int                       `json:"duration_millisecnds,omitempty"`
 	Rows                 []StoragePoolSearchResult `json:"rows,omitempty"`
@@ -32,7 +32,7 @@ type searchResultResponseWrapperForStoragePoolSearchResult struct {
 	RowsTotal            int                       `json:"rows_total,omitempty"`
 }
 
-//StoragePool represents a storage appliance in a datacenter.
+// StoragePool represents a storage appliance in a datacenter.
 type StoragePool struct {
 	StoragePoolID                              int      `json:"storage_pool_id,omitempty" yaml:"id,omitempty"`
 	StoragePoolName                            string   `json:"storage_pool_name,omitempty" yaml:"name,omitempty"`
@@ -62,7 +62,7 @@ type StoragePool struct {
 	StoragePoolTargetIQN                       string   `json:"storage_pool_target_iqn,omitempty" yaml:"targetIQN,omitempty"`
 }
 
-//StoragePoolSearch searches for storage pools matching certain filter
+// StoragePoolSearch searches for storage pools matching certain filter
 func (c *Client) StoragePoolSearch(filter string) (*[]StoragePoolSearchResult, error) {
 
 	tables := []string{"_storages"}
@@ -128,7 +128,7 @@ func (c *Client) StoragePoolSearch(filter string) (*[]StoragePoolSearchResult, e
 	return &list, nil
 }
 
-//StoragePoolGet returns a storage pool's details
+// StoragePoolGet returns a storage pool's details
 func (c *Client) StoragePoolGet(serverID int, decryptPasswd bool) (*StoragePool, error) {
 
 	var createdObject StoragePool

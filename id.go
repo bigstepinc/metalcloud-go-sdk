@@ -5,7 +5,7 @@ import (
 	"regexp"
 )
 
-//ID interface is used where the type of the ID can be either an int or a string
+// ID interface is used where the type of the ID can be either an int or a string
 type id interface{}
 
 func checkLabel(s string) error {

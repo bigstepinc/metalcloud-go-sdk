@@ -1,6 +1,6 @@
 package metalcloud
 
-//Drive represents a drive
+// Drive represents a drive
 type Drive struct {
 	DriveID               int               `json:"drive_id,omitempty"`
 	DriveLabel            string            `json:"drive_label,omitempty"`
@@ -20,12 +20,12 @@ type Drive struct {
 	DriveWWN              string            `json:"drive_wwn,omitempty"`
 }
 
-//DriveCredentials credentials to connect to the drive
+// DriveCredentials credentials to connect to the drive
 type DriveCredentials struct {
 	ISCSI ISCSI `json:"iscsi,omitempty"`
 }
 
-//DriveFileSystem filesystem details
+// DriveFileSystem filesystem details
 type DriveFileSystem struct {
 	DriveFilesystemType           string `json:"drive_filesystem_type,omitempty"`
 	DriveFilesystemBlockSizeBytes int    `json:"drive_filesystem_block_size_bytes,omitempty"`
