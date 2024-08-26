@@ -1,29 +1,70 @@
+//go:generate go run helper/docgen.go - $GOFILE ./ SubnetOOB SubnetOOB
 package metalcloud
 
 import (
 	"fmt"
 )
 
-// Subnet represents a subnet
+// Subnet represents a subnet for OOB operations
+// examples:
+//   - value: subnetOOBExample
 type SubnetOOB struct {
-	SubnetOOBID                                int      `json:"subnet_oob_id,omitempty" yaml:"id,omitempty"`
-	SubnetOOBLabel                             string   `json:"subnet_oob_label,omitempty" yaml:"label,omitempty"`
-	SubnetOOBType                              string   `json:"subnet_oob_type,omitempty" yaml:"type,omitempty"`
-	SubnetOOBAllocateForResourceType           string   `json:"subent_oob_allocate_for_resource_type,omitempty" yaml:"forResourceType,omitempty"`
-	SubnetOOBBlackList                         []string `json:"subnet_oob_blacklist,omitempty" yaml:"blacklist,omitempty"`
-	SubnetOOBGatewayHex                        string   `json:"subnet_oob_gateway_hex,omitempty" yaml:"gatewayHex,omitempty"`
-	SubnetOOBGatewayHumanReadable              string   `json:"subnet_oob_gateway_human_readable,omitempty" yaml:"gateway,omitempty"`
-	SubnetOOBNetmaskHex                        string   `json:"subnet_oob_netmask_hex,omitempty" yaml:"netmaskHex,omitempty"`
-	SubnetOOBNetmaskHumanReadable              string   `json:"subnet_oob_netmask_human_readable,omitempty" yaml:"netmask,omitempty"`
-	SubnetOOBPrefixSize                        int      `json:"subnet_oob_prefix_size,omitempty" yaml:"size,omitempty"`
-	SubnetOOBRangeStartHex                     string   `json:"subnet_oob_range_start_hex,omitempty" yaml:"rangeStartHex,omitempty"`
-	SubnetOOBRangeStartHumanReadable           string   `json:"subnet_oob_range_start_human_readable,omitempty" yaml:"rangeStart,omitempty"`
-	SubnetOOBRangeStartHumanReadableCompressed string   `json:"subnet_oob_range_start_human_readable_compressed,omitempty" yaml:"rangeStartCompressed,omitempty"`
-	SubnetOOBRangeEndHex                       string   `json:"subnet_oob_range_end_hex,omitempty" yaml:"rangeEndHex,omitempty"`
-	SubnetOOBRangeEndHumanReadable             string   `json:"subnet_oob_range_end_human_readable,omitempty" yaml:"rangeEnd,omitempty"`
-	SubnetOOBRangeEndHumanReadableCompressed   string   `json:"subnet_oob_range_end_human_readable_compressed,omitempty" yaml:"rangeEndCompressed,omitempty"`
-	SubnetOOBUseForAutoAllocation              bool     `json:"subnet_oob_use_for_auto_allocation,omitempty" yaml:"useForAutoAllocation,omitempty"`
-	DatacenterName                             string   `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+	// description: The id of the object
+	SubnetOOBID int `json:"subnet_oob_id,omitempty" yaml:"id,omitempty"`
+	// description: The label of the object
+	SubnetOOBLabel string `json:"subnet_oob_label,omitempty" yaml:"label,omitempty"`
+	// description: The type of the object
+	// values:
+	//   - ipv4
+	//   - ipv6
+	SubnetOOBType string `json:"subnet_oob_type,omitempty" yaml:"type,omitempty"`
+	// description: If set to `true` this subnet will be used for auto-allocation of IPs
+	SubnetOOBUseForAutoAllocation bool `json:"subnet_oob_use_for_auto_allocation,omitempty" yaml:"useForAutoAllocation,omitempty"`
+	// description: What type of resource to allocate this object for
+	// values:
+	//   - server
+	//   - network_equipment
+	//   - any
+	SubnetOOBAllocateForResourceType string `json:"subent_oob_allocate_for_resource_type,omitempty" yaml:"forResourceType,omitempty"`
+	// description: Array of IPs that are to be skipped from the interval
+	// examples:
+	//   - value: ['192.168.0.10','192.168.0.22']
+	SubnetOOBBlackList []string `json:"subnet_oob_blacklist,omitempty" yaml:"blacklist,omitempty"`
+	// description: The Gateway in hexadecimal format. Readonly.
+	SubnetOOBGatewayHex string `json:"subnet_oob_gateway_hex,omitempty" yaml:"gatewayHex,omitempty"`
+	// description: The Gateway to use when allocating IPs from this subnet.
+	// examples:
+	//   -values:  '"192.168.0.1"'
+	SubnetOOBGatewayHumanReadable string `json:"subnet_oob_gateway_human_readable,omitempty" yaml:"gateway,omitempty"`
+	// description: The Netmask in hexadecimal format. Readonly.
+	SubnetOOBNetmaskHex string `json:"subnet_oob_netmask_hex,omitempty" yaml:"netmaskHex,omitempty"`
+	// description: The Netmask to use.
+	// examples:
+	//   - value: '"255.255.255.192"'
+	SubnetOOBNetmaskHumanReadable string `json:"subnet_oob_netmask_human_readable,omitempty" yaml:"netmask,omitempty"`
+	// description: The Prefix size in CIDR format. Must match the netmask
+	// examples:
+	//   - value: 26
+	SubnetOOBPrefixSize int `json:"subnet_oob_prefix_size,omitempty" yaml:"size,omitempty"`
+	// description: The start of the range in hexadecimal. Readonly.
+	SubnetOOBRangeStartHex string `json:"subnet_oob_range_start_hex,omitempty" yaml:"rangeStartHex,omitempty"`
+	// description: The start of the range
+	// examples:
+	//   - value: '"192.168.0.10"'
+	SubnetOOBRangeStartHumanReadable string `json:"subnet_oob_range_start_human_readable,omitempty" yaml:"rangeStart,omitempty"`
+	// description: The end of the range in hexadecimal. Readonly
+	SubnetOOBRangeEndHex string `json:"subnet_oob_range_end_hex,omitempty" yaml:"rangeEndHex,omitempty"`
+	// description: The end of the range.
+	// examples:
+	//   - value: '"192.168.0.100"'
+	SubnetOOBRangeEndHumanReadable string `json:"subnet_oob_range_end_human_readable,omitempty" yaml:"rangeEnd,omitempty"`
+	// description: The data center in which this subnet is valid
+	DatacenterName string `json:"datacenter_name,omitempty" yaml:"datacenter,omitempty"`
+}
+
+var subnetOOBExample = SubnetOOB{
+	SubnetOOBID:    10,
+	SubnetOOBLabel: "mysubnet",
 }
 
 // searchResultForSubnetsOOB describes a search result for OOB subnet search

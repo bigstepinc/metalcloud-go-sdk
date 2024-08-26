@@ -1,59 +1,107 @@
 package metalcloud
 
 //go:generate go run helper/gen_exports.go
+//go:generate go run helper/docgen.go - $GOFILE ./ Infrastructure,InfrastructureOperation Infrastructure
 
 import (
 	"fmt"
 )
 
-//Infrastructure - the main infrastructure object
+// description - The infrastructure object. All other client-side objects (InstanceArrays, DriveArrays) fall under it in the object hierarchy
 type Infrastructure struct {
-	InfrastructureID                   int                     `json:"infrastructure_id,omitempty" yaml:"id,omitempty"`
-	InfrastructureLabel                string                  `json:"infrastructure_label" yaml:"label"`
-	DatacenterName                     string                  `json:"datacenter_name" yaml:"datacenter"`
-	InfrastructureSubdomain            string                  `json:"infrastructure_subdomain,omitempty" yaml:"subdomain,omitempty"`
-	UserIDowner                        int                     `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
-	UserEmailOwner                     string                  `json:"user_email_owner,omitempty" yaml:"ownerEmail,omitempty"`
-	InfrastructureTouchUnixtime        string                  `json:"infrastructure_touch_unixtime,omitempty" yaml:"touchUnixTime,omitempty"`
-	InfrastructureServiceStatus        string                  `json:"infrastructure_service_status,omitempty" yaml:"serviceStatus,omitempty"`
-	InfrastructureCreatedTimestamp     string                  `json:"infrastructure_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
-	InfrastructureUpdatedTimestamp     string                  `json:"infrastructure_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
-	InfrastructureChangeID             int                     `json:"infrastructure_change_id,omitempty" yaml:"changeID,omitempty"`
-	InfrastructureDeployID             int                     `json:"infrastructure_deploy_id,omitempty" yaml:"deployID,omitempty"`
-	InfrastructureDesignIsLocked       bool                    `json:"infrastructure_design_is_locked,omitempty" yaml:"designIsLocked,omitempty"`
-	InfrastructureOperation            InfrastructureOperation `json:"infrastructure_operation,omitempty" yaml:"operation,omitempty"`
-	InfrastructureExperimentalPriority string                  `json:"infrastructure_experimental_priority,omitempty"`
-	InfrastructureCustomVariables      interface{}             `json:"infrastructure_custom_variables,omitempty" yaml:"customVariables,omitempty"`
+	// description: The id of the object
+	InfrastructureID int `json:"infrastructure_id,omitempty" yaml:"id,omitempty"`
+	// description: The label of the object
+	InfrastructureLabel string `json:"infrastructure_label" yaml:"label"`
+	// description: The datacenter label on which this infrastructure resides
+	DatacenterName string `json:"datacenter_name" yaml:"datacenter"`
+	// description: An automatically generated string that represents this infrastructure. Deprecated.
+	InfrastructureSubdomain string `json:"infrastructure_subdomain,omitempty" yaml:"subdomain,omitempty"`
+	// description: The ID of the user that is the owner of the infrastructure.
+	UserIDowner int `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	// description: The email of the user that is the owner of the infrastructure. Readonly
+	UserEmailOwner string `json:"user_email_owner,omitempty" yaml:"ownerEmail,omitempty"`
+	// description: Internal.
+	InfrastructureTouchUnixtime string `json:"infrastructure_touch_unixtime,omitempty" yaml:"touchUnixTime,omitempty"`
+	// description: The service status.  Read only.
+	// values:
+	//  - ordered #designed but not yet deployed
+	//  - active #deployed
+	//  - suspended #deployed but suspended in a way that cannot be resumed by the user. (typically this means shutdown and disconnected from the internet).
+	//  - stopped #deployed but suspended in a way that can be resumed by the user.
+	//  - deleted #deleted permanently
+	InfrastructureServiceStatus string `json:"infrastructure_service_status,omitempty" yaml:"serviceStatus,omitempty"`
+	// description: ISO 8601 timestamp which holds the date and time when the infrastructure was created.
+	// example: 2013-11-29T13:00:01Z
+	InfrastructureCreatedTimestamp string `json:"infrastructure_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	// description: ISO 8601 timestamp which holds the date and time when the infrastructure was last updated.
+	// example: 2013-11-29T13:00:01Z
+	InfrastructureUpdatedTimestamp string `json:"infrastructure_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
+	// description: The id of the ongoing change operation. readonly
+	InfrastructureChangeID int `json:"infrastructure_change_id,omitempty" yaml:"changeID,omitempty"`
+	// description: The ID of the current deploy operation (AFC group id). Readonly.
+	InfrastructureDeployID int `json:"infrastructure_deploy_id,omitempty" yaml:"deployID,omitempty"`
+	// description: Set if the infrastructure cannot be changed.
+	InfrastructureDesignIsLocked bool `json:"infrastructure_design_is_locked,omitempty" yaml:"designIsLocked,omitempty"`
+	// description: The operation object
+	InfrastructureOperation InfrastructureOperation `json:"infrastructure_operation,omitempty" yaml:"operation,omitempty"`
+	// description: Internal
+	InfrastructureExperimentalPriority string `json:"infrastructure_experimental_priority,omitempty"`
+	// description: Custom variables at the infrastructure level. They will be pushed to all objects (such as operating systems) and workflows.
+	InfrastructureCustomVariables interface{} `json:"infrastructure_custom_variables,omitempty" yaml:"customVariables,omitempty"`
 }
 
-//InfrastructureOperation - object with alternations to be applied
+// InfrastructureOperation - object with alternations to be applied
 type InfrastructureOperation struct {
-	InfrastructureID               int         `json:"infrastructure_id,omitempty" yaml:"id,omitempty"`
-	InfrastructureLabel            string      `json:"infrastructure_label" yaml:"label"`
-	DatacenterName                 string      `json:"datacenter_name" yaml:"datacenter"`
-	InfrastructureDeployStatus     string      `json:"infrastructure_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
-	InfrastructureDeployType       string      `json:"infrastructure_deploy_type,omitempty" yaml:"deployType,omitempty"`
-	InfrastructureSubdomain        string      `json:"infrastructure_subdomain,omitempty" yaml:"subdomain,omitempty"`
-	UserIDOwner                    int         `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
-	InfrastructureUpdatedTimestamp string      `json:"infrastructure_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
-	InfrastructureChangeID         int         `json:"infrastructure_change_id,omitempty" yaml:"changeID,omitempty"`
-	InfrastructureDeployID         int         `json:"infrastructure_deploy_id,omitempty" yaml:"deployID,omitempty"`
-	InfrastructureCustomVariables  interface{} `json:"infrastructure_custom_variables,omitempty" yaml:"customVariables,omitempty"`
+	// description: The id of the object
+	InfrastructureID int `json:"infrastructure_id,omitempty" yaml:"id,omitempty"`
+	// description: The label of the object
+	InfrastructureLabel string `json:"infrastructure_label" yaml:"label"`
+	// description: The datacenter label on which this infrastructure resides
+	DatacenterName string `json:"datacenter_name" yaml:"datacenter"`
+	// description: The status of the ongoing deployment operation (if any)
+	// values:
+	//     - not_started
+	//     - ongoing
+	//     - finished
+	InfrastructureDeployStatus string `json:"infrastructure_deploy_status,omitempty" yaml:"deployStatus,omitempty"`
+	// description: The type of the current deploy operation (if any)
+	// values:
+	//     - create
+	// 	   - delete
+	//     - edit
+	// 	   - start
+	//     - stop
+	// 	   - suspend
+	InfrastructureDeployType string `json:"infrastructure_deploy_type,omitempty" yaml:"deployType,omitempty"`
+	// description: An automatically generated string that represents this infrastructure. Deprecated.
+	InfrastructureSubdomain string `json:"infrastructure_subdomain,omitempty" yaml:"subdomain,omitempty"`
+	// description: The ID of the user that is the owner of the infrastructure.
+	UserIDOwner int `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	// description: ISO 8601 timestamp which holds the date and time when the infrastructure was last updated.
+	// example: 2013-11-29T13:00:01Z
+	InfrastructureUpdatedTimestamp string `json:"infrastructure_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
+	// description: The ID of the current change operation. Readonly.
+	InfrastructureChangeID int `json:"infrastructure_change_id,omitempty" yaml:"changeID,omitempty"`
+	// description: The ID of the current deploy operation (AFC group id). Readonly.
+	InfrastructureDeployID int `json:"infrastructure_deploy_id,omitempty" yaml:"deployID,omitempty"`
+	// description: Custom variables at the infrastructure level. They will be pushed to all objects (such as operating systems) and workflows.
+	InfrastructureCustomVariables interface{} `json:"infrastructure_custom_variables,omitempty" yaml:"customVariables,omitempty"`
 }
 
-//ShutdownOptions controls how the deploy engine handles running instances
+// ShutdownOptions controls how the deploy engine handles running instances
 type ShutdownOptions struct {
 	HardShutdownAfterTimeout   bool `json:"hard_shutdown_after_timeout"`
 	AttemptSoftShutdown        bool `json:"attempt_soft_shutdown"`
 	SoftShutdownTimeoutSeconds int  `json:"soft_shutdown_timeout_seconds"`
 }
 
-//DeployOptions controls server allocation
+// DeployOptions controls server allocation
 type DeployOptions struct {
 	InstanceArrayMapping map[int]map[string]DeployOptionsServerTypeMappingObject `json:"instance_array"`
 }
 
-//DeployOptionsServerTypeMappingObject respresents one of the server type mappings
+// DeployOptionsServerTypeMappingObject respresents one of the server type mappings
 type DeployOptionsServerTypeMappingObject struct {
 	ServerCount int   `json:"server_count"`
 	ServerIDs   []int `json:"server_ids"`
@@ -85,7 +133,7 @@ type InfrastructuresSearchResult struct {
 	AFCTotal                       int      `json:"total,omitempty" yaml:"total,omitempty"`
 }
 
-//InfrastructureCreate creates an infrastructure
+// InfrastructureCreate creates an infrastructure
 func (c *Client) InfrastructureCreate(infrastructure Infrastructure) (*Infrastructure, error) {
 	var createdObject Infrastructure
 
@@ -104,7 +152,7 @@ func (c *Client) InfrastructureCreate(infrastructure Infrastructure) (*Infrastru
 	return &createdObject, nil
 }
 
-//infrastructureEdit alters an infrastructure
+// infrastructureEdit alters an infrastructure
 func (c *Client) infrastructureEdit(infrastructureID id, infrastructureOperation InfrastructureOperation) (*Infrastructure, error) {
 	var createdObject Infrastructure
 
@@ -125,7 +173,7 @@ func (c *Client) infrastructureEdit(infrastructureID id, infrastructureOperation
 	return &createdObject, nil
 }
 
-//infrastructureDelete deletes an infrastructure and all associated elements. Requires deploy
+// infrastructureDelete deletes an infrastructure and all associated elements. Requires deploy
 func (c *Client) infrastructureDelete(infrastructureID id) error {
 
 	if err := checkID(infrastructureID); err != nil {
@@ -145,7 +193,7 @@ func (c *Client) infrastructureDelete(infrastructureID id) error {
 	return nil
 }
 
-//infrastructureOperationCancel reverts (undos) alterations done before deploy
+// infrastructureOperationCancel reverts (undos) alterations done before deploy
 func (c *Client) infrastructureOperationCancel(infrastructureID id) error {
 
 	if err := checkID(infrastructureID); err != nil {
@@ -167,12 +215,12 @@ func (c *Client) infrastructureOperationCancel(infrastructureID id) error {
 	return nil
 }
 
-//infrastructureDeploy initiates a deploy operation that will apply all registered changes for the respective infrastructure
+// infrastructureDeploy initiates a deploy operation that will apply all registered changes for the respective infrastructure
 func (c *Client) infrastructureDeploy(infrastructureID id, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error {
 	return c.infrastructureDeployWithOptions(infrastructureID, shutdownOptions, nil, allowDataLoss, skipAnsible)
 }
 
-//infrastructureDeployWithOptions initiates a deploy operation that will apply all registered changes for the respective infrastructure. With options.
+// infrastructureDeployWithOptions initiates a deploy operation that will apply all registered changes for the respective infrastructure. With options.
 func (c *Client) infrastructureDeployWithOptions(infrastructureID id, shutdownOptions ShutdownOptions, deployOptions *DeployOptions, allowDataLoss bool, skipAnsible bool) error {
 
 	if err := checkID(infrastructureID); err != nil {
@@ -199,7 +247,7 @@ func (c *Client) infrastructureDeployWithOptions(infrastructureID id, shutdownOp
 	return nil
 }
 
-//Infrastructures returns a list of infrastructures
+// Infrastructures returns a list of infrastructures
 func (c *Client) Infrastructures() (*map[string]Infrastructure, error) {
 	userID := c.GetUserID()
 
@@ -233,7 +281,7 @@ func (c *Client) Infrastructures() (*map[string]Infrastructure, error) {
 	return &createdObject, nil
 }
 
-//infrastructureGet returns a specific infrastructure by id
+// infrastructureGet returns a specific infrastructure by id
 func (c *Client) infrastructureGet(infrastructureID id) (*Infrastructure, error) {
 	var infrastructure Infrastructure
 
@@ -250,7 +298,7 @@ func (c *Client) infrastructureGet(infrastructureID id) (*Infrastructure, error)
 	return &infrastructure, nil
 }
 
-//infrastructureUserLimits returns user metadata
+// infrastructureUserLimits returns user metadata
 func (c *Client) infrastructureUserLimits(infrastructureID id) (*map[string]interface{}, error) {
 	var userLimits map[string]interface{}
 
@@ -302,7 +350,7 @@ func (i *Infrastructure) instanceToOperation(op *InfrastructureOperation) {
 	operation.InfrastructureChangeID = op.InfrastructureChangeID
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (i Infrastructure) CreateOrUpdate(client MetalCloudClient) error {
 	var result *Infrastructure
 	var err error
@@ -337,7 +385,7 @@ func (i Infrastructure) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (i Infrastructure) Delete(client MetalCloudClient) error {
 	var result *Infrastructure
 	var id int
@@ -365,7 +413,7 @@ func (i Infrastructure) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (i Infrastructure) Validate() error {
 	if i.InfrastructureID == 0 && i.InfrastructureLabel == "" {
 		return fmt.Errorf("id is required")
@@ -373,7 +421,7 @@ func (i Infrastructure) Validate() error {
 	return nil
 }
 
-//InfrastructureSearch searches for infrastructures with filtering support
+// InfrastructureSearch searches for infrastructures with filtering support
 func (c *Client) InfrastructureSearch(filter string) (*[]InfrastructuresSearchResult, error) {
 
 	tables := []string{"_user_infrastructures_extended"}

@@ -44,10 +44,14 @@ type MetalCloudClient interface {
 	DatacenterGetForUserByID(datacenterName string, userID int) (*Datacenter, error)
 	// DatacenterConfigGet returns details of a specific datacenter
 	DatacenterConfigGet(datacenterName string) (*DatacenterConfig, error)
+	// DatacenterWithConfigGet returns details of a specific datacenter as a single object that contains the config as well
+	DatacenterWithConfigGet(datacenterName string) (*DatacenterWithConfig, error)
 	// DatacenterConfigUpdate Updates configuration information for a specified Datacenter.
 	DatacenterConfigUpdate(datacenterName string, datacenterConfig DatacenterConfig) error
 	// DatacenterCreate creates a new Datacenter
 	DatacenterCreate(datacenter Datacenter, datacenterConfig DatacenterConfig) (*Datacenter, error)
+	DatacenterCreateFromDatacenterWithConfig(datacenter DatacenterWithConfig) (*DatacenterWithConfig, error)
+	DatacenterUpdateFromDatacenterWithConfig(datacenter DatacenterWithConfig) (*DatacenterWithConfig, error)
 	// DatacenterDelete deletes storage pools, subnet pools, and other resources then marks the datacenter as deleted.
 	DatacenterDelete(datacenterName string) error
 	// DatacenterAgentsConfigJSONDownloadURL returns the agent url (and automatically decrypts it)
@@ -148,9 +152,9 @@ type MetalCloudClient interface {
 	InstanceArrays(infrastructureID int) (*map[string]InstanceArray, error)
 	// InstanceArraysByLabel infrastructure
 	InstanceArraysByLabel(infrastructureLabel string) (*map[string]InstanceArray, error)
-	// InstanceArrayCreate (colletion of identical instances). Requires Deploy.
+	// InstanceArrayCreate (collection of identical instances). Requires Deploy.
 	InstanceArrayCreate(infrastructureID int, instanceArray InstanceArray) (*InstanceArray, error)
-	// InstanceArrayCreateByLabel (colletion of identical instances). Requires Deploy.
+	// InstanceArrayCreateByLabel (collection of identical instances). Requires Deploy.
 	InstanceArrayCreateByLabel(infrastructureLabel string, instanceArray InstanceArray) (*InstanceArray, error)
 	// InstanceArrayEdit array. Requires deploy.
 	InstanceArrayEdit(instanceArrayID int, instanceArrayOperation InstanceArrayOperation, bSwapExistingInstancesHardware *bool, bKeepDetachingDrives *bool, objServerTypeMatches *ServerTypeMatches, arrInstancesToBeDeleted *[]int) (*InstanceArray, error)
@@ -522,10 +526,12 @@ type MetalCloudClient interface {
 	SwitchDeviceDefaultsDelete(switchDeviceDefaultsIDs []int) error
 	// SwitchDeviceLinks Returns all the switch device links found in the database.
 	SwitchDeviceLinks() (*map[int]SwitchDeviceLink, error)
-	// SwitchDeviceLinkCreate Creates a record for a new SwitchDevice.
+	// SwitchDeviceLinkCreate creates a record for a new SwitchDeviceLink.
 	SwitchDeviceLinkCreate(networkEquipmentID1 int, networkEquipmentID2 int, networkEquipmentLinkType string) (*SwitchDeviceLink, error)
-	// SwitchDeviceLinkGet Retrieves information regarding a specified switch device link
+	// SwitchDeviceLinkGet retrieves information regarding a specified switch device link
 	SwitchDeviceLinkGet(networkEquipmentID1 int, networkEquipmentID2 int, linkType string) (*SwitchDeviceLink, error)
+	// SwitchDeviceLinkUpdate updates information regarding a specified switch device link
+	SwitchDeviceLinkUpdate(networkEquipmentID1 int, networkEquipmentID2 int, networkEquipmentLinkType string) (*SwitchDeviceLink, error)
 	// SwitchDeviceLinkDelete deletes a specified switch device and its registered interfaces.
 	SwitchDeviceLinkDelete(networkEquipmentID1 int, networkEquipmentID2 int, linkType string) error
 	// SwitchInterfaceSearch searches for server interfaces filtering on various elements such as switch id or server id

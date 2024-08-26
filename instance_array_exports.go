@@ -22,12 +22,12 @@ func (c *Client) InstanceArraysByLabel(infrastructureLabel string) (*map[string]
 	return c.instanceArrays(infrastructureLabel)
 }
 
-//InstanceArrayCreate (colletion of identical instances). Requires Deploy.
+//InstanceArrayCreate (collection of identical instances). Requires Deploy.
 func (c *Client) InstanceArrayCreate(infrastructureID int, instanceArray InstanceArray) (*InstanceArray, error) {
 	return c.instanceArrayCreate(infrastructureID,instanceArray)
 }
 
-//InstanceArrayCreateByLabel (colletion of identical instances). Requires Deploy.
+//InstanceArrayCreateByLabel (collection of identical instances). Requires Deploy.
 func (c *Client) InstanceArrayCreateByLabel(infrastructureLabel string, instanceArray InstanceArray) (*InstanceArray, error) {
 	return c.instanceArrayCreate(infrastructureLabel,instanceArray)
 }

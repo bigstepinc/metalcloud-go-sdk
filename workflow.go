@@ -1,3 +1,4 @@
+//go:generate go run helper/docgen.go - $GOFILE ./ Workflow,WorkflowStageDefinitionReference,WorkflowStageAssociation Workflow
 package metalcloud
 
 import (
@@ -8,35 +9,70 @@ import (
 
 // Workflow struct defines a server type
 type Workflow struct {
-	WorkflowID               int    `json:"workflow_id,omitempty" yaml:"id,omitempty"`
-	UserIDOwner              int    `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
-	UserIDAuthenticated      int    `json:"user_id_authenticated,omitempty" yaml:"userIDAuthenticated,omitempty"`
-	WorkflowLabel            string `json:"workflow_label,omitempty" yaml:"label,omitempty"`
-	WorkflowUsage            string `json:"workflow_usage,omitempty" yaml:"usage,omitempty"`
-	WorkflowTitle            string `json:"workflow_title,omitempty" yaml:"title,omitempty"`
-	WorkflowDescription      string `json:"workflow_description,omitempty" yaml:"description,omitempty"`
-	WorkflowIsDeprecated     bool   `json:"workflow_is_deprecated,omitempty" yaml:"isDeprecated,omitempty"`
-	IconAssetDataURI         string `json:"icon_asset_data_uri,omitempty" yaml:"assetDataURI,omitempty"`
+	//description: Id of the object
+	WorkflowID int `json:"workflow_id,omitempty" yaml:"id,omitempty"`
+	//description: Id of the owner
+	UserIDOwner int `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
+	//description: Internal.
+	UserIDAuthenticated int `json:"user_id_authenticated,omitempty" yaml:"userIDAuthenticated,omitempty"`
+	//description: Label
+	WorkflowLabel string `json:"workflow_label,omitempty" yaml:"label,omitempty"`
+	//description: Usage of this workflow
+	//values:
+	// - infrastructure
+	// - switch_device
+	// - server
+	// - free_standing
+	// - storage_pool
+	// - user
+	// - os_template
+	// - global
+	WorkflowUsage string `json:"workflow_usage,omitempty" yaml:"usage,omitempty"`
+	//description: Title (name) of this workflow
+	WorkflowTitle string `json:"workflow_title,omitempty" yaml:"title,omitempty"`
+	//description: Description of this workflow
+	WorkflowDescription string `json:"workflow_description,omitempty" yaml:"description,omitempty"`
+	//description: Set to true if this workflow is deprecated
+	WorkflowIsDeprecated bool `json:"workflow_is_deprecated,omitempty" yaml:"isDeprecated,omitempty"`
+	//description: Internal
+	IconAssetDataURI string `json:"icon_asset_data_uri,omitempty" yaml:"assetDataURI,omitempty"`
+	//description: ISO 8601 timestamp which holds the date and time when the workflow record was created. Readonly.
+	//example: 2013-11-29T13:00:01Z
 	WorkflowCreatedTimestamp string `json:"workflow_created_timestamp,omitempty" yaml:"createdTimestamp,omitempty"`
+	//description: ISO 8601 timestamp which holds the date and time when the workflow record was updated. Readonly.
+	//example: 2013-11-29T13:00:01Z
 	WorkflowUpdatedTimestamp string `json:"workflow_updated_timestamp,omitempty" yaml:"updatedTimestamp,omitempty"`
 }
 
 // WorkflowStageDefinitionReference defines where in a workflow a stage definition resides
 type WorkflowStageDefinitionReference struct {
-	WorkflowStageID       int `json:"workflow_stage_id,omitempty"`
-	WorkflowID            int `json:"workflow_id,omitempty"`
-	StageDefinitionID     int `json:"stage_definition_id,omitempty"`
-	WorkflowStageRunLevel int `json:"workflow_stage_run_level,omitempty"`
+	//description: Workflow stage id
+	WorkflowStageID int `json:"workflow_stage_id,omitempty" yaml:"workflowStageID,omitempty"`
+	//description: Workflow id
+	WorkflowID int `json:"workflow_id,omitempty" yaml:"workflowID,omitempty"`
+	//description: Stage definition id
+	StageDefinitionID int `json:"stage_definition_id,omitempty" yaml:"stageDefinitionID,omitempty"`
+	//description: Run level in the workflow
+	WorkflowStageRunLevel int `json:"workflow_stage_run_level,omitempty" yaml:"runLevel,omitempty"`
 }
 
 // WorkflowStageAssociation associations
 type WorkflowStageAssociation struct {
-	InfrastructureDeployCustomStageID             int    `json:"infrastructure_deploy_custom_stage_id,omitempty"`
-	InfrastructureID                              int    `json:"infrastructure_id"`
-	StageDefinitionID                             int    `json:"stage_definition_id,omitempty"`
-	InfrastructureDeployCustomStageType           string `json:"infrastructure_deploy_custom_stage_type,omitempty"`
-	InfrastructureDeployCustomStageRunLevel       int    `json:"infrastructure_deploy_custom_stage_run_level,omitempty"`
-	InfrastructureDeployCustomStageExecOutputJSON string `json:"infrastructure_deploy_custom_stage_exec_output_json,omitempty"`
+	//description: Infrastructure stage id
+	InfrastructureDeployCustomStageID int `json:"infrastructure_deploy_custom_stage_id,omitempty" yaml:"infrastructureDeployStageID,omitempty"`
+	//description: Infrastructure id
+	InfrastructureID int `json:"infrastructure_id" yaml:"infrastructureID,omitempty"`
+	//description: Stage definition id
+	StageDefinitionID int `json:"stage_definition_id,omitempty" yaml:"definitionID,omitempty"`
+	//description: Type of position in the infrastructure:
+	//values:
+	// - pre_deploy
+	// - post_deploy
+	InfrastructureDeployCustomStageType string `json:"infrastructure_deploy_custom_stage_type,omitempty" yaml:"type,omitempty"`
+	//description: Run level (the depth in the tree where this stage resides).
+	InfrastructureDeployCustomStageRunLevel int `json:"infrastructure_deploy_custom_stage_run_level,omitempty" yaml:"runLevel,omitempty"`
+	//description: The output of the last execution of this task
+	InfrastructureDeployCustomStageExecOutputJSON string `json:"infrastructure_deploy_custom_stage_exec_output_json,omitempty" yaml:"lastOutput,omitempty"`
 }
 
 // WorkflowCreate creates a workflow
