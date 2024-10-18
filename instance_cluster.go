@@ -1,7 +1,10 @@
 package metalcloud
 
 import (
+	"encoding/json"
 	"fmt"
+
+	"github.com/jinzhu/copier"
 )
 
 //go:generate go run helper/gen_exports.go
@@ -67,6 +70,7 @@ type AppVMWareVsphereWrapper struct {
 	Type       string           `json:"type,omitempty" yaml:"type,omitempty"`
 }
 
+// note if you change this structure change also the custom unmarshaling below that fixes the shitty [] instead of {} problem
 type AppVMWareVCF struct {
 	VSphereWorkload                  map[string]AppInstanceDetails `json:"vcf_workload,omitempty" yaml:"vcfWorkload,omitempty"`
 	VSphereManagement                map[string]AppInstanceDetails `json:"vcf_management,omitempty" yaml:"vcfManagement,omitempty"`
@@ -79,6 +83,133 @@ type AppVMWareVCF struct {
 	InstanceVcenterWebClient         string                        `json:"instance_vcenter_web_client,omitempty" yaml:"instanceVcenterWebClient,omitempty"`
 	VCSAUsername                     string                        `json:"vcsa_username,omitempty" yaml:"vcsaUsername,omitempty"`
 	VCSAInitialPassword              string                        `json:"vcsa_initial_password,omitempty" yaml:"vcsaUsername,omitempty"`
+	CBAAdminUsername                 string                        `json:"cba_admin_username,omitempty" yaml:"cbaAdminUsername,omitempty"`
+	CBAAdminPassword                 string                        `json:"cba_admin_password,omitempty" yaml:"cbaAdminPassword,omitempty"`
+	CBARootUsername                  string                        `json:"cba_root_username,omitempty" yaml:"cbaRootUsername,omitempty"`
+	CBARootPassword                  string                        `json:"cba_root_password,omitempty" yaml:"cbaRootPassword,omitempty"`
+	SDDCRootUsername                 string                        `json:"sddc_root_username,omitempty" yaml:"sddcRootUsername,omitempty"`
+	SDDCRootPassword                 string                        `json:"sdcc_root_password,omitempty" yaml:"sddcRootPassword,omitempty"`
+	SDDCLocalAdminUsername           string                        `json:"sddc_local_admin_username,omitempty" yaml:"sddcLocalAdminUsername,omitempty"`
+	SDDCLocalAdminPassword           string                        `json:"sdcc_local_admin_password,omitempty" yaml:"sddcLocalAdminPassword,omitempty"`
+	SDDCSecondUsername               string                        `json:"sddc_second_username,omitempty" yaml:"sddcSecondUsername,omitempty"`
+	SDDCSecondPassword               string                        `json:"sdcc_second_password,omitempty" yaml:"sddcSecondPassword,omitempty"`
+	NSXManagerRootUsername           string                        `json:"nsx_manager_root_username,omitempty" yaml:"nsxManagerRootUsername,omitempty"`
+	NSXManagerRootPassword           string                        `json:"nsx_manager_root_password,omitempty" yaml:"nsxManagerRootPassword,omitempty"`
+	NSXManagerAdminUsername          string                        `json:"nsx_manager_admin_username,omitempty" yaml:"nsxManagerAdminUsername,omitempty"`
+	NSXManagerAdminPassword          string                        `json:"nsx_manager_admin_password,omitempty" yaml:"nsxManagerAdminPassword,omitempty"`
+	NSXManagerAuditUsername          string                        `json:"nsx_manager_audit_username,omitempty" yaml:"nsxManagerAuditUsername,omitempty"`
+	NSXManagerAuditPassword          string                        `json:"nsx_manager_audit_password,omitempty" yaml:"nsxManagerAuditPassword,omitempty"`
+	VCenterRootUsername              string                        `json:"vcenter_root_username,omitempty" yaml:"vcenterRootUsername,omitempty"`
+	VCenterRootPassword              string                        `json:"vcenter_root_password,omitempty" yaml:"vcenterRootPassword,omitempty"`
+	VCenterSSOAdminUsername          string                        `json:"vcenter_sso_admin_username,omitempty" yaml:"vcenterSSOAdminUsername,omitempty"`
+	VCenterSSOAdminPassword          string                        `json:"vcenter_sso_admin_password,omitempty" yaml:"vcenterSSOAdminPassword,omitempty"`
+	CBAIPURL                         string                        `json:"cba_ip_url,omitempty" yaml:"cbaIPUrl,omitempty"`
+	CBAURL                           string                        `json:"cba_url,omitempty" yaml:"cbaURL,omitempty"`
+	SDDCIPURL                        string                        `json:"sddc_ip_url,omitempty" yaml:"sddcIPUrl,omitempty"`
+	MVCS1IPURL                       string                        `json:"m-vcs1_ip_url,omitempty" yaml:"mVCS1IPURL,omitempty"`
+	MVCS1URL                         string                        `json:"m-vcs1_url,omitempty" yaml:"mVCS1URL,omitempty"`
+	MNSX1IPURL                       string                        `json:"m-nsx1_ip_url,omitempty" yaml:"mNSX1IPURL,omitempty"`
+	MNSX1URL                         string                        `json:"m-nsx1_url,omitempty" yaml:"mNSX1URL,omitempty"`
+	MNSX1AIPURL                      string                        `json:"m-nsx1a_ip_url,omitempty" yaml:"mNSX1AIPURL,omitempty"`
+	MNSX1AURL                        string                        `json:"m-nsx1a_url,omitempty" yaml:"mNSX1AURL,omitempty"`
+	MNSX1BIPURL                      string                        `json:"m-nsx1b_ip_url,omitempty" yaml:"mNSX1BIPURL,omitempty"`
+	MNSX1BURL                        string                        `json:"m-nsx1b_url,omitempty" yaml:"mNSX1BURL,omitempty"`
+	MNSX1CIPURL                      string                        `json:"m-nsx1c_ip_url,omitempty" yaml:"mNSX1CIPURL,omitempty"`
+	MNSX1CURL                        string                        `json:"m-nsx1c_url,omitempty" yaml:"mNSX1CURL,omitempty"`
+}
+
+// UnmarshalJSON to handle the shitty [] instead of {} or undefined returned by the serverside.
+func (s *AppVMWareVCF) UnmarshalJSON(data []byte) error {
+
+	var v struct {
+		VSphereWorkload                  interface{} `json:"vcf_workload,omitempty" yaml:"vcfWorkload,omitempty"`
+		VSphereManagement                interface{} `json:"vcf_management,omitempty" yaml:"vcfManagement,omitempty"`
+		AdminUsername                    string      `json:"admin_username,omitempty" yaml:"adminUsername,omitempty"`
+		AdminPassword                    string      `json:"admin_password,omitempty" yaml:"adminPassword,omitempty"`
+		ClusterSoftwareAvailableVersions []string    `json:"cluster_software_available_versions,omitempty" yaml:"clusterSoftwareAvailableVersions,omitempty"`
+		ClusterSoftwareVersion           string      `json:"cluster_software_version,omitempty" yaml:"clusterSoftwareVersion,omitempty"`
+		Type                             string      `json:"type,omitempty" yaml:"type,omitempty"`
+		InstanceVCenterServerManagement  string      `json:"instance_vcenter_server_management,omitempty" yaml:"instanceVcenterServerManagement,omitempty"`
+		InstanceVcenterWebClient         string      `json:"instance_vcenter_web_client,omitempty" yaml:"instanceVcenterWebClient,omitempty"`
+		VCSAUsername                     string      `json:"vcsa_username,omitempty" yaml:"vcsaUsername,omitempty"`
+		VCSAInitialPassword              string      `json:"vcsa_initial_password,omitempty" yaml:"vcsaUsername,omitempty"`
+		CBAAdminUsername                 string      `json:"cba_admin_username,omitempty" yaml:"cbaAdminUsername,omitempty"`
+		CBAAdminPassword                 string      `json:"cba_admin_password,omitempty" yaml:"cbaAdminPassword,omitempty"`
+		CBARootUsername                  string      `json:"cba_root_username,omitempty" yaml:"cbaRootUsername,omitempty"`
+		CBARootPassword                  string      `json:"cba_root_password,omitempty" yaml:"cbaRootPassword,omitempty"`
+		SDDCRootUsername                 string      `json:"sddc_root_username,omitempty" yaml:"sddcRootUsername,omitempty"`
+		SDDCRootPassword                 string      `json:"sdcc_root_password,omitempty" yaml:"sddcRootPassword,omitempty"`
+		SDDCLocalAdminUsername           string      `json:"sddc_local_admin_username,omitempty" yaml:"sddcLocalAdminUsername,omitempty"`
+		SDDCLocalAdminPassword           string      `json:"sdcc_local_admin_password,omitempty" yaml:"sddcLocalAdminPassword,omitempty"`
+		SDDCSecondUsername               string      `json:"sddc_second_username,omitempty" yaml:"sddcSecondUsername,omitempty"`
+		SDDCSecondPassword               string      `json:"sdcc_second_password,omitempty" yaml:"sddcSecondPassword,omitempty"`
+		NSXManagerRootUsername           string      `json:"nsx_manager_root_username,omitempty" yaml:"nsxManagerRootUsername,omitempty"`
+		NSXManagerRootPassword           string      `json:"nsx_manager_root_password,omitempty" yaml:"nsxManagerRootPassword,omitempty"`
+		NSXManagerAdminUsername          string      `json:"nsx_manager_admin_username,omitempty" yaml:"nsxManagerAdminUsername,omitempty"`
+		NSXManagerAdminPassword          string      `json:"nsx_manager_admin_password,omitempty" yaml:"nsxManagerAdminPassword,omitempty"`
+		NSXManagerAuditUsername          string      `json:"nsx_manager_audit_username,omitempty" yaml:"nsxManagerAuditUsername,omitempty"`
+		NSXManagerAuditPassword          string      `json:"nsx_manager_audit_password,omitempty" yaml:"nsxManagerAuditPassword,omitempty"`
+		VCenterRootUsername              string      `json:"vcenter_root_username,omitempty" yaml:"vcenterRootUsername,omitempty"`
+		VCenterRootPassword              string      `json:"vcenter_root_password,omitempty" yaml:"vcenterRootPassword,omitempty"`
+		VCenterSSOAdminUsername          string      `json:"vcenter_sso_admin_username,omitempty" yaml:"vcenterSSOAdminUsername,omitempty"`
+		VCenterSSOAdminPassword          string      `json:"vcenter_sso_admin_password,omitempty" yaml:"vcenterSSOAdminPassword,omitempty"`
+		CBAIPURL                         string      `json:"cba_ip_url,omitempty" yaml:"cbaIPUrl,omitempty"`
+		CBAURL                           string      `json:"cba_url,omitempty" yaml:"cbaURL,omitempty"`
+		SDDCIPURL                        string      `json:"sddc_ip_url,omitempty" yaml:"sddcIPUrl,omitempty"`
+		MVCS1IPURL                       string      `json:"m-vcs1_ip_url,omitempty" yaml:"mVCS1IPURL,omitempty"`
+		MVCS1URL                         string      `json:"m-vcs1_url,omitempty" yaml:"mVCS1URL,omitempty"`
+		MNSX1IPURL                       string      `json:"m-nsx1_ip_url,omitempty" yaml:"mNSX1IPURL,omitempty"`
+		MNSX1URL                         string      `json:"m-nsx1_url,omitempty" yaml:"mNSX1URL,omitempty"`
+		MNSX1AIPURL                      string      `json:"m-nsx1a_ip_url,omitempty" yaml:"mNSX1AIPURL,omitempty"`
+		MNSX1AURL                        string      `json:"m-nsx1a_url,omitempty" yaml:"mNSX1AURL,omitempty"`
+		MNSX1BIPURL                      string      `json:"m-nsx1b_ip_url,omitempty" yaml:"mNSX1BIPURL,omitempty"`
+		MNSX1BURL                        string      `json:"m-nsx1b_url,omitempty" yaml:"mNSX1BURL,omitempty"`
+		MNSX1CIPURL                      string      `json:"m-nsx1c_ip_url,omitempty" yaml:"mNSX1CIPURL,omitempty"`
+		MNSX1CURL                        string      `json:"m-nsx1c_url,omitempty" yaml:"mNSX1CURL,omitempty"`
+	}
+
+	err := json.Unmarshal(data, &v)
+	if err != nil {
+		return err
+	}
+
+	copier.Copy(&s, &v)
+
+	s.VSphereManagement = map[string]AppInstanceDetails{}
+	if _, ok := v.VSphereManagement.([]interface{}); !ok {
+		for i, x := range v.VSphereManagement.(map[string]interface{}) {
+			var arr = x.(map[string]interface{})
+			s.VSphereManagement[i] = AppInstanceDetails{
+				InstanceID:         int(arr["instance_id"].(float64)),
+				InstanceLabel:      arr["instance_label"].(string),
+				InstanceHostname:   arr["instance_hostname"].(string),
+				InstanceClusterUrl: arr["instance_cluster_url"].(string),
+				InstanceHealth:     arr["instance_health"].(string),
+				ESXIUsername:       arr["esxi_username"].(string),
+				ESXIPassword:       arr["esxi_password"].(string),
+				Type:               arr["type"].(string),
+			}
+		}
+	}
+
+	s.VSphereWorkload = map[string]AppInstanceDetails{}
+	if _, ok := v.VSphereWorkload.([]interface{}); !ok {
+		for i, x := range v.VSphereWorkload.(map[string]interface{}) {
+			var arr = x.(map[string]interface{})
+			s.VSphereWorkload[i] = AppInstanceDetails{
+				InstanceID:         int(arr["instance_id"].(float64)),
+				InstanceLabel:      arr["instance_label"].(string),
+				InstanceHostname:   arr["instance_hostname"].(string),
+				InstanceClusterUrl: arr["instance_cluster_url"].(string),
+				InstanceHealth:     arr["instance_health"].(string),
+				ESXIUsername:       arr["esxi_username"].(string),
+				ESXIPassword:       arr["esxi_password"].(string),
+				Type:               arr["type"].(string),
+			}
+		}
+	}
+
+	return nil
 }
 
 type AppVMWareVCFWrapper struct {
@@ -267,6 +398,17 @@ func (c *Client) clusterAppVMWareVCF(clusterID id, decryptCredentials bool) (*Ap
 	if decryptCredentials {
 		createdObject.ClusterApp.AdminPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.AdminPassword)
 		createdObject.ClusterApp.VCSAInitialPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.VCSAInitialPassword)
+		createdObject.ClusterApp.CBAAdminPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.CBAAdminPassword)
+		createdObject.ClusterApp.CBARootPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.CBARootPassword)
+		createdObject.ClusterApp.NSXManagerAdminPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.NSXManagerAdminPassword)
+		createdObject.ClusterApp.NSXManagerAuditPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.NSXManagerAuditPassword)
+		createdObject.ClusterApp.NSXManagerRootPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.NSXManagerRootPassword)
+		createdObject.ClusterApp.SDDCLocalAdminPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.SDDCLocalAdminPassword)
+		createdObject.ClusterApp.SDDCRootPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.SDDCRootPassword)
+		createdObject.ClusterApp.SDDCSecondPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.SDDCSecondPassword)
+		createdObject.ClusterApp.VCenterRootPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.VCenterRootPassword)
+		createdObject.ClusterApp.VCenterSSOAdminPassword, _ = c.decryptIfEncrypted(createdObject.ClusterApp.VCenterSSOAdminPassword)
+
 		for label, inst := range createdObject.ClusterApp.VSphereManagement {
 			s, _ := c.decryptIfEncrypted(createdObject.ClusterApp.VSphereManagement[label].ESXIPassword)
 			inst.ESXIPassword = s
