@@ -4,7 +4,7 @@ import "fmt"
 
 //go:generate go run helper/gen_exports.go
 
-//Network object describes an high level connection construct
+// Network object describes an high level connection construct
 type Network struct {
 	NetworkID                 int               `json:"network_id,omitempty" yaml:"id,omitempty"`
 	NetworkLabel              string            `json:"network_label,omitempty" yaml:"label,omitempty"`
@@ -17,7 +17,7 @@ type Network struct {
 	NetworkOperation          *NetworkOperation `json:"network_operation,omitempty" yaml:"operation,omitempty"`
 }
 
-//NetworkOperation object describes the change(s) required to be applied to a Network
+// NetworkOperation object describes the change(s) required to be applied to a Network
 type NetworkOperation struct {
 	NetworkID                 int    `json:"network_id,omitempty" yaml:"id,omitempty"`
 	NetworkLabel              string `json:"network_label,omitempty" yaml:"label,omitempty"`
@@ -29,7 +29,7 @@ type NetworkOperation struct {
 	NetworkChangeID           int    `json:"network_change_id,omitempty" yaml:"changeID,omitempty"`
 }
 
-//networkGet retrieves a network object
+// networkGet retrieves a network object
 func (c *Client) networkGet(networkID id) (*Network, error) {
 	var createdObject Network
 
@@ -49,7 +49,7 @@ func (c *Client) networkGet(networkID id) (*Network, error) {
 	return &createdObject, nil
 }
 
-//networks returns a list of all network objects of an infrastructure
+// networks returns a list of all network objects of an infrastructure
 func (c *Client) networks(infrastructureID id) (*map[string]Network, error) {
 
 	if err := checkID(infrastructureID); err != nil {
@@ -86,7 +86,7 @@ func (c *Client) networks(infrastructureID id) (*map[string]Network, error) {
 	return &createdObject, nil
 }
 
-//networkCreate creates a network
+// networkCreate creates a network
 func (c *Client) networkCreate(infrastructureID id, network Network) (*Network, error) {
 	var createdObject Network
 
@@ -107,7 +107,7 @@ func (c *Client) networkCreate(infrastructureID id, network Network) (*Network, 
 	return &createdObject, nil
 }
 
-//networkEdit applies a change to an existing network
+// networkEdit applies a change to an existing network
 func (c *Client) networkEdit(networkID id, networkOperation NetworkOperation) (*Network, error) {
 	var createdObject Network
 
@@ -128,7 +128,7 @@ func (c *Client) networkEdit(networkID id, networkOperation NetworkOperation) (*
 	return &createdObject, nil
 }
 
-//networkDelete deletes a network.
+// networkDelete deletes a network.
 func (c *Client) networkDelete(networkID id) error {
 
 	if err := checkID(networkID); err != nil {
@@ -150,7 +150,7 @@ func (c *Client) networkDelete(networkID id) error {
 	return nil
 }
 
-//networkJoin merges two specified Network objects.
+// networkJoin merges two specified Network objects.
 func (c *Client) networkJoin(networkID id, networkToBeDeletedID id) error {
 
 	if err := checkID(networkID); err != nil {
@@ -187,7 +187,7 @@ func (n *Network) instanceToOperation(op *NetworkOperation) {
 	operation.NetworkChangeID = op.NetworkChangeID
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (n Network) CreateOrUpdate(client MetalCloudClient) error {
 	var result *Network
 	var err error
@@ -221,7 +221,7 @@ func (n Network) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (n Network) Delete(client MetalCloudClient) error {
 	var result *Network
 	var id int
@@ -249,7 +249,7 @@ func (n Network) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (n Network) Validate() error {
 	if n.NetworkID == 0 && n.NetworkLabel == "" {
 		return fmt.Errorf("id is required")

@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-//StageDefinition contains a JavaScript file, HTTP request url and options, an AnsibleBundle or an API call template.
+// StageDefinition contains a JavaScript file, HTTP request url and options, an AnsibleBundle or an API call template.
 type StageDefinition struct {
 	StageDefinitionID                              int         `json:"stage_definition_id,omitempty" yaml:"id,omitempty"`
 	UserIDOwner                                    int         `json:"user_id_owner,omitempty" yaml:"ownerID,omitempty"`
@@ -24,14 +24,14 @@ type StageDefinition struct {
 	StageDefinitionAutomaticallyAddedToPostDeploys int         `json:"stage_definition_automatically_added_to_post_deploys,omitempty" yaml:"automaticallyAddedToPostDeploys,omitempty"`
 }
 
-//HTTPRequest represents an HTTP request definition compatible with the standard Web Fetch API.
+// HTTPRequest represents an HTTP request definition compatible with the standard Web Fetch API.
 type HTTPRequest struct {
 	URL     string              `json:"url,omitempty"`
 	Options WebFetchAAPIOptions `json:"options,omitempty"`
 	Type    string              `json:"type,omitempty"`
 }
 
-//WebFetchAAPIOptions represents node-fetch options which is follows the Web API Fetch specification. See https://github.com/node-fetch/node-fetch
+// WebFetchAAPIOptions represents node-fetch options which is follows the Web API Fetch specification. See https://github.com/node-fetch/node-fetch
 type WebFetchAAPIOptions struct {
 	Method           string                    `json:"method,omitempty"`
 	Redirect         string                    `json:"redirect,omitempty"`
@@ -44,7 +44,7 @@ type WebFetchAAPIOptions struct {
 	BodyBufferBase64 string                    `json:"bodyBufferBase64,omitempty"`
 }
 
-//WebFetchAPIRequestHeaders HTTP request headers. null means undefined (the default for most) so the header will not be included with the request.
+// WebFetchAPIRequestHeaders HTTP request headers. null means undefined (the default for most) so the header will not be included with the request.
 type WebFetchAPIRequestHeaders struct {
 	Accept             string `json:"Accept,omitempty"`
 	UserAgent          string `json:"User-Agent,omitempty"`
@@ -55,20 +55,20 @@ type WebFetchAPIRequestHeaders struct {
 	ContentMD5         string `json:"Content-MD5,omitempty"`
 }
 
-//AnsibleBundle contains an Ansible project as a single archive file, usually .zip
+// AnsibleBundle contains an Ansible project as a single archive file, usually .zip
 type AnsibleBundle struct {
 	AnsibleBundleArchiveFilename       string `json:"ansible_bundle_archive_filename,omitempty"`
 	AnsibleBundleArchiveContentsBase64 string `json:"ansible_bundle_archive_contents_base64,omitempty"`
 	Type                               string `json:"type,omitempty"`
 }
 
-//WorkflowReference points to a Workflow object via its workflow_id. To be used as a stage definition.
+// WorkflowReference points to a Workflow object via its workflow_id. To be used as a stage definition.
 type WorkflowReference struct {
 	WorkflowID int    `json:"workflow_id,omitempty"`
 	Type       string `json:"type,omitempty"`
 }
 
-//SSHExec executes a command on a remote server using the SSH exec functionality (not through a shell).
+// SSHExec executes a command on a remote server using the SSH exec functionality (not through a shell).
 type SSHExec struct {
 	Command   string           `json:"command,omitempty"`
 	SSHTarget SSHClientOptions `json:"ssh_target,omitempty"`
@@ -76,7 +76,7 @@ type SSHExec struct {
 	Type      string           `json:"type,omitempty"`
 }
 
-//SSHClientOptions defines an ssh cnnection such as the host, port, user, password, private keys, etc. All properties support template-like variables; for example, ${{instance_credentials_password}} may be used as value for the password property.
+// SSHClientOptions defines an ssh cnnection such as the host, port, user, password, private keys, etc. All properties support template-like variables; for example, ${{instance_credentials_password}} may be used as value for the password property.
 type SSHClientOptions struct {
 	Host         string        `json:"host,omitempty"`
 	Port         int           `json:"port,omitempty"`
@@ -94,7 +94,7 @@ type SSHClientOptions struct {
 	Compress     interface{}   `json:"compress,omitempty"`
 }
 
-//SSHAlgorithms defines algorithms that can be used during an ssh session
+// SSHAlgorithms defines algorithms that can be used during an ssh session
 type SSHAlgorithms struct {
 	Kex           []string `json:"kex,omitempty"`
 	Cipher        []string `json:"cipher,omitempty"`
@@ -103,7 +103,7 @@ type SSHAlgorithms struct {
 	Compress      []string `json:"compress,omitempty"`
 }
 
-//Copy defines the source and destination of a SCP operation. The source may be of various types. SCP and HTTP requests are streamed so they are recommended as sources. The destination has to be a SCP resource.
+// Copy defines the source and destination of a SCP operation. The source may be of various types. SCP and HTTP requests are streamed so they are recommended as sources. The destination has to be a SCP resource.
 type Copy struct {
 	Source                     interface{}         `json:"source,omitempty"`
 	Destination                SCPResourceLocation `json:"destination,omitempty"`
@@ -112,13 +112,13 @@ type Copy struct {
 	Type                       string              `json:"type,omitempty"`
 }
 
-//SCPResourceLocation defines a file path and SSH client connection options for use with Secure Copy Protocol (SCP).
+// SCPResourceLocation defines a file path and SSH client connection options for use with Secure Copy Protocol (SCP).
 type SCPResourceLocation struct {
 	Path      string           `json:"path,omitempty"`
 	SSHTarget SSHClientOptions `json:"ssh_target,omitempty"`
 }
 
-//UnmarshalJSON custom json marshaling
+// UnmarshalJSON custom json marshaling
 func (s *StageDefinition) UnmarshalJSON(b []byte) error {
 	type Alias StageDefinition
 	var w Alias
@@ -212,7 +212,7 @@ func (s *StageDefinition) UnmarshalJSON(b []byte) error {
 	return err
 }
 
-//StageDefinitionCreate creates a stageDefinition
+// StageDefinitionCreate creates a stageDefinition
 func (c *Client) StageDefinitionCreate(stageDefinition StageDefinition) (*StageDefinition, error) {
 	var createdObject StageDefinition
 
@@ -231,7 +231,7 @@ func (c *Client) StageDefinitionCreate(stageDefinition StageDefinition) (*StageD
 	return &createdObject, nil
 }
 
-//StageDefinitionDelete Permanently destroys a StageDefinition.
+// StageDefinitionDelete Permanently destroys a StageDefinition.
 func (c *Client) StageDefinitionDelete(stageDefinitionID int) error {
 
 	if err := checkID(stageDefinitionID); err != nil {
@@ -251,7 +251,7 @@ func (c *Client) StageDefinitionDelete(stageDefinitionID int) error {
 	return nil
 }
 
-//StageDefinitionUpdate This function allows updating the stageDefinition_usage, stageDefinition_label and stageDefinition_base64 of a StageDefinition
+// StageDefinitionUpdate This function allows updating the stageDefinition_usage, stageDefinition_label and stageDefinition_base64 of a StageDefinition
 func (c *Client) StageDefinitionUpdate(stageDefinitionID int, stageDefinition StageDefinition) (*StageDefinition, error) {
 	var createdObject StageDefinition
 
@@ -273,7 +273,7 @@ func (c *Client) StageDefinitionUpdate(stageDefinitionID int, stageDefinition St
 	return &createdObject, nil
 }
 
-//StageDefinitionGet returns a StageDefinition specified by nStageDefinitionID. The stageDefinition's protected value is never returned.
+// StageDefinitionGet returns a StageDefinition specified by nStageDefinitionID. The stageDefinition's protected value is never returned.
 func (c *Client) StageDefinitionGet(stageDefinitionID int) (*StageDefinition, error) {
 
 	var createdObject StageDefinition
@@ -295,7 +295,7 @@ func (c *Client) StageDefinitionGet(stageDefinitionID int) (*StageDefinition, er
 	return &createdObject, nil
 }
 
-//StageDefinitions retrieves a list of all the StageDefinition objects which a specified User is allowed to see through ownership or delegation. The stageDefinition objects never return the actual protected stageDefinition value.
+// StageDefinitions retrieves a list of all the StageDefinition objects which a specified User is allowed to see through ownership or delegation. The stageDefinition objects never return the actual protected stageDefinition value.
 func (c *Client) StageDefinitions() (*map[string]StageDefinition, error) {
 
 	userID := c.GetUserID()
@@ -329,7 +329,7 @@ func (c *Client) StageDefinitions() (*map[string]StageDefinition, error) {
 	return &createdObject, nil
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (s StageDefinition) CreateOrUpdate(client MetalCloudClient) error {
 	var err error
 	var result *StageDefinition
@@ -371,7 +371,7 @@ func (s StageDefinition) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (s StageDefinition) Delete(client MetalCloudClient) error {
 	var result *StageDefinition
 	var id int
@@ -406,7 +406,7 @@ func (s StageDefinition) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (s StageDefinition) Validate() error {
 	if s.StageDefinitionID == 0 && s.StageDefinitionLabel == "" {
 		return fmt.Errorf("id is required")

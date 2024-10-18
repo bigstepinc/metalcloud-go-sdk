@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-//ExternalConnection object describes an external connection
+// ExternalConnection object describes an external connection
 type ExternalConnection struct {
 	ExternalConnectionID          int    `json:"external_connection_id,omitempty" yaml:"id,omitempty"`
 	ExternalConnectionLabel       string `json:"external_connection_label,omitempty" yaml:"label,omitempty"`
@@ -15,7 +15,7 @@ type ExternalConnection struct {
 	ExternalConnectionDescription string `json:"external_connection_description,omitempty" yaml:"description,omitempty"`
 }
 
-//ExternalConnectionGet returns an external connection with specified id
+// ExternalConnectionGet returns an external connection with specified id
 func (c *Client) externalConnectionGet(externalConnectionID id) (*ExternalConnection, error) {
 	var createdObject ExternalConnection
 
@@ -35,7 +35,7 @@ func (c *Client) externalConnectionGet(externalConnectionID id) (*ExternalConnec
 	return &createdObject, nil
 }
 
-//ExternalConnections returns a list of external connections for the specified datacenter
+// ExternalConnections returns a list of external connections for the specified datacenter
 func (c *Client) ExternalConnections(datacenterName string) (*map[int]ExternalConnection, error) {
 
 	resp, err := c.rpcClient.Call(
@@ -69,7 +69,7 @@ func (c *Client) ExternalConnections(datacenterName string) (*map[int]ExternalCo
 
 }
 
-//ExternalConnectionCreate creates an external connection.
+// ExternalConnectionCreate creates an external connection.
 func (c *Client) ExternalConnectionCreate(externalConnection ExternalConnection) (*ExternalConnection, error) {
 	var createdObject ExternalConnection
 
@@ -89,7 +89,7 @@ func (c *Client) ExternalConnectionCreate(externalConnection ExternalConnection)
 	return &createdObject, nil
 }
 
-//ExternalConnectionEdit updates an external connection.
+// ExternalConnectionEdit updates an external connection.
 func (c *Client) externalConnectionEdit(externalConnectionID id, externalConnection ExternalConnection) (*ExternalConnection, error) {
 	var createdObject ExternalConnection
 
@@ -111,7 +111,7 @@ func (c *Client) externalConnectionEdit(externalConnectionID id, externalConnect
 	return &createdObject, nil
 }
 
-//ExternalConnectionDelete deletes an external connection.
+// ExternalConnectionDelete deletes an external connection.
 func (c *Client) externalConnectionDelete(externalConnectionID id) error {
 
 	if err := checkID(externalConnectionID); err != nil {

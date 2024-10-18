@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-//Infrastructure - the main infrastructure object
+// Infrastructure - the main infrastructure object
 type Infrastructure struct {
 	InfrastructureID                   int                     `json:"infrastructure_id,omitempty" yaml:"id,omitempty"`
 	InfrastructureLabel                string                  `json:"infrastructure_label" yaml:"label"`
@@ -26,7 +26,7 @@ type Infrastructure struct {
 	InfrastructureCustomVariables      interface{}             `json:"infrastructure_custom_variables,omitempty" yaml:"customVariables,omitempty"`
 }
 
-//InfrastructureOperation - object with alternations to be applied
+// InfrastructureOperation - object with alternations to be applied
 type InfrastructureOperation struct {
 	InfrastructureID               int         `json:"infrastructure_id,omitempty" yaml:"id,omitempty"`
 	InfrastructureLabel            string      `json:"infrastructure_label" yaml:"label"`
@@ -41,19 +41,19 @@ type InfrastructureOperation struct {
 	InfrastructureCustomVariables  interface{} `json:"infrastructure_custom_variables,omitempty" yaml:"customVariables,omitempty"`
 }
 
-//ShutdownOptions controls how the deploy engine handles running instances
+// ShutdownOptions controls how the deploy engine handles running instances
 type ShutdownOptions struct {
 	HardShutdownAfterTimeout   bool `json:"hard_shutdown_after_timeout"`
 	AttemptSoftShutdown        bool `json:"attempt_soft_shutdown"`
 	SoftShutdownTimeoutSeconds int  `json:"soft_shutdown_timeout_seconds"`
 }
 
-//DeployOptions controls server allocation
+// DeployOptions controls server allocation
 type DeployOptions struct {
 	InstanceArrayMapping map[int]map[string]DeployOptionsServerTypeMappingObject `json:"instance_array"`
 }
 
-//DeployOptionsServerTypeMappingObject respresents one of the server type mappings
+// DeployOptionsServerTypeMappingObject respresents one of the server type mappings
 type DeployOptionsServerTypeMappingObject struct {
 	ServerCount int   `json:"server_count"`
 	ServerIDs   []int `json:"server_ids"`
@@ -85,7 +85,7 @@ type InfrastructuresSearchResult struct {
 	AFCTotal                       int      `json:"total,omitempty" yaml:"total,omitempty"`
 }
 
-//InfrastructureCreate creates an infrastructure
+// InfrastructureCreate creates an infrastructure
 func (c *Client) InfrastructureCreate(infrastructure Infrastructure) (*Infrastructure, error) {
 	var createdObject Infrastructure
 
@@ -104,7 +104,7 @@ func (c *Client) InfrastructureCreate(infrastructure Infrastructure) (*Infrastru
 	return &createdObject, nil
 }
 
-//infrastructureEdit alters an infrastructure
+// infrastructureEdit alters an infrastructure
 func (c *Client) infrastructureEdit(infrastructureID id, infrastructureOperation InfrastructureOperation) (*Infrastructure, error) {
 	var createdObject Infrastructure
 
@@ -125,7 +125,7 @@ func (c *Client) infrastructureEdit(infrastructureID id, infrastructureOperation
 	return &createdObject, nil
 }
 
-//infrastructureDelete deletes an infrastructure and all associated elements. Requires deploy
+// infrastructureDelete deletes an infrastructure and all associated elements. Requires deploy
 func (c *Client) infrastructureDelete(infrastructureID id) error {
 
 	if err := checkID(infrastructureID); err != nil {
@@ -145,7 +145,7 @@ func (c *Client) infrastructureDelete(infrastructureID id) error {
 	return nil
 }
 
-//infrastructureOperationCancel reverts (undos) alterations done before deploy
+// infrastructureOperationCancel reverts (undos) alterations done before deploy
 func (c *Client) infrastructureOperationCancel(infrastructureID id) error {
 
 	if err := checkID(infrastructureID); err != nil {
@@ -167,12 +167,12 @@ func (c *Client) infrastructureOperationCancel(infrastructureID id) error {
 	return nil
 }
 
-//infrastructureDeploy initiates a deploy operation that will apply all registered changes for the respective infrastructure
+// infrastructureDeploy initiates a deploy operation that will apply all registered changes for the respective infrastructure
 func (c *Client) infrastructureDeploy(infrastructureID id, shutdownOptions ShutdownOptions, allowDataLoss bool, skipAnsible bool) error {
 	return c.infrastructureDeployWithOptions(infrastructureID, shutdownOptions, nil, allowDataLoss, skipAnsible)
 }
 
-//infrastructureDeployWithOptions initiates a deploy operation that will apply all registered changes for the respective infrastructure. With options.
+// infrastructureDeployWithOptions initiates a deploy operation that will apply all registered changes for the respective infrastructure. With options.
 func (c *Client) infrastructureDeployWithOptions(infrastructureID id, shutdownOptions ShutdownOptions, deployOptions *DeployOptions, allowDataLoss bool, skipAnsible bool) error {
 
 	if err := checkID(infrastructureID); err != nil {
@@ -199,7 +199,7 @@ func (c *Client) infrastructureDeployWithOptions(infrastructureID id, shutdownOp
 	return nil
 }
 
-//Infrastructures returns a list of infrastructures
+// Infrastructures returns a list of infrastructures
 func (c *Client) Infrastructures() (*map[string]Infrastructure, error) {
 	userID := c.GetUserID()
 
@@ -233,7 +233,7 @@ func (c *Client) Infrastructures() (*map[string]Infrastructure, error) {
 	return &createdObject, nil
 }
 
-//infrastructureGet returns a specific infrastructure by id
+// infrastructureGet returns a specific infrastructure by id
 func (c *Client) infrastructureGet(infrastructureID id) (*Infrastructure, error) {
 	var infrastructure Infrastructure
 
@@ -250,7 +250,7 @@ func (c *Client) infrastructureGet(infrastructureID id) (*Infrastructure, error)
 	return &infrastructure, nil
 }
 
-//infrastructureUserLimits returns user metadata
+// infrastructureUserLimits returns user metadata
 func (c *Client) infrastructureUserLimits(infrastructureID id) (*map[string]interface{}, error) {
 	var userLimits map[string]interface{}
 
@@ -302,7 +302,7 @@ func (i *Infrastructure) instanceToOperation(op *InfrastructureOperation) {
 	operation.InfrastructureChangeID = op.InfrastructureChangeID
 }
 
-//CreateOrUpdate implements interface Applier
+// CreateOrUpdate implements interface Applier
 func (i Infrastructure) CreateOrUpdate(client MetalCloudClient) error {
 	var result *Infrastructure
 	var err error
@@ -337,7 +337,7 @@ func (i Infrastructure) CreateOrUpdate(client MetalCloudClient) error {
 	return nil
 }
 
-//Delete implements interface Applier
+// Delete implements interface Applier
 func (i Infrastructure) Delete(client MetalCloudClient) error {
 	var result *Infrastructure
 	var id int
@@ -365,7 +365,7 @@ func (i Infrastructure) Delete(client MetalCloudClient) error {
 	return nil
 }
 
-//Validate implements interface Applier
+// Validate implements interface Applier
 func (i Infrastructure) Validate() error {
 	if i.InfrastructureID == 0 && i.InfrastructureLabel == "" {
 		return fmt.Errorf("id is required")
@@ -373,7 +373,7 @@ func (i Infrastructure) Validate() error {
 	return nil
 }
 
-//InfrastructureSearch searches for infrastructures with filtering support
+// InfrastructureSearch searches for infrastructures with filtering support
 func (c *Client) InfrastructureSearch(filter string) (*[]InfrastructuresSearchResult, error) {
 
 	tables := []string{"_user_infrastructures_extended"}

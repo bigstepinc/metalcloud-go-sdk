@@ -2,62 +2,62 @@
 
 package metalcloud
 
-//InstanceEdit instance. Requires deploy
+// InstanceEdit instance. Requires deploy
 func (c *Client) InstanceEdit(instanceID int, instanceOperation InstanceOperation) (*Instance, error) {
-	return c.instanceEdit(instanceID,instanceOperation)
+	return c.instanceEdit(instanceID, instanceOperation)
 }
 
-//InstanceEditByLabel instance. Requires deploy
+// InstanceEditByLabel instance. Requires deploy
 func (c *Client) InstanceEditByLabel(instanceLabel string, instanceOperation InstanceOperation) (*Instance, error) {
-	return c.instanceEdit(instanceLabel,instanceOperation)
+	return c.instanceEdit(instanceLabel, instanceOperation)
 }
 
-//InstanceArrayInstances InstanceArray.
+// InstanceArrayInstances InstanceArray.
 func (c *Client) InstanceArrayInstances(instanceArrayID int) (*map[string]Instance, error) {
 	return c.instanceArrayInstances(instanceArrayID)
 }
 
-//InstanceArrayInstancesByLabel InstanceArray.
+// InstanceArrayInstancesByLabel InstanceArray.
 func (c *Client) InstanceArrayInstancesByLabel(instanceArrayLabel string) (*map[string]Instance, error) {
 	return c.instanceArrayInstances(instanceArrayLabel)
 }
 
-//InstanceGet id
+// InstanceGet id
 func (c *Client) InstanceGet(instanceID int) (*Instance, error) {
 	return c.instanceGet(instanceID)
 }
 
-//InstanceGetByLabel id
+// InstanceGetByLabel id
 func (c *Client) InstanceGetByLabel(instanceLabel string) (*Instance, error) {
 	return c.instanceGet(instanceLabel)
 }
 
-//InstanceServerPowerSet instance
+// InstanceServerPowerSet instance
 func (c *Client) InstanceServerPowerSet(instanceID int, operation string) error {
-	return c.instanceServerPowerSet(instanceID,operation)
+	return c.instanceServerPowerSet(instanceID, operation)
 }
 
-//InstanceServerPowerSetByLabel instance
+// InstanceServerPowerSetByLabel instance
 func (c *Client) InstanceServerPowerSetByLabel(instanceLabel string, operation string) error {
-	return c.instanceServerPowerSet(instanceLabel,operation)
+	return c.instanceServerPowerSet(instanceLabel, operation)
 }
 
-//InstanceServerPowerGet instance
+// InstanceServerPowerGet instance
 func (c *Client) InstanceServerPowerGet(instanceID int) (*string, error) {
 	return c.instanceServerPowerGet(instanceID)
 }
 
-//InstanceServerPowerGetByLabel instance
+// InstanceServerPowerGetByLabel instance
 func (c *Client) InstanceServerPowerGetByLabel(instanceLabel string) (*string, error) {
 	return c.instanceServerPowerGet(instanceLabel)
 }
 
-//InstanceServerPowerGetBatch instances
+// InstanceServerPowerGetBatch instances
 func (c *Client) InstanceServerPowerGetBatch(infrastructureID int, instanceIDs []int) (*map[string]string, error) {
-	return c.instanceServerPowerGetBatch(infrastructureID,instanceIDs)
+	return c.instanceServerPowerGetBatch(infrastructureID, instanceIDs)
 }
 
-//InstanceServerPowerGetBatchByLabel instances
+// InstanceServerPowerGetBatchByLabel instances
 func (c *Client) InstanceServerPowerGetBatchByLabel(infrastructureLabel string, instanceIDs []int) (*map[string]string, error) {
-	return c.instanceServerPowerGetBatch(infrastructureLabel,instanceIDs)
+	return c.instanceServerPowerGetBatch(infrastructureLabel, instanceIDs)
 }

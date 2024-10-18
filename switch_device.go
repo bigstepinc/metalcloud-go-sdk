@@ -51,7 +51,7 @@ type SwitchDevice struct {
 	NetworkEquipmentRequiresOSInstall              bool     `json:"network_equipment_requires_os_install" yaml:"requiresOSInstall"`
 	NetworkEquipmentIsBorderDevice                 bool     `json:"network_equipment_is_border_device" yaml:"isBorderDevice"`
 	NetworkEquipmentIsStorageSwitch                bool     `json:"network_equipment_is_storage_switch" yaml:"isStorageSwitch"`
-	NetworkEquipmentIsGateway		  			   bool `json:"network_equipment_is_gateway" yaml:"isGateway"`
+	NetworkEquipmentIsGateway                      bool     `json:"network_equipment_is_gateway" yaml:"isGateway"`
 	NetworkEquipmentNetworkTypesAllowed            []string `json:"network_equipment_network_types_allowed,omitempty" yaml:"networkTypesAllowed,omitempty"`
 	VolumeTemplateID                               int      `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
 	NetworkEquipmentLoopbackAddress                string   `json:"network_equipment_loopback_address,omitempty" yaml:"LoopbackAddress,omitempty"`
@@ -108,7 +108,7 @@ func (s *SwitchDevice) UnmarshalJSON(data []byte) error {
 		NetworkEquipmentRequiresOSInstall interface{} `json:"network_equipment_requires_os_install" yaml:"requiresOSInstall"`
 		NetworkEquipmentIsBorderDevice    interface{} `json:"network_equipment_is_border_device" yaml:"isBorderDevice"`
 		NetworkEquipmentIsStorageSwitch   interface{} `json:"network_equipment_is_storage_switch" yaml:"isStorageSwitch"`
-		NetworkEquipmentIsGateway		  interface{} `json:"network_equipment_is_gateway" yaml:"isGateway"`
+		NetworkEquipmentIsGateway         interface{} `json:"network_equipment_is_gateway" yaml:"isGateway"`
 		VolumeTemplateID                  int         `json:"volume_template_id,omitempty" yaml:"volumeTemplateID,omitempty"`
 		NetworkEquipmentLoopbackAddress   string      `json:"network_equipment_loopback_address,omitempty" yaml:"LoopbackAddress,omitempty"`
 		NetworkEquipmentVTEPAddress       string      `json:"network_equipment_vtep_address,omitempty" yaml:"VTEPAddress,omitempty"`
@@ -153,7 +153,10 @@ func (s *SwitchDevice) UnmarshalJSON(data []byte) error {
 			v.NetworkEquipmentIsGateway = true
 		}
 	}
-	copier.Copy(&s, &v)
+	err = copier.Copy(&s, &v)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

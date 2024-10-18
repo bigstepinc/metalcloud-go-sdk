@@ -4,7 +4,7 @@ package metalcloud
 
 import "fmt"
 
-//searchResultResponseWrapperForAFC describes a search result for AFC
+// searchResultResponseWrapperForAFC describes a search result for AFC
 type searchResultResponseWrapperForAFC struct {
 	DurationMilliseconds int               `json:"duration_millisecnds,omitempty"`
 	Rows                 []AFCSearchResult `json:"rows,omitempty"`
@@ -12,7 +12,7 @@ type searchResultResponseWrapperForAFC struct {
 	RowsTotal            int               `json:"rows_total,omitempty"`
 }
 
-//AFCSearchResult Represents an AFC search result
+// AFCSearchResult Represents an AFC search result
 type AFCSearchResult struct {
 	AFCID                     int    `json:"afc_id,omitempty" yaml:"AFCID,omitempty"`
 	AFCType                   string `json:"afc_type,omitempty" yaml:"afcType,omitempty"`
@@ -40,7 +40,7 @@ type AFCSearchResult struct {
 	AFCStatus                 string `json:"afc_status,omitempty" yaml:"AFCStatus,omitempty"`
 }
 
-//AFC Represents an AFC result
+// AFC Represents an AFC result
 type AFC struct {
 	AFCID                     int    `json:"afc_id,omitempty" yaml:"AFCID,omitempty"`
 	AFCType                   string `json:"afc_type,omitempty" yaml:"afcType,omitempty"`
@@ -68,7 +68,7 @@ type AFC struct {
 	AFCStatus                 string `json:"afc_status,omitempty" yaml:"AFCStatus,omitempty"`
 }
 
-//AFCSearch searches for AFCs
+// AFCSearch searches for AFCs
 func (c *Client) AFCSearch(filter string, page_start int, page_end int) (*[]AFCSearchResult, error) {
 
 	tables := []string{"_afc_queue"}
@@ -146,7 +146,7 @@ func (c *Client) AFCSearch(filter string, page_start int, page_end int) (*[]AFCS
 	return &list, nil
 }
 
-//AFCGet Returns an AFC
+// AFCGet Returns an AFC
 func (c *Client) AFCGet(afcID int) (*AFC, error) {
 
 	var createdObject AFC
@@ -164,7 +164,7 @@ func (c *Client) AFCGet(afcID int) (*AFC, error) {
 	return &createdObject, nil
 }
 
-//AFCRetryCall Retries an AFC
+// AFCRetryCall Retries an AFC
 func (c *Client) AFCRetryCall(afcID int) error {
 
 	resp, err := c.rpcClient.Call("afc_retry_call", afcID, true)
@@ -180,7 +180,7 @@ func (c *Client) AFCRetryCall(afcID int) error {
 	return nil
 }
 
-//AFCRetryCall Skips an AFC
+// AFCRetryCall Skips an AFC
 func (c *Client) AFCSkip(afcID int) error {
 
 	resp, err := c.rpcClient.Call("afc_skip", afcID)
@@ -196,7 +196,7 @@ func (c *Client) AFCSkip(afcID int) error {
 	return nil
 }
 
-//AFCDelete Skips an AFC
+// AFCDelete Skips an AFC
 func (c *Client) AFCDelete(afcID int) error {
 
 	resp, err := c.rpcClient.Call("afc_delete", afcID)
@@ -212,7 +212,7 @@ func (c *Client) AFCDelete(afcID int) error {
 	return nil
 }
 
-//AFCMarkForDeath Tries to kill an AFC
+// AFCMarkForDeath Tries to kill an AFC
 func (c *Client) AFCMarkForDeath(afcID int, typeOfMark string) error {
 
 	resp, err := c.rpcClient.Call("afc_mark_for_death", afcID, typeOfMark)

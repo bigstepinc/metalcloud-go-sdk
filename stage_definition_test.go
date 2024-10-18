@@ -19,7 +19,7 @@ func TestStageDefinitionUnmarshalTest(t *testing.T) {
 	Expect(obj.UserIDOwner).To(Equal(8030))
 
 	req := obj.StageDefinition.(HTTPRequest)
-	Expect(req.URL).To(Equal("https://raw.githubusercontent.com/bigstepinc/terraform-provider-metalcloud/master/README.md"))
+	Expect(req.URL).To(Equal("https://raw.githubusercontent.com/metalsoft-io/terraform-provider-metalcloud/master/README.md"))
 }
 
 func TestStageDefinitionMarshalTest(t *testing.T) {
@@ -160,5 +160,5 @@ func TestStageDefinitionDeleteForApply(t *testing.T) {
 
 }
 
-const _stageDefinitionsFixture = "{\"stage_definition_id\":402,\"user_id_owner\":8030,\"user_id_authenticated\":8030,\"stage_definition_is_deprecated\":false,\"stage_definition_label\":\"my-test-stage-3\",\"stage_definition_label_unique\":\"my-test-stage-3@8030\",\"stage_definition_title\":\"my title\",\"stage_definition_description\":\"\",\"stage_definition_type\":\"HTTPRequest\",\"icon_asset_data_uri\":null,\"stage_definition_created_timestamp\":\"2020-01-28T17:20:03Z\",\"stage_definition_updated_timestamp\":\"2020-01-28T17:20:03Z\",\"stage_definition_variable_names_required\":[],\"stage_definition\":{\"url\":\"https://raw.githubusercontent.com/bigstepinc/terraform-provider-metalcloud/master/README.md\",\"type\":\"HTTPRequest\",\"options\":{\"body\":null,\"size\":67108864,\"follow\":40,\"method\":\"GET\",\"headers\":{\"Pragma\":\"no-cache\",\"Connection\":\"close\",\"User-Agent\":\"MetalCloud/1.0 (WebFetchAPI)\",\"Cache-Control\":\"no-cache\"},\"timeout\":240000,\"compress\":true,\"redirect\":\"follow\",\"bodyBufferBase64\":null}}}"
+const _stageDefinitionsFixture = "{\"stage_definition_id\":402,\"user_id_owner\":8030,\"user_id_authenticated\":8030,\"stage_definition_is_deprecated\":false,\"stage_definition_label\":\"my-test-stage-3\",\"stage_definition_label_unique\":\"my-test-stage-3@8030\",\"stage_definition_title\":\"my title\",\"stage_definition_description\":\"\",\"stage_definition_type\":\"HTTPRequest\",\"icon_asset_data_uri\":null,\"stage_definition_created_timestamp\":\"2020-01-28T17:20:03Z\",\"stage_definition_updated_timestamp\":\"2020-01-28T17:20:03Z\",\"stage_definition_variable_names_required\":[],\"stage_definition\":{\"url\":\"https://raw.githubusercontent.com/metalsoft-io/terraform-provider-metalcloud/master/README.md\",\"type\":\"HTTPRequest\",\"options\":{\"body\":null,\"size\":67108864,\"follow\":40,\"method\":\"GET\",\"headers\":{\"Pragma\":\"no-cache\",\"Connection\":\"close\",\"User-Agent\":\"MetalCloud/1.0 (WebFetchAPI)\",\"Cache-Control\":\"no-cache\"},\"timeout\":240000,\"compress\":true,\"redirect\":\"follow\",\"bodyBufferBase64\":null}}}"
 const _stageDefinitionsFixture1 = "{\"stage_definition_id\": 100, \"stage_definition_title\": \"sd-test-title\", \"stage_definition_type\": \"sd-test-type\"}"
